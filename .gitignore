@@ -26,3 +26,8 @@
 *.exe
 *.out
 *.app
+
+# Codeblocks
+bin/
+*.depend
+*.save
