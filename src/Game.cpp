@@ -58,3 +58,8 @@ void Game::gameLoop()
         }
     }
 }
+
+sf::RenderWindow& Game::getWindow()
+{
+    return mWindow;
+}

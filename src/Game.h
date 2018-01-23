@@ -18,6 +18,8 @@ public:
 
     void gameLoop();
 
+    sf::RenderWindow& getWindow();
+
 private:
     sf::RenderWindow mWindow;
     std::stack<GameState*> mStates;
