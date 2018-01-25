@@ -13,7 +13,7 @@ GameStateEditor::GameStateEditor(Game* game) : GameState(game)
 void GameStateEditor::draw(const float dt)
 {
     mGame->getWindow().clear(sf::Color::Black);
-    mGame->getWindow().draw(mGame->background);
+    mGame->getWindow().draw(mGame->getBackground());
 }
 
 void GameStateEditor::update(const float dt)
@@ -24,9 +24,9 @@ void GameStateEditor::update(const float dt)
 void GameStateEditor::handleInput()
 {
     sf::Event event;
-    while(mGame->getWindow().pollEvent(event))
+    while (mGame->getWindow().pollEvent(event))
     {
-        switch(event.type)
+        switch (event.type)
         {
             case sf::Event::Closed:
                 mGame->getWindow().close();
@@ -34,10 +34,10 @@ void GameStateEditor::handleInput()
             case sf::Event::Resized:
                 mGameView.setSize(event.size.width, event.size.height);
                 mGuiView.setSize(event.size.width, event.size.height);
-                mGame->background.setPosition(mGame->getWindow().mapPixelToCoords(sf::Vector2i(0, 0), mGuiView));
-                mGame->background.setScale(
-                    float(event.size.width) / float(mGame->background.getTexture()->getSize().x),
-                    float(event.size.height) / float(mGame->background.getTexture()->getSize().y));
+                mGame->getBackground().setPosition(mGame->getWindow().mapPixelToCoords(sf::Vector2i(0, 0), mGuiView));
+                mGame->getBackground().setScale(
+                    float(event.size.width) / float(mGame->getBackground().getTexture()->getSize().x),
+                    float(event.size.height) / float(mGame->getBackground().getTexture()->getSize().y));
                 break;
             default:
                 break;

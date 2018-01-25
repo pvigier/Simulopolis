@@ -5,11 +5,14 @@ Game::Game()
 {
     mWindow.create(sf::VideoMode(800, 600), "City Builder");
     mWindow.setFramerateLimit(60);
+
+    loadTextures();
+    mBackground.setTexture(mTextureManager.getRef("background"));
 }
 
 Game::~Game()
 {
-    while(!mStates.empty())
+    while (!mStates.empty())
         popState();
 }
 
@@ -26,14 +29,14 @@ void Game::popState()
 
 void Game::changeState(GameState* state)
 {
-    if(!mStates.empty())
+    if (!mStates.empty())
         popState();
     pushState(state);
 }
 
 GameState* Game::peekState()
 {
-    if(mStates.empty())
+    if (mStates.empty())
         return nullptr;
     return mStates.top();
 }
@@ -42,13 +45,13 @@ void Game::gameLoop()
 {
     sf::Clock clock;
 
-    while(mWindow.isOpen())
+    while (mWindow.isOpen())
     {
         sf::Time elapsed = clock.restart();
         float dt = elapsed.asSeconds();
 
         GameState* curState = peekState();
-        if(curState != nullptr)
+        if (curState != nullptr)
         {
             curState->handleInput();
             curState->update(dt);
@@ -62,4 +65,14 @@ void Game::gameLoop()
 sf::RenderWindow& Game::getWindow()
 {
     return mWindow;
+}
+
+sf::Sprite& Game::getBackground()
+{
+    return mBackground;
+}
+
+void Game::loadTextures()
+{
+    mTextureManager.loadTexture("background", "media/background.png");
 }

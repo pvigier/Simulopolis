@@ -14,7 +14,7 @@ void GameStateStart::draw(const float dt)
     mGame->getWindow().setView(mView);
 
     mGame->getWindow().clear(sf::Color::Black);
-    mGame->getWindow().draw(mGame->background);
+    mGame->getWindow().draw(mGame->getBackground());
 }
 
 void GameStateStart::update(const float dt)
@@ -25,24 +25,24 @@ void GameStateStart::update(const float dt)
 void GameStateStart::handleInput()
 {
     sf::Event event;
-    while(this->game->window.pollEvent(event))
+    while (mGame->getWindow().pollEvent(event))
     {
-        switch(event.type)
+        switch (event.type)
         {
             case sf::Event::Closed:
                 mGame->getWindow().close();
                 break;
             case sf::Event::Resized:
                 mView.setSize(event.size.width, event.size.height);
-                mGame->background.setPosition(mGame.getWindow().mapPixelToCoords(sf::Vector2i(0, 0)));
-                mGame->background.setScale(
-                    float(event.size.width) / float(mGame->background.getTexture()->getSize().x),
-                    float(event.size.height) / float(mGame->background.getTexture()->getSize().y));
+                mGame->getBackground().setPosition(mGame->getWindow().mapPixelToCoords(sf::Vector2i(0, 0)));
+                mGame->getBackground().setScale(
+                    float(event.size.width) / float(mGame->getBackground().getTexture()->getSize().x),
+                    float(event.size.height) / float(mGame->getBackground().getTexture()->getSize().y));
                 break;
             case sf::Event::KeyPressed:
-                if(event.key.code == sf::Keyboard::Escape)
+                if (event.key.code == sf::Keyboard::Escape)
                     mGame->getWindow().close();
-                else if(event.key.code == sf::Keyboard::Space)
+                else if (event.key.code == sf::Keyboard::Space)
                     loadGame();
                 break;
             default:
@@ -51,7 +51,7 @@ void GameStateStart::handleInput()
     }
 }
 
-void GameStateStart::loadgGame()
+void GameStateStart::loadGame()
 {
     mGame->pushState(new GameStateEditor(mGame));
 }

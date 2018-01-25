@@ -2,6 +2,7 @@
 
 #include <stack>
 #include <SFML/Graphics.hpp>
+#include "TextureManager.h"
 
 class GameState;
 
@@ -19,8 +20,13 @@ public:
     void gameLoop();
 
     sf::RenderWindow& getWindow();
+    sf::Sprite& getBackground();
 
 private:
     sf::RenderWindow mWindow;
     std::stack<GameState*> mStates;
+    TextureManager mTextureManager;
+    sf::Sprite mBackground;
+
+    void loadTextures();
 };

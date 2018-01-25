@@ -20,10 +20,30 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-O2" />
 			<Add option="-Wall" />
+			<Add option="-std=c++14" />
 			<Add option="-fexceptions" />
+			<Add directory="src" />
 		</Compiler>
-		<Unit filename="main.cpp" />
+		<Linker>
+			<Add option="-lsfml-graphics -lsfml-window -lsfml-system" />
+		</Linker>
+		<Unit filename="src/Animation.cpp" />
+		<Unit filename="src/Animation.h" />
+		<Unit filename="src/AnimationHandler.cpp" />
+		<Unit filename="src/AnimationHandler.h" />
+		<Unit filename="src/Game.cpp" />
+		<Unit filename="src/Game.h" />
+		<Unit filename="src/GameState.cpp" />
+		<Unit filename="src/GameState.h" />
+		<Unit filename="src/GameStateEditor.cpp" />
+		<Unit filename="src/GameStateEditor.h" />
+		<Unit filename="src/GameStateStart.cpp" />
+		<Unit filename="src/GameStateStart.h" />
+		<Unit filename="src/TextureManager.cpp" />
+		<Unit filename="src/TextureManager.h" />
+		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
