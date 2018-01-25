@@ -1,12 +1,13 @@
 #include "AnimationHandler.h"
 
-AnimationHandler::AnimationHandler() : mElapsedTime(0.0f), mCurAnimation(0)
+AnimationHandler::AnimationHandler()
 {
 
 }
 
-AnimationHandler::AnimationHandler(sf::IntRect frameSize) :
-    mElapsedTime(0.0f), mCurAnimation(-1), mFrameSize(frameSize)
+AnimationHandler::AnimationHandler(std::vector<Animation> animations, sf::IntRect frameSize) :
+    mAnimations(std::move(animations)), mElapsedTime(0.0f), mCurAnimation(0), mCurFrame(0),
+    mDisplayedRect(frameSize), mFrameSize(frameSize)
 {
 
 }
@@ -49,6 +50,11 @@ void AnimationHandler::changeAnimation(std::size_t iAnimation)
     mElapsedTime = 0.0f;
     mCurFrame = 0;
     updateDisplayedRect();
+}
+
+sf::IntRect AnimationHandler::getDisplayedRect()
+{
+    return mDisplayedRect;
 }
 
 void AnimationHandler::updateDisplayedRect()

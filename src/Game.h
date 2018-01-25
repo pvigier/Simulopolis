@@ -1,8 +1,11 @@
 #pragma once
 
 #include <stack>
+#include <map>
+#include <string>
 #include <SFML/Graphics.hpp>
 #include "TextureManager.h"
+#include "Tile.h"
 
 class GameState;
 
@@ -27,6 +30,9 @@ private:
     std::stack<GameState*> mStates;
     TextureManager mTextureManager;
     sf::Sprite mBackground;
+    std::map<std::string, Tile> mTileAtlas;
+    static constexpr unsigned int mTileSize = 8;
 
     void loadTextures();
+    void loadTiles();
 };

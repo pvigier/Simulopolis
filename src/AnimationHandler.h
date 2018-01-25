@@ -8,11 +8,13 @@ class AnimationHandler
 {
 public:
     AnimationHandler();
-    AnimationHandler(sf::IntRect frameSize);
+    AnimationHandler(std::vector<Animation> animations, sf::IntRect frameSize);
 
     void addAnimation(Animation& animation);
     void update(float dt);
     void changeAnimation(std::size_t iAnimation);
+
+    sf::IntRect getDisplayedRect();
 
 private:
     std::vector<Animation> mAnimations;

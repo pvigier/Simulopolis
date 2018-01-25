@@ -8,9 +8,9 @@ class GameStateStart : public GameState
 public:
     GameStateStart(Game* game);
 
-    virtual void draw(const float dt);
-    virtual void update(const float dt);
-    virtual void handleInput();
+    virtual void draw(const float dt) override;
+    virtual void update(const float dt) override;
+    virtual void handleInput() override;
 
 private:
     sf::View mView;
