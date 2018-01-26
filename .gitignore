@@ -31,3 +31,6 @@
 bin/
 *.depend
 *.save
+
+# Doxygen
+doxygen/
