@@ -6,14 +6,13 @@ Map::Map() : mWidth(0), mHeight(0), mTileSize(8)
     mNumRegions[0] = 1;
 }
 
-Map::Map(const std::string& filename, unsigned int width, unsigned int height,
-    std::map<std::string, Tile>& tileAtlas) : mTileSize(8)
+Map::Map(const std::string& filename, unsigned int width, unsigned int height, TileAtlas& tileAtlas) :
+    mTileSize(8)
 {
     load(filename, width, height, tileAtlas);
 }
 
-void Map::load(const std::string& filename, unsigned int width, unsigned int height,
-    std::map<std::string, Tile>& tileAtlas)
+void Map::load(const std::string& filename, unsigned int width, unsigned int height, TileAtlas& tileAtlas)
 {
     std::ifstream inputFile;
     inputFile.open(filename, std::ios::in | std::ios::binary);
@@ -95,4 +94,147 @@ void Map::draw(sf::RenderWindow& window, float dt)
         }
     }
     return;
+}
+
+void Map::findConnectedRegions(std::vector<TileType> whitelist, int regionType)
+{
+    int label = 1;
+
+    // Reset the label of all tiles
+    for (Tile& tile : mTiles)
+        tile.getRegions()[regionType] = 0;
+
+    for (unsigned int y = 0; y < mHeight; ++y)
+    {
+        for (unsigned int x = 0; x < mWidth; ++x)
+        {
+            // Remove this test?
+            bool found = false;
+            for (TileType type : whitelist)
+            {
+                if(type == mTiles[y * mWidth + x].getType())
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if(mTiles[y * mWidth + x].getRegions()[regionType] == 0 && found)
+                depthFirstSearch(whitelist, x, y, label++, regionType);
+        }
+    }
+    mNumRegions[regionType] = label;
+}
+
+void Map::updateDirection(TileType type)
+{
+    for (unsigned int y = 0; y < mHeight; ++y)
+    {
+        for (unsigned int x = 0; x < mWidth; ++x)
+        {
+            int pos = y * mWidth + x;
+
+            if (mTiles[pos].getType() != type)
+                continue;
+
+            bool adjacentTiles[3][3] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+
+            // Check for adjacent tiles of the same type
+            if (x > 0 && y > 0)
+                adjacentTiles[0][0] = (mTiles[(y - 1) * mWidth + (x - 1)].getType() == type);
+            if (y > 0)
+                adjacentTiles[0][1] = (mTiles[(y - 1) * mWidth + x].getType() == type);
+            if (x < mWidth - 1 && y > 0)
+                adjacentTiles[0][2] = (mTiles[(y - 1) * mWidth + (x + 1)].getType() == type);
+            if (x > 0)
+                adjacentTiles[1][0] = (mTiles[y * mWidth + (x-1)].getType() == type);
+            if (x < mWidth - 1)
+                adjacentTiles[1][2] = (mTiles[y * mWidth + (x + 1)].getType() == type);
+            if (x > 0 && y < mHeight - 1)
+                adjacentTiles[2][0] = (mTiles[(y + 1) * mWidth + (x - 1)].getType() == type);
+            if (y < mHeight - 1)
+                adjacentTiles[2][1] = (mTiles[(y + 1) * mWidth + x].getType() == type);
+            if (x < mWidth-1 && y < mHeight-1)
+                adjacentTiles[2][2] = (mTiles[(y + 1) * mWidth + (x + 1)].getType() == type);
+
+            // Change the tile variant depending on the tile position
+            if (adjacentTiles[1][0] && adjacentTiles[1][2] && adjacentTiles[0][1] && adjacentTiles[2][1])
+                mTiles[pos].getVariant() = 2;
+            else if (adjacentTiles[1][0] && adjacentTiles[1][2] && adjacentTiles[0][1])
+                mTiles[pos].getVariant() = 7;
+            else if (adjacentTiles[1][0] && adjacentTiles[1][2] && adjacentTiles[2][1])
+                mTiles[pos].getVariant() = 8;
+            else if (adjacentTiles[0][1] && adjacentTiles[2][1] && adjacentTiles[1][0])
+                mTiles[pos].getVariant() = 9;
+            else if (adjacentTiles[0][1] && adjacentTiles[2][1] && adjacentTiles[1][2])
+                mTiles[pos].getVariant() = 10;
+            else if (adjacentTiles[1][0] && adjacentTiles[1][2])
+                mTiles[pos].getVariant() = 0;
+            else if (adjacentTiles[0][1] && adjacentTiles[2][1])
+                mTiles[pos].getVariant() = 1;
+            else if (adjacentTiles[2][1] && adjacentTiles[1][0])
+                mTiles[pos].getVariant() = 3;
+            else if (adjacentTiles[0][1] && adjacentTiles[1][2])
+                mTiles[pos].getVariant() = 4;
+            else if (adjacentTiles[1][0] && adjacentTiles[0][1])
+                mTiles[pos].getVariant() = 5;
+            else if (adjacentTiles[2][1] && adjacentTiles[1][2])
+                mTiles[pos].getVariant() = 6;
+            else if (adjacentTiles[1][0])
+                mTiles[pos].getVariant() = 0;
+            else if (adjacentTiles[1][2])
+                mTiles[pos].getVariant() = 0;
+            else if (adjacentTiles[0][1])
+                mTiles[pos].getVariant() = 1;
+            else if (adjacentTiles[2][1])
+                mTiles[pos].getVariant() = 1;
+        }
+    }
+}
+
+unsigned int Map::getWidth() const
+{
+    return mWidth;
+}
+
+unsigned int Map::getHeight() const
+{
+    return mHeight;
+}
+
+unsigned int Map::getTileSize() const
+{
+    return mTileSize;
+}
+
+void Map::depthFirstSearch(std::vector<TileType>& whitelist, int x, int y, int label, int regionType)
+{
+    // Outside of the map
+    if (x < 0 || x >= static_cast<int>(mWidth) || y < 0 || y >= static_cast<int>(mHeight))
+        return;
+
+    // Check if the tile is already assigned to a region
+    if (mTiles[y * mWidth + x].getRegions()[regionType] != 0)
+        return;
+
+    // Check if the type of the tile is in the whitelist
+    bool found = false;
+    for (TileType type : whitelist)
+    {
+        if (type == mTiles[y * mWidth + x].getType())
+        {
+            found = true;
+            break;
+        }
+    }
+    if (!found)
+        return;
+
+    // Label the tile
+    mTiles[y * mWidth + x].getRegions()[regionType] = label;
+
+    // Recursive calls
+    depthFirstSearch(whitelist, x - 1, y, label, regionType);
+    depthFirstSearch(whitelist, x, y + 1, label, regionType);
+    depthFirstSearch(whitelist, x + 1, y, label, regionType);
+    depthFirstSearch(whitelist, x, y - 1, label, regionType);
 }

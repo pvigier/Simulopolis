@@ -10,17 +10,19 @@ class Map
 {
 public:
     Map();
-    Map(const std::string& filename, unsigned int width, unsigned int height,
-        std::map<std::string, Tile>& tileAtlas);
+    Map(const std::string& filename, unsigned int width, unsigned int height, TileAtlas& tileAtlas);
 
-    void load(const std::string& filename, unsigned int width, unsigned int height,
-        std::map<std::string, Tile>& tileAtlas);
+    void load(const std::string& filename, unsigned int width, unsigned int height, TileAtlas& tileAtlas);
     void save(const std::string& filename);
 
     void draw(sf::RenderWindow& window, float dt);
 
-    void findConnectedRegions(std::vector<TileType> whitelist, int type);
-    void updateDirection(TileType tileType);
+    void findConnectedRegions(std::vector<TileType> whitelist, int regionType = 0);
+    void updateDirection(TileType type);
+
+    unsigned int getWidth() const;
+    unsigned int getHeight() const;
+    unsigned int getTileSize() const;
 
 private:
     unsigned int mWidth;
@@ -31,6 +33,5 @@ private:
     unsigned int mSumSelected;
     unsigned int mNumRegions[1];
 
-    void depthFirstSearch(std::vector<TileType>& whitelist,
-        sf::Vector2i pos, int label, int type);
+    void depthFirstSearch(std::vector<TileType>& whitelist, int x, int y, int label, int regionType);
 };

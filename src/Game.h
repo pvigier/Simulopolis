@@ -24,13 +24,14 @@ public:
 
     sf::RenderWindow& getWindow();
     sf::Sprite& getBackground();
+    TileAtlas& getTileAtlas();
 
 private:
     sf::RenderWindow mWindow;
     std::stack<GameState*> mStates;
     TextureManager mTextureManager;
     sf::Sprite mBackground;
-    std::map<std::string, Tile> mTileAtlas;
+    TileAtlas mTileAtlas;
     static constexpr unsigned int mTileSize = 8;
 
     void loadTextures();

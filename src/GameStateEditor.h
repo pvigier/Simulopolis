@@ -2,6 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameState.h"
+#include "Map.h"
+
+enum class ActionState { NONE, PANNING };
 
 class GameStateEditor : public GameState
 {
@@ -15,4 +18,8 @@ public:
 private:
     sf::View mGameView;
     sf::View mGuiView;
+    Map mMap;
+    ActionState mActionState;
+    sf::Vector2i mPanningAnchor;
+    float mZoomLevel;
 };

@@ -56,7 +56,6 @@ void Game::gameLoop()
         {
             curState->handleInput();
             curState->update(dt);
-            mWindow.clear();
             curState->draw(dt);
             mWindow.display();
         }
@@ -71,6 +70,11 @@ sf::RenderWindow& Game::getWindow()
 sf::Sprite& Game::getBackground()
 {
     return mBackground;
+}
+
+TileAtlas& Game::getTileAtlas()
+{
+    return mTileAtlas;
 }
 
 void Game::loadTextures()

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <map>
 #include <vector>
 #include "AnimationHandler.h"
 
@@ -48,3 +49,5 @@ private:
     // Goods stored
     float mStoredGoods;
 };
+
+using TileAtlas = std::map<std::string, Tile>;
