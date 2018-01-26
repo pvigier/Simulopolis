@@ -43,6 +43,36 @@ void Tile::update()
     }
 }
 
+sf::Sprite& Tile::getSprite()
+{
+    return mSprite;
+}
+
+TileType& Tile::getType()
+{
+    return mType;
+}
+
+unsigned int& Tile::getVariant()
+{
+    return mVariant;
+}
+
+unsigned int* Tile::getRegions()
+{
+    return mRegions;
+}
+
+double& Tile::getPopulation()
+{
+    return mPopulation;
+}
+
+float& Tile::getStoredGoods()
+{
+    return mStoredGoods;
+}
+
 std::string tileTypeToStr(TileType type)
 {
     switch (type)

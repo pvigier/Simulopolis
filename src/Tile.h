@@ -19,6 +19,13 @@ public:
     void draw(sf::RenderWindow& window, float dt);
     void update();
 
+    sf::Sprite& getSprite();
+    TileType& getType();
+    unsigned int& getVariant();
+    unsigned int* getRegions();
+    double& getPopulation();
+    float& getStoredGoods();
+
 private:
     AnimationHandler mAnimationHandler;
     sf::Sprite mSprite;

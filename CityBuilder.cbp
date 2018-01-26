@@ -43,6 +43,8 @@
 		<Unit filename="src/GameStateStart.h" />
 		<Unit filename="src/TextureManager.cpp" />
 		<Unit filename="src/TextureManager.h" />
+		<Unit filename="src/Tile.cpp" />
+		<Unit filename="src/Tile.h" />
 		<Unit filename="src/main.cpp" />
 		<Extensions>
 			<code_completion />
