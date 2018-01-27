@@ -41,6 +41,8 @@
 		<Unit filename="src/GameStateEditor.h" />
 		<Unit filename="src/GameStateStart.cpp" />
 		<Unit filename="src/GameStateStart.h" />
+		<Unit filename="src/Map.cpp" />
+		<Unit filename="src/Map.h" />
 		<Unit filename="src/TextureManager.cpp" />
 		<Unit filename="src/TextureManager.h" />
 		<Unit filename="src/Tile.cpp" />
