@@ -5,7 +5,7 @@
 #include <vector>
 #include "AnimationHandler.h"
 
-enum class TileType { VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD };
+enum class TileType{VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
 
 std::string tileTypeToStr(TileType type);
 

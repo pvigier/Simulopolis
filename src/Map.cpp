@@ -1,13 +1,13 @@
 #include "Map.h"
 #include <fstream>
 
-Map::Map() : mWidth(0), mHeight(0), mTileSize(8)
+Map::Map() : mWidth(0), mHeight(0), mTileSize(8), mNumSelected(0)
 {
     mNumRegions[0] = 1;
 }
 
 Map::Map(const std::string& filename, unsigned int width, unsigned int height, TileAtlas& tileAtlas) :
-    mTileSize(8)
+    mTileSize(8), mNumSelected(0)
 {
     load(filename, width, height, tileAtlas);
 }
@@ -23,6 +23,7 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
     for (unsigned int pos = 0; pos < mWidth * mHeight; ++pos)
     {
         mResources.push_back(255);
+        mTileStates.push_back(TileState::DESELECTED);
 
         TileType type;
         inputFile.read((char*)&type, sizeof(type));
@@ -89,6 +90,12 @@ void Map::draw(sf::RenderWindow& window, float dt)
             pos.y = (x + y) * mTileSize * 0.5;
             mTiles[y * mWidth + x].getSprite().setPosition(pos);
 
+            // Change the color if the tile is selected
+            if(mTileStates[y * mWidth + x] == TileState::SELECTED)
+                mTiles[y * mWidth + x].getSprite().setColor(sf::Color(0x7d, 0x7d, 0x7d));
+            else
+                mTiles[y * mWidth + x].getSprite().setColor(sf::Color(0xff, 0xff, 0xff));
+
             // Draw the tile
             mTiles[y * mWidth + x].draw(window, dt);
         }
@@ -112,13 +119,13 @@ void Map::findConnectedRegions(std::vector<TileType> whitelist, int regionType)
             bool found = false;
             for (TileType type : whitelist)
             {
-                if(type == mTiles[y * mWidth + x].getType())
+                if (type == mTiles[y * mWidth + x].getType())
                 {
                     found = true;
                     break;
                 }
             }
-            if(mTiles[y * mWidth + x].getRegions()[regionType] == 0 && found)
+            if (mTiles[y * mWidth + x].getRegions()[regionType] == 0 && found)
                 depthFirstSearch(whitelist, x, y, label++, regionType);
         }
     }
@@ -187,6 +194,46 @@ void Map::updateDirection(TileType type)
                 mTiles[pos].getVariant() = 1;
             else if (adjacentTiles[2][1])
                 mTiles[pos].getVariant() = 1;
+        }
+    }
+}
+
+void Map::clearSelected()
+{
+    for (TileState& state : mTileStates)
+        state = TileState::DESELECTED;
+
+    mNumSelected = 0;
+}
+
+void Map::select(sf::Vector2i start, sf::Vector2i end, std::vector<TileType> blacklist)
+{
+    // Swap coordinates if necessary
+    if (end.y < start.y)
+        std::swap(start.y, end.y);
+    if (end.x < start.x)
+        std::swap(start.x, end.x);
+
+    // Clamp in range
+    start.x = std::max<int>(std::min<int>(start.x, mWidth - 1), 0);
+    start.y = std::max<int>(std::min<int>(start.y, mHeight - 1), 0);
+    end.x = std::max<int>(std::min<int>(end.x, mWidth - 1), 0);
+    end.y = std::max<int>(std::min<int>(end.y, mHeight - 1), 0);
+
+    for (int y = start.y; y <= end.y; ++y)
+    {
+        for (int x = start.x; x <= end.x; ++x)
+        {
+            // Check if the tile type is in the blacklist. If it is, mark it as
+            // invalid, otherwise select it
+            TileType type = mTiles[y * mWidth + x].getType();
+            if (std::find(blacklist.begin(), blacklist.end(), type) != blacklist.end())
+            {
+                mTileStates[y * mWidth + x] = TileState::SELECTED;
+                ++mNumSelected;
+            }
+            else
+                mTileStates[y * mWidth + x] = TileState::INVALID;
         }
     }
 }

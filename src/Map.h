@@ -20,6 +20,11 @@ public:
     void findConnectedRegions(std::vector<TileType> whitelist, int regionType = 0);
     void updateDirection(TileType type);
 
+        // Select the tiles within the bounds
+    void select(sf::Vector2i start, sf::Vector2i end, std::vector<TileType> blacklist);
+    // Deselect all tiles
+    void clearSelected();
+
     unsigned int getWidth() const;
     unsigned int getHeight() const;
     unsigned int getTileSize() const;
@@ -32,6 +37,10 @@ private:
     unsigned int mTileSize;
     unsigned int mSumSelected;
     unsigned int mNumRegions[1];
+
+    enum class TileState{DESELECTED, SELECTED, INVALID};
+    std::vector<TileState> mTileStates;
+    unsigned int mNumSelected;
 
     void depthFirstSearch(std::vector<TileType>& whitelist, int x, int y, int label, int regionType);
 };
