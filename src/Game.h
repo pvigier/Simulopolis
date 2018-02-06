@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "TextureManager.h"
 #include "Tile.h"
+#include "GuiStyle.h"
 
 class GameState;
 
@@ -25,6 +26,7 @@ public:
     sf::RenderWindow& getWindow();
     sf::Sprite& getBackground();
     TileAtlas& getTileAtlas();
+    GuiStyle& getStylesheet(const std::string name);
 
 private:
     sf::RenderWindow mWindow;
@@ -33,7 +35,11 @@ private:
     sf::Sprite mBackground;
     TileAtlas mTileAtlas;
     static constexpr unsigned int mTileSize = 8;
+    std::map<std::string, sf::Font> mFonts;
+    std::map<std::string, GuiStyle> mStylesheets;
 
     void loadTextures();
     void loadTiles();
+    void loadFonts();
+    void loadStylesheets();
 };

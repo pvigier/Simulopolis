@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameState.h"
+#include "Gui.h"
 
 class GameStateStart : public GameState
 {
@@ -14,6 +15,7 @@ public:
 
 private:
     sf::View mView;
+    std::map<std::string, Gui> mGuiSystem;
 
     void loadGame();
 };
