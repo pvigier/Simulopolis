@@ -27,7 +27,11 @@ public:
 
     unsigned int getWidth() const;
     unsigned int getHeight() const;
+    const Tile& getTile(std::size_t position) const;
+    void setTile(std::size_t position, Tile tile);
     unsigned int getTileSize() const;
+    void setTileSize(unsigned int tileSize);
+    TileState getTileState(std::size_t position) const;
 
 private:
     unsigned int mWidth;
@@ -37,8 +41,6 @@ private:
     unsigned int mTileSize;
     unsigned int mSumSelected;
     unsigned int mNumRegions[1];
-
-    enum class TileState{DESELECTED, SELECTED, INVALID};
     std::vector<TileState> mTileStates;
     unsigned int mNumSelected;
 

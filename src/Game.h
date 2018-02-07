@@ -26,7 +26,7 @@ public:
     sf::RenderWindow& getWindow();
     sf::Sprite& getBackground();
     TileAtlas& getTileAtlas();
-    GuiStyle& getStylesheet(const std::string name);
+    GuiStyle& getStylesheet(const std::string& name);
 
 private:
     sf::RenderWindow mWindow;

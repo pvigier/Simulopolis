@@ -6,6 +6,7 @@
 #include "AnimationHandler.h"
 
 enum class TileType{VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
+enum class TileState{DESELECTED, SELECTED, INVALID};
 
 std::string tileTypeToStr(TileType type);
 
@@ -22,9 +23,12 @@ public:
 
     sf::Sprite& getSprite();
     TileType& getType();
+    TileType getType() const;
     unsigned int& getVariant();
     unsigned int* getRegions();
     double& getPopulation();
+    double getPopulation() const;
+    unsigned int getMaxPopPerLevel() const;
     float& getStoredGoods();
 
 private:

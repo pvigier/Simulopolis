@@ -53,6 +53,11 @@ TileType& Tile::getType()
     return mType;
 }
 
+TileType Tile::getType() const
+{
+    return mType;
+}
+
 unsigned int& Tile::getVariant()
 {
     return mVariant;
@@ -66,6 +71,16 @@ unsigned int* Tile::getRegions()
 double& Tile::getPopulation()
 {
     return mPopulation;
+}
+
+double Tile::getPopulation() const
+{
+    return mPopulation;
+}
+
+unsigned int Tile::getMaxPopPerLevel() const
+{
+    return mMaxPopPerLevel;
 }
 
 float& Tile::getStoredGoods()

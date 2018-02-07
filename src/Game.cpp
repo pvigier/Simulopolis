@@ -79,7 +79,7 @@ TileAtlas& Game::getTileAtlas()
     return mTileAtlas;
 }
 
-GuiStyle& Game::getStylesheet(const std::string name)
+GuiStyle& Game::getStylesheet(const std::string& name)
 {
     return mStylesheets[name];
 }

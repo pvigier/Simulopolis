@@ -5,7 +5,7 @@ GuiEntry::GuiEntry()
 
 }
 
-GuiEntry::GuiEntry(sf::RectangleShape shape, sf::Text text, const std::string message) :
+GuiEntry::GuiEntry(sf::RectangleShape shape, sf::Text text, const std::string& message) :
     mShape(shape), mText(text), mMessage(message)
 {
 
@@ -31,7 +31,7 @@ const sf::Text& GuiEntry::getText() const
     return mText;
 }
 
-const std::string GuiEntry::getMessage() const
+std::string GuiEntry::getMessage() const
 {
     return mMessage;
 }

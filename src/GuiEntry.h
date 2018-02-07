@@ -7,13 +7,13 @@ class GuiEntry
 {
 public:
     GuiEntry();
-    GuiEntry(sf::RectangleShape shape, sf::Text text, const std::string message);
+    GuiEntry(sf::RectangleShape shape, sf::Text text, const std::string& message);
 
     sf::RectangleShape& getShape();
     const sf::RectangleShape& getShape() const;
     sf::Text& getText();
     const sf::Text& getText() const;
-    const std::string getMessage() const;
+    std::string getMessage() const;
 
 private:
     // Handles appearance of the entry

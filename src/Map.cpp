@@ -248,9 +248,29 @@ unsigned int Map::getHeight() const
     return mHeight;
 }
 
+const Tile& Map::getTile(std::size_t position) const
+{
+    return mTiles[position];
+}
+
+void Map::setTile(std::size_t position, Tile tile)
+{
+    mTiles[position] = tile;
+}
+
 unsigned int Map::getTileSize() const
 {
     return mTileSize;
+}
+
+void Map::setTileSize(unsigned int tileSize)
+{
+    mTileSize = tileSize;
+}
+
+TileState Map::getTileState(std::size_t position) const
+{
+    return mTileStates[position];
 }
 
 void Map::depthFirstSearch(std::vector<TileType>& whitelist, int x, int y, int label, int regionType)
