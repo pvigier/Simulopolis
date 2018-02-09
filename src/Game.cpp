@@ -140,21 +140,6 @@ void Game::loadFonts()
 
 void Game::loadStylesheets()
 {
-    /*GuiStyle(sf::Font* font, float borderSize,
-        sf::Color bodyCol, sf::Color borderCol, sf::Color textCol,
-        sf::Color bodyHighlightCol, sf::Color borderHighlightCol, sf::Color textHighlightCol)
-
-    mStylesheets["button"] = GuiStyle(&mFonts.at("main_font"), 1,
-        sf::Color(0xc6,0xc6,0xc6), sf::Color(0x94,0x94,0x94), sf::Color(0x00,0x00,0x00),
-        sf::Color(0x61,0x61,0x61), sf::Color(0x94,0x94,0x94), sf::Color(0x00,0x00,0x00));
-    mStylesheets["text"] = GuiStyle(&mFonts.at("main_font"), 0,
-        sf::Color(0x00,0x00,0x00,0x00), sf::Color(0x00,0x00,0x00), sf::Color(0xff,0xff,0xff),
-        sf::Color(0x00,0x00,0x00,0x00), sf::Color(0x00,0x00,0x00), sf::Color(0xff,0x00,0x00));
-
-    GuiStyle(sf::Color bodyColor, sf::Color bodyHighlightColor,
-        sf::Color borderColor, sf::Color borderHighlightColor, float borderSize,
-        sf::Color textColor, sf::Color textHighlightColor, sf::Font* font)*/
-
     mStylesheets["button"] = GuiStyle(sf::Color(0xc6, 0xc6, 0xc6), sf::Color(0x61, 0x61, 0x61),
         sf::Color(0x94, 0x94, 0x94), sf::Color(0x94,0x94,0x94), 1,
         sf::Color(0x00, 0x00, 0x00), sf::Color(0x00,0x00,0x00), &mFonts.at("main_font"));

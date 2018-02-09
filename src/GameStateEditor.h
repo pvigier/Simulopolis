@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "GameState.h"
 #include "City.h"
-#include "Gui.h"
+#include "gui/Gui.h"
 
 enum class ActionState{NONE, PANNING, SELECTING};
 

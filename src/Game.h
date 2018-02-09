@@ -4,9 +4,10 @@
 #include <map>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "TextureManager.h"
 #include "Tile.h"
-#include "GuiStyle.h"
+#include "resource/TextureManager.h"
+#include "gui/GuiStyle.h"
+#include "message/Mailbox.h"
 
 class GameState;
 

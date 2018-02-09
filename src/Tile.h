@@ -1,9 +1,9 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <map>
 #include <vector>
-#include "AnimationHandler.h"
+#include <SFML/Graphics.hpp>
+#include "graphics/AnimationHandler.h"
 
 enum class TileType{VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
 enum class TileState{DESELECTED, SELECTED, INVALID};
