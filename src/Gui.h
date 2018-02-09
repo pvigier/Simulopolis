@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+#include <map>
 #include <SFML/Graphics.hpp>
 #include "GuiStyle.h"
 #include "GuiEntry.h"
@@ -36,6 +38,9 @@ public:
     std::string activate(std::size_t iEntry);
     std::string activate(sf::Vector2f mousePosition);
 
+    bool isVisible() const;
+    std::size_t getNbEntries() const;
+
 private:
     sf::Vector2f mDimensions;
     int mPadding;
@@ -45,3 +50,5 @@ private:
     std::vector<GuiEntry> mEntries;
     bool mVisible;
 };
+
+using GuiSystem = std::map<std::string, Gui>;

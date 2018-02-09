@@ -2,7 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameState.h"
-#include "Map.h"
+#include "City.h"
+#include "Gui.h"
 
 enum class ActionState{NONE, PANNING, SELECTING};
 
@@ -18,11 +19,14 @@ public:
 private:
     sf::View mGameView;
     sf::View mGuiView;
-    Map mMap;
+    City mCity;
     ActionState mActionState;
     sf::Vector2i mPanningAnchor;
     float mZoomLevel;
     sf::Vector2i mSelectionStart;
     sf::Vector2i mSelectionEnd;
     Tile* mCurrentTile;
+    GuiSystem mGuiSystem;
+
+    void createGui();
 };

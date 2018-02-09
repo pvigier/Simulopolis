@@ -101,31 +101,31 @@ void Game::loadTiles()
 {
     Animation staticAnim(0, 0, 1.0f);
 
-    mTileAtlas["grass"] = Tile(mTileSize, 1, mTextureManager.getRef("grass"),
+    mTileAtlas["grass"] = Tile(1, mTextureManager.getRef("grass"),
         {staticAnim},
         TileType::GRASS, 50, 0, 1);
 
-    mTileAtlas["forest"] = Tile(mTileSize, 1, mTextureManager.getRef("forest"),
+    mTileAtlas["forest"] = Tile(1, mTextureManager.getRef("forest"),
         {staticAnim},
         TileType::FOREST, 100, 0, 1);
 
-    mTileAtlas["water"] = Tile(mTileSize, 1, mTextureManager.getRef("water"),
+    mTileAtlas["water"] = Tile(1, mTextureManager.getRef("water"),
         {Animation(0, 3, 0.5f), Animation(0, 3, 0.5f), Animation(0, 3, 0.5f)},
         TileType::WATER, 0, 0, 1);
 
-    mTileAtlas["residential"] = Tile(mTileSize, 2, mTextureManager.getRef("residential"),
+    mTileAtlas["residential"] = Tile(2, mTextureManager.getRef("residential"),
         {staticAnim, staticAnim, staticAnim, staticAnim, staticAnim, staticAnim},
         TileType::RESIDENTIAL, 300, 50, 6);
 
-    mTileAtlas["commercial"] = Tile(mTileSize, 2, mTextureManager.getRef("commercial"),
+    mTileAtlas["commercial"] = Tile(2, mTextureManager.getRef("commercial"),
         {staticAnim, staticAnim, staticAnim, staticAnim},
         TileType::COMMERCIAL, 300, 50, 4);
 
-    mTileAtlas["industrial"] = Tile(mTileSize, 2, mTextureManager.getRef("industrial"),
+    mTileAtlas["industrial"] = Tile(2, mTextureManager.getRef("industrial"),
         {staticAnim, staticAnim, staticAnim, staticAnim},
         TileType::INDUSTRIAL, 300, 50, 4);
 
-    mTileAtlas["road"] = Tile(mTileSize, 1, mTextureManager.getRef("road"),
+    mTileAtlas["road"] = Tile(1, mTextureManager.getRef("road"),
         {staticAnim, staticAnim, staticAnim, staticAnim, staticAnim, staticAnim,
         staticAnim, staticAnim, staticAnim, staticAnim, staticAnim},
         TileType::ROAD, 100, 0, 1);

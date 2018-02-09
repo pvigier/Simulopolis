@@ -34,7 +34,6 @@ private:
     TextureManager mTextureManager;
     sf::Sprite mBackground;
     TileAtlas mTileAtlas;
-    static constexpr unsigned int mTileSize = 8;
     std::map<std::string, sf::Font> mFonts;
     std::map<std::string, GuiStyle> mStylesheets;
 

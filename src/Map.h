@@ -27,18 +27,20 @@ public:
 
     unsigned int getWidth() const;
     unsigned int getHeight() const;
+    unsigned int getNbTiles() const;
+    Tile& getTile(std::size_t position);
     const Tile& getTile(std::size_t position) const;
     void setTile(std::size_t position, Tile tile);
-    unsigned int getTileSize() const;
-    void setTileSize(unsigned int tileSize);
+    int getResource(std::size_t position) const;
+    void setResource(std::size_t position, int resource);
     TileState getTileState(std::size_t position) const;
+    unsigned int getNumSelected() const;
 
 private:
     unsigned int mWidth;
     unsigned int mHeight;
     std::vector<Tile> mTiles;
     std::vector<int> mResources;
-    unsigned int mTileSize;
     unsigned int mSumSelected;
     unsigned int mNumRegions[1];
     std::vector<TileState> mTileStates;

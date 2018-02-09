@@ -1,13 +1,13 @@
 #include "Map.h"
 #include <fstream>
 
-Map::Map() : mWidth(0), mHeight(0), mTileSize(8), mNumSelected(0)
+Map::Map() : mWidth(0), mHeight(0), mNumSelected(0)
 {
     mNumRegions[0] = 1;
 }
 
 Map::Map(const std::string& filename, unsigned int width, unsigned int height, TileAtlas& tileAtlas) :
-    mTileSize(8), mNumSelected(0)
+    mNumSelected(0)
 {
     load(filename, width, height, tileAtlas);
 }
@@ -86,8 +86,8 @@ void Map::draw(sf::RenderWindow& window, float dt)
         {
             // Compute the position of the tile in the 2d world
             sf::Vector2f pos;
-            pos.x = (x - y) * mTileSize + mWidth * mTileSize;
-            pos.y = (x + y) * mTileSize * 0.5;
+            pos.x = (x - y) * TILE_SIZE + mWidth * TILE_SIZE;
+            pos.y = (x + y) * TILE_SIZE * 0.5;
             mTiles[y * mWidth + x].getSprite().setPosition(pos);
 
             // Change the color if the tile is selected
@@ -227,7 +227,7 @@ void Map::select(sf::Vector2i start, sf::Vector2i end, std::vector<TileType> bla
             // Check if the tile type is in the blacklist. If it is, mark it as
             // invalid, otherwise select it
             TileType type = mTiles[y * mWidth + x].getType();
-            if (std::find(blacklist.begin(), blacklist.end(), type) != blacklist.end())
+            if (std::find(blacklist.begin(), blacklist.end(), type) == blacklist.end())
             {
                 mTileStates[y * mWidth + x] = TileState::SELECTED;
                 ++mNumSelected;
@@ -248,6 +248,16 @@ unsigned int Map::getHeight() const
     return mHeight;
 }
 
+unsigned int Map::getNbTiles() const
+{
+    return mTiles.size();
+}
+
+Tile& Map::getTile(std::size_t position)
+{
+    return mTiles[position];
+}
+
 const Tile& Map::getTile(std::size_t position) const
 {
     return mTiles[position];
@@ -258,19 +268,24 @@ void Map::setTile(std::size_t position, Tile tile)
     mTiles[position] = tile;
 }
 
-unsigned int Map::getTileSize() const
+int Map::getResource(std::size_t position) const
 {
-    return mTileSize;
+    return mResources[position];
 }
 
-void Map::setTileSize(unsigned int tileSize)
+void Map::setResource(std::size_t position, int resource)
 {
-    mTileSize = tileSize;
+    mResources[position] = resource;
 }
 
 TileState Map::getTileState(std::size_t position) const
 {
     return mTileStates[position];
+}
+
+unsigned int Map::getNumSelected() const
+{
+    return mNumSelected;
 }
 
 void Map::depthFirstSearch(std::vector<TileType>& whitelist, int x, int y, int label, int regionType)

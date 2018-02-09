@@ -15,7 +15,7 @@ public:
 
 private:
     sf::View mView;
-    std::map<std::string, Gui> mGuiSystem;
+    GuiSystem mGuiSystem;
 
     void loadGame();
 };

@@ -138,3 +138,13 @@ std::string Gui::activate(sf::Vector2f mousePosition)
 {
     return activate(getEntry(mousePosition));
 }
+
+bool Gui::isVisible() const
+{
+    return mVisible;
+}
+
+std::size_t Gui::getNbEntries() const
+{
+    return mEntries.size();
+}

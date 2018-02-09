@@ -7,6 +7,7 @@
 
 enum class TileType{VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
 enum class TileState{DESELECTED, SELECTED, INVALID};
+static constexpr unsigned int TILE_SIZE = 8;
 
 std::string tileTypeToStr(TileType type);
 
@@ -14,7 +15,7 @@ class Tile
 {
 public:
     Tile();
-    Tile(unsigned int tileSize, unsigned int height, sf::Texture& texture,
+    Tile(unsigned int height, sf::Texture& texture,
         std::vector<Animation> animations, TileType type, unsigned int cost,
         unsigned int maxPopPerLevel, unsigned int maxLevels);
 
@@ -26,9 +27,11 @@ public:
     TileType getType() const;
     unsigned int& getVariant();
     unsigned int* getRegions();
+    unsigned int getCost() const;
     double& getPopulation();
     double getPopulation() const;
     unsigned int getMaxPopPerLevel() const;
+    float& getProduction();
     float& getStoredGoods();
 
 private:

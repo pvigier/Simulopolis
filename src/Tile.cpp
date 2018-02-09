@@ -5,16 +5,15 @@ Tile::Tile()
 
 }
 
-Tile::Tile(unsigned int tileSize, unsigned int height, sf::Texture& texture,
+Tile::Tile(unsigned int height, sf::Texture& texture,
     std::vector<Animation> animations, TileType type, unsigned int cost,
     unsigned int maxPopPerLevel, unsigned int maxLevels) :
-    mAnimationHandler(animations, sf::IntRect(0, 0, 2 * tileSize, tileSize * height)),
+    mAnimationHandler(animations, sf::IntRect(0, 0, 2 * TILE_SIZE, TILE_SIZE * height)),
     mType(type), mVariant(0), mCost(cost), mPopulation(0), mMaxPopPerLevel(maxPopPerLevel),
     mMaxLevels(maxLevels), mProduction(0), mStoredGoods(0)
 {
     mRegions[0] = 0;
-
-    mSprite.setOrigin(sf::Vector2f(0.0f, tileSize * (height - 1)));
+    mSprite.setOrigin(sf::Vector2f(0.0f, TILE_SIZE * (height - 1)));
     mSprite.setTexture(texture);
 }
 
@@ -68,6 +67,11 @@ unsigned int* Tile::getRegions()
     return mRegions;
 }
 
+unsigned int Tile::getCost() const
+{
+    return mCost;
+}
+
 double& Tile::getPopulation()
 {
     return mPopulation;
@@ -81,6 +85,11 @@ double Tile::getPopulation() const
 unsigned int Tile::getMaxPopPerLevel() const
 {
     return mMaxPopPerLevel;
+}
+
+float& Tile::getProduction()
+{
+    return mProduction;
 }
 
 float& Tile::getStoredGoods()

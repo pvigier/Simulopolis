@@ -7,7 +7,7 @@ class City
 {
 public:
     City();
-    City(std::string cityName, int tileSize, TileAtlas& tileAtlas);
+    City(std::string cityName, TileAtlas& tileAtlas);
 
     void load(std::string cityName, TileAtlas& tileAtlas);
     void save(std::string cityName);
@@ -17,8 +17,13 @@ public:
     void shuffleTiles();
     void tileChanged();
 
-    double getHomeless();
-    double getUnemployed();
+    Map& getMap();
+    int getDay() const;
+    double getPopulation() const;
+    double getEmployable() const;
+    double& getFunds();
+    double getHomeless() const;
+    double getUnemployed() const;
 
 private:
     float mCurrentTime;
@@ -43,7 +48,6 @@ private:
     double mDeathRate;
 
     Map mMap;
-
 
     double mResidentialTax;
     double mCommercialTax;

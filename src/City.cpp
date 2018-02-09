@@ -14,9 +14,8 @@ City::City() :
 
 }
 
-City::City(std::string cityName, int tileSize, std::map<std::string, Tile>& tileAtlas) : City()
+City::City(std::string cityName, std::map<std::string, Tile>& tileAtlas) : City()
 {
-    mMap.setTileSize(tileSize);
     load(cityName, tileAtlas);
 }
 
@@ -100,11 +99,156 @@ void City::save(std::string cityName)
     mMap.save(cityName + "_map.dat");
 }
 
+void City::update(float dt)
+{
+    double popTotal = 0;
+    double commercialRevenue = 0;
+    double industrialRevenue = 0;
+
+    // Update the game time
+    mCurrentTime += dt;
+    while (mCurrentTime >= mTimePerDay)
+    {
+        ++mDay;
+        mCurrentTime -= mTimePerDay;
+        if (mDay % 30 == 0)
+        {
+            mFunds += mEarnings;
+            mEarnings = 0;
+        }
+        // Run first pass of tile updates. Mostly handles pool distribution
+        for (unsigned int i = 0; i < mMap.getNbTiles(); ++i)
+        {
+            Tile& tile = mMap.getTile(mShuffledTiles[i]);
+            TileType type = tile.getType();
+
+            if (type == TileType::RESIDENTIAL)
+            {
+                // Redistribute the pool and increase the population total by the tile's population
+                distributePool(mPopulationPool, tile, mBirthRate - mDeathRate);
+                popTotal += tile.getPopulation();
+            }
+            else if (type == TileType::COMMERCIAL)
+            {
+                // Hire people
+                if(rand() % 100 < 15 * (1.0 - mCommercialTax))
+                    distributePool(mEmploymentPool, tile, 0.00);
+            }
+            else if (type == TileType::INDUSTRIAL)
+            {
+                // Extract resources from the ground
+                if (mMap.getResource(mShuffledTiles[i]) > 0 && rand() % 100 < mPopulation)
+                {
+                    ++tile.getProduction();
+                    mMap.setResource(mShuffledTiles[i], mMap.getResource(mShuffledTiles[i]) - 1);
+                }
+                /* Hire people. */
+                if (rand() % 100 < 15 * (1.0 - mIndustrialTax))
+                    distributePool(mEmploymentPool, tile, 0.0);
+            }
+
+            tile.update();
+        }
+
+        // Run second pass. Mostly handles goods manufacture
+        for (unsigned int i = 0; i < mMap.getNbTiles(); ++i)
+        {
+            Tile& tile = mMap.getTile(mShuffledTiles[i]);
+            TileType type = tile.getType();
+
+            if (type == TileType::INDUSTRIAL)
+            {
+                unsigned int receivedResources = 0;
+                // Receive resources from smaller and connected zones
+                for(unsigned int j = 0; j < mMap.getNbTiles(); ++j)
+                {
+                    Tile& otherTile = mMap.getTile(j);
+                    if (otherTile.getRegions()[0] == tile.getRegions()[0] &&
+                        otherTile.getType() == TileType::INDUSTRIAL)
+                    {
+                        if (otherTile.getProduction() > 0)
+                        {
+                            ++receivedResources;
+                            --otherTile.getProduction();
+                        }
+                        if (receivedResources >= tile.getVariant() + 1)
+                            break;
+                    }
+                }
+                // Turn resources into goods
+                tile.getStoredGoods() += (receivedResources + tile.getProduction()) * (tile.getVariant() + 1);
+            }
+        }
+
+        // Run third pass. Mostly handles goods distribution.
+        for (unsigned int i = 0; i < mMap.getNbTiles(); ++i)
+        {
+            Tile& tile = mMap.getTile(mShuffledTiles[i]);
+            TileType type = tile.getType();
+
+            if (type == TileType::COMMERCIAL)
+            {
+                unsigned int receivedGoods = 0;
+                double maxCustomers = 0.0;
+                for (unsigned int j = 0; j < mMap.getNbTiles(); ++j)
+                {
+                    Tile& otherTile = mMap.getTile(j);
+                    if (otherTile.getRegions()[0] == tile.getRegions()[0] &&
+                        otherTile.getType() == TileType::INDUSTRIAL &&
+                        otherTile.getStoredGoods() > 0)
+                    {
+                        while (otherTile.getStoredGoods() > 0 && receivedGoods != tile.getVariant() + 1)
+                        {
+                            --otherTile.getStoredGoods();
+                            ++receivedGoods;
+                            industrialRevenue += 100 * (1.0 - mIndustrialTax);
+                        }
+                    }
+                    else if (otherTile.getRegions()[0] == tile.getRegions()[0] &&
+                        otherTile.getType() == TileType::RESIDENTIAL)
+                        maxCustomers += otherTile.getPopulation();
+                    if (receivedGoods == tile.getVariant())
+                        break;
+                }
+                // Calculate the overall revenue for the tile
+                tile.getProduction() = (receivedGoods * 100.0 + rand() % 20) * (1.0 - mCommercialTax);
+
+                double revenue = tile.getPopulation() * maxCustomers * tile.getPopulation() / 100.0;
+                commercialRevenue += revenue;
+            }
+        }
+
+        // Adjust population pool for births and deaths
+        mPopulationPool += mPopulationPool * (mBirthRate - mDeathRate);
+        popTotal += mPopulationPool;
+
+        // Adjust the employment pool for the changing population
+        float newWorkers = (popTotal - mPopulation) * mPropCanWork;
+        newWorkers *= newWorkers < 0 ? -1 : 1;
+        mEmploymentPool += newWorkers;
+        mEmployable += newWorkers;
+        if (mEmploymentPool < 0)
+            mEmploymentPool = 0;
+        if (mEmployable < 0)
+            mEmployable = 0;
+
+        // Update the city population
+        mPopulation = popTotal;
+        std::cout << mPopulation << std::endl;
+
+        // Calculate city income from tax
+        mEarnings = (mPopulation - mPopulationPool) * 15 * mResidentialTax;
+        mEarnings += commercialRevenue * mCommercialTax;
+        mEarnings += industrialRevenue * mIndustrialTax;
+
+    }
+}
+
 void City::bulldoze(const Tile& tile)
 {
     // Replace the selected tiles on the map with the tile and
     // update populations etc accordingly
-    for (unsigned int pos = 0; pos < mMap.getWidth() * mMap.getHeight(); ++pos)
+    for (unsigned int pos = 0; pos < mMap.getNbTiles(); ++pos)
     {
         if (mMap.getTileState(pos) == TileState::SELECTED)
         {
@@ -121,7 +265,7 @@ void City::bulldoze(const Tile& tile)
 
 void City::shuffleTiles()
 {
-    mShuffledTiles.resize(mMap.getWidth() * mMap.getHeight());
+    mShuffledTiles.resize(mMap.getNbTiles());
     std::iota(mShuffledTiles.begin(), mShuffledTiles.end(), 1);
     std::random_shuffle(mShuffledTiles.begin(), mShuffledTiles.end());
 }
@@ -133,12 +277,37 @@ void City::tileChanged()
         {TileType::ROAD, TileType::RESIDENTIAL, TileType::COMMERCIAL, TileType::INDUSTRIAL}, 0);
 }
 
-double City::getHomeless()
+Map& City::getMap()
+{
+    return mMap;
+}
+
+int City::getDay() const
+{
+    return mDay;
+}
+
+double City::getPopulation() const
+{
+    return mPopulation;
+}
+
+double City::getEmployable() const
+{
+    return mEmployable;
+}
+
+double& City::getFunds()
+{
+    return mFunds;
+}
+
+double City::getHomeless() const
 {
     return mPopulationPool;
 }
 
-double City::getUnemployed()
+double City::getUnemployed() const
 {
     return mEmploymentPool;
 }
