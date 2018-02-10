@@ -1,5 +1,6 @@
 #include "StylesheetManager.h"
 #include <iostream>
+#include <sstream>
 #include "resource/FontManager.h"
 
 using namespace tinyxml2;
@@ -14,6 +15,11 @@ StylesheetManager::StylesheetManager() : mPrefixPath("media/")
 StylesheetManager::~StylesheetManager()
 {
     //dtor
+}
+
+void StylesheetManager::setFontManager(FontManager* fontManager)
+{
+    sFontManager = fontManager;
 }
 
 void StylesheetManager::setUp()
@@ -45,14 +51,9 @@ void StylesheetManager::addStylesheet(const std::string& name, GuiStyle styleshe
     mStylesheets[name] = stylesheet;
 }
 
-GuiStyle& StylesheetManager::getStylesheet(const std::string& name) const
+const GuiStyle& StylesheetManager::getStylesheet(const std::string& name) const
 {
-    return mStylesheets[name];
-}
-
-void StylesheetManager::setFontManager(FontManager* fontManager)
-{
-    sFontManager = fontManager;
+    return mStylesheets.at(name);
 }
 
 void StylesheetManager::loadStylesheet(XMLElement* node)
@@ -86,5 +87,5 @@ sf::Color StylesheetManager::stringToColor(const std::string& s) const
     std::istringstream stream(s);
     std::string r, g, b;
     stream >> r >> g >> b;
-    return sf::Color(std::stoi(r, nullptr, 16), std::stoi(g, nullptr, 16, std::stoi(b, nullptr, 16));
+    return sf::Color(std::stoi(r, nullptr, 16), std::stoi(g, nullptr, 16), std::stoi(b, nullptr, 16));
 }

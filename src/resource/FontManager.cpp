@@ -42,9 +42,9 @@ void FontManager::addFont(const std::string& name, sf::Font font)
     mFonts[name] = font;
 }
 
-sf::Font& FontManager::getFont(const std::string& name) const
+const sf::Font& FontManager::getFont(const std::string& name) const
 {
-    return mFonts[name];
+    return mFonts.at(name);
 }
 
 void FontManager::loadFont(XMLElement* node)

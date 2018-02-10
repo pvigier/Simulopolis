@@ -42,9 +42,9 @@ void TextureManager::addTexture(const std::string& name, sf::Texture texture)
     mTextures[name] = texture;
 }
 
-sf::Texture& TextureManager::getTexture(const std::string& name) const
+const sf::Texture& TextureManager::getTexture(const std::string& name) const
 {
-    return mTextures[name];
+    return mTextures.at(name);
 }
 
 void TextureManager::loadTexture(XMLElement* node)
