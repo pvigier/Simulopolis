@@ -7,9 +7,9 @@ class City
 {
 public:
     City();
-    City(std::string cityName, TileAtlas& tileAtlas);
+    City(std::string cityName);
 
-    void load(std::string cityName, TileAtlas& tileAtlas);
+    void load(std::string cityName);
     void save(std::string cityName);
 
     void update(float dt);

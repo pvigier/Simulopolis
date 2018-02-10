@@ -10,7 +10,7 @@ enum class ActionState{NONE, PANNING, SELECTING};
 class GameStateEditor : public GameState
 {
 public:
-    GameStateEditor(Game* game);
+    GameStateEditor();
 
     virtual void draw(const float dt) override;
     virtual void update(const float dt) override;
@@ -19,6 +19,7 @@ public:
 private:
     sf::View mGameView;
     sf::View mGuiView;
+    sf::Sprite mBackground;
     City mCity;
     ActionState mActionState;
     sf::Vector2i mPanningAnchor;

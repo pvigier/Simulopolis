@@ -1,18 +1,60 @@
 #include "Map.h"
 #include <fstream>
+#include "resource/TextureManager.h"
+
+TileAtlas Map::sTileAtlas;
 
 Map::Map() : mWidth(0), mHeight(0), mNumSelected(0)
 {
     mNumRegions[0] = 1;
 }
 
-Map::Map(const std::string& filename, unsigned int width, unsigned int height, TileAtlas& tileAtlas) :
+Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
     mNumSelected(0)
 {
-    load(filename, width, height, tileAtlas);
+    load(filename, width, height);
 }
 
-void Map::load(const std::string& filename, unsigned int width, unsigned int height, TileAtlas& tileAtlas)
+void Map::loadTiles(const TextureManager& textureManager)
+{
+    Animation staticAnim(0, 0, 1.0f);
+
+    sTileAtlas["grass"] = Tile(1, textureManager.getTexture("grass"),
+        {staticAnim},
+        TileType::GRASS, 50, 0, 1);
+
+    sTileAtlas["forest"] = Tile(1, textureManager.getTexture("forest"),
+        {staticAnim},
+        TileType::FOREST, 100, 0, 1);
+
+    sTileAtlas["water"] = Tile(1, textureManager.getTexture("water"),
+        {Animation(0, 3, 0.5f), Animation(0, 3, 0.5f), Animation(0, 3, 0.5f)},
+        TileType::WATER, 0, 0, 1);
+
+    sTileAtlas["residential"] = Tile(2, textureManager.getTexture("residential"),
+        {staticAnim, staticAnim, staticAnim, staticAnim, staticAnim, staticAnim},
+        TileType::RESIDENTIAL, 300, 50, 6);
+
+    sTileAtlas["commercial"] = Tile(2, textureManager.getTexture("commercial"),
+        {staticAnim, staticAnim, staticAnim, staticAnim},
+        TileType::COMMERCIAL, 300, 50, 4);
+
+    sTileAtlas["industrial"] = Tile(2, textureManager.getTexture("industrial"),
+        {staticAnim, staticAnim, staticAnim, staticAnim},
+        TileType::INDUSTRIAL, 300, 50, 4);
+
+    sTileAtlas["road"] = Tile(1, textureManager.getTexture("road"),
+        {staticAnim, staticAnim, staticAnim, staticAnim, staticAnim, staticAnim,
+        staticAnim, staticAnim, staticAnim, staticAnim, staticAnim},
+        TileType::ROAD, 100, 0, 1);
+}
+
+TileAtlas& Map::getTileAtlas()
+{
+    return sTileAtlas;
+}
+
+void Map::load(const std::string& filename, unsigned int width, unsigned int height)
 {
     std::ifstream inputFile;
     inputFile.open(filename, std::ios::in | std::ios::binary);
@@ -30,25 +72,25 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
         switch (type)
         {
             case TileType::FOREST:
-                mTiles.push_back(tileAtlas.at("forest"));
+                mTiles.push_back(sTileAtlas.at("forest"));
                 break;
             case TileType::WATER:
-                mTiles.push_back(tileAtlas.at("water"));
+                mTiles.push_back(sTileAtlas.at("water"));
                 break;
             case TileType::RESIDENTIAL:
-                mTiles.push_back(tileAtlas.at("residential"));
+                mTiles.push_back(sTileAtlas.at("residential"));
                 break;
             case TileType::COMMERCIAL:
-                mTiles.push_back(tileAtlas.at("commercial"));
+                mTiles.push_back(sTileAtlas.at("commercial"));
                 break;
             case TileType::INDUSTRIAL:
-                mTiles.push_back(tileAtlas.at("industrial"));
+                mTiles.push_back(sTileAtlas.at("industrial"));
                 break;
             case TileType::ROAD:
-                mTiles.push_back(tileAtlas.at("road"));
+                mTiles.push_back(sTileAtlas.at("road"));
                 break;
             default:
-                mTiles.push_back(tileAtlas.at("grass"));
+                mTiles.push_back(sTileAtlas.at("grass"));
                 break;
         }
         Tile& tile = mTiles.back();

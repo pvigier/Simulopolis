@@ -6,13 +6,18 @@
 #include <SFML/Graphics.hpp>
 #include "Tile.h"
 
+class TextureManager;
+
 class Map
 {
 public:
     Map();
-    Map(const std::string& filename, unsigned int width, unsigned int height, TileAtlas& tileAtlas);
+    Map(const std::string& filename, unsigned int width, unsigned int height);
 
-    void load(const std::string& filename, unsigned int width, unsigned int height, TileAtlas& tileAtlas);
+    static void loadTiles(const TextureManager& textureManager);
+    static TileAtlas& getTileAtlas();
+
+    void load(const std::string& filename, unsigned int width, unsigned int height);
     void save(const std::string& filename);
 
     void draw(sf::RenderWindow& window, float dt);
@@ -37,6 +42,7 @@ public:
     unsigned int getNumSelected() const;
 
 private:
+    static TileAtlas sTileAtlas;
     unsigned int mWidth;
     unsigned int mHeight;
     std::vector<Tile> mTiles;

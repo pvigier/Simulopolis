@@ -1,31 +1,33 @@
 #include "GameStateStart.h"
-#include "GameStateEditor.h"
+#include "message/MessageBus.h"
+#include "graphics/RenderEngine.h"
+#include "resource/TextureManager.h"
+#include "resource/StylesheetManager.h"
 
-GameStateStart::GameStateStart(Game* game) : GameState(game)
+GameStateStart::GameStateStart() : GameState()
 {
-    sf::Vector2f pos = sf::Vector2f(mGame->getWindow().getSize());
+    // View
+    sf::Vector2f pos = sf::Vector2f(sRenderEngine->getWindow().getSize());
     mView.setSize(pos);
     pos *= 0.5f;
     mView.setCenter(pos);
 
-    // Gui
-    mGuiSystem.emplace("menu", Gui(sf::Vector2f(192, 32), 4, false, game->getStylesheet("button"),
-        {std::make_pair("Load Game", "load_game")}));
+    // Background
+    mBackground.setTexture(sTextureManager->getTexture("background"));
 
-    mGuiSystem.at("menu").setPosition(pos);
-    mGuiSystem.at("menu").setOrigin(96, 32 * 0.5f);
-    mGuiSystem.at("menu").show();
+    // Gui
+    createGui();
 }
 
 void GameStateStart::draw(const float dt)
 {
-    mGame->getWindow().setView(mView);
+    sRenderEngine->setView(mView);
 
-    mGame->getWindow().clear(sf::Color::Black);
-    mGame->getWindow().draw(mGame->getBackground());
+    sRenderEngine->clear();
+    sRenderEngine->draw(mBackground);
 
     for (auto gui : mGuiSystem)
-        mGame->getWindow().draw(gui.second);
+       sRenderEngine->draw(gui.second);
 }
 
 void GameStateStart::update(const float dt)
@@ -36,36 +38,36 @@ void GameStateStart::update(const float dt)
 void GameStateStart::handleInput()
 {
     sf::Event event;
-    sf::Vector2i mousePosition = sf::Mouse::getPosition(mGame->getWindow());
-    while (mGame->getWindow().pollEvent(event))
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(sRenderEngine->getWindow());
+    while (sRenderEngine->getWindow().pollEvent(event))
     {
         switch (event.type)
         {
             case sf::Event::Closed:
-                mGame->getWindow().close();
+                sRenderEngine->getWindow().close();
                 break;
             case sf::Event::Resized:
                 mView.setSize(event.size.width, event.size.height);
-                mGame->getBackground().setPosition(mGame->getWindow().mapPixelToCoords(sf::Vector2i(0, 0)));
-                mGame->getBackground().setScale(
-                    float(event.size.width) / float(mGame->getBackground().getTexture()->getSize().x),
-                    float(event.size.height) / float(mGame->getBackground().getTexture()->getSize().y));
+                mBackground.setPosition(sRenderEngine->getWindow().mapPixelToCoords(sf::Vector2i(0, 0)));
+                mBackground.setScale(
+                    float(event.size.width) / float(mBackground.getTexture()->getSize().x),
+                    float(event.size.height) / float(mBackground.getTexture()->getSize().y));
                 break;
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::Escape)
-                    mGame->getWindow().close();
+                    sRenderEngine->getWindow().close();
                 else if (event.key.code == sf::Keyboard::Space)
                     loadGame();
                 break;
             case sf::Event::MouseMoved:
                 // Highlight menu items
-                mGuiSystem.at("menu").highlight(mGuiSystem.at("menu").getEntry(mGame->getWindow().mapPixelToCoords(mousePosition, mView)));
+                mGuiSystem.at("menu").highlight(mGuiSystem.at("menu").getEntry(sRenderEngine->getWindow().mapPixelToCoords(mousePosition, mView)));
                 break;
             case sf::Event::MouseButtonPressed:
                 // Click on menu items
                 if(event.mouseButton.button == sf::Mouse::Left)
                 {
-                    std::string message = mGuiSystem.at("menu").activate(mGame->getWindow().mapPixelToCoords(mousePosition, mView));
+                    std::string message = mGuiSystem.at("menu").activate(sRenderEngine->getWindow().mapPixelToCoords(mousePosition, mView));
                     if(message == "load_game")
                         loadGame();
                 }
@@ -76,7 +78,19 @@ void GameStateStart::handleInput()
     }
 }
 
+void GameStateStart::createGui()
+{
+    mGuiSystem.emplace("menu", Gui(sf::Vector2f(192, 32), 4, false, sStylesheetManager->getStylesheet("button"),
+        {std::make_pair("Load Game", "load_game")}));
+
+    sf::Vector2f pos = sf::Vector2f(sRenderEngine->getWindow().getSize()) * 0.5f;
+    mGuiSystem.at("menu").setPosition(pos);
+    mGuiSystem.at("menu").setOrigin(96, 32 * 0.5f);
+    mGuiSystem.at("menu").show();
+}
+
 void GameStateStart::loadGame()
 {
-    mGame->pushState(new GameStateEditor(mGame));
+    sMessageBus->send(Message(UNDEFINED, sGameId, MessageType::PUSH_GAME_STATE,
+        std::make_shared<GameStateName>(GameStateName::EDITOR)));
 }

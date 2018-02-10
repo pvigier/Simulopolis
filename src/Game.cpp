@@ -1,22 +1,35 @@
 #include "Game.h"
 #include "GameState.h"
+#include "GameStateStart.h"
+#include "GameStateEditor.h"
 
 Game::Game()
 {
-    mWindow.create(sf::VideoMode(800, 600), "City Builder");
-    mWindow.setFramerateLimit(60);
+    // Register mailbox
+    mMessageBus.addMailbox(mMailbox);
 
-    loadTextures();
-    loadTiles();
-    loadFonts();
-    loadStylesheets();
-    mBackground.setTexture(mTextureManager.getRef("background"));
+    // Load resources
+    mResourceManager.setUp();
+    Map::loadTiles(mResourceManager.getTextureManager());
+
+    // Push dependencies
+    GameState::setMessageBus(&mMessageBus);
+    GameState::setGameId(mMailbox.getId());
+    GameState::setRenderEngine(&mRenderEngine);
+    GameState::setTextureManager(&mResourceManager.getTextureManager());
+    GameState::setStylesheetManager(&mResourceManager.getStylesheetManager());
+
+    // Add the start state
+    pushState(new GameStateStart());
 }
 
 Game::~Game()
 {
     while (!mStates.empty())
         popState();
+
+    // Free resources
+    mResourceManager.tearDown();
 }
 
 void Game::pushState(GameState* state)
@@ -44,11 +57,11 @@ GameState* Game::peekState()
     return mStates.top();
 }
 
-void Game::gameLoop()
+void Game::run()
 {
     sf::Clock clock;
 
-    while (mWindow.isOpen())
+    while (mRenderEngine.isWindowOpen())
     {
         sf::Time elapsed = clock.restart();
         float dt = elapsed.asSeconds();
@@ -59,94 +72,21 @@ void Game::gameLoop()
             curState->handleInput();
             curState->update(dt);
             curState->draw(dt);
-            mWindow.display();
+            mRenderEngine.display();
+            handleMessages();
         }
     }
 }
 
-sf::RenderWindow& Game::getWindow()
+void Game::handleMessages()
 {
-    return mWindow;
-}
-
-sf::Sprite& Game::getBackground()
-{
-    return mBackground;
-}
-
-TileAtlas& Game::getTileAtlas()
-{
-    return mTileAtlas;
-}
-
-GuiStyle& Game::getStylesheet(const std::string& name)
-{
-    return mStylesheets[name];
-}
-
-void Game::loadTextures()
-{
-    mTextureManager.loadTexture("background", "media/background.png");
-
-    mTextureManager.loadTexture("grass", "media/grass.png");
-    mTextureManager.loadTexture("forest", "media/forest.png");
-    mTextureManager.loadTexture("water", "media/water.png");
-    mTextureManager.loadTexture("residential", "media/residential.png");
-    mTextureManager.loadTexture("commercial", "media/commercial.png");
-    mTextureManager.loadTexture("industrial", "media/industrial.png");
-    mTextureManager.loadTexture("road", "media/road.png");
-}
-
-void Game::loadTiles()
-{
-    Animation staticAnim(0, 0, 1.0f);
-
-    mTileAtlas["grass"] = Tile(1, mTextureManager.getRef("grass"),
-        {staticAnim},
-        TileType::GRASS, 50, 0, 1);
-
-    mTileAtlas["forest"] = Tile(1, mTextureManager.getRef("forest"),
-        {staticAnim},
-        TileType::FOREST, 100, 0, 1);
-
-    mTileAtlas["water"] = Tile(1, mTextureManager.getRef("water"),
-        {Animation(0, 3, 0.5f), Animation(0, 3, 0.5f), Animation(0, 3, 0.5f)},
-        TileType::WATER, 0, 0, 1);
-
-    mTileAtlas["residential"] = Tile(2, mTextureManager.getRef("residential"),
-        {staticAnim, staticAnim, staticAnim, staticAnim, staticAnim, staticAnim},
-        TileType::RESIDENTIAL, 300, 50, 6);
-
-    mTileAtlas["commercial"] = Tile(2, mTextureManager.getRef("commercial"),
-        {staticAnim, staticAnim, staticAnim, staticAnim},
-        TileType::COMMERCIAL, 300, 50, 4);
-
-    mTileAtlas["industrial"] = Tile(2, mTextureManager.getRef("industrial"),
-        {staticAnim, staticAnim, staticAnim, staticAnim},
-        TileType::INDUSTRIAL, 300, 50, 4);
-
-    mTileAtlas["road"] = Tile(1, mTextureManager.getRef("road"),
-        {staticAnim, staticAnim, staticAnim, staticAnim, staticAnim, staticAnim,
-        staticAnim, staticAnim, staticAnim, staticAnim, staticAnim},
-        TileType::ROAD, 100, 0, 1);
-}
-
-void Game::loadFonts()
-{
-    sf::Font font;
-    font.loadFromFile("media/font.ttf");
-    mFonts["main_font"] = font;
-}
-
-void Game::loadStylesheets()
-{
-    mStylesheets["button"] = GuiStyle(sf::Color(0xc6, 0xc6, 0xc6), sf::Color(0x61, 0x61, 0x61),
-        sf::Color(0x94, 0x94, 0x94), sf::Color(0x94,0x94,0x94), 1,
-        sf::Color(0x00, 0x00, 0x00), sf::Color(0x00,0x00,0x00), &mFonts.at("main_font"));
-    mStylesheets["text"] = GuiStyle(sf::Color(0x00, 0x00, 0x00, 0x00), sf::Color(0x00, 0x00, 0x00, 0x00),
-        sf::Color(0x00, 0x00, 0x00), sf::Color(0x00, 0x00, 0x00), 0,
-        sf::Color(0xff, 0xff, 0xff), sf::Color(0xff, 0x00, 0x00), &mFonts.at("main_font"));
-
-
-
+    while (!mMailbox.isEmpty())
+    {
+        Message message = mMailbox.get();
+        if (message.type == MessageType::PUSH_GAME_STATE)
+        {
+            if (message.getInfo<GameStateName>() == GameStateName::EDITOR)
+                pushState(new GameStateEditor());
+        }
+    }
 }

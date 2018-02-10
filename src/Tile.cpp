@@ -5,7 +5,7 @@ Tile::Tile()
 
 }
 
-Tile::Tile(unsigned int height, sf::Texture& texture,
+Tile::Tile(unsigned int height, const sf::Texture& texture,
     std::vector<Animation> animations, TileType type, unsigned int cost,
     unsigned int maxPopPerLevel, unsigned int maxLevels) :
     mAnimationHandler(animations, sf::IntRect(0, 0, 2 * TILE_SIZE, TILE_SIZE * height)),

@@ -9,7 +9,7 @@
 class Gui : public sf::Transformable, public sf::Drawable
 {
 public:
-    Gui(sf::Vector2f dimensions, int padding, bool horizontalAlignment, GuiStyle& style,
+    Gui(sf::Vector2f dimensions, int padding, bool horizontalAlignment, const GuiStyle& style,
         std::vector<std::pair<std::string, std::string>> entries);
 
     sf::Vector2f getSize();

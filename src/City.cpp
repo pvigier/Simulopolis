@@ -14,12 +14,12 @@ City::City() :
 
 }
 
-City::City(std::string cityName, std::map<std::string, Tile>& tileAtlas) : City()
+City::City(std::string cityName) : City()
 {
-    load(cityName, tileAtlas);
+    load(cityName);
 }
 
-void City::load(std::string cityName, std::map<std::string, Tile>& tileAtlas)
+void City::load(std::string cityName)
 {
     int width = 0;
     int height = 0;
@@ -71,7 +71,7 @@ void City::load(std::string cityName, std::map<std::string, Tile>& tileAtlas)
 
     inputFile.close();
 
-    mMap.load(cityName + "_map.dat", width, height, tileAtlas);
+    mMap.load(cityName + "_map.dat", width, height);
     tileChanged();
 }
 

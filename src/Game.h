@@ -3,11 +3,10 @@
 #include <stack>
 #include <map>
 #include <string>
-#include <SFML/Graphics.hpp>
-#include "Tile.h"
-#include "resource/TextureManager.h"
-#include "gui/GuiStyle.h"
+#include "message/MessageBus.h"
 #include "message/Mailbox.h"
+#include "graphics/RenderEngine.h"
+#include "resource/ResourceManager.h"
 
 class GameState;
 
@@ -22,24 +21,14 @@ public:
     void changeState(GameState* state);
     GameState* peekState();
 
-    void gameLoop();
-
-    sf::RenderWindow& getWindow();
-    sf::Sprite& getBackground();
-    TileAtlas& getTileAtlas();
-    GuiStyle& getStylesheet(const std::string& name);
+    void run();
 
 private:
-    sf::RenderWindow mWindow;
     std::stack<GameState*> mStates;
-    TextureManager mTextureManager;
-    sf::Sprite mBackground;
-    TileAtlas mTileAtlas;
-    std::map<std::string, sf::Font> mFonts;
-    std::map<std::string, GuiStyle> mStylesheets;
+    MessageBus mMessageBus;
+    Mailbox mMailbox;
+    RenderEngine mRenderEngine;
+    ResourceManager mResourceManager;
 
-    void loadTextures();
-    void loadTiles();
-    void loadFonts();
-    void loadStylesheets();
+    void handleMessages();
 };

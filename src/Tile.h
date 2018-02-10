@@ -15,7 +15,7 @@ class Tile
 {
 public:
     Tile();
-    Tile(unsigned int height, sf::Texture& texture,
+    Tile(unsigned int height, const sf::Texture& texture,
         std::vector<Animation> animations, TileType type, unsigned int cost,
         unsigned int maxPopPerLevel, unsigned int maxLevels);
 

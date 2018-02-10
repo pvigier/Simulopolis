@@ -1,38 +1,44 @@
 #include "GameStateEditor.h"
 #include <utility>
+#include "graphics/RenderEngine.h"
+#include "resource/TextureManager.h"
+#include "resource/StylesheetManager.h"
 
-GameStateEditor::GameStateEditor(Game* game) :
-    GameState(game), mCity("saves/city", mGame->getTileAtlas()),
-    mActionState(ActionState::NONE), mZoomLevel(1.0f), mCurrentTile(&mGame->getTileAtlas()["grass"])
+GameStateEditor::GameStateEditor() :
+    GameState(), mCity("saves/city"),
+    mActionState(ActionState::NONE), mZoomLevel(1.0f), mCurrentTile(&Map::getTileAtlas()["grass"])
 {
     // Initialize the city
     mCity.shuffleTiles();
 
-    // Init the views
-    sf::Vector2f windowSize = sf::Vector2f(mGame->getWindow().getSize());
+    // Views
+    sf::Vector2f windowSize = sf::Vector2f(sRenderEngine->getWindow().getSize());
     mGuiView.setSize(windowSize);
     mGameView.setSize(windowSize);
     mGuiView.setCenter(windowSize * 0.5f);
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * TILE_SIZE,
         mCity.getMap().getHeight() * TILE_SIZE * 0.5f));
 
-    // Initialize Gui
+    // Background
+    mBackground.setTexture(sTextureManager->getTexture("background"));
+
+    // Gui
     createGui();
 }
 
 void GameStateEditor::draw(const float dt)
 {
-    mGame->getWindow().clear(sf::Color::Black);
+    sRenderEngine->clear();
 
-    mGame->getWindow().setView(mGuiView);
-    mGame->getWindow().draw(mGame->getBackground());
+    sRenderEngine->setView(mGuiView);
+    sRenderEngine->draw(mBackground);
 
-    mGame->getWindow().setView(mGameView);
-    mCity.getMap().draw(mGame->getWindow(), dt);
+    sRenderEngine->setView(mGameView);
+    mCity.getMap().draw(sRenderEngine->getWindow(), dt);
 
-    mGame->getWindow().setView(mGuiView);
+    sRenderEngine->setView(mGuiView);
     for (auto gui : mGuiSystem)
-        mGame->getWindow().draw(gui.second);
+        sRenderEngine->draw(gui.second);
 }
 
 void GameStateEditor::update(const float dt)
@@ -47,22 +53,22 @@ void GameStateEditor::update(const float dt)
     mGuiSystem.at("infoBar").setEntryText(4, tileTypeToStr(mCurrentTile->getType()));
 
     // Highlight entries of the right click context menu
-    mGuiSystem.at("rightClickMenu").highlight(mGuiSystem.at("rightClickMenu").getEntry(mGame->getWindow().mapPixelToCoords(sf::Mouse::getPosition(mGame->getWindow()), mGuiView)));
+    mGuiSystem.at("rightClickMenu").highlight(mGuiSystem.at("rightClickMenu").getEntry(sRenderEngine->getWindow().mapPixelToCoords(sf::Mouse::getPosition(sRenderEngine->getWindow()), mGuiView)));
 }
 
 void GameStateEditor::handleInput()
 {
     sf::Event event;
-    sf::Vector2i mousePosition = sf::Mouse::getPosition(mGame->getWindow());
-    sf::Vector2f guiPos = mGame->getWindow().mapPixelToCoords(mousePosition, mGuiView);
-    sf::Vector2f gamePos = mGame->getWindow().mapPixelToCoords(mousePosition, mGameView);
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(sRenderEngine->getWindow());
+    sf::Vector2f guiPos = sRenderEngine->getWindow().mapPixelToCoords(mousePosition, mGuiView);
+    sf::Vector2f gamePos = sRenderEngine->getWindow().mapPixelToCoords(mousePosition, mGameView);
 
-    while (mGame->getWindow().pollEvent(event))
+    while (sRenderEngine->getWindow().pollEvent(event))
     {
         switch (event.type)
         {
             case sf::Event::Closed:
-                mGame->getWindow().close();
+                sRenderEngine->closeWindow();
                 break;
             case sf::Event::Resized:
                 // Maybe we could simplify this?
@@ -70,16 +76,16 @@ void GameStateEditor::handleInput()
                 mGameView.zoom(mZoomLevel);
                 mGuiView.setSize(event.size.width, event.size.height);
                 mGuiSystem.at("infoBar").setDimensions(sf::Vector2f(event.size.width / mGuiSystem.at("infoBar").getNbEntries(), 16));
-                mGuiSystem.at("infoBar").setPosition(mGame->getWindow().mapPixelToCoords(sf::Vector2i(0, event.size.height - 16), mGuiView));
+                mGuiSystem.at("infoBar").setPosition(sRenderEngine->getWindow().mapPixelToCoords(sf::Vector2i(0, event.size.height - 16), mGuiView));
                 mGuiSystem.at("infoBar").show();
-                mGame->getBackground().setPosition(mGame->getWindow().mapPixelToCoords(sf::Vector2i(0, 0), mGuiView));
-                mGame->getBackground().setScale(
-                    float(event.size.width) / float(mGame->getBackground().getTexture()->getSize().x),
-                    float(event.size.height) / float(mGame->getBackground().getTexture()->getSize().y));
+                mBackground.setPosition(sRenderEngine->getWindow().mapPixelToCoords(sf::Vector2i(0, 0), mGuiView));
+                mBackground.setScale(
+                    float(event.size.width) / float(mBackground.getTexture()->getSize().x),
+                    float(event.size.height) / float(mBackground.getTexture()->getSize().y));
                 break;
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::Escape)
-                    mGame->getWindow().close();
+                    sRenderEngine->closeWindow();
                 break;
             case sf::Event::MouseMoved:
                 // Pan the camera
@@ -87,7 +93,7 @@ void GameStateEditor::handleInput()
                 {
                     sf::Vector2f delta(mousePosition - mPanningAnchor);
                     mGameView.move(-1.0f * delta * mZoomLevel);
-                    mPanningAnchor = sf::Mouse::getPosition(mGame->getWindow());
+                    mPanningAnchor = sf::Mouse::getPosition(sRenderEngine->getWindow());
                 }
                 // Select tiles
                 else if(mActionState == ActionState::SELECTING)
@@ -125,7 +131,7 @@ void GameStateEditor::handleInput()
                     if (mActionState != ActionState::PANNING)
                     {
                         mActionState = ActionState::PANNING;
-                        mPanningAnchor = sf::Mouse::getPosition(mGame->getWindow());
+                        mPanningAnchor = sf::Mouse::getPosition(sRenderEngine->getWindow());
                     }
                 }
                 else if (event.mouseButton.button == sf::Mouse::Left)
@@ -135,7 +141,7 @@ void GameStateEditor::handleInput()
                     {
                         std::string message = mGuiSystem.at("rightClickMenu").activate(guiPos);
                         if(message != "null")
-                            mCurrentTile = &mGame->getTileAtlas().at(message);
+                            mCurrentTile = &Map::getTileAtlas().at(message);
                         mGuiSystem.at("rightClickMenu").hide();
                     }
                     // Select map tile
@@ -158,9 +164,9 @@ void GameStateEditor::handleInput()
                     {
                         // Open the tile select menu
                         sf::Vector2f pos = guiPos;
-                        if(pos.x > mGame->getWindow().getSize().x - mGuiSystem.at("rightClickMenu").getSize().x)
+                        if(pos.x > sRenderEngine->getWindow().getSize().x - mGuiSystem.at("rightClickMenu").getSize().x)
                             pos -= sf::Vector2f(mGuiSystem.at("rightClickMenu").getSize().x, 0);
-                        if(pos.y > mGame->getWindow().getSize().y - mGuiSystem.at("rightClickMenu").getSize().y)
+                        if(pos.y > sRenderEngine->getWindow().getSize().y - mGuiSystem.at("rightClickMenu").getSize().y)
                             pos -= sf::Vector2f(0, mGuiSystem.at("rightClickMenu").getSize().y);
                         mGuiSystem.at("rightClickMenu").setPosition(pos);
                         mGuiSystem.at("rightClickMenu").show();
@@ -215,20 +221,20 @@ void GameStateEditor::handleInput()
 void GameStateEditor::createGui()
 {
     // Create gui elements
-    mGuiSystem.emplace("rightClickMenu", Gui(sf::Vector2f(196, 16), 2, false, mGame->getStylesheet("button"),
+    mGuiSystem.emplace("rightClickMenu", Gui(sf::Vector2f(196, 16), 2, false, sStylesheetManager->getStylesheet("button"),
         {
-            std::make_pair("Flatten $" + std::to_string(mGame->getTileAtlas()["grass"].getCost()), "grass"),
-            std::make_pair("Forest $" + std::to_string(mGame->getTileAtlas()["forest"].getCost()), "forest" ),
-            std::make_pair("Residential Zone $" + std::to_string(mGame->getTileAtlas()["residential"].getCost()), "residential"),
-            std::make_pair("Commercial Zone $" + std::to_string(mGame->getTileAtlas()["commercial"].getCost()), "commercial"),
-            std::make_pair("Industrial Zone $" + std::to_string(mGame->getTileAtlas()["industrial"].getCost()), "industrial"),
-            std::make_pair("Road $" + std::to_string(mGame->getTileAtlas()["road"].getCost()), "road")
+            std::make_pair("Flatten $" + std::to_string(Map::getTileAtlas()["grass"].getCost()), "grass"),
+            std::make_pair("Forest $" + std::to_string(Map::getTileAtlas()["forest"].getCost()), "forest" ),
+            std::make_pair("Residential Zone $" + std::to_string(Map::getTileAtlas()["residential"].getCost()), "residential"),
+            std::make_pair("Commercial Zone $" + std::to_string(Map::getTileAtlas()["commercial"].getCost()), "commercial"),
+            std::make_pair("Industrial Zone $" + std::to_string(Map::getTileAtlas()["industrial"].getCost()), "industrial"),
+            std::make_pair("Road $" + std::to_string(Map::getTileAtlas()["road"].getCost()), "road")
         }));
 
-    mGuiSystem.emplace("selectionCostText", Gui(sf::Vector2f(196, 16), 0, false, mGame->getStylesheet("text"),
+    mGuiSystem.emplace("selectionCostText", Gui(sf::Vector2f(196, 16), 0, false, sStylesheetManager->getStylesheet("text"),
         { std::make_pair("", "") }));
 
-    mGuiSystem.emplace("infoBar", Gui(sf::Vector2f(mGame->getWindow().getSize().x / 5 , 16), 2, true, mGame->getStylesheet("button"),
+    mGuiSystem.emplace("infoBar", Gui(sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 2, true, sStylesheetManager->getStylesheet("button"),
         {
             std::make_pair("time",          "time"),
             std::make_pair("funds",         "funds"),
@@ -236,6 +242,6 @@ void GameStateEditor::createGui()
             std::make_pair("employment",    "employment"),
             std::make_pair("current tile",  "tile")
         }));
-    mGuiSystem.at("infoBar").setPosition(sf::Vector2f(0, mGame->getWindow().getSize().y - 16));
+    mGuiSystem.at("infoBar").setPosition(sf::Vector2f(0, sRenderEngine->getWindow().getSize().y - 16));
     mGuiSystem.at("infoBar").show();
 }
