@@ -1,17 +1,69 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+// STL
 #include <string>
-#include <map>
+#include <unordered_map>
+// SFML
+#include <SFML/Graphics/Texture.hpp>
+// tinyxml2
+#include <tinyxml2.h>
 
+/**
+ * \brief Manager that manages the textures
+ *
+ * \author Pierre Vigier
+ */
 class TextureManager
 {
 public:
+    /**
+     * \brief Default constructor
+     */
     TextureManager();
 
-    void loadTexture(const std::string& name, const std::string& filename);
-    sf::Texture& getRef(const std::string& name);
+    /**
+     * \brief Destructor
+     */
+    ~TextureManager();
+
+    /**
+     * \brief Set up the manager
+     *
+     * Open the "textures.xml" file in the folder mPrefixPath and load the
+     * textures specified in this file.
+     */
+    void setUp();
+
+    /**
+     * \brief Tear down the manager
+     */
+    void tearDown();
+
+    /**
+     * \brief Add a texture
+     *
+     * \param name Name of the texture
+     * \param texture Texture to add
+     */
+    void addTexture(const std::string& name, sf::Texture texture);
+
+    /**
+     * \brief Get a texture
+     *
+     * \param name Name of the texture to retrieve
+     *
+     * \return Texture that corresponds to name
+     */
+    const sf::Texture& getTexture(const std::string& name) const;
 
 private:
-    std::map<std::string, sf::Texture> mTextures;
+    std::string mPrefixPath; /**< Path of the folder in which is located "textures.xml" */
+    std::unordered_map<std::string, sf::Texture> mTextures; /**< Hash map that contains the textures */
+
+    /**
+     * \brief Load a texture from a XML node
+     *
+     * \param node XML node that describes the texture
+     */
+    void loadTexture(tinyxml2::XMLElement* node);
 };
