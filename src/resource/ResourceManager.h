@@ -3,6 +3,7 @@
 // My includes
 #include "resource/TextureManager.h"
 #include "resource/FontManager.h"
+#include "resource/StylesheetManager.h"
 
 /**
  * \brief Manager that manages the specific resource managers
@@ -39,7 +40,22 @@ public:
      */
     TextureManager& getTextureManager();
 
+    /**
+     * \brief Get the font manager
+     *
+     * \return The font manager
+     */
+    FontManager& getFontManager();
+
+    /**
+     * \brief Get the stylesheet manager
+     *
+     * \return The stylesheet manager
+     */
+    StylesheetManager& getStylesheetManager();
+
 private:
     TextureManager mTextureManager; /**< Texture manager */
     FontManager mFontManager; /**< Font manager */
+    StylesheetManager mStylesheetManager; /**< Stylesheet manager */
 };
