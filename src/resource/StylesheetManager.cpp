@@ -85,7 +85,10 @@ void StylesheetManager::loadStylesheet(XMLElement* node)
 sf::Color StylesheetManager::stringToColor(const std::string& s) const
 {
     std::istringstream stream(s);
-    std::string r, g, b;
+    std::string r, g, b, a;
     stream >> r >> g >> b;
-    return sf::Color(std::stoi(r, nullptr, 16), std::stoi(g, nullptr, 16), std::stoi(b, nullptr, 16));
+    if (!(stream >> a))
+        a = "0xff";
+    return sf::Color(std::stoi(r, nullptr, 16), std::stoi(g, nullptr, 16), std::stoi(b, nullptr, 16),
+        std::stoi(a, nullptr, 16));
 }
