@@ -3,7 +3,7 @@
 #include <map>
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "graphics/AnimationHandler.h"
+#include "render/AnimationHandler.h"
 
 enum class TileType{VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
 enum class TileState{DESELECTED, SELECTED, INVALID};

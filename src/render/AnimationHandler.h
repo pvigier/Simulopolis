@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "graphics/Animation.h"
+#include "render/Animation.h"
 
 class AnimationHandler
 {

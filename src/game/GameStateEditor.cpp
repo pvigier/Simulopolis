@@ -1,6 +1,6 @@
 #include "game/GameStateEditor.h"
 #include <utility>
-#include "graphics/RenderEngine.h"
+#include "render/RenderEngine.h"
 #include "input/InputEngine.h"
 #include "resource/TextureManager.h"
 #include "resource/StylesheetManager.h"

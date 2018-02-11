@@ -1,4 +1,4 @@
-#include "graphics/RenderEngine.h"
+#include "render/RenderEngine.h"
 
 RenderEngine::RenderEngine() : mWindow(sf::VideoMode(800, 600), "City Builder")
 {

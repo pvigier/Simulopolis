@@ -1,6 +1,6 @@
 #include "game/GameState.h"
 #include "message/MessageBus.h"
-#include "graphics/RenderEngine.h"
+#include "render/RenderEngine.h"
 
 MessageBus* GameState::sMessageBus = nullptr;
 Id GameState::sGameId = UNDEFINED;
