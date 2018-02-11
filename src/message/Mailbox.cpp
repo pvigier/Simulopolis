@@ -1,6 +1,6 @@
 #include "message/Mailbox.h"
 
-Mailbox::Mailbox() : mId(-1)
+Mailbox::Mailbox() : mId(UNDEFINED)
 {
 
 }

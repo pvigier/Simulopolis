@@ -4,9 +4,10 @@
 #include <vector>
 #include <algorithm>
 // My includes
-#include "message/MessageBus.h"
 #include "message/Message.h"
-#include "message/Mailbox.h"
+#include "util/Id.h"
+
+class MessageBus;
 
 /**
  * \brief Implementation of the Observer design pattern for the messaging system

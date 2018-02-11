@@ -31,9 +31,9 @@ void Subject::unsubscribe(Id id)
 
 void Subject::notify(Message message)
 {
-    for (std::size_t i = 0; i < mSubscribers.size(); ++i)
+    for (const Id& subscriberId : mSubscribers)
     {
-        message.receiver = mSubscribers[i];
+        message.receiver = subscriberId;
         sMessageBus->send(message);
     }
 }
