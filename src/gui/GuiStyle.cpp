@@ -1,4 +1,4 @@
-#include "GuiStyle.h"
+#include "gui/GuiStyle.h"
 
 GuiStyle::GuiStyle()
 {

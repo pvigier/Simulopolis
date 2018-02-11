@@ -1,7 +1,7 @@
-#include "Game.h"
-#include "GameState.h"
-#include "GameStateStart.h"
-#include "GameStateEditor.h"
+#include "game/Game.h"
+#include "game/GameState.h"
+#include "game/GameStateStart.h"
+#include "game/GameStateEditor.h"
 
 Game::Game()
 {

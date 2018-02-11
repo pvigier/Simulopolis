@@ -1,4 +1,4 @@
-#include "TextureManager.h"
+#include "resource/TextureManager.h"
 #include <iostream>
 
 using namespace tinyxml2;

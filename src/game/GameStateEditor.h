@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "GameState.h"
-#include "City.h"
+#include "game/GameState.h"
+#include "city/City.h"
 #include "gui/Gui.h"
 
 enum class ActionState{NONE, PANNING, SELECTING};

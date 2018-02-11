@@ -1,4 +1,4 @@
-#include "AnimationHandler.h"
+#include "graphics/AnimationHandler.h"
 
 AnimationHandler::AnimationHandler()
 {

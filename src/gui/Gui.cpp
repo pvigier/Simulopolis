@@ -1,4 +1,4 @@
-#include "Gui.h"
+#include "gui/Gui.h"
 
 Gui::Gui(sf::Vector2f dimensions, int padding, bool horizontalAlignment, const GuiStyle& style,
     std::vector<std::pair<std::string, std::string>> entries) :

@@ -3,8 +3,8 @@
 #include <vector>
 #include <map>
 #include <SFML/Graphics.hpp>
-#include "GuiStyle.h"
-#include "GuiEntry.h"
+#include "gui/GuiStyle.h"
+#include "gui/GuiEntry.h"
 
 class Gui : public sf::Transformable, public sf::Drawable
 {

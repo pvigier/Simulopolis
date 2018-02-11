@@ -1,4 +1,4 @@
-#include "GuiEntry.h"
+#include "gui/GuiEntry.h"
 
 GuiEntry::GuiEntry()
 {

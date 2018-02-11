@@ -1,4 +1,4 @@
-#include "GameState.h"
+#include "game/GameState.h"
 #include "message/MessageBus.h"
 #include "graphics/RenderEngine.h"
 

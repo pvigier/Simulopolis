@@ -1,4 +1,4 @@
-#include "Animation.h"
+#include "graphics/Animation.h"
 
 Animation::Animation(unsigned int startFrame, unsigned int endFrame, float duration) :
     startFrame(startFrame), endFrame(endFrame), duration(duration)
