@@ -8,14 +8,19 @@ Game::Game()
     // Register mailbox
     mMessageBus.addMailbox(mMailbox);
 
+    // Initialize the input engine
+    mInputEngine.setWindow(&mRenderEngine.getWindow());
+
     // Load resources
     mResourceManager.setUp();
     Map::loadTiles(mResourceManager.getTextureManager());
 
     // Push dependencies
+    Subject::setMessageBus(&mMessageBus);
     GameState::setMessageBus(&mMessageBus);
     GameState::setGameId(mMailbox.getId());
     GameState::setRenderEngine(&mRenderEngine);
+    GameState::setInputEngine(&mInputEngine);
     GameState::setTextureManager(&mResourceManager.getTextureManager());
     GameState::setStylesheetManager(&mResourceManager.getStylesheetManager());
 
@@ -69,7 +74,8 @@ void Game::run()
         GameState* curState = peekState();
         if (curState != nullptr)
         {
-            curState->handleInput();
+            mInputEngine.pollEvents();
+            curState->handleMessages();
             curState->update(dt);
             curState->draw(dt);
             mRenderEngine.display();

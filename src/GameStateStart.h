@@ -11,7 +11,7 @@ public:
 
     virtual void draw(const float dt) override;
     virtual void update(const float dt) override;
-    virtual void handleInput() override;
+    virtual void handleMessages() override;
 
 private:
     sf::View mView;

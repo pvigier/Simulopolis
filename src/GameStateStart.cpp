@@ -1,6 +1,7 @@
 #include "GameStateStart.h"
 #include "message/MessageBus.h"
 #include "graphics/RenderEngine.h"
+#include "input/InputEngine.h"
 #include "resource/TextureManager.h"
 #include "resource/StylesheetManager.h"
 
@@ -17,6 +18,9 @@ GameStateStart::GameStateStart() : GameState()
 
     // Gui
     createGui();
+
+    // Subscribe to inputs
+    sInputEngine->subscribe(mMailbox.getId());
 }
 
 void GameStateStart::draw(const float dt)
@@ -35,12 +39,15 @@ void GameStateStart::update(const float dt)
 
 }
 
-void GameStateStart::handleInput()
+void GameStateStart::handleMessages()
 {
-    sf::Event event;
-    sf::Vector2i mousePosition = sf::Mouse::getPosition(sRenderEngine->getWindow());
-    while (sRenderEngine->getWindow().pollEvent(event))
+    sf::Vector2i mousePosition = sInputEngine->getMousePosition();
+    while (!mMailbox.isEmpty())
     {
+        Message message = mMailbox.get();
+        if (message.type != MessageType::INPUT)
+            continue;
+        sf::Event event = message.getInfo<sf::Event>();
         switch (event.type)
         {
             case sf::Event::Closed:

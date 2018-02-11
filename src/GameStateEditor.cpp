@@ -1,6 +1,7 @@
 #include "GameStateEditor.h"
 #include <utility>
 #include "graphics/RenderEngine.h"
+#include "input/InputEngine.h"
 #include "resource/TextureManager.h"
 #include "resource/StylesheetManager.h"
 
@@ -24,6 +25,9 @@ GameStateEditor::GameStateEditor() :
 
     // Gui
     createGui();
+
+    // Subscribe to inputs
+    sInputEngine->subscribe(mMailbox.getId());
 }
 
 void GameStateEditor::draw(const float dt)
@@ -56,15 +60,18 @@ void GameStateEditor::update(const float dt)
     mGuiSystem.at("rightClickMenu").highlight(mGuiSystem.at("rightClickMenu").getEntry(sRenderEngine->getWindow().mapPixelToCoords(sf::Mouse::getPosition(sRenderEngine->getWindow()), mGuiView)));
 }
 
-void GameStateEditor::handleInput()
+void GameStateEditor::handleMessages()
 {
-    sf::Event event;
-    sf::Vector2i mousePosition = sf::Mouse::getPosition(sRenderEngine->getWindow());
+    sf::Vector2i mousePosition = sInputEngine->getMousePosition();
     sf::Vector2f guiPos = sRenderEngine->getWindow().mapPixelToCoords(mousePosition, mGuiView);
     sf::Vector2f gamePos = sRenderEngine->getWindow().mapPixelToCoords(mousePosition, mGameView);
 
-    while (sRenderEngine->getWindow().pollEvent(event))
+    while (!mMailbox.isEmpty())
     {
+        Message message = mMailbox.get();
+        if (message.type != MessageType::INPUT)
+            continue;
+        sf::Event event = message.getInfo<sf::Event>();
         switch (event.type)
         {
             case sf::Event::Closed:
