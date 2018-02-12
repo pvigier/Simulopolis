@@ -4,25 +4,21 @@
 #include <SFML/Graphics.hpp>
 #include "render/Animation.h"
 
-class AnimationHandler
+class Animator
 {
 public:
-    AnimationHandler();
-    AnimationHandler(std::vector<Animation> animations, sf::IntRect frameSize);
+    Animator();
+    Animator(std::vector<Animation> animations);
 
     void addAnimation(Animation& animation);
     void update(float dt);
     void changeAnimation(std::size_t iAnimation);
 
-    sf::IntRect getDisplayedRect();
+    sf::IntRect getDisplayedRect() const;
 
 private:
     std::vector<Animation> mAnimations;
     float mElapsedTime;
     std::size_t mCurAnimation;
-    unsigned int mCurFrame;
-    sf::IntRect mDisplayedRect;
-    sf::IntRect mFrameSize;
-
-    void updateDisplayedRect();
+    std::size_t mCurFrame;
 };

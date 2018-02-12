@@ -3,7 +3,7 @@
 #include <map>
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "render/AnimationHandler.h"
+#include "render/Animator.h"
 
 enum class TileType{VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
 enum class TileState{DESELECTED, SELECTED, INVALID};
@@ -35,7 +35,7 @@ public:
     float& getStoredGoods();
 
 private:
-    AnimationHandler mAnimationHandler;
+    Animator mAnimator;
     sf::Sprite mSprite;
     TileType mType;
     unsigned int mVariant;

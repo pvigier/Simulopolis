@@ -17,7 +17,7 @@ Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
 
 void Map::loadTiles(const TextureManager& textureManager)
 {
-    Animation staticAnim(0, 0, 1.0f);
+    Animation staticAnim({{sf::IntRect(0, 0, 16, 8), 1.0f}});
 
     sTileAtlas["grass"] = Tile(1, textureManager.getTexture("grass"),
         {staticAnim},
@@ -28,7 +28,9 @@ void Map::loadTiles(const TextureManager& textureManager)
         TileType::FOREST, 100, 0, 1);
 
     sTileAtlas["water"] = Tile(1, textureManager.getTexture("water"),
-        {Animation(0, 3, 0.5f), Animation(0, 3, 0.5f), Animation(0, 3, 0.5f)},
+        {Animation({{sf::IntRect(0, 0, 16, 8), 0.5f}, {sf::IntRect(16, 0, 16, 8), 0.5f}, {sf::IntRect(32, 0, 16, 8), 0.5f}, {sf::IntRect(48, 0, 16, 8), 0.5f}}),
+        Animation({{sf::IntRect(0, 8, 16, 8), 0.5f}, {sf::IntRect(16, 8, 16, 8), 0.5f}, {sf::IntRect(32, 8, 16, 8), 0.5f}, {sf::IntRect(48, 8, 16, 8), 0.5f}}),
+        Animation({{sf::IntRect(0, 16, 16, 8), 0.5f}, {sf::IntRect(16, 16, 16, 8), 0.5f}, {sf::IntRect(32, 16, 16, 8), 0.5f}, {sf::IntRect(48, 16, 16, 8), 0.5f}})},
         TileType::WATER, 0, 0, 1);
 
     sTileAtlas["residential"] = Tile(2, textureManager.getTexture("residential"),

@@ -8,9 +8,8 @@ Tile::Tile()
 Tile::Tile(unsigned int height, const sf::Texture& texture,
     std::vector<Animation> animations, TileType type, unsigned int cost,
     unsigned int maxPopPerLevel, unsigned int maxLevels) :
-    mAnimationHandler(animations, sf::IntRect(0, 0, 2 * TILE_SIZE, TILE_SIZE * height)),
-    mType(type), mVariant(0), mCost(cost), mPopulation(0), mMaxPopPerLevel(maxPopPerLevel),
-    mMaxLevels(maxLevels), mProduction(0), mStoredGoods(0)
+    mAnimator(animations), mType(type), mVariant(0), mCost(cost), mPopulation(0),
+    mMaxPopPerLevel(maxPopPerLevel), mMaxLevels(maxLevels), mProduction(0), mStoredGoods(0)
 {
     mRegions[0] = 0;
     mSprite.setOrigin(sf::Vector2f(0.0f, TILE_SIZE * (height - 1)));
@@ -20,9 +19,9 @@ Tile::Tile(unsigned int height, const sf::Texture& texture,
 void Tile::draw(sf::RenderWindow& window, float dt)
 {
     // Update the animation and sprite
-    mAnimationHandler.changeAnimation(mVariant);
-    mAnimationHandler.update(dt);
-    mSprite.setTextureRect(mAnimationHandler.getDisplayedRect());
+    mAnimator.changeAnimation(mVariant);
+    mAnimator.update(dt);
+    mSprite.setTextureRect(mAnimator.getDisplayedRect());
 
     // Draw the tile
     window.draw(mSprite);
