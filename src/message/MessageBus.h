@@ -2,7 +2,6 @@
 
 // My includes
 #include "util/IdManager.h"
-#include "message/Message.h"
 #include "message/Mailbox.h"
 
 /**

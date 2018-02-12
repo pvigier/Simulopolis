@@ -5,7 +5,6 @@
 #include <algorithm>
 // My includes
 #include "message/Message.h"
-#include "util/Id.h"
 
 class MessageBus;
 

@@ -4,7 +4,6 @@
 #include <map>
 #include <string>
 #include "message/MessageBus.h"
-#include "message/Mailbox.h"
 #include "render/RenderEngine.h"
 #include "input/InputEngine.h"
 #include "resource/ResourceManager.h"

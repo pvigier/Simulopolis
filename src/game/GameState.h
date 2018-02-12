@@ -1,6 +1,5 @@
 #pragma once
 
-#include "util/Id.h"
 #include "message/Mailbox.h"
 
 enum class GameStateName{START, EDITOR};

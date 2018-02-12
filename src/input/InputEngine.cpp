@@ -1,5 +1,4 @@
 #include "input/InputEngine.h"
-#include "message/MessageType.h"
 
 InputEngine::InputEngine() : mWindow(nullptr)
 {
