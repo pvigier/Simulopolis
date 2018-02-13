@@ -1,11 +1,6 @@
-#include "GuiLayout.h"
+#include "gui/GuiLayout.h"
 
 GuiLayout::GuiLayout()
-{
-    //ctor
-}
-
-GuiLayout::GuiLayout(std::vector<GuiWidget*> widgets) : mWidgets(std::move(widgets))
 {
     //ctor
 }

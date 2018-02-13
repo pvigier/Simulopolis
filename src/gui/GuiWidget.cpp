@@ -1,4 +1,4 @@
-#include "GuiWidget.h"
+#include "gui/GuiWidget.h"
 
 GuiWidget::GuiWidget()
 {
