@@ -3,11 +3,12 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "message/Subject.h"
+#include "gui/GuiWidget.h"
 #include "gui/GuiStyle.h"
 
 class GuiStyle;
 
-class GuiEntry : public sf::Drawable, public Subject
+class GuiEntry : public GuiWidget, public sf::Drawable, public Subject
 {
 public:
     GuiEntry(const GuiStyle& style);
