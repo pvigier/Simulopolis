@@ -24,7 +24,7 @@ Gui::Gui(sf::Vector2f dimensions, int padding, bool horizontalAlignment, const G
         text.setFillColor(mStyle.textColor);
         text.setCharacterSize(characterSize);
 
-        mEntries.push_back(GuiEntry(shape, text, entry.second));
+        mEntries.push_back(GuiEntry(mStyle, shape, text, entry.second));
     }
 }
 
@@ -40,7 +40,7 @@ int Gui::getEntry(const sf::Vector2f mousePosition)
 
     for (std::size_t i = 0; i < mEntries.size(); ++i)
     {
-        if (mEntries[i].getShape().getGlobalBounds().contains(mousePosition))
+        if (mEntries[i].hitButton(mousePosition))
             return i;
     }
 
@@ -50,18 +50,14 @@ int Gui::getEntry(const sf::Vector2f mousePosition)
 void Gui::setEntryText(std::size_t iEntry, std::string text)
 {
     if (iEntry < mEntries.size())
-        mEntries[iEntry].getText().setString(text);
+        mEntries[iEntry].setText(text);
 }
 
 void Gui::setDimensions(sf::Vector2f dimensions)
 {
-    mDimensions = dimensions;
     unsigned int characterSize = mDimensions.y - mStyle.borderSize - mPadding;
     for (GuiEntry& entry : mEntries)
-    {
-        entry.getShape().setSize(dimensions);
-        entry.getText().setCharacterSize(characterSize);
-    }
+        entry.resize(mDimensions, characterSize);
 }
 
 void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -71,35 +67,24 @@ void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
     // Draw each entry of the menu
     for (const GuiEntry& entry : mEntries)
-    {
-        // Draw the entry
-        target.draw(entry.getShape());
-        target.draw(entry.getText());
-    }
+        target.draw(entry);
 }
 
 void Gui::show()
 {
     mVisible = true;
-    sf::Vector2f offset;
+    sf::Vector2f offset = getOrigin();
 
     // Draw each entry of the menu
     for(GuiEntry& entry : mEntries)
     {
-        // Set the origin of the entry
-        sf::Vector2f origin = getOrigin();
-        origin -= offset;
-        entry.getShape().setOrigin(origin);
-        entry.getText().setOrigin(origin);
-
         // Compute the position of the entry
-        entry.getShape().setPosition(getPosition());
-        entry.getText().setPosition(getPosition());
+        entry.setPosition(-offset + getPosition());
 
         if(mHorizontalAlignment)
-            offset.x += mDimensions.x;
+            offset.x -= mDimensions.x;
         else
-            offset.y += mDimensions.y;
+            offset.y -= mDimensions.y;
     }
 }
 
@@ -113,17 +98,9 @@ void Gui::highlight(std::size_t iEntry)
     for(std::size_t i = 0; i < mEntries.size(); ++i)
     {
         if(i == iEntry)
-        {
-            mEntries[i].getShape().setFillColor(mStyle.bodyHighlightColor);
-            mEntries[i].getShape().setOutlineColor(mStyle.borderHighlightColor);
-            mEntries[i].getText().setFillColor(mStyle.textHighlightColor);
-        }
+            mEntries[i].setHighlight(true);
         else
-        {
-            mEntries[i].getShape().setFillColor(mStyle.bodyColor);
-            mEntries[i].getShape().setOutlineColor(mStyle.borderColor);
-            mEntries[i].getText().setFillColor(mStyle.textColor);
-        }
+            mEntries[i].setHighlight(false);
     }
 }
 

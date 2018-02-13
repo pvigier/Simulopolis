@@ -2,20 +2,32 @@
 
 #include <string>
 #include <SFML/Graphics.hpp>
+#include "message/Subject.h"
+#include "gui/GuiStyle.h"
 
-class GuiEntry
+class GuiStyle;
+
+class GuiEntry : public sf::Drawable, public Subject
 {
 public:
-    GuiEntry();
-    GuiEntry(sf::RectangleShape shape, sf::Text text, const std::string& message);
+    GuiEntry(const GuiStyle& style);
+    GuiEntry(const GuiStyle& style, sf::RectangleShape shape, sf::Text text, const std::string& message);
 
-    sf::RectangleShape& getShape();
-    const sf::RectangleShape& getShape() const;
-    sf::Text& getText();
-    const sf::Text& getText() const;
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
     std::string getMessage() const;
 
+    void setText(const std::string& text);
+    void setHighlight(bool highlight);
+    void setOrigin(sf::Vector2f origin);
+    void setPosition(sf::Vector2f position);
+    void resize(sf::Vector2f dimensions, unsigned int characterSize);
+
+    bool hitButton(sf::Vector2f position) const;
+
 private:
+    // Reference?
+    GuiStyle mStyle;
     // Handles appearance of the entry
     sf::RectangleShape mShape;
     // Text displayed on the entry
