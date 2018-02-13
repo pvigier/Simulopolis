@@ -6,25 +6,25 @@ Gui::Gui(sf::Vector2f dimensions, int padding, bool horizontalAlignment, const G
     mStyle(style), mVisible(false)
 
 {
-    // Construct each gui entry
+    // Construct each gui button
     unsigned int characterSize = mDimensions.y - mStyle.borderSize - mPadding;
-    for (std::pair<std::string, std::string>& entry : entries)
-        mEntries.push_back(GuiEntry(mStyle, entry.first, mDimensions, characterSize, entry.second));
+    for (std::pair<std::string, std::string>& button : entries)
+        mButtons.push_back(GuiButton(mStyle, button.first, mDimensions, characterSize, button.second));
 }
 
 sf::Vector2f Gui::getSize()
 {
-    return sf::Vector2f(mDimensions.x, mDimensions.y * mEntries.size());
+    return sf::Vector2f(mDimensions.x, mDimensions.y * mButtons.size());
 }
 
 int Gui::getEntry(const sf::Vector2f mousePosition)
 {
-    if (mEntries.empty() || !mVisible)
+    if (mButtons.empty() || !mVisible)
         return -1;
 
-    for (std::size_t i = 0; i < mEntries.size(); ++i)
+    for (std::size_t i = 0; i < mButtons.size(); ++i)
     {
-        if (mEntries[i].hitButton(mousePosition))
+        if (mButtons[i].hitButton(mousePosition))
             return i;
     }
 
@@ -33,15 +33,15 @@ int Gui::getEntry(const sf::Vector2f mousePosition)
 
 void Gui::setEntryText(std::size_t iEntry, std::string text)
 {
-    if (iEntry < mEntries.size())
-        mEntries[iEntry].setText(text);
+    if (iEntry < mButtons.size())
+        mButtons[iEntry].setText(text);
 }
 
 void Gui::setDimensions(sf::Vector2f dimensions)
 {
     unsigned int characterSize = mDimensions.y - mStyle.borderSize - mPadding;
-    for (GuiEntry& entry : mEntries)
-        entry.resize(mDimensions, characterSize);
+    for (GuiButton& button : mButtons)
+        button.resize(mDimensions, characterSize);
 }
 
 void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -49,9 +49,9 @@ void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
     if(!mVisible)
         return;
 
-    // Draw each entry of the menu
-    for (const GuiEntry& entry : mEntries)
-        target.draw(entry);
+    // Draw each button of the menu
+    for (const GuiButton& button : mButtons)
+        target.draw(button);
 }
 
 void Gui::show()
@@ -59,11 +59,11 @@ void Gui::show()
     mVisible = true;
     sf::Vector2f offset = getOrigin();
 
-    // Draw each entry of the menu
-    for(GuiEntry& entry : mEntries)
+    // Draw each button of the menu
+    for(GuiButton& button : mButtons)
     {
-        // Compute the position of the entry
-        entry.setPosition(-offset + getPosition());
+        // Compute the position of the button
+        button.setPosition(-offset + getPosition());
 
         if(mHorizontalAlignment)
             offset.x -= mDimensions.x;
@@ -79,20 +79,20 @@ void Gui::hide()
 
 void Gui::highlight(std::size_t iEntry)
 {
-    for(std::size_t i = 0; i < mEntries.size(); ++i)
+    for(std::size_t i = 0; i < mButtons.size(); ++i)
     {
         if(i == iEntry)
-            mEntries[i].setHighlight(true);
+            mButtons[i].setHighlight(true);
         else
-            mEntries[i].setHighlight(false);
+            mButtons[i].setHighlight(false);
     }
 }
 
 std::string Gui::activate(std::size_t iEntry)
 {
-    if(iEntry >= mEntries.size())
+    if(iEntry >= mButtons.size())
         return "null";
-    return mEntries[iEntry].getMessage();
+    return mButtons[iEntry].getMessage();
 }
 
 std::string Gui::activate(sf::Vector2f mousePosition)
@@ -107,5 +107,5 @@ bool Gui::isVisible() const
 
 std::size_t Gui::getNbEntries() const
 {
-    return mEntries.size();
+    return mButtons.size();
 }

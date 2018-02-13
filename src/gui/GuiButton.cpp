@@ -1,11 +1,11 @@
-#include "gui/GuiEntry.h"
+#include "gui/GuiButton.h"
 
-GuiEntry::GuiEntry(const GuiStyle& style) : mStyle(style)
+GuiButton::GuiButton(const GuiStyle& style) : mStyle(style)
 {
 
 }
 
-GuiEntry::GuiEntry(const GuiStyle& style, const std::string& text, sf::Vector2f dimensions,
+GuiButton::GuiButton(const GuiStyle& style, const std::string& text, sf::Vector2f dimensions,
     unsigned int characterSize, const std::string& message) :
     mStyle(style), mShape(dimensions), mText(text, *mStyle.font, characterSize), mMessage(message)
 {
@@ -13,23 +13,23 @@ GuiEntry::GuiEntry(const GuiStyle& style, const std::string& text, sf::Vector2f 
     setHighlight(false);
 }
 
-void GuiEntry::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void GuiButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mShape);
     target.draw(mText);
 }
 
-std::string GuiEntry::getMessage() const
+std::string GuiButton::getMessage() const
 {
     return mMessage;
 }
 
-void GuiEntry::setText(const std::string& text)
+void GuiButton::setText(const std::string& text)
 {
     mText.setString(text);
 }
 
-void GuiEntry::setHighlight(bool highlight)
+void GuiButton::setHighlight(bool highlight)
 {
     if (highlight)
     {
@@ -45,25 +45,25 @@ void GuiEntry::setHighlight(bool highlight)
     }
 }
 
-void GuiEntry::setOrigin(sf::Vector2f origin)
+void GuiButton::setOrigin(sf::Vector2f origin)
 {
     mShape.setOrigin(origin);
     mText.setOrigin(origin);
 }
 
-void GuiEntry::setPosition(sf::Vector2f position)
+void GuiButton::setPosition(sf::Vector2f position)
 {
     mShape.setPosition(position);
     mText.setPosition(position);
 }
 
-void GuiEntry::resize(sf::Vector2f dimensions, unsigned int characterSize)
+void GuiButton::resize(sf::Vector2f dimensions, unsigned int characterSize)
 {
     mShape.setSize(dimensions);
     mText.setCharacterSize(characterSize);
 }
 
-bool GuiEntry::hitButton(sf::Vector2f position) const
+bool GuiButton::hitButton(sf::Vector2f position) const
 {
     return mShape.getGlobalBounds().contains(position);
 }

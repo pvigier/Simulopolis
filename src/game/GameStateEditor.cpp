@@ -143,7 +143,7 @@ void GameStateEditor::handleMessages()
                 }
                 else if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    // Select a context menu entry
+                    // Select a context menu button
                     if (mGuiSystem.at("rightClickMenu").isVisible() == true)
                     {
                         std::string message = mGuiSystem.at("rightClickMenu").activate(guiPos);

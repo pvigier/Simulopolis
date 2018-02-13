@@ -8,11 +8,11 @@
 
 class GuiStyle;
 
-class GuiEntry : public GuiWidget, public sf::Drawable, public Subject
+class GuiButton : public GuiWidget, public sf::Drawable, public Subject
 {
 public:
-    GuiEntry(const GuiStyle& style);
-    GuiEntry(const GuiStyle& style, const std::string& text, sf::Vector2f dimensions,
+    GuiButton(const GuiStyle& style);
+    GuiButton(const GuiStyle& style, const std::string& text, sf::Vector2f dimensions,
         unsigned int characterSize, const std::string& message);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -30,10 +30,10 @@ public:
 private:
     // Reference?
     GuiStyle mStyle;
-    // Handles appearance of the entry
+    // Handles appearance of the button
     sf::RectangleShape mShape;
-    // Text displayed on the entry
+    // Text displayed on the button
     sf::Text mText;
-    // String returned when the entry is activated
+    // String returned when the button is activated
     std::string mMessage;
 };

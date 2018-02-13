@@ -4,7 +4,7 @@
 #include <map>
 #include <SFML/Graphics.hpp>
 #include "gui/GuiStyle.h"
-#include "gui/GuiEntry.h"
+#include "gui/GuiButton.h"
 
 class Gui : public sf::Transformable, public sf::Drawable
 {
@@ -14,14 +14,14 @@ public:
 
     sf::Vector2f getSize();
 
-    // Return the entry that the mouse is hovering over. Returns
+    // Return the button that the mouse is hovering over. Returns
     //-1 if the mouse if outside of the Gui
     int getEntry(const sf::Vector2f mousePosition);
 
-    // Change the text of an entry.
+    // Change the text of an button.
     void setEntryText(std::size_t iEntry, std::string text);
 
-    // Change the entry dimensions.
+    // Change the button dimensions.
     void setDimensions(sf::Vector2f dimensions);
 
     // Draw the menu.
@@ -31,10 +31,10 @@ public:
 
     void hide();
 
-    // Highlights an entry of the menu.
+    // Highlights an button of the menu.
     void highlight(std::size_t iEntry);
 
-    // Return the message bound to the entry.
+    // Return the message bound to the button.
     std::string activate(std::size_t iEntry);
     std::string activate(sf::Vector2f mousePosition);
 
@@ -47,7 +47,7 @@ private:
     // If true the menu entries will be horizontally, not vertically, adjacent
     bool mHorizontalAlignment;
     GuiStyle mStyle;
-    std::vector<GuiEntry> mEntries;
+    std::vector<GuiButton> mButtons;
     bool mVisible;
 };
 
