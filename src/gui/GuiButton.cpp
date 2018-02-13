@@ -19,6 +19,32 @@ void GuiButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(mText);
 }
 
+sf::Vector2f GuiButton::getPosition() const
+{
+    return mShape.getPosition();
+}
+
+void GuiButton::setPosition(sf::Vector2f position)
+{
+    mShape.setPosition(position);
+    mText.setPosition(position);
+}
+
+sf::Vector2f GuiButton::getSize() const
+{
+    return mShape.getSize();
+}
+
+void GuiButton::setSize(sf::Vector2f size)
+{
+    mShape.setSize(size);
+}
+
+sf::FloatRect GuiButton::getRect() const
+{
+    return mShape.getGlobalBounds();
+}
+
 std::string GuiButton::getMessage() const
 {
     return mMessage;
@@ -49,12 +75,6 @@ void GuiButton::setOrigin(sf::Vector2f origin)
 {
     mShape.setOrigin(origin);
     mText.setOrigin(origin);
-}
-
-void GuiButton::setPosition(sf::Vector2f position)
-{
-    mShape.setPosition(position);
-    mText.setPosition(position);
 }
 
 void GuiButton::resize(sf::Vector2f dimensions, unsigned int characterSize)

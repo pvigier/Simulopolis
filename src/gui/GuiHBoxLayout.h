@@ -8,7 +8,10 @@ public:
     GuiHBoxLayout();
     virtual ~GuiHBoxLayout();
 
-protected:
+    void setAlignment(HAlignment alignment);
 
-private:
+protected:
+    HAlignment mAlignment;
+
+    virtual void align() override;
 };

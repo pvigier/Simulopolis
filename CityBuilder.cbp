@@ -30,6 +30,8 @@
 			<Add option="-ltinyxml2" />
 			<Add option="-lsfml-graphics -lsfml-window -lsfml-system" />
 		</Linker>
+		<Unit filename="gui/src/GuiVLayout.cpp" />
+		<Unit filename="gui/src/GuiVLayout.h" />
 		<Unit filename="src/city/City.cpp" />
 		<Unit filename="src/city/City.h" />
 		<Unit filename="src/city/Map.cpp" />
@@ -46,10 +48,14 @@
 		<Unit filename="src/game/GameStateStart.h" />
 		<Unit filename="src/gui/Gui.cpp" />
 		<Unit filename="src/gui/Gui.h" />
-		<Unit filename="src/gui/GuiEntry.cpp" />
-		<Unit filename="src/gui/GuiEntry.h" />
+		<Unit filename="src/gui/GuiButton.cpp" />
+		<Unit filename="src/gui/GuiButton.h" />
+		<Unit filename="src/gui/GuiLayout.cpp" />
+		<Unit filename="src/gui/GuiLayout.h" />
 		<Unit filename="src/gui/GuiStyle.cpp" />
 		<Unit filename="src/gui/GuiStyle.h" />
+		<Unit filename="src/gui/GuiWidget.cpp" />
+		<Unit filename="src/gui/GuiWidget.h" />
 		<Unit filename="src/input/InputEngine.cpp" />
 		<Unit filename="src/input/InputEngine.h" />
 		<Unit filename="src/main.cpp" />

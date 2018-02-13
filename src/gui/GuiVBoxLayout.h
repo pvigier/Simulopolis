@@ -8,7 +8,12 @@ public:
     GuiVBoxLayout();
     virtual ~GuiVBoxLayout();
 
-protected:
+    virtual sf::Vector2f getSize() const override;
 
-private:
+    void setAlignment(VAlignment alignment);
+
+protected:
+    VAlignment mAlignment;
+
+    virtual void align() override;
 };

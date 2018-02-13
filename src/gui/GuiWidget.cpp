@@ -9,3 +9,8 @@ GuiWidget::~GuiWidget()
 {
     //dtor
 }
+
+void GuiWidget::update()
+{
+
+}
