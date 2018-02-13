@@ -6,26 +6,10 @@ Gui::Gui(sf::Vector2f dimensions, int padding, bool horizontalAlignment, const G
     mStyle(style), mVisible(false)
 
 {
-    // Construct the background shape
-    sf::RectangleShape shape;
-    shape.setSize(mDimensions);
-    shape.setFillColor(mStyle.bodyColor);
-    shape.setOutlineThickness(-mStyle.borderSize);
-    shape.setOutlineColor(mStyle.borderColor);
-
     // Construct each gui entry
     unsigned int characterSize = mDimensions.y - mStyle.borderSize - mPadding;
     for (std::pair<std::string, std::string>& entry : entries)
-    {
-        // Construct the text
-        sf::Text text;
-        text.setString(entry.first);
-        text.setFont(*style.font);
-        text.setFillColor(mStyle.textColor);
-        text.setCharacterSize(characterSize);
-
-        mEntries.push_back(GuiEntry(mStyle, shape, text, entry.second));
-    }
+        mEntries.push_back(GuiEntry(mStyle, entry.first, mDimensions, characterSize, entry.second));
 }
 
 sf::Vector2f Gui::getSize()

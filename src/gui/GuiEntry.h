@@ -11,7 +11,8 @@ class GuiEntry : public sf::Drawable, public Subject
 {
 public:
     GuiEntry(const GuiStyle& style);
-    GuiEntry(const GuiStyle& style, sf::RectangleShape shape, sf::Text text, const std::string& message);
+    GuiEntry(const GuiStyle& style, const std::string& text, sf::Vector2f dimensions,
+        unsigned int characterSize, const std::string& message);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

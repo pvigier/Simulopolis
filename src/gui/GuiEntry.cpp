@@ -5,10 +5,12 @@ GuiEntry::GuiEntry(const GuiStyle& style) : mStyle(style)
 
 }
 
-GuiEntry::GuiEntry(const GuiStyle& style, sf::RectangleShape shape, sf::Text text, const std::string& message) :
-    mStyle(style), mShape(shape), mText(text), mMessage(message)
+GuiEntry::GuiEntry(const GuiStyle& style, const std::string& text, sf::Vector2f dimensions,
+    unsigned int characterSize, const std::string& message) :
+    mStyle(style), mShape(dimensions), mText(text, *mStyle.font, characterSize), mMessage(message)
 {
-
+    mShape.setOutlineThickness(-mStyle.borderSize);
+    setHighlight(false);
 }
 
 void GuiEntry::draw(sf::RenderTarget& target, sf::RenderStates states) const
