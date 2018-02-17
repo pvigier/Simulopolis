@@ -13,12 +13,6 @@ GuiButton::GuiButton(const GuiStyle& style, const std::string& text, sf::Vector2
     setHighlight(false);
 }
 
-void GuiButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    target.draw(mShape);
-    target.draw(mText);
-}
-
 sf::Vector2f GuiButton::getPosition() const
 {
     return mShape.getPosition();
@@ -43,6 +37,17 @@ void GuiButton::setSize(sf::Vector2f size)
 sf::FloatRect GuiButton::getRect() const
 {
     return mShape.getGlobalBounds();
+}
+
+void GuiButton::hover(sf::Vector2f position)
+{
+    setHighlight(hitButton(position));
+}
+
+void GuiButton::click(sf::Vector2f position)
+{
+    if (hitButton(position))
+        notify(Message(UNDEFINED, UNDEFINED, MessageType::GUI, std::make_shared<std::string>(mMessage)));
 }
 
 std::string GuiButton::getMessage() const
@@ -86,4 +91,10 @@ void GuiButton::resize(sf::Vector2f dimensions, unsigned int characterSize)
 bool GuiButton::hitButton(sf::Vector2f position) const
 {
     return mShape.getGlobalBounds().contains(position);
+}
+
+void GuiButton::render(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    target.draw(mShape);
+    target.draw(mText);
 }
