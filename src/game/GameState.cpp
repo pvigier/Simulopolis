@@ -1,6 +1,5 @@
 #include "game/GameState.h"
 #include "message/MessageBus.h"
-#include "render/RenderEngine.h"
 
 MessageBus* GameState::sMessageBus = nullptr;
 Id GameState::sGameId = UNDEFINED;
@@ -17,7 +16,7 @@ GameState::GameState()
 
 GameState::~GameState()
 {
-
+    sMessageBus->removeMailbox(mMailbox);
 }
 
 void GameState::setMessageBus(MessageBus* messageBus)

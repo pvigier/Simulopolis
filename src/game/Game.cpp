@@ -17,6 +17,8 @@ Game::Game()
 
     // Push dependencies
     Subject::setMessageBus(&mMessageBus);
+    Gui::setMessageBus(&mMessageBus);
+    Gui::setInputEngine(&mInputEngine);
     GameState::setMessageBus(&mMessageBus);
     GameState::setGameId(mMailbox.getId());
     GameState::setRenderEngine(&mRenderEngine);
@@ -35,6 +37,9 @@ Game::~Game()
 
     // Free resources
     mResourceManager.tearDown();
+
+    // Unregister mailbox
+    mMessageBus.removeMailbox(mMailbox);
 }
 
 void Game::pushState(GameState* state)

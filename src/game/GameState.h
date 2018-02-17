@@ -1,5 +1,7 @@
 #pragma once
 
+#include "util/NonCopyable.h"
+#include "util/NonMovable.h"
 #include "message/Mailbox.h"
 
 enum class GameStateName{START, EDITOR};
@@ -10,7 +12,7 @@ class InputEngine;
 class TextureManager;
 class StylesheetManager;
 
-class GameState
+class GameState : public NonCopyable, public NonMovable
 {
 public:
     GameState();

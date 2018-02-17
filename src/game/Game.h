@@ -3,6 +3,8 @@
 #include <stack>
 #include <map>
 #include <string>
+#include "util/NonCopyable.h"
+#include "util/NonMovable.h"
 #include "message/MessageBus.h"
 #include "render/RenderEngine.h"
 #include "input/InputEngine.h"
@@ -10,7 +12,7 @@
 
 class GameState;
 
-class Game
+class Game : public NonCopyable, public NonMovable
 {
 public:
     Game();
