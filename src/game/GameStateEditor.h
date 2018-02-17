@@ -11,6 +11,7 @@ class GameStateEditor : public GameState
 {
 public:
     GameStateEditor();
+    virtual ~GameStateEditor();
 
     virtual void draw(const float dt) override;
     virtual void update(const float dt) override;
@@ -27,7 +28,7 @@ private:
     sf::Vector2i mSelectionStart;
     sf::Vector2i mSelectionEnd;
     Tile* mCurrentTile;
-    GuiSystem mGuiSystem;
+    Gui mGui;
 
     void createGui();
 };
