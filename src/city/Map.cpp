@@ -46,8 +46,12 @@ void Map::loadTiles(const TextureManager& textureManager)
         TileType::INDUSTRIAL, 300, 50, 4);
 
     sTileAtlas["road"] = Tile(1, textureManager.getTexture("road"),
-        {staticAnim, staticAnim, staticAnim, staticAnim, staticAnim, staticAnim,
-        staticAnim, staticAnim, staticAnim, staticAnim, staticAnim},
+        {Animation({{sf::IntRect(0, 0, 16, 8), 0.5f}}), Animation({{sf::IntRect(0, 8, 16, 8), 0.5f}}),
+        Animation({{sf::IntRect(0, 16, 16, 8), 0.5f}}), Animation({{sf::IntRect(0, 24, 16, 8), 0.5f}}),
+        Animation({{sf::IntRect(0, 32, 16, 8), 0.5f}}), Animation({{sf::IntRect(0, 40, 16, 8), 0.5f}}),
+        Animation({{sf::IntRect(0, 48, 16, 8), 0.5f}}), Animation({{sf::IntRect(0, 56, 16, 8), 0.5f}}),
+        Animation({{sf::IntRect(0, 64, 16, 8), 0.5f}}), Animation({{sf::IntRect(0, 72, 16, 8), 0.5f}}),
+        Animation({{sf::IntRect(0, 80, 16, 8), 0.5f}})},
         TileType::ROAD, 100, 0, 1);
 }
 
