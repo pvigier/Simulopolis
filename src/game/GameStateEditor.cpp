@@ -188,7 +188,7 @@ void GameStateEditor::handleMessages()
                                     mCity.tileChanged();
                                 }
                             }
-                            mGui.get("rightClickMenu")->setVisible(false);
+                            mGui.get("selectionCostText")->setVisible(false);
                             mActionState = ActionState::NONE;
                             mCity.getMap().clearSelected();
                         }
