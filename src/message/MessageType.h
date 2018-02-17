@@ -3,6 +3,7 @@
 enum class MessageType
 {
     INPUT,
+    GUI,
     PUSH_GAME_STATE,
     POP_GAME_STATE,
     CHANGE_GAME_STATE,
@@ -14,6 +15,9 @@ inline std::ostream& operator<<(std::ostream& os, const MessageType& type)
     {
         case MessageType::INPUT:
             os << "input";
+            break;
+        case MessageType::GUI:
+            os << "gui";
             break;
         case MessageType::PUSH_GAME_STATE:
             os << "push game state";
