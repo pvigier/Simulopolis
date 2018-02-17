@@ -13,10 +13,21 @@ public:
 
     virtual sf::FloatRect getRect() const override;
 
-    virtual void addWidget(GuiWidget* widget);
-    virtual void setSpacing(unsigned int spacing);
+    virtual void hover(sf::Vector2f position) override;
+    virtual void click(sf::Vector2f position) override;
+
+    virtual void add(GuiWidget* widget);
+    virtual void setSpacing(float spacing);
+    void setHAlignment(HAlignment alignment);
+    void setVAlignment(VAlignment alignment);
+    void fitSizeToContent();
 
 protected:
     std::vector<GuiWidget*> mWidgets;
-    unsigned int mSpacing;
+    float mSpacing;
+    HAlignment mHAlignment;
+    VAlignment mVAlignment;
+
+    virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
+    virtual sf::Vector2f computeSize() const = 0;
 };

@@ -18,6 +18,7 @@ sf::Vector2f GuiLayout::getPosition() const
 void GuiLayout::setPosition(sf::Vector2f position)
 {
     mPosition = position;
+    update();
 }
 
 sf::Vector2f GuiLayout::getSize() const
@@ -28,4 +29,5 @@ sf::Vector2f GuiLayout::getSize() const
 void GuiLayout::setSize(sf::Vector2f size)
 {
     mSize = size;
+    update();
 }

@@ -8,10 +8,7 @@ public:
     GuiHBoxLayout();
     virtual ~GuiHBoxLayout();
 
-    void setAlignment(HAlignment alignment);
-
 protected:
-    HAlignment mAlignment;
-
     virtual void align() override;
+    virtual sf::Vector2f computeSize() const override;
 };
