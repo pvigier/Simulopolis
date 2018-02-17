@@ -1,111 +1,109 @@
 #include "gui/Gui.h"
+#include "message/MessageBus.h"
+#include "input/InputEngine.h"
+#include "gui/GuiWidget.h"
 
-Gui::Gui(sf::Vector2f dimensions, int padding, bool horizontalAlignment, const GuiStyle& style,
-    std::vector<std::pair<std::string, std::string>> entries) :
-    mDimensions(dimensions), mPadding(padding), mHorizontalAlignment(horizontalAlignment),
-    mStyle(style), mVisible(false)
+MessageBus* Gui::sMessageBus = nullptr;
+InputEngine* Gui::sInputEngine = nullptr;
 
+Gui::Gui(sf::Vector2f windowSize) :
+    mView(sf::FloatRect(sf::Vector2f(0.0f, 0.0f), windowSize)), mVisible(true)
 {
-    // Construct each gui button
-    unsigned int characterSize = mDimensions.y - mStyle.borderSize - mPadding;
-    for (std::pair<std::string, std::string>& button : entries)
-        mButtons.push_back(GuiButton(mStyle, button.first, mDimensions, characterSize, button.second));
+    // Register the mailbox
+    sMessageBus->addMailbox(mMailbox);
+    sInputEngine->subscribe(mMailbox.getId());
 }
 
-sf::Vector2f Gui::getSize()
+Gui::~Gui()
 {
-    return sf::Vector2f(mDimensions.x, mDimensions.y * mButtons.size());
+    // Destroy the widget
+    for (auto& widget : mWidgets)
+        delete widget.second;
+
+    // Unregister the mailbox
+    sInputEngine->unsubscribe(mMailbox.getId());
+    sMessageBus->removeMailbox(mMailbox);
 }
 
-int Gui::getEntry(const sf::Vector2f mousePosition)
+void Gui::setMessageBus(MessageBus* messageBus)
 {
-    if (mButtons.empty() || !mVisible)
-        return -1;
-
-    for (std::size_t i = 0; i < mButtons.size(); ++i)
-    {
-        if (mButtons[i].hitButton(mousePosition))
-            return i;
-    }
-
-    return -1;
+    sMessageBus = messageBus;
 }
 
-void Gui::setEntryText(std::size_t iEntry, std::string text)
+void Gui::setInputEngine(InputEngine* inputEngine)
 {
-    if (iEntry < mButtons.size())
-        mButtons[iEntry].setText(text);
+    sInputEngine = inputEngine;
 }
 
-void Gui::setDimensions(sf::Vector2f dimensions)
-{
-    unsigned int characterSize = mDimensions.y - mStyle.borderSize - mPadding;
-    for (GuiButton& button : mButtons)
-        button.resize(mDimensions, characterSize);
-}
 
 void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     if(!mVisible)
         return;
 
+    target.setView(mView);
+
     // Draw each button of the menu
-    for (const GuiButton& button : mButtons)
-        target.draw(button);
+    for (const GuiWidget* widget : mRootWidgets)
+        target.draw(*widget);
 }
 
-void Gui::show()
+void Gui::add(const std::string& name, GuiWidget* widget)
 {
-    mVisible = true;
-    sf::Vector2f offset = getOrigin();
+    mWidgets[name] = widget;
+}
 
-    // Draw each button of the menu
-    for(GuiButton& button : mButtons)
+void Gui::addRoot(const std::string& name, GuiWidget* widget)
+{
+    add(name, widget);
+    mRootWidgets.push_back(widget);
+}
+
+GuiWidget* Gui::get(const std::string& name)
+{
+    return mWidgets[name];
+}
+
+const GuiWidget* Gui::get(const std::string& name) const
+{
+    return mWidgets.at(name);
+}
+
+void Gui::update()
+{
+    sf::Vector2f mousePosition(sInputEngine->getMousePosition());
+    while (!mMailbox.isEmpty())
     {
-        // Compute the position of the button
-        button.setPosition(-offset + getPosition());
+        Message message = mMailbox.get();
+        if (message.type != MessageType::INPUT)
+            continue;
 
-        if(mHorizontalAlignment)
-            offset.x -= mDimensions.x;
-        else
-            offset.y -= mDimensions.y;
+        sf::Event event = message.getInfo<sf::Event>();
+        switch (event.type)
+        {
+            case sf::Event::Resized:
+                mView.setSize(event.size.width, event.size.height);
+                break;
+            case sf::Event::MouseMoved:
+                for (GuiWidget* widget : mRootWidgets)
+                    widget->hover(mousePosition);
+                break;
+            case sf::Event::MouseButtonPressed:
+                for (GuiWidget* widget : mRootWidgets)
+                    widget->click(mousePosition);
+                break;
+            default:
+                break;
+        }
     }
 }
 
-void Gui::hide()
+void Gui::setVisible(bool visible)
 {
-    mVisible = false;
-}
-
-void Gui::highlight(std::size_t iEntry)
-{
-    for(std::size_t i = 0; i < mButtons.size(); ++i)
-    {
-        if(i == iEntry)
-            mButtons[i].setHighlight(true);
-        else
-            mButtons[i].setHighlight(false);
-    }
-}
-
-std::string Gui::activate(std::size_t iEntry)
-{
-    if(iEntry >= mButtons.size())
-        return "null";
-    return mButtons[iEntry].getMessage();
-}
-
-std::string Gui::activate(sf::Vector2f mousePosition)
-{
-    return activate(getEntry(mousePosition));
+    mVisible = visible;
 }
 
 bool Gui::isVisible() const
 {
     return mVisible;
-}
-
-std::size_t Gui::getNbEntries() const
-{
-    return mButtons.size();
 }
