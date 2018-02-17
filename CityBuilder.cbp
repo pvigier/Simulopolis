@@ -30,8 +30,6 @@
 			<Add option="-ltinyxml2" />
 			<Add option="-lsfml-graphics -lsfml-window -lsfml-system" />
 		</Linker>
-		<Unit filename="gui/src/GuiVLayout.cpp" />
-		<Unit filename="gui/src/GuiVLayout.h" />
 		<Unit filename="src/city/City.cpp" />
 		<Unit filename="src/city/City.h" />
 		<Unit filename="src/city/Map.cpp" />
@@ -48,12 +46,18 @@
 		<Unit filename="src/game/GameStateStart.h" />
 		<Unit filename="src/gui/Gui.cpp" />
 		<Unit filename="src/gui/Gui.h" />
+		<Unit filename="src/gui/GuiBoxLayout.cpp" />
+		<Unit filename="src/gui/GuiBoxLayout.h" />
 		<Unit filename="src/gui/GuiButton.cpp" />
 		<Unit filename="src/gui/GuiButton.h" />
+		<Unit filename="src/gui/GuiHBoxLayout.cpp" />
+		<Unit filename="src/gui/GuiHBoxLayout.h" />
 		<Unit filename="src/gui/GuiLayout.cpp" />
 		<Unit filename="src/gui/GuiLayout.h" />
 		<Unit filename="src/gui/GuiStyle.cpp" />
 		<Unit filename="src/gui/GuiStyle.h" />
+		<Unit filename="src/gui/GuiVBoxLayout.cpp" />
+		<Unit filename="src/gui/GuiVBoxLayout.h" />
 		<Unit filename="src/gui/GuiWidget.cpp" />
 		<Unit filename="src/gui/GuiWidget.h" />
 		<Unit filename="src/input/InputEngine.cpp" />
@@ -84,6 +88,10 @@
 		<Unit filename="src/util/Array2.h" />
 		<Unit filename="src/util/Id.h" />
 		<Unit filename="src/util/IdManager.h" />
+		<Unit filename="src/util/NonCopyable.h" />
+		<Unit filename="src/util/NonMovable.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
