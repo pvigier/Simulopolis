@@ -13,26 +13,22 @@ public:
     GuiButton(const GuiStyle& style, const std::string& text, sf::Vector2f dimensions,
         unsigned int characterSize, const std::string& message);
 
-    virtual sf::Vector2f getPosition() const override;
     virtual void setPosition(sf::Vector2f position) override;
-    virtual sf::Vector2f getSize() const override;
     virtual void setSize(sf::Vector2f size) override;
-    virtual sf::FloatRect getRect() const override;
-
-    virtual void onHover(sf::Vector2f position) override;
-    virtual void onPress(sf::Vector2f position) override;
 
     std::string getMessage() const;
 
     void setText(const std::string& text);
     void setHighlight(bool highlight);
-    void setOrigin(sf::Vector2f origin);
     void resize(sf::Vector2f dimensions, unsigned int characterSize);
 
     bool hitButton(sf::Vector2f position) const;
 
 protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+    virtual void onHover(sf::Vector2f position) override;
+    virtual void onPress(sf::Vector2f position) override;
 
 private:
     // Reference?

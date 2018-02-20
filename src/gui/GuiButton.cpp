@@ -11,32 +11,23 @@ GuiButton::GuiButton(const GuiStyle& style, const std::string& text, sf::Vector2
 {
     mShape.setOutlineThickness(-mStyle.borderSize);
     setHighlight(false);
-}
-
-sf::Vector2f GuiButton::getPosition() const
-{
-    return mShape.getPosition();
+    GuiWidget::setSize(mShape.getSize());
 }
 
 void GuiButton::setPosition(sf::Vector2f position)
 {
+    GuiWidget::setPosition(position);
     mShape.setPosition(position);
     mText.setPosition(position);
-}
-
-sf::Vector2f GuiButton::getSize() const
-{
-    return mShape.getSize();
+    /*sf::Vector2f offset(sf::Vector2f(mText.getGlobalBounds().left, mText.getGlobalBounds().top) - mShape.getPosition());
+    sf::Vector2f textSize(mText.getGlobalBounds().width, mText.getGlobalBounds().height);
+    mText.setPosition(mShape.getPosition() - offset + mShape.getSize() * 0.5f - textSize * 0.5f);*/
 }
 
 void GuiButton::setSize(sf::Vector2f size)
 {
+    GuiWidget::setSize(size);
     mShape.setSize(size);
-}
-
-sf::FloatRect GuiButton::getRect() const
-{
-    return mShape.getGlobalBounds();
 }
 
 void GuiButton::onHover(sf::Vector2f position)
@@ -58,6 +49,11 @@ std::string GuiButton::getMessage() const
 void GuiButton::setText(const std::string& text)
 {
     mText.setString(text);
+
+    /*mText.setPosition(mShape.getPosition());
+    sf::Vector2f offset(sf::Vector2f(mText.getGlobalBounds().left, mText.getGlobalBounds().top) - mShape.getPosition());
+    sf::Vector2f textSize(mText.getGlobalBounds().width, mText.getGlobalBounds().height);
+    mText.setPosition(mShape.getPosition() - offset + mShape.getSize() * 0.5f - textSize * 0.5f);*/
 }
 
 void GuiButton::setHighlight(bool highlight)
@@ -74,12 +70,6 @@ void GuiButton::setHighlight(bool highlight)
         mShape.setOutlineColor(mStyle.borderColor);
         mText.setFillColor(mStyle.textColor);
     }
-}
-
-void GuiButton::setOrigin(sf::Vector2f origin)
-{
-    mShape.setOrigin(origin);
-    mText.setOrigin(origin);
 }
 
 void GuiButton::resize(sf::Vector2f dimensions, unsigned int characterSize)

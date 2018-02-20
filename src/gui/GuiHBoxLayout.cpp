@@ -1,4 +1,5 @@
 #include "gui/GuiHBoxLayout.h"
+#include "gui/GuiWidget.h"
 
 GuiHBoxLayout::GuiHBoxLayout()
 {
@@ -12,19 +13,19 @@ GuiHBoxLayout::~GuiHBoxLayout()
 
 void GuiHBoxLayout::align()
 {
-    sf::Vector2f offset = mPosition;
+    sf::Vector2f offset = mOwner->getPosition();
     sf::Vector2f size = computeSize();
     if (mHAlignment == HAlignment::Center)
-        offset.x += mSize.x * 0.5f - size.x * 0.5f;
+        offset.x += mOwner->getSize().x * 0.5f - size.x * 0.5f;
     else if (mHAlignment == HAlignment::Right)
-        offset.x += mSize.x - size.x;
-    for (GuiWidget* widget : mWidgets)
+        offset.x += mOwner->getSize().x - size.x;
+    for (GuiWidget* widget : mOwner->getChildren())
     {
-        offset.y = mPosition.y;
+        offset.y = mOwner->getPosition().y;
         if (mVAlignment == VAlignment::Center)
-            offset.y += mSize.y * 0.5f - widget->getSize().y * 0.5f;
+            offset.y += mOwner->getSize().y * 0.5f - widget->getSize().y * 0.5f;
         else if (mVAlignment == VAlignment::Bottom)
-            offset.y += mSize.y - widget->getSize().y;
+            offset.y += mOwner->getSize().y - widget->getSize().y;
         widget->setPosition(offset);
         offset.x += widget->getSize().x + mSpacing;
     }
@@ -33,7 +34,7 @@ void GuiHBoxLayout::align()
 sf::Vector2f GuiHBoxLayout::computeSize() const
 {
     sf::Vector2f size;
-    for (GuiWidget* widget : mWidgets)
+    for (GuiWidget* widget : mOwner->getChildren())
     {
         size.x += widget->getSize().x + mSpacing;
         size.y = std::max(size.y, widget->getSize().y);

@@ -1,6 +1,6 @@
 #include "gui/GuiLayout.h"
 
-GuiLayout::GuiLayout()
+GuiLayout::GuiLayout() : mOwner(nullptr)
 {
     //ctor
 }
@@ -10,24 +10,7 @@ GuiLayout::~GuiLayout()
     //dtor
 }
 
-sf::Vector2f GuiLayout::getPosition() const
+void GuiLayout::setOwner(GuiWidget* owner)
 {
-    return mPosition;
-}
-
-void GuiLayout::setPosition(sf::Vector2f position)
-{
-    mPosition = position;
-    update();
-}
-
-sf::Vector2f GuiLayout::getSize() const
-{
-    return mSize;
-}
-
-void GuiLayout::setSize(sf::Vector2f size)
-{
-    mSize = size;
-    update();
+    mOwner = owner;
 }

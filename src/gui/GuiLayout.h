@@ -1,8 +1,10 @@
 #pragma once
 
-#include "gui/GuiWidget.h"
+#include <SFML/Graphics.hpp>
 
-class GuiLayout : public GuiWidget
+class GuiWidget;
+
+class GuiLayout
 {
 public:
     enum class HAlignment{Left, Center, Right};
@@ -11,14 +13,11 @@ public:
     GuiLayout();
     virtual ~GuiLayout();
 
-    virtual sf::Vector2f getPosition() const override;
-    virtual void setPosition(sf::Vector2f position) override;
-    virtual sf::Vector2f getSize() const override;
-    virtual void setSize(sf::Vector2f size) override;
+    virtual void align() = 0;
+    virtual sf::Vector2f computeSize() const = 0;
+
+    void setOwner(GuiWidget* owner);
 
 protected:
-    sf::Vector2f mPosition;
-    sf::Vector2f mSize;
-
-    virtual void align() = 0;
+    GuiWidget* mOwner;
 };
