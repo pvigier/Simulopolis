@@ -17,8 +17,6 @@ Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
 
 void Map::loadTiles(const TextureManager& textureManager)
 {
-    Animation staticAnim({{sf::IntRect(0, 0, 16, 8), 1.0f}});
-
     sTileAtlas["grass"] = Tile(1, textureManager.getTexture("grass"),
         {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}})},
         TileType::GRASS, 50, 0, 1);
@@ -32,15 +30,15 @@ void Map::loadTiles(const TextureManager& textureManager)
         TileType::WATER, 0, 0, 1);
 
     sTileAtlas["residential"] = Tile(2, textureManager.getTexture("residential"),
-        {staticAnim, staticAnim, staticAnim, staticAnim, staticAnim, staticAnim},
+        {Animation({{sf::IntRect(0, 0, 133, 163), 0.5f}})},
         TileType::RESIDENTIAL, 300, 50, 6);
 
     sTileAtlas["commercial"] = Tile(2, textureManager.getTexture("commercial"),
-        {staticAnim, staticAnim, staticAnim, staticAnim},
+        {Animation({{sf::IntRect(0, 0, 132, 163), 0.5f}})},
         TileType::COMMERCIAL, 300, 50, 4);
 
     sTileAtlas["industrial"] = Tile(2, textureManager.getTexture("industrial"),
-        {staticAnim, staticAnim, staticAnim, staticAnim},
+        {Animation({{sf::IntRect(0, 0, 132, 163), 0.5f}})},
         TileType::INDUSTRIAL, 300, 50, 4);
 
     sTileAtlas["road"] = Tile(1, textureManager.getTexture("road"),
