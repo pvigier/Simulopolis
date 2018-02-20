@@ -19,8 +19,8 @@ public:
     virtual void setSize(sf::Vector2f size) override;
     virtual sf::FloatRect getRect() const override;
 
-    virtual void hover(sf::Vector2f position) override;
-    virtual void click(sf::Vector2f position) override;
+    virtual void onHover(sf::Vector2f position) override;
+    virtual void onPress(sf::Vector2f position) override;
 
     std::string getMessage() const;
 

@@ -86,11 +86,15 @@ void Gui::update()
                 break;
             case sf::Event::MouseMoved:
                 for (GuiWidget* widget : mRootWidgets)
-                    widget->hover(mousePosition);
+                    widget->updateMouseMoved(mousePosition);
                 break;
             case sf::Event::MouseButtonPressed:
                 for (GuiWidget* widget : mRootWidgets)
-                    widget->click(mousePosition);
+                    widget->updateMouseButtonPressed(mousePosition);
+                break;
+            case sf::Event::MouseButtonReleased:
+                for (GuiWidget* widget : mRootWidgets)
+                    widget->updateMouseButtonReleased(mousePosition);
                 break;
             default:
                 break;

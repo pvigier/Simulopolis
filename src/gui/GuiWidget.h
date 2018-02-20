@@ -23,11 +23,17 @@ public:
     void setVisible(bool visible);
 
     // Events
-    virtual void hover(sf::Vector2f position);
-    virtual void click(sf::Vector2f position);
+    void updateMouseMoved(sf::Vector2f position);
+    void updateMouseButtonPressed(sf::Vector2f position);
+    void updateMouseButtonReleased(sf::Vector2f position);
 
 protected:
     bool mVisible;
 
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const = 0;
+
+    // Events
+    virtual void onHover(sf::Vector2f position);
+    virtual void onPress(sf::Vector2f position);
+    virtual void onRelease(sf::Vector2f position);
 };

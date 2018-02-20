@@ -31,12 +31,35 @@ void GuiWidget::setVisible(bool visible)
     mVisible = visible;
 }
 
-void GuiWidget::hover(sf::Vector2f position)
+void GuiWidget::updateMouseMoved(sf::Vector2f position)
+{
+    if (mVisible)
+        onHover(position);
+}
+
+void GuiWidget::updateMouseButtonPressed(sf::Vector2f position)
+{
+    if (mVisible)
+        onPress(position);
+}
+
+void GuiWidget::updateMouseButtonReleased(sf::Vector2f position)
+{
+    if (mVisible)
+        onRelease(position);
+}
+
+void GuiWidget::onHover(sf::Vector2f position)
 {
 
 }
 
-void GuiWidget::click(sf::Vector2f position)
+void GuiWidget::onPress(sf::Vector2f position)
+{
+
+}
+
+void GuiWidget::onRelease(sf::Vector2f position)
 {
 
 }

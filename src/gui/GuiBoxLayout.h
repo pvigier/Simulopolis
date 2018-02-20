@@ -13,8 +13,9 @@ public:
 
     virtual sf::FloatRect getRect() const override;
 
-    virtual void hover(sf::Vector2f position) override;
-    virtual void click(sf::Vector2f position) override;
+    virtual void onHover(sf::Vector2f position) override;
+    virtual void onPress(sf::Vector2f position) override;
+    virtual void onRelease(sf::Vector2f position) override;
 
     virtual void add(GuiWidget* widget);
     virtual void setSpacing(float spacing);

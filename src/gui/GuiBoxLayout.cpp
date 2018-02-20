@@ -24,16 +24,22 @@ sf::FloatRect GuiBoxLayout::getRect() const
     return sf::FloatRect(mPosition, getSize());
 }
 
-void GuiBoxLayout::hover(sf::Vector2f position)
+void GuiBoxLayout::onHover(sf::Vector2f position)
 {
     for (GuiWidget* widget : mWidgets)
-        widget->hover(position);
+        widget->updateMouseMoved(position);
 }
 
-void GuiBoxLayout::click(sf::Vector2f position)
+void GuiBoxLayout::onPress(sf::Vector2f position)
 {
     for (GuiWidget* widget : mWidgets)
-        widget->click(position);
+        widget->updateMouseButtonPressed(position);
+}
+
+void GuiBoxLayout::onRelease(sf::Vector2f position)
+{
+    for (GuiWidget* widget : mWidgets)
+        widget->updateMouseButtonReleased(position);
 }
 
 void GuiBoxLayout::add(GuiWidget* widget)

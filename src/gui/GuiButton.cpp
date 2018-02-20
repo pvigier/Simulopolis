@@ -39,12 +39,12 @@ sf::FloatRect GuiButton::getRect() const
     return mShape.getGlobalBounds();
 }
 
-void GuiButton::hover(sf::Vector2f position)
+void GuiButton::onHover(sf::Vector2f position)
 {
     setHighlight(hitButton(position));
 }
 
-void GuiButton::click(sf::Vector2f position)
+void GuiButton::onPress(sf::Vector2f position)
 {
     if (hitButton(position))
         notify(Message(UNDEFINED, UNDEFINED, MessageType::GUI, std::make_shared<std::string>(mMessage)));
