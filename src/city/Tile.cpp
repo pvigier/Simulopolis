@@ -22,6 +22,8 @@ void Tile::draw(sf::RenderWindow& window, float dt)
     mAnimator.changeAnimation(mVariant);
     mAnimator.update(dt);
     mSprite.setTextureRect(mAnimator.getDisplayedRect());
+    /*float scale = 16.0f / mAnimator.getDisplayedRect().width;
+    mSprite.setScale(scale, scale);*/
 
     // Draw the tile
     window.draw(mSprite);

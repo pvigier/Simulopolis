@@ -20,17 +20,15 @@ void Map::loadTiles(const TextureManager& textureManager)
     Animation staticAnim({{sf::IntRect(0, 0, 16, 8), 1.0f}});
 
     sTileAtlas["grass"] = Tile(1, textureManager.getTexture("grass"),
-        {staticAnim},
+        {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}})},
         TileType::GRASS, 50, 0, 1);
 
     sTileAtlas["forest"] = Tile(1, textureManager.getTexture("forest"),
-        {staticAnim},
+        {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}})},
         TileType::FOREST, 100, 0, 1);
 
     sTileAtlas["water"] = Tile(1, textureManager.getTexture("water"),
-        {Animation({{sf::IntRect(0, 0, 16, 8), 0.5f}, {sf::IntRect(16, 0, 16, 8), 0.5f}, {sf::IntRect(32, 0, 16, 8), 0.5f}, {sf::IntRect(48, 0, 16, 8), 0.5f}}),
-        Animation({{sf::IntRect(0, 8, 16, 8), 0.5f}, {sf::IntRect(16, 8, 16, 8), 0.5f}, {sf::IntRect(32, 8, 16, 8), 0.5f}, {sf::IntRect(48, 8, 16, 8), 0.5f}}),
-        Animation({{sf::IntRect(0, 16, 16, 8), 0.5f}, {sf::IntRect(16, 16, 16, 8), 0.5f}, {sf::IntRect(32, 16, 16, 8), 0.5f}, {sf::IntRect(48, 16, 16, 8), 0.5f}})},
+        {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}})},
         TileType::WATER, 0, 0, 1);
 
     sTileAtlas["residential"] = Tile(2, textureManager.getTexture("residential"),
@@ -46,12 +44,12 @@ void Map::loadTiles(const TextureManager& textureManager)
         TileType::INDUSTRIAL, 300, 50, 4);
 
     sTileAtlas["road"] = Tile(1, textureManager.getTexture("road"),
-        {Animation({{sf::IntRect(0, 0, 16, 8), 0.5f}}), Animation({{sf::IntRect(0, 8, 16, 8), 0.5f}}),
-        Animation({{sf::IntRect(0, 16, 16, 8), 0.5f}}), Animation({{sf::IntRect(0, 24, 16, 8), 0.5f}}),
-        Animation({{sf::IntRect(0, 32, 16, 8), 0.5f}}), Animation({{sf::IntRect(0, 40, 16, 8), 0.5f}}),
-        Animation({{sf::IntRect(0, 48, 16, 8), 0.5f}}), Animation({{sf::IntRect(0, 56, 16, 8), 0.5f}}),
-        Animation({{sf::IntRect(0, 64, 16, 8), 0.5f}}), Animation({{sf::IntRect(0, 72, 16, 8), 0.5f}}),
-        Animation({{sf::IntRect(0, 80, 16, 8), 0.5f}})},
+        {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 99, 132, 99), 0.5f}}),
+        Animation({{sf::IntRect(0, 198, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 297, 132, 99), 0.5f}}),
+        Animation({{sf::IntRect(0, 396, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 495, 132, 99), 0.5f}}),
+        Animation({{sf::IntRect(0, 594, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 693, 132, 99), 0.5f}}),
+        Animation({{sf::IntRect(0, 792, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 891, 132, 99), 0.5f}}),
+        Animation({{sf::IntRect(0, 990, 132, 99), 0.5f}})},
         TileType::ROAD, 100, 0, 1);
 }
 
@@ -135,7 +133,7 @@ void Map::draw(sf::RenderWindow& window, float dt)
             // Compute the position of the tile in the 2d world
             sf::Vector2f pos;
             pos.x = (x - y) * TILE_SIZE + mWidth * TILE_SIZE;
-            pos.y = (x + y) * TILE_SIZE * 0.5;
+            pos.y = (x + y) * TILE_SIZE * 0.5f;
             mTiles[y * mWidth + x].getSprite().setPosition(pos);
 
             // Change the color if the tile is selected

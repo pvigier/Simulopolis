@@ -7,7 +7,7 @@
 
 enum class TileType{VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
 enum class TileState{DESELECTED, SELECTED, INVALID};
-static constexpr unsigned int TILE_SIZE = 8;
+static constexpr unsigned int TILE_SIZE = 64;
 
 std::string tileTypeToStr(TileType type);
 
