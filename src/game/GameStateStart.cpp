@@ -86,11 +86,13 @@ void GameStateStart::createGui()
     loadGameButton->setPosition(sf::Vector2f(sRenderEngine->getWindow().getSize()) * 0.5f);
     mGui.add("loadGameButton", loadGameButton);
 
-    GuiVBoxLayout* menu = new GuiVBoxLayout();
+    GuiWidget* menu = new GuiWidget();
     menu->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
-    menu->setHAlignment(GuiLayout::HAlignment::Center);
-    menu->setVAlignment(GuiLayout::VAlignment::Center);
     menu->add(loadGameButton);
+    GuiVBoxLayout* menuLayout = new GuiVBoxLayout();
+    menuLayout->setHAlignment(GuiLayout::HAlignment::Center);
+    menuLayout->setVAlignment(GuiLayout::VAlignment::Center);
+    menu->setLayout(menuLayout);
     mGui.addRoot("menu", menu);
 
     // Register to events

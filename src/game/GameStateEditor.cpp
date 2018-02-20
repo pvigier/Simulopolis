@@ -278,13 +278,14 @@ void GameStateEditor::createGui()
     mGui.add("roadButton", roadButton);
     roadButton->subscribe(mMailbox.getId());
 
-    GuiVBoxLayout* rightClickMenu = new GuiVBoxLayout();
+    GuiWidget* rightClickMenu = new GuiWidget();
     rightClickMenu->add(grassButton);
     rightClickMenu->add(forestButton);
     rightClickMenu->add(residentialButton);
     rightClickMenu->add(commercialButton);
     rightClickMenu->add(industrialButton);
     rightClickMenu->add(roadButton);
+    rightClickMenu->setLayout(new GuiVBoxLayout());
     rightClickMenu->fitSizeToContent();
     rightClickMenu->setVisible(false);
 
@@ -315,13 +316,15 @@ void GameStateEditor::createGui()
         "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, "tile");
     mGui.add("currentTileLabel", currentTileLabel);
 
-    GuiHBoxLayout* infoBar = new GuiHBoxLayout();
+    GuiWidget* infoBar = new GuiWidget();
     infoBar->add(dayLabel);
     infoBar->add(fundsLabel);
     infoBar->add(populationLabel);
     infoBar->add(employmentLabel);
     infoBar->add(currentTileLabel);
     infoBar->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
-    infoBar->setVAlignment(GuiLayout::VAlignment::Bottom);
+    GuiHBoxLayout* infoBarLayout = new GuiHBoxLayout();
+    infoBarLayout->setVAlignment(GuiLayout::VAlignment::Bottom);
+    infoBar->setLayout(infoBarLayout);
     mGui.addRoot("infoBar", infoBar);
 }
