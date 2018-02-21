@@ -19,27 +19,27 @@ void Map::loadTiles(const TextureManager& textureManager)
 {
     sTileAtlas["grass"] = Tile(1, textureManager.getTexture("grass"),
         {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}})},
-        TileType::GRASS, 50, 0, 1);
+        Tile::Type::GRASS, 50);
 
     sTileAtlas["forest"] = Tile(1, textureManager.getTexture("forest"),
         {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}})},
-        TileType::FOREST, 100, 0, 1);
+        Tile::Type::FOREST, 100);
 
     sTileAtlas["water"] = Tile(1, textureManager.getTexture("water"),
         {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}})},
-        TileType::WATER, 0, 0, 1);
+        Tile::Type::WATER, 0);
 
     sTileAtlas["residential"] = Tile(2, textureManager.getTexture("residential"),
         {Animation({{sf::IntRect(0, 0, 133, 163), 0.5f}})},
-        TileType::RESIDENTIAL, 300, 50, 6);
+        Tile::Type::RESIDENTIAL, 300);
 
     sTileAtlas["commercial"] = Tile(2, textureManager.getTexture("commercial"),
         {Animation({{sf::IntRect(0, 0, 132, 163), 0.5f}})},
-        TileType::COMMERCIAL, 300, 50, 4);
+        Tile::Type::COMMERCIAL, 300);
 
     sTileAtlas["industrial"] = Tile(2, textureManager.getTexture("industrial"),
         {Animation({{sf::IntRect(0, 0, 132, 163), 0.5f}})},
-        TileType::INDUSTRIAL, 300, 50, 4);
+        Tile::Type::INDUSTRIAL, 300);
 
     sTileAtlas["road"] = Tile(1, textureManager.getTexture("road"),
         {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 99, 132, 99), 0.5f}}),
@@ -48,7 +48,7 @@ void Map::loadTiles(const TextureManager& textureManager)
         Animation({{sf::IntRect(0, 594, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 693, 132, 99), 0.5f}}),
         Animation({{sf::IntRect(0, 792, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 891, 132, 99), 0.5f}}),
         Animation({{sf::IntRect(0, 990, 132, 99), 0.5f}})},
-        TileType::ROAD, 100, 0, 1);
+        Tile::Type::ROAD, 100);
 }
 
 TileAtlas& Map::getTileAtlas()
@@ -66,29 +66,28 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
 
     for (unsigned int pos = 0; pos < mWidth * mHeight; ++pos)
     {
-        mResources.push_back(255);
-        mTileStates.push_back(TileState::DESELECTED);
+        mTileStates.push_back(Tile::State::DESELECTED);
 
-        TileType type;
+        Tile::Type type;
         inputFile.read((char*)&type, sizeof(type));
         switch (type)
         {
-            case TileType::FOREST:
+            case Tile::Type::FOREST:
                 mTiles.push_back(sTileAtlas.at("forest"));
                 break;
-            case TileType::WATER:
+            case Tile::Type::WATER:
                 mTiles.push_back(sTileAtlas.at("water"));
                 break;
-            case TileType::RESIDENTIAL:
+            case Tile::Type::RESIDENTIAL:
                 mTiles.push_back(sTileAtlas.at("residential"));
                 break;
-            case TileType::COMMERCIAL:
+            case Tile::Type::COMMERCIAL:
                 mTiles.push_back(sTileAtlas.at("commercial"));
                 break;
-            case TileType::INDUSTRIAL:
+            case Tile::Type::INDUSTRIAL:
                 mTiles.push_back(sTileAtlas.at("industrial"));
                 break;
-            case TileType::ROAD:
+            case Tile::Type::ROAD:
                 mTiles.push_back(sTileAtlas.at("road"));
                 break;
             default:
@@ -97,9 +96,10 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
         }
         Tile& tile = mTiles.back();
         inputFile.read((char*)&tile.getVariant(), sizeof(unsigned int));
-        inputFile.read((char*)tile.getRegions(), sizeof(unsigned int)*1);
-        inputFile.read((char*)&tile.getPopulation(), sizeof(double));
-        inputFile.read((char*)&tile.getStoredGoods(), sizeof(float));
+        char tmp[4];
+        inputFile.read(tmp, sizeof(unsigned int));
+        inputFile.read(tmp, sizeof(double));
+        inputFile.read(tmp, sizeof(float));
     }
 
     inputFile.close();
@@ -112,11 +112,11 @@ void Map::save(const std::string& filename)
 
     for(Tile& tile : mTiles)
     {
-        outputFile.write((char*)&tile.getType(), sizeof(TileType));
+        outputFile.write((char*)&tile.getType(), sizeof(Tile::Type));
         outputFile.write((char*)&tile.getVariant(), sizeof(unsigned int));
-        outputFile.write((char*)tile.getRegions(), sizeof(unsigned int)*1);
+        /*outputFile.write((char*)tile.getRegions(), sizeof(unsigned int)*1);
         outputFile.write((char*)&tile.getPopulation(), sizeof(double));
-        outputFile.write((char*)&tile.getStoredGoods(), sizeof(float));
+        outputFile.write((char*)&tile.getStoredGoods(), sizeof(float));*/
     }
 
     outputFile.close();
@@ -130,12 +130,12 @@ void Map::draw(sf::RenderWindow& window, float dt)
         {
             // Compute the position of the tile in the 2d world
             sf::Vector2f pos;
-            pos.x = (x - y) * TILE_SIZE + mWidth * TILE_SIZE;
-            pos.y = (x + y) * TILE_SIZE * 0.5f;
+            pos.x = (x - y) * Tile::SIZE + mWidth * Tile::SIZE;
+            pos.y = (x + y) * Tile::SIZE * 0.5f;
             mTiles[y * mWidth + x].getSprite().setPosition(pos);
 
             // Change the color if the tile is selected
-            if(mTileStates[y * mWidth + x] == TileState::SELECTED)
+            if(mTileStates[y * mWidth + x] == Tile::State::SELECTED)
                 mTiles[y * mWidth + x].getSprite().setColor(sf::Color(0x7d, 0x7d, 0x7d));
             else
                 mTiles[y * mWidth + x].getSprite().setColor(sf::Color(0xff, 0xff, 0xff));
@@ -147,7 +147,7 @@ void Map::draw(sf::RenderWindow& window, float dt)
     return;
 }
 
-void Map::findConnectedRegions(std::vector<TileType> whitelist, int regionType)
+/*void Map::findConnectedRegions(std::vector<Tile::Type> whitelist, int regionType)
 {
     int label = 1;
 
@@ -161,7 +161,7 @@ void Map::findConnectedRegions(std::vector<TileType> whitelist, int regionType)
         {
             // Remove this test?
             bool found = false;
-            for (TileType type : whitelist)
+            for (Tile::Type type : whitelist)
             {
                 if (type == mTiles[y * mWidth + x].getType())
                 {
@@ -174,9 +174,9 @@ void Map::findConnectedRegions(std::vector<TileType> whitelist, int regionType)
         }
     }
     mNumRegions[regionType] = label;
-}
+}*/
 
-void Map::updateDirection(TileType type)
+void Map::updateDirection(Tile::Type type)
 {
     for (unsigned int y = 0; y < mHeight; ++y)
     {
@@ -244,13 +244,13 @@ void Map::updateDirection(TileType type)
 
 void Map::clearSelected()
 {
-    for (TileState& state : mTileStates)
-        state = TileState::DESELECTED;
+    for (Tile::State& state : mTileStates)
+        state = Tile::State::DESELECTED;
 
     mNumSelected = 0;
 }
 
-void Map::select(sf::Vector2i start, sf::Vector2i end, std::vector<TileType> blacklist)
+void Map::select(sf::Vector2i start, sf::Vector2i end, std::vector<Tile::Type> blacklist)
 {
     // Swap coordinates if necessary
     if (end.y < start.y)
@@ -270,14 +270,14 @@ void Map::select(sf::Vector2i start, sf::Vector2i end, std::vector<TileType> bla
         {
             // Check if the tile type is in the blacklist. If it is, mark it as
             // invalid, otherwise select it
-            TileType type = mTiles[y * mWidth + x].getType();
+            Tile::Type type = mTiles[y * mWidth + x].getType();
             if (std::find(blacklist.begin(), blacklist.end(), type) == blacklist.end())
             {
-                mTileStates[y * mWidth + x] = TileState::SELECTED;
+                mTileStates[y * mWidth + x] = Tile::State::SELECTED;
                 ++mNumSelected;
             }
             else
-                mTileStates[y * mWidth + x] = TileState::INVALID;
+                mTileStates[y * mWidth + x] = Tile::State::INVALID;
         }
     }
 }
@@ -312,17 +312,7 @@ void Map::setTile(std::size_t position, Tile tile)
     mTiles[position] = tile;
 }
 
-int Map::getResource(std::size_t position) const
-{
-    return mResources[position];
-}
-
-void Map::setResource(std::size_t position, int resource)
-{
-    mResources[position] = resource;
-}
-
-TileState Map::getTileState(std::size_t position) const
+Tile::State Map::getTileState(std::size_t position) const
 {
     return mTileStates[position];
 }
@@ -332,7 +322,7 @@ unsigned int Map::getNumSelected() const
     return mNumSelected;
 }
 
-void Map::depthFirstSearch(std::vector<TileType>& whitelist, int x, int y, int label, int regionType)
+/*void Map::depthFirstSearch(std::vector<Tile::Type>& whitelist, int x, int y, int label, int regionType)
 {
     // Outside of the map
     if (x < 0 || x >= static_cast<int>(mWidth) || y < 0 || y >= static_cast<int>(mHeight))
@@ -344,7 +334,7 @@ void Map::depthFirstSearch(std::vector<TileType>& whitelist, int x, int y, int l
 
     // Check if the type of the tile is in the whitelist
     bool found = false;
-    for (TileType type : whitelist)
+    for (Tile::Type type : whitelist)
     {
         if (type == mTiles[y * mWidth + x].getType())
         {
@@ -363,4 +353,4 @@ void Map::depthFirstSearch(std::vector<TileType>& whitelist, int x, int y, int l
     depthFirstSearch(whitelist, x, y + 1, label, regionType);
     depthFirstSearch(whitelist, x + 1, y, label, regionType);
     depthFirstSearch(whitelist, x, y - 1, label, regionType);
-}
+}*/

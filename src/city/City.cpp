@@ -101,7 +101,7 @@ void City::save(std::string cityName)
 
 void City::update(float dt)
 {
-    double popTotal = 0;
+    /*double popTotal = 0;
     double commercialRevenue = 0;
     double industrialRevenue = 0;
 
@@ -142,7 +142,7 @@ void City::update(float dt)
                     ++tile.getProduction();
                     mMap.setResource(mShuffledTiles[i], mMap.getResource(mShuffledTiles[i]) - 1);
                 }
-                /* Hire people. */
+                // Hire people
                 if (rand() % 100 < 15 * (1.0 - mIndustrialTax))
                     distributePool(mEmploymentPool, tile, 0.0);
             }
@@ -241,7 +241,7 @@ void City::update(float dt)
         mEarnings += commercialRevenue * mCommercialTax;
         mEarnings += industrialRevenue * mIndustrialTax;
 
-    }
+    }*/
 }
 
 void City::bulldoze(const Tile& tile)
@@ -250,14 +250,14 @@ void City::bulldoze(const Tile& tile)
     // update populations etc accordingly
     for (unsigned int pos = 0; pos < mMap.getNbTiles(); ++pos)
     {
-        if (mMap.getTileState(pos) == TileState::SELECTED)
+        if (mMap.getTileState(pos) == Tile::State::SELECTED)
         {
-            const Tile& tileToDelete = mMap.getTile(pos);
-            TileType type = tileToDelete.getType();
-            if (type == TileType::RESIDENTIAL)
+            /*const Tile& tileToDelete = mMap.getTile(pos);
+            Tile::Type type = tileToDelete.getType();
+            if (type == Tile::Type::RESIDENTIAL)
                 mPopulationPool += tileToDelete.getPopulation();
-            else if (type == TileType::COMMERCIAL || type == TileType::INDUSTRIAL)
-                mEmploymentPool += tileToDelete.getPopulation();
+            else if (type == Tile::Type::COMMERCIAL || type == Tile::Type::INDUSTRIAL)
+                mEmploymentPool += tileToDelete.getPopulation();*/
             mMap.setTile(pos, tile);
         }
     }
@@ -272,9 +272,9 @@ void City::shuffleTiles()
 
 void City::tileChanged()
 {
-    mMap.updateDirection(TileType::ROAD);
-    mMap.findConnectedRegions(
-        {TileType::ROAD, TileType::RESIDENTIAL, TileType::COMMERCIAL, TileType::INDUSTRIAL}, 0);
+    mMap.updateDirection(Tile::Type::ROAD);
+    /*mMap.findConnectedRegions(
+        {Tile::Type::ROAD, Tile::Type::RESIDENTIAL, Tile::Type::COMMERCIAL, Tile::Type::INDUSTRIAL}, 0);*/
 }
 
 Map& City::getMap()
@@ -312,7 +312,7 @@ double City::getUnemployed() const
     return mEmploymentPool;
 }
 
-double City::distributePool(double& pool, Tile& tile, double rate)
+/*double City::distributePool(double& pool, Tile& tile, double rate)
 {
     const static int moveRate = 4;
 
@@ -343,4 +343,4 @@ double City::distributePool(double& pool, Tile& tile, double rate)
     }
 
     return tile.getPopulation();
-}
+}*/

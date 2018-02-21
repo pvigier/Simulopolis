@@ -5,56 +5,34 @@
 #include <SFML/Graphics.hpp>
 #include "render/Animator.h"
 
-enum class TileType{VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
-enum class TileState{DESELECTED, SELECTED, INVALID};
-static constexpr unsigned int TILE_SIZE = 64;
-
-std::string tileTypeToStr(TileType type);
-
 class Tile
 {
 public:
+    enum class Type{VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD};
+    enum class State{DESELECTED, SELECTED, INVALID};
+    static constexpr unsigned int SIZE = 64;
+
     Tile();
     Tile(unsigned int height, const sf::Texture& texture,
-        std::vector<Animation> animations, TileType type, unsigned int cost,
-        unsigned int maxPopPerLevel, unsigned int maxLevels);
+        std::vector<Animation> animations, Type type, unsigned int cost);
 
     void draw(sf::RenderWindow& window, float dt);
     void update();
 
     sf::Sprite& getSprite();
-    TileType& getType();
-    TileType getType() const;
+    Type& getType();
+    Type getType() const;
     unsigned int& getVariant();
-    unsigned int* getRegions();
     unsigned int getCost() const;
-    double& getPopulation();
-    double getPopulation() const;
-    unsigned int getMaxPopPerLevel() const;
-    float& getProduction();
-    float& getStoredGoods();
 
 private:
     Animator mAnimator;
     sf::Sprite mSprite;
-    TileType mType;
+    Type mType;
     unsigned int mVariant;
-
-    // Region IDs of the tile, tiles in the same region are connected.
-    // First is for transport
-    unsigned int mRegions[1];
-    // Placement cost of the tile
     unsigned int mCost;
-    // Current residents / employees
-    double mPopulation;
-    // Maximum population per growth stage / tile variant
-    unsigned int mMaxPopPerLevel;
-    // Maximum number of building levels
-    unsigned int mMaxLevels;
-    // Production output per customer/worker per day, either monetary or goods
-    float mProduction;
-    // Goods stored
-    float mStoredGoods;
 };
 
 using TileAtlas = std::map<std::string, Tile>;
+
+std::string tileTypeToStr(Tile::Type type);

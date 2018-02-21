@@ -21,8 +21,8 @@ GameStateEditor::GameStateEditor() :
     mGuiView.setSize(windowSize);
     mGameView.setSize(windowSize);
     mGuiView.setCenter(windowSize * 0.5f);
-    mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * TILE_SIZE,
-        mCity.getMap().getHeight() * TILE_SIZE * 0.5f));
+    mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
+        mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
 
     // Background
     mBackground.setTexture(sTextureManager->getTexture("background"));
@@ -96,17 +96,17 @@ void GameStateEditor::handleMessages()
                     // Select tiles
                     else if(mActionState == ActionState::SELECTING)
                     {
-                        mSelectionEnd.x = gamePos.y / TILE_SIZE + 0.5f * (gamePos.x / TILE_SIZE - mCity.getMap().getWidth() - 1);
-                        mSelectionEnd.y = gamePos.y / TILE_SIZE - 0.5f * (gamePos.x / TILE_SIZE - mCity.getMap().getWidth() - 1);
+                        mSelectionEnd.x = gamePos.y / Tile::SIZE + 0.5f * (gamePos.x / Tile::SIZE - mCity.getMap().getWidth() - 1);
+                        mSelectionEnd.y = gamePos.y / Tile::SIZE - 0.5f * (gamePos.x / Tile::SIZE - mCity.getMap().getWidth() - 1);
 
                         mCity.getMap().clearSelected();
-                        if(mCurrentTile->getType() == TileType::GRASS)
-                            mCity.getMap().select(mSelectionStart, mSelectionEnd, {mCurrentTile->getType(), TileType::WATER});
+                        if(mCurrentTile->getType() == Tile::Type::GRASS)
+                            mCity.getMap().select(mSelectionStart, mSelectionEnd, {mCurrentTile->getType(), Tile::Type::WATER});
                         else
                         {
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, {
-                                mCurrentTile->getType(), TileType::FOREST, TileType::WATER, TileType::ROAD,
-                                TileType::RESIDENTIAL, TileType::COMMERCIAL, TileType::INDUSTRIAL});
+                                mCurrentTile->getType(), Tile::Type::FOREST, Tile::Type::WATER, Tile::Type::ROAD,
+                                Tile::Type::RESIDENTIAL, Tile::Type::COMMERCIAL, Tile::Type::INDUSTRIAL});
                         }
                         double totalCost = mCity.getMap().getNumSelected() * mCurrentTile->getCost();
                         // Update the GUI
@@ -163,8 +163,8 @@ void GameStateEditor::handleMessages()
                         if (mActionState != ActionState::SELECTING)
                         {
                             mActionState = ActionState::SELECTING;
-                            mSelectionStart.x = gamePos.y / TILE_SIZE + 0.5f * (gamePos.x / TILE_SIZE - mCity.getMap().getWidth() - 1);
-                            mSelectionStart.y = gamePos.y / TILE_SIZE - 0.5f * (gamePos.x / TILE_SIZE - mCity.getMap().getWidth() - 1);
+                            mSelectionStart.x = gamePos.y / Tile::SIZE + 0.5f * (gamePos.x / Tile::SIZE - mCity.getMap().getWidth() - 1);
+                            mSelectionStart.y = gamePos.y / Tile::SIZE - 0.5f * (gamePos.x / Tile::SIZE - mCity.getMap().getWidth() - 1);
                         }
                     }
                     break;

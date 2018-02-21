@@ -22,11 +22,11 @@ public:
 
     void draw(sf::RenderWindow& window, float dt);
 
-    void findConnectedRegions(std::vector<TileType> whitelist, int regionType = 0);
-    void updateDirection(TileType type);
+    //void findConnectedRegions(std::vector<Tile::Type> whitelist, int regionType = 0);
+    void updateDirection(Tile::Type type);
 
         // Select the tiles within the bounds
-    void select(sf::Vector2i start, sf::Vector2i end, std::vector<TileType> blacklist);
+    void select(sf::Vector2i start, sf::Vector2i end, std::vector<Tile::Type> blacklist);
     // Deselect all tiles
     void clearSelected();
 
@@ -36,9 +36,7 @@ public:
     Tile& getTile(std::size_t position);
     const Tile& getTile(std::size_t position) const;
     void setTile(std::size_t position, Tile tile);
-    int getResource(std::size_t position) const;
-    void setResource(std::size_t position, int resource);
-    TileState getTileState(std::size_t position) const;
+    Tile::State getTileState(std::size_t position) const;
     unsigned int getNumSelected() const;
 
 private:
@@ -46,11 +44,10 @@ private:
     unsigned int mWidth;
     unsigned int mHeight;
     std::vector<Tile> mTiles;
-    std::vector<int> mResources;
     unsigned int mSumSelected;
     unsigned int mNumRegions[1];
-    std::vector<TileState> mTileStates;
+    std::vector<Tile::State> mTileStates;
     unsigned int mNumSelected;
 
-    void depthFirstSearch(std::vector<TileType>& whitelist, int x, int y, int label, int regionType);
+    //void depthFirstSearch(std::vector<Tile::Type>& whitelist, int x, int y, int label, int regionType);
 };

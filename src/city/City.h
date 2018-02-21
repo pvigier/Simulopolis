@@ -53,10 +53,10 @@ private:
     double mCommercialTax;
     double mIndustrialTax;
 
-    /* Running total of city earnings (from tax etc) this month. */
+    // Running total of city earnings (from tax etc) this month
     double mEarnings;
     double mFunds;
 
-    double distributePool(double& pool, Tile& tile, double rate = 0.0);
+    //double distributePool(double& pool, Tile& tile, double rate = 0.0);
 };
 
