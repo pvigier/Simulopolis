@@ -76,14 +76,12 @@ void GameStateStart::createGui()
 
     // Load button
     GuiButton* loadGameButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "Load Game", sf::Vector2f(192, 32), 24,
-        Message(MessageType::GUI, std::make_shared<std::string>("load_game")));
+        "Load Game", sf::Vector2f(192, 32), 24, Message::create<std::string>(MessageType::GUI, "load_game"));
     mGui.add("loadGameButton", loadGameButton);
 
     // Exit button
     GuiButton* exitButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "Exit", sf::Vector2f(192, 32), 24,
-        Message(MessageType::GUI, std::make_shared<std::string>("exit")));
+        "Exit", sf::Vector2f(192, 32), 24, Message::create<std::string>(MessageType::GUI, "exit"));
     mGui.add("exitButton", exitButton);
 
     GuiWidget* menu = new GuiWidget();
@@ -104,6 +102,5 @@ void GameStateStart::createGui()
 
 void GameStateStart::loadGame()
 {
-    sMessageBus->send(Message(sGameId, MessageType::PUSH_GAME_STATE,
-        std::make_shared<GameStateName>(GameStateName::EDITOR)));
+    sMessageBus->send(Message::create(sGameId, MessageType::PUSH_GAME_STATE, GameStateName::EDITOR));
 }

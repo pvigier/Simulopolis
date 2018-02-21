@@ -234,43 +234,37 @@ void GameStateEditor::createGui()
     // Right click menu
     GuiButton* grassButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
         "Flatten $" + std::to_string(getCost(Tile::Type::GRASS)),
-        sf::Vector2f(196, 16), 12,
-        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::GRASS)));
+        sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::GRASS));
     mGui.add("grassButton", grassButton);
     grassButton->subscribe(mMailbox.getId());
 
     GuiButton* forestButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
         "Forest $" + std::to_string(getCost(Tile::Type::FOREST)),
-        sf::Vector2f(196, 16), 12,
-        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::FOREST)));
+        sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::FOREST));
     mGui.add("forestButton", forestButton);
     forestButton->subscribe(mMailbox.getId());
 
     GuiButton* residentialButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
         "Residential Zone $" + std::to_string(getCost(Tile::Type::RESIDENTIAL)),
-        sf::Vector2f(196, 16), 12,
-        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::RESIDENTIAL)));
+        sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::RESIDENTIAL));
     mGui.add("residentialButton", residentialButton);
     residentialButton->subscribe(mMailbox.getId());
 
     GuiButton* commercialButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
         "Commercial Zone $" + std::to_string(getCost(Tile::Type::COMMERCIAL)),
-        sf::Vector2f(196, 16), 12,
-        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::COMMERCIAL)));
+        sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::COMMERCIAL));
     mGui.add("commercialButton", commercialButton);
     commercialButton->subscribe(mMailbox.getId());
 
     GuiButton* industrialButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
         "Industrial Zone $" + std::to_string(getCost(Tile::Type::INDUSTRIAL)),
-        sf::Vector2f(196, 16), 12,
-        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::INDUSTRIAL)));
+        sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::INDUSTRIAL));
     mGui.add("industrialButton", industrialButton);
     industrialButton->subscribe(mMailbox.getId());
 
     GuiButton* roadButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
         "Road $" + std::to_string(getCost(Tile::Type::ROAD)),
-        sf::Vector2f(196, 16), 12,
-        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::ROAD)));
+        sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::ROAD));
     mGui.add("roadButton", roadButton);
     roadButton->subscribe(mMailbox.getId());
 
