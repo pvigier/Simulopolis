@@ -62,6 +62,8 @@ void GameStateStart::handleMessages()
             std::string info = message.getInfo<std::string>();
             if (info == "load_game")
                 loadGame();
+            else if (info == "exit")
+                sRenderEngine->getWindow().close();
         }
     }
 }
@@ -75,20 +77,27 @@ void GameStateStart::createGui()
     // Load button
     GuiButton* loadGameButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
         "Load Game", sf::Vector2f(192, 32), 24, "load_game");
-    loadGameButton->setPosition(sf::Vector2f(sRenderEngine->getWindow().getSize()) * 0.5f);
     mGui.add("loadGameButton", loadGameButton);
+
+    // Exit button
+    GuiButton* exitButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
+        "Exit", sf::Vector2f(192, 32), 24, "exit");
+    mGui.add("exitButton", exitButton);
 
     GuiWidget* menu = new GuiWidget();
     menu->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     menu->add(loadGameButton);
+    menu->add(exitButton);
     GuiVBoxLayout* menuLayout = new GuiVBoxLayout();
     menuLayout->setHAlignment(GuiLayout::HAlignment::Center);
     menuLayout->setVAlignment(GuiLayout::VAlignment::Center);
+    menuLayout->setSpacing(16.0f);
     menu->setLayout(menuLayout);
     mGui.addRoot("menu", menu);
 
     // Register to events
     loadGameButton->subscribe(mMailbox.getId());
+    exitButton->subscribe(mMailbox.getId());
 }
 
 void GameStateStart::loadGame()
