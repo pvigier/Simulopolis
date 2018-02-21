@@ -101,6 +101,81 @@ public:
     }
 
     /**
+     * \brief Create a message without extra info
+     *
+     * \param sender Id of the sender
+     * \param receiver Id of the receiver
+     * \param type Type of the message
+     */
+    template<typename T>
+    static Message create(Id sender, Id receiver, MessageType type)
+    {
+        return Message(sender, receiver, type);
+    }
+
+    /**
+     * \brief Create a message with extra info
+     *
+     * \param sender Id of the sender
+     * \param receiver Id of the receiver
+     * \param type Type of the message
+     * \param info Const reference to the extra info
+     */
+    template<typename T>
+    static Message create(Id sender, Id receiver, MessageType type, const T& info)
+    {
+        return Message(sender, receiver, type, std::make_shared<T>(info));
+    }
+
+    /**
+     * \brief Create a message with undefined sender without extra info
+     *
+     * \param receiver Id of the receiver
+     * \param type Type of the message
+     */
+    template<typename T>
+    static Message create(Id receiver, MessageType type)
+    {
+        return Message(receiver, type);
+    }
+
+    /**
+     * \brief Create a message with undefined sender and extra info
+     *
+     * \param receiver Id of the receiver
+     * \param type Type of the message
+     * \param info Const reference to the extra info
+     */
+    template<typename T>
+    static Message create(Id receiver, MessageType type, const T& info)
+    {
+        return Message(receiver, type, std::make_shared<T>(info));
+    }
+
+    /**
+     * \brief Create a message with undefined sender and receiver without extra info
+     *
+     * \param type Type of the message
+     */
+    template<typename T>
+    static Message create(MessageType type)
+    {
+        return Message(type);
+    }
+
+    /**
+     * \brief Create a message with undefined sender and receiver and extra info
+     *
+     * \param type Type of the message
+     * \param info Const reference to the extra info
+     */
+    template<typename T>
+    static Message create(MessageType type, const T& info)
+    {
+        return Message(type, std::make_shared<T>(info));
+    }
+
+    /**
      * \brief Return true if the message has extra info and false otherwise
      */
     bool hasInfo()
