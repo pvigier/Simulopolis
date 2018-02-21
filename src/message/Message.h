@@ -53,6 +53,65 @@ public:
     }
 
     /**
+     * \brief Constructor for message with undefined sender without extra info
+     *
+     * \param receiver Id of the receiver
+     * \param type Type of the message
+     */
+    Message(Id receiver, MessageType type) :
+        sender(UNDEFINED), receiver(receiver), type(type), info()
+    {
+
+    }
+
+    /**
+     * \brief Constructor for message with undefined sender and extra info
+     *
+     * \param receiver Id of the receiver
+     * \param type Type of the message
+     * \param info Shared pointer on the extra info
+     */
+    Message(Id receiver, MessageType type, std::shared_ptr<void> info) :
+        sender(UNDEFINED), receiver(receiver), type(type), info(info)
+    {
+
+    }
+
+    /**
+     * \brief Constructor for message with undefined sender and receiver without extra info
+     *
+     * \param type Type of the message
+     */
+    Message(MessageType type) :
+        sender(UNDEFINED), receiver(UNDEFINED), type(type), info()
+    {
+
+    }
+
+    /**
+     * \brief Constructor for message with undefined sender and receiver and extra info
+     *
+     * \param type Type of the message
+     * \param info Shared pointer on the extra info
+     */
+    Message(MessageType type, std::shared_ptr<void> info) :
+        sender(UNDEFINED), receiver(UNDEFINED), type(type), info(info)
+    {
+
+    }
+
+    /**
+     * \brief Return true if the message has extra info and false otherwise
+     */
+    bool hasInfo()
+    {
+        if (info)
+            return true;
+        return false;
+    }
+
+
+    /**
      * \brief Cast the extra info to the specified type
      */
     template<typename T>
