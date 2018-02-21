@@ -98,25 +98,31 @@ void GuiWidget::setVisible(bool visible)
 void GuiWidget::updateMouseMoved(sf::Vector2f position)
 {
     if (mVisible)
+    {
         onHover(position);
-    for (GuiWidget* widget : mChildren)
-        widget->updateMouseMoved(position);
+        for (GuiWidget* widget : mChildren)
+            widget->updateMouseMoved(position);
+    }
 }
 
 void GuiWidget::updateMouseButtonPressed(sf::Vector2f position)
 {
     if (mVisible)
+    {
         onPress(position);
-    for (GuiWidget* widget : mChildren)
-        widget->updateMouseButtonPressed(position);
+        for (GuiWidget* widget : mChildren)
+            widget->updateMouseButtonPressed(position);
+    }
 }
 
 void GuiWidget::updateMouseButtonReleased(sf::Vector2f position)
 {
     if (mVisible)
+    {
         onRelease(position);
-    for (GuiWidget* widget : mChildren)
-        widget->updateMouseButtonReleased(position);
+        for (GuiWidget* widget : mChildren)
+            widget->updateMouseButtonReleased(position);
+    }
 }
 
 void GuiWidget::render(sf::RenderTarget& target, sf::RenderStates states) const
