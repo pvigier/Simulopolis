@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <map>
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "Tile.h"
@@ -11,19 +10,20 @@ class TextureManager;
 class Map
 {
 public:
+
     Map();
     Map(const std::string& filename, unsigned int width, unsigned int height);
 
     static void loadTiles(const TextureManager& textureManager);
-    static TileAtlas& getTileAtlas();
+    static Tile createTile(Tile::Type type);
 
     void load(const std::string& filename, unsigned int width, unsigned int height);
     void save(const std::string& filename);
 
-    void draw(sf::RenderWindow& window, float dt);
+    void draw(sf::RenderWindow& window);
 
     //void findConnectedRegions(std::vector<Tile::Type> whitelist, int regionType = 0);
-    void updateDirection(Tile::Type type);
+    //void updateDirection(Tile::Type type);
 
         // Select the tiles within the bounds
     void select(sf::Vector2i start, sf::Vector2i end, std::vector<Tile::Type> blacklist);
@@ -40,7 +40,7 @@ public:
     unsigned int getNumSelected() const;
 
 private:
-    static TileAtlas sTileAtlas;
+    static std::vector<Tile> sTileAtlas;
     unsigned int mWidth;
     unsigned int mHeight;
     std::vector<Tile> mTiles;

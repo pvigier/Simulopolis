@@ -13,11 +13,12 @@ public:
     void save(std::string cityName);
 
     void update(float dt);
-    void bulldoze(const Tile& tile);
+    void bulldoze(Tile::Type type);
     void shuffleTiles();
     void tileChanged();
 
     Map& getMap();
+    const Map& getMap() const;
     int getDay() const;
     double getPopulation() const;
     double getEmployable() const;

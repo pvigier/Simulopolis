@@ -27,8 +27,11 @@ private:
     float mZoomLevel;
     sf::Vector2i mSelectionStart;
     sf::Vector2i mSelectionEnd;
-    Tile* mCurrentTile;
+    Tile::Type mCurrentTile;
     Gui mGui;
 
     void createGui();
+
+    unsigned int getCost(Tile::Type type) const;
+    unsigned int computeCostOfSelection() const;
 };

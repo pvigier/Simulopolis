@@ -244,7 +244,7 @@ void City::update(float dt)
     }*/
 }
 
-void City::bulldoze(const Tile& tile)
+void City::bulldoze(Tile::Type type)
 {
     // Replace the selected tiles on the map with the tile and
     // update populations etc accordingly
@@ -258,7 +258,7 @@ void City::bulldoze(const Tile& tile)
                 mPopulationPool += tileToDelete.getPopulation();
             else if (type == Tile::Type::COMMERCIAL || type == Tile::Type::INDUSTRIAL)
                 mEmploymentPool += tileToDelete.getPopulation();*/
-            mMap.setTile(pos, tile);
+            mMap.setTile(pos, Map::createTile(type));
         }
     }
 }
@@ -272,12 +272,17 @@ void City::shuffleTiles()
 
 void City::tileChanged()
 {
-    mMap.updateDirection(Tile::Type::ROAD);
+    //mMap.updateDirection(Tile::Type::ROAD);
     /*mMap.findConnectedRegions(
         {Tile::Type::ROAD, Tile::Type::RESIDENTIAL, Tile::Type::COMMERCIAL, Tile::Type::INDUSTRIAL}, 0);*/
 }
 
 Map& City::getMap()
+{
+    return mMap;
+}
+
+const Map& City::getMap() const
 {
     return mMap;
 }

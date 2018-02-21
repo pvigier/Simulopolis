@@ -10,7 +10,7 @@
 
 GameStateEditor::GameStateEditor() :
     mCity("saves/city"), mActionState(ActionState::NONE), mZoomLevel(1.0f),
-    mCurrentTile(&Map::getTileAtlas()["grass"]),
+    mCurrentTile(Tile::Type::GRASS),
     mGui(sf::Vector2f(sRenderEngine->getWindow().getSize()))
 {
     // Initialize the city
@@ -47,7 +47,7 @@ void GameStateEditor::draw(const float dt)
     sRenderEngine->draw(mBackground);
 
     sRenderEngine->setView(mGameView);
-    mCity.getMap().draw(sRenderEngine->getWindow(), dt);
+    mCity.getMap().draw(sRenderEngine->getWindow());
 
     sRenderEngine->draw(mGui);
 }
@@ -61,7 +61,7 @@ void GameStateEditor::update(const float dt)
     mGui.get<GuiButton>("fundsLabel")->setText("$" + std::to_string(long(mCity.getFunds())));
     mGui.get<GuiButton>("populationLabel")->setText(std::to_string(long(mCity.getPopulation())) + " (" + std::to_string(long(mCity.getHomeless())) + ")");
     mGui.get<GuiButton>("employmentLabel")->setText(std::to_string(long(mCity.getEmployable())) + " (" + std::to_string(long(mCity.getUnemployed())) + ")");
-    mGui.get<GuiButton>("currentTileLabel")->setText(tileTypeToStr(mCurrentTile->getType()));
+    mGui.get<GuiButton>("currentTileLabel")->setText(tileTypeToStr(mCurrentTile));
 }
 
 void GameStateEditor::handleMessages()
@@ -100,27 +100,22 @@ void GameStateEditor::handleMessages()
                         mSelectionEnd.y = gamePos.y / Tile::SIZE - 0.5f * (gamePos.x / Tile::SIZE - mCity.getMap().getWidth() - 1);
 
                         mCity.getMap().clearSelected();
-                        if(mCurrentTile->getType() == Tile::Type::GRASS)
-                            mCity.getMap().select(mSelectionStart, mSelectionEnd, {mCurrentTile->getType(), Tile::Type::WATER});
+                        if(mCurrentTile == Tile::Type::GRASS)
+                            mCity.getMap().select(mSelectionStart, mSelectionEnd, {mCurrentTile, Tile::Type::WATER});
                         else
                         {
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, {
-                                mCurrentTile->getType(), Tile::Type::FOREST, Tile::Type::WATER, Tile::Type::ROAD,
+                                mCurrentTile, Tile::Type::FOREST, Tile::Type::WATER, Tile::Type::ROAD,
                                 Tile::Type::RESIDENTIAL, Tile::Type::COMMERCIAL, Tile::Type::INDUSTRIAL});
                         }
-                        double totalCost = mCity.getMap().getNumSelected() * mCurrentTile->getCost();
                         // Update the GUI
+                        unsigned int totalCost = computeCostOfSelection();
                         GuiButton* selectionCostText = mGui.get<GuiButton>("selectionCostText");
                         selectionCostText->setText("$" + std::to_string(totalCost));
-                        if (mCity.getFunds() < totalCost)
-                            selectionCostText->setHighlight(true);
-                        else
-                            selectionCostText->setHighlight(false);
+                        selectionCostText->setHighlight(mCity.getFunds() < totalCost);
                         selectionCostText->setPosition(sf::Vector2f(mousePosition) + sf::Vector2f(16, -16));
                         selectionCostText->setVisible(true);
                     }
-                    // Highlight entries of the right click context menu
-                    //mGuiSystem.at("rightClickMenu").highlight(mGuiSystem.at("rightClickMenu").getEntry(guiPos));
                     break;
                 case sf::Event::MouseButtonPressed:
                     // Start panning
@@ -177,16 +172,12 @@ void GameStateEditor::handleMessages()
                     {
                         if (mActionState == ActionState::SELECTING)
                         {
-                            // Replace tiles if enough funds and a tile is selected
-                            if (mCurrentTile != nullptr)
+                            unsigned int totalCost = computeCostOfSelection();
+                            if(mCity.getFunds() >= totalCost)
                             {
-                                unsigned int totalCost = mCurrentTile->getCost() * mCity.getMap().getNumSelected();
-                                if(mCity.getFunds() >= totalCost)
-                                {
-                                    mCity.bulldoze(*mCurrentTile);
-                                    mCity.getFunds() -= totalCost;
-                                    mCity.tileChanged();
-                                }
+                                mCity.bulldoze(mCurrentTile);
+                                mCity.getFunds() -= totalCost;
+                                mCity.tileChanged();
                             }
                             mGui.get("selectionCostText")->setVisible(false);
                             mActionState = ActionState::NONE;
@@ -196,7 +187,6 @@ void GameStateEditor::handleMessages()
                     break;
                 case sf::Event::MouseWheelMoved:
                     // Zoom the view
-                    std::cout << mZoomLevel << std::endl;
                     if (event.mouseWheel.delta < 0)
                     {
                         mGameView.zoom(2.0f);
@@ -212,10 +202,10 @@ void GameStateEditor::handleMessages()
                     break;
             }
         }
-        if (message.type == MessageType::GUI)
+        if (message.type == MessageType::GUI && message.hasInfo())
         {
             // Select a context menu button
-            mCurrentTile = &Map::getTileAtlas().at(message.getInfo<std::string>());
+            mCurrentTile = message.getInfo<Tile::Type>();
         }
     }
     /*while (!mMailbox.isEmpty())
@@ -243,38 +233,44 @@ void GameStateEditor::createGui()
 {
     // Right click menu
     GuiButton* grassButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "Flatten $" + std::to_string(Map::getTileAtlas()["grass"].getCost()),
-        sf::Vector2f(196, 16), 12, "grass");
+        "Flatten $" + std::to_string(getCost(Tile::Type::GRASS)),
+        sf::Vector2f(196, 16), 12,
+        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::GRASS)));
     mGui.add("grassButton", grassButton);
     grassButton->subscribe(mMailbox.getId());
 
     GuiButton* forestButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "Forest $" + std::to_string(Map::getTileAtlas()["forest"].getCost()),
-        sf::Vector2f(196, 16), 12, "forest");
+        "Forest $" + std::to_string(getCost(Tile::Type::FOREST)),
+        sf::Vector2f(196, 16), 12,
+        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::FOREST)));
     mGui.add("forestButton", forestButton);
     forestButton->subscribe(mMailbox.getId());
 
     GuiButton* residentialButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "Residential Zone $" + std::to_string(Map::getTileAtlas()["residential"].getCost()),
-        sf::Vector2f(196, 16), 12, "residential");
+        "Residential Zone $" + std::to_string(getCost(Tile::Type::RESIDENTIAL)),
+        sf::Vector2f(196, 16), 12,
+        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::RESIDENTIAL)));
     mGui.add("residentialButton", residentialButton);
     residentialButton->subscribe(mMailbox.getId());
 
     GuiButton* commercialButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "Commercial Zone $" + std::to_string(Map::getTileAtlas()["commercial"].getCost()),
-        sf::Vector2f(196, 16), 12, "commercial");
+        "Commercial Zone $" + std::to_string(getCost(Tile::Type::COMMERCIAL)),
+        sf::Vector2f(196, 16), 12,
+        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::COMMERCIAL)));
     mGui.add("commercialButton", commercialButton);
     commercialButton->subscribe(mMailbox.getId());
 
     GuiButton* industrialButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "Industrial Zone $" + std::to_string(Map::getTileAtlas()["industrial"].getCost()),
-        sf::Vector2f(196, 16), 12, "industrial");
+        "Industrial Zone $" + std::to_string(getCost(Tile::Type::INDUSTRIAL)),
+        sf::Vector2f(196, 16), 12,
+        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::INDUSTRIAL)));
     mGui.add("industrialButton", industrialButton);
     industrialButton->subscribe(mMailbox.getId());
 
     GuiButton* roadButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "Road $" + std::to_string(Map::getTileAtlas()["road"].getCost()),
-        sf::Vector2f(196, 16), 12, "road");
+        "Road $" + std::to_string(getCost(Tile::Type::ROAD)),
+        sf::Vector2f(196, 16), 12,
+        Message(MessageType::GUI, std::make_shared<Tile::Type>(Tile::Type::ROAD)));
     mGui.add("roadButton", roadButton);
     roadButton->subscribe(mMailbox.getId());
 
@@ -292,28 +288,28 @@ void GameStateEditor::createGui()
     mGui.addRoot("rightClickMenu", rightClickMenu);
 
     GuiButton* selectionCostText = new GuiButton(sStylesheetManager->getStylesheet("text"), "",
-        sf::Vector2f(196, 16), 12, "");
+        sf::Vector2f(196, 16), 12, Message(MessageType::GUI));
     mGui.addRoot("selectionCostText", selectionCostText);
 
     // Info bar
     GuiButton* dayLabel = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, "time");
+        "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, Message(MessageType::GUI));
     mGui.add("dayLabel", dayLabel);
 
     GuiButton* fundsLabel = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, "funds");
+        "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, Message(MessageType::GUI));
     mGui.add("fundsLabel", fundsLabel);
 
     GuiButton* populationLabel = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, "population");
+        "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, Message(MessageType::GUI));
     mGui.add("populationLabel", populationLabel);
 
     GuiButton* employmentLabel = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, "employment");
+        "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, Message(MessageType::GUI));
     mGui.add("employmentLabel", employmentLabel);
 
     GuiButton* currentTileLabel = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, "tile");
+        "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, Message(MessageType::GUI));
     mGui.add("currentTileLabel", currentTileLabel);
 
     GuiWidget* infoBar = new GuiWidget();
@@ -327,4 +323,23 @@ void GameStateEditor::createGui()
     infoBarLayout->setVAlignment(GuiLayout::VAlignment::Bottom);
     infoBar->setLayout(infoBarLayout);
     mGui.addRoot("infoBar", infoBar);
+}
+
+unsigned int GameStateEditor::getCost(Tile::Type type) const
+{
+    switch (type)
+    {
+        case Tile::Type::GRASS: return 50;
+        case Tile::Type::FOREST: return 100;
+        case Tile::Type::RESIDENTIAL: return 300;
+        case Tile::Type::COMMERCIAL: return 300;
+        case Tile::Type::INDUSTRIAL: return 300;
+        case Tile::Type::ROAD: return 100;
+        default: return 0;
+    }
+}
+
+unsigned int GameStateEditor::computeCostOfSelection() const
+{
+    return getCost(mCurrentTile) * mCity.getMap().getNumSelected();
 }

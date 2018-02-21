@@ -2,7 +2,7 @@
 #include <fstream>
 #include "resource/TextureManager.h"
 
-TileAtlas Map::sTileAtlas;
+std::vector<Tile> Map::sTileAtlas;
 
 Map::Map() : mWidth(0), mHeight(0), mNumSelected(0)
 {
@@ -17,43 +17,42 @@ Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
 
 void Map::loadTiles(const TextureManager& textureManager)
 {
-    sTileAtlas["grass"] = Tile(1, textureManager.getTexture("grass"),
-        {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}})},
-        Tile::Type::GRASS, 50);
+    // void
+    sTileAtlas.push_back(Tile(textureManager.getTexture("grass"),
+        sf::IntRect(0, 0, 132, 99), Tile::Type::GRASS, 1));
 
-    sTileAtlas["forest"] = Tile(1, textureManager.getTexture("forest"),
-        {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}})},
-        Tile::Type::FOREST, 100);
+    sTileAtlas.push_back(Tile(textureManager.getTexture("grass"),
+        sf::IntRect(0, 0, 132, 99), Tile::Type::GRASS, 1));
 
-    sTileAtlas["water"] = Tile(1, textureManager.getTexture("water"),
-        {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}})},
-        Tile::Type::WATER, 0);
+    sTileAtlas.push_back(Tile(textureManager.getTexture("forest"),
+        sf::IntRect(0, 0, 132, 99), Tile::Type::FOREST, 1));
 
-    sTileAtlas["residential"] = Tile(2, textureManager.getTexture("residential"),
-        {Animation({{sf::IntRect(0, 0, 133, 163), 0.5f}})},
-        Tile::Type::RESIDENTIAL, 300);
+    sTileAtlas.push_back(Tile(textureManager.getTexture("water"),
+        sf::IntRect(0, 0, 132, 99), Tile::Type::WATER, 1));
 
-    sTileAtlas["commercial"] = Tile(2, textureManager.getTexture("commercial"),
-        {Animation({{sf::IntRect(0, 0, 132, 163), 0.5f}})},
-        Tile::Type::COMMERCIAL, 300);
+    sTileAtlas.push_back(Tile(textureManager.getTexture("residential"),
+        sf::IntRect(0, 0, 132, 163), Tile::Type::RESIDENTIAL, 2));
 
-    sTileAtlas["industrial"] = Tile(2, textureManager.getTexture("industrial"),
-        {Animation({{sf::IntRect(0, 0, 132, 163), 0.5f}})},
-        Tile::Type::INDUSTRIAL, 300);
+    sTileAtlas.push_back(Tile(textureManager.getTexture("commercial"),
+        sf::IntRect(0, 0, 132, 163), Tile::Type::COMMERCIAL, 2));
 
-    sTileAtlas["road"] = Tile(1, textureManager.getTexture("road"),
-        {Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 99, 132, 99), 0.5f}}),
+    sTileAtlas.push_back(Tile(textureManager.getTexture("industrial"),
+        sf::IntRect(0, 0, 132, 163), Tile::Type::INDUSTRIAL, 2));
+
+    sTileAtlas.push_back(Tile(textureManager.getTexture("road"),
+        sf::IntRect(0, 0, 132, 99), Tile::Type::ROAD, 1));
+
+    /*{Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 99, 132, 99), 0.5f}}),
         Animation({{sf::IntRect(0, 198, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 297, 132, 99), 0.5f}}),
         Animation({{sf::IntRect(0, 396, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 495, 132, 99), 0.5f}}),
         Animation({{sf::IntRect(0, 594, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 693, 132, 99), 0.5f}}),
         Animation({{sf::IntRect(0, 792, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 891, 132, 99), 0.5f}}),
-        Animation({{sf::IntRect(0, 990, 132, 99), 0.5f}})},
-        Tile::Type::ROAD, 100);
+        Animation({{sf::IntRect(0, 990, 132, 99), 0.5f}})},*/
 }
 
-TileAtlas& Map::getTileAtlas()
+Tile Map::createTile(Tile::Type type)
 {
-    return sTileAtlas;
+    return sTileAtlas[static_cast<int>(type)];
 }
 
 void Map::load(const std::string& filename, unsigned int width, unsigned int height)
@@ -70,33 +69,9 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
 
         Tile::Type type;
         inputFile.read((char*)&type, sizeof(type));
-        switch (type)
-        {
-            case Tile::Type::FOREST:
-                mTiles.push_back(sTileAtlas.at("forest"));
-                break;
-            case Tile::Type::WATER:
-                mTiles.push_back(sTileAtlas.at("water"));
-                break;
-            case Tile::Type::RESIDENTIAL:
-                mTiles.push_back(sTileAtlas.at("residential"));
-                break;
-            case Tile::Type::COMMERCIAL:
-                mTiles.push_back(sTileAtlas.at("commercial"));
-                break;
-            case Tile::Type::INDUSTRIAL:
-                mTiles.push_back(sTileAtlas.at("industrial"));
-                break;
-            case Tile::Type::ROAD:
-                mTiles.push_back(sTileAtlas.at("road"));
-                break;
-            default:
-                mTiles.push_back(sTileAtlas.at("grass"));
-                break;
-        }
-        Tile& tile = mTiles.back();
-        inputFile.read((char*)&tile.getVariant(), sizeof(unsigned int));
+        mTiles.push_back(createTile(type));
         char tmp[4];
+        inputFile.read(tmp, sizeof(unsigned int));
         inputFile.read(tmp, sizeof(unsigned int));
         inputFile.read(tmp, sizeof(double));
         inputFile.read(tmp, sizeof(float));
@@ -112,9 +87,10 @@ void Map::save(const std::string& filename)
 
     for(Tile& tile : mTiles)
     {
-        outputFile.write((char*)&tile.getType(), sizeof(Tile::Type));
-        outputFile.write((char*)&tile.getVariant(), sizeof(unsigned int));
-        /*outputFile.write((char*)tile.getRegions(), sizeof(unsigned int)*1);
+        Tile::Type type = tile.getType();
+        outputFile.write((char*)&type, sizeof(Tile::Type));
+        /*outputFile.write((char*)&tile.getVariant(), sizeof(unsigned int));
+        outputFile.write((char*)tile.getRegions(), sizeof(unsigned int)*1);
         outputFile.write((char*)&tile.getPopulation(), sizeof(double));
         outputFile.write((char*)&tile.getStoredGoods(), sizeof(float));*/
     }
@@ -122,7 +98,7 @@ void Map::save(const std::string& filename)
     outputFile.close();
 }
 
-void Map::draw(sf::RenderWindow& window, float dt)
+void Map::draw(sf::RenderWindow& window)
 {
     for(unsigned int y = 0; y < mHeight; ++y)
     {
@@ -141,7 +117,7 @@ void Map::draw(sf::RenderWindow& window, float dt)
                 mTiles[y * mWidth + x].getSprite().setColor(sf::Color(0xff, 0xff, 0xff));
 
             // Draw the tile
-            mTiles[y * mWidth + x].draw(window, dt);
+            window.draw(mTiles[y * mWidth + x].getSprite());
         }
     }
     return;
@@ -176,7 +152,7 @@ void Map::draw(sf::RenderWindow& window, float dt)
     mNumRegions[regionType] = label;
 }*/
 
-void Map::updateDirection(Tile::Type type)
+/*void Map::updateDirection(Tile::Type type)
 {
     for (unsigned int y = 0; y < mHeight; ++y)
     {
@@ -240,7 +216,7 @@ void Map::updateDirection(Tile::Type type)
                 mTiles[pos].getVariant() = 1;
         }
     }
-}
+}*/
 
 void Map::clearSelected()
 {
