@@ -5,20 +5,12 @@
 #include "resource/TextureManager.h"
 #include "resource/StylesheetManager.h"
 #include "gui/GuiButton.h"
+#include "gui/GuiImage.h"
 #include "gui/GuiVBoxLayout.h"
 
 GameStateStart::GameStateStart() :
     mGui(sf::Vector2f(sRenderEngine->getWindow().getSize()))
 {
-    // View
-    sf::Vector2f pos = sf::Vector2f(sRenderEngine->getWindow().getSize());
-    mView.setSize(pos);
-    pos *= 0.5f;
-    mView.setCenter(pos);
-
-    // Background
-    mBackground.setTexture(sTextureManager->getTexture("background"));
-
     // Gui
     createGui();
 
@@ -33,11 +25,6 @@ GameStateStart::~GameStateStart()
 
 void GameStateStart::draw(const float dt)
 {
-    sRenderEngine->setView(mView);
-
-    sRenderEngine->clear();
-    sRenderEngine->draw(mBackground);
-
     sRenderEngine->draw(mGui);
 }
 
@@ -81,6 +68,11 @@ void GameStateStart::handleMessages()
 
 void GameStateStart::createGui()
 {
+    // Background
+    GuiImage* background = new GuiImage(sTextureManager->getTexture("background"));
+    mGui.addRoot("background", background);
+
+    // Load button
     GuiButton* loadGameButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
         "Load Game", sf::Vector2f(192, 32), 24, "load_game");
     loadGameButton->setPosition(sf::Vector2f(sRenderEngine->getWindow().getSize()) * 0.5f);

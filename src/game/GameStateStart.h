@@ -15,8 +15,6 @@ public:
     virtual void handleMessages() override;
 
 private:
-    sf::View mView;
-    sf::Sprite mBackground;
     Gui mGui;
 
     void createGui();
