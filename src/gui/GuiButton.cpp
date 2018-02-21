@@ -1,12 +1,7 @@
 #include "gui/GuiButton.h"
 
-GuiButton::GuiButton(const GuiStyle& style) : mStyle(style)
-{
-
-}
-
 GuiButton::GuiButton(const GuiStyle& style, const std::string& text, sf::Vector2f dimensions,
-    unsigned int characterSize, const std::string& message) :
+    unsigned int characterSize, Message message) :
     mStyle(style), mShape(dimensions), mText(text, *mStyle.font, characterSize), mMessage(message)
 {
     mShape.setOutlineThickness(-mStyle.borderSize);
@@ -38,10 +33,10 @@ void GuiButton::onHover(sf::Vector2f position)
 void GuiButton::onPress(sf::Vector2f position)
 {
     if (hitButton(position))
-        notify(Message(UNDEFINED, UNDEFINED, MessageType::GUI, std::make_shared<std::string>(mMessage)));
+        notify(mMessage);
 }
 
-std::string GuiButton::getMessage() const
+Message GuiButton::getMessage() const
 {
     return mMessage;
 }

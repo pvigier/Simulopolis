@@ -9,14 +9,13 @@ class GuiStyle;
 class GuiButton : public GuiWidget
 {
 public:
-    GuiButton(const GuiStyle& style);
     GuiButton(const GuiStyle& style, const std::string& text, sf::Vector2f dimensions,
-        unsigned int characterSize, const std::string& message);
+        unsigned int characterSize, Message message);
 
     virtual void setPosition(sf::Vector2f position) override;
     virtual void setSize(sf::Vector2f size) override;
 
-    std::string getMessage() const;
+    Message getMessage() const;
 
     void setText(const std::string& text);
     void setHighlight(bool highlight);
@@ -37,6 +36,6 @@ private:
     sf::RectangleShape mShape;
     // Text displayed on the button
     sf::Text mText;
-    // String returned when the button is activated
-    std::string mMessage;
+    // Integer returned when the button is activated
+    Message mMessage;
 };
