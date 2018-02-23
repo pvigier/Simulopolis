@@ -33,7 +33,7 @@ public:
     unsigned int getNumSelected() const;
 
 private:
-    static std::vector<Tile> sTileAtlas;
+    static std::vector<std::unique_ptr<Tile>> sTileAtlas;
     unsigned int mWidth;
     unsigned int mHeight;
     std::vector<std::unique_ptr<Tile>> mTiles;

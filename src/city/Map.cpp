@@ -2,7 +2,7 @@
 #include <fstream>
 #include "resource/TextureManager.h"
 
-std::vector<Tile> Map::sTileAtlas;
+std::vector<std::unique_ptr<Tile>> Map::sTileAtlas;
 
 Map::Map() : mWidth(0), mHeight(0), mNumSelected(0)
 {
@@ -18,29 +18,29 @@ Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
 void Map::loadTiles(const TextureManager& textureManager)
 {
     // void
-    sTileAtlas.push_back(Tile(textureManager.getTexture("grass"),
-        sf::IntRect(0, 0, 132, 99), Tile::Type::GRASS, 1));
+    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("grass"),
+        sf::IntRect(0, 0, 132, 99), Tile::Type::GRASS, 1)));
 
-    sTileAtlas.push_back(Tile(textureManager.getTexture("grass"),
-        sf::IntRect(0, 0, 132, 99), Tile::Type::GRASS, 1));
+    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("grass"),
+        sf::IntRect(0, 0, 132, 99), Tile::Type::GRASS, 1)));
 
-    sTileAtlas.push_back(Tile(textureManager.getTexture("forest"),
-        sf::IntRect(0, 0, 132, 99), Tile::Type::FOREST, 1));
+    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("forest"),
+        sf::IntRect(0, 0, 132, 99), Tile::Type::FOREST, 1)));
 
-    sTileAtlas.push_back(Tile(textureManager.getTexture("water"),
-        sf::IntRect(0, 0, 132, 99), Tile::Type::WATER, 1));
+    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("water"),
+        sf::IntRect(0, 0, 132, 99), Tile::Type::WATER, 1)));
 
-    sTileAtlas.push_back(Tile(textureManager.getTexture("residential"),
-        sf::IntRect(0, 0, 132, 163), Tile::Type::RESIDENTIAL, 2));
+    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("residential"),
+        sf::IntRect(0, 0, 132, 163), Tile::Type::RESIDENTIAL, 2)));
 
-    sTileAtlas.push_back(Tile(textureManager.getTexture("commercial"),
-        sf::IntRect(0, 0, 132, 163), Tile::Type::COMMERCIAL, 2));
+    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("commercial"),
+        sf::IntRect(0, 0, 132, 163), Tile::Type::COMMERCIAL, 2)));
 
-    sTileAtlas.push_back(Tile(textureManager.getTexture("industrial"),
-        sf::IntRect(0, 0, 132, 163), Tile::Type::INDUSTRIAL, 2));
+    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("industrial"),
+        sf::IntRect(0, 0, 132, 163), Tile::Type::INDUSTRIAL, 2)));
 
-    sTileAtlas.push_back(Tile(textureManager.getTexture("road"),
-        sf::IntRect(0, 0, 132, 99), Tile::Type::ROAD, 1));
+    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("road"),
+        sf::IntRect(0, 0, 132, 99), Tile::Type::ROAD, 1)));
 
     /*{Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 99, 132, 99), 0.5f}}),
         Animation({{sf::IntRect(0, 198, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 297, 132, 99), 0.5f}}),
@@ -52,7 +52,7 @@ void Map::loadTiles(const TextureManager& textureManager)
 
 Tile Map::createTile(Tile::Type type)
 {
-    return sTileAtlas[static_cast<int>(type)];
+    return *sTileAtlas[static_cast<int>(type)];
 }
 
 void Map::load(const std::string& filename, unsigned int width, unsigned int height)
