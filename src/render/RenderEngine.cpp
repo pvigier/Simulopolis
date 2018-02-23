@@ -7,7 +7,7 @@ RenderEngine::RenderEngine() : mWindow(sf::VideoMode(800, 600), "City Builder")
 
 RenderEngine::~RenderEngine()
 {
-    //dtor
+
 }
 
 sf::RenderWindow& RenderEngine::getWindow()

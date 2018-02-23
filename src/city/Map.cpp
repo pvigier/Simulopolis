@@ -69,7 +69,7 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
 
         Tile::Type type;
         inputFile.read((char*)&type, sizeof(type));
-        mTiles.push_back(createTile(type));
+        mTiles.push_back(std::unique_ptr<Tile>(new Tile(createTile(type))));
         char tmp[4];
         inputFile.read(tmp, sizeof(unsigned int));
         inputFile.read(tmp, sizeof(unsigned int));
@@ -85,9 +85,9 @@ void Map::save(const std::string& filename)
     std::ofstream outputFile;
     outputFile.open(filename, std::ios::out | std::ios::binary);
 
-    for(Tile& tile : mTiles)
+    for(std::unique_ptr<Tile>& tile : mTiles)
     {
-        Tile::Type type = tile.getType();
+        Tile::Type type = tile->getType();
         outputFile.write((char*)&type, sizeof(Tile::Type));
         /*outputFile.write((char*)&tile.getVariant(), sizeof(unsigned int));
         outputFile.write((char*)tile.getRegions(), sizeof(unsigned int)*1);
@@ -104,121 +104,27 @@ void Map::draw(sf::RenderWindow& window)
     {
         for(unsigned int x = 0; x < mWidth; ++x)
         {
+            sf::Sprite& sprite = mTiles[y * mWidth + x]->getSprite();
             // Compute the position of the tile in the 2d world
             sf::Vector2f pos;
             pos.x = (x - y) * Tile::SIZE + mWidth * Tile::SIZE;
             pos.y = (x + y) * Tile::SIZE * 0.5f;
-            mTiles[y * mWidth + x].getSprite().setPosition(pos);
+            sprite.setPosition(pos);
 
             // Change the color if the tile is selected
             if(mTileStates[y * mWidth + x] == Tile::State::SELECTED)
-                mTiles[y * mWidth + x].getSprite().setColor(sf::Color(0x7d, 0x7d, 0x7d));
+                sprite.setColor(sf::Color(0x7d, 0x7d, 0x7d));
             else
-                mTiles[y * mWidth + x].getSprite().setColor(sf::Color(0xff, 0xff, 0xff));
+                sprite.setColor(sf::Color(0xff, 0xff, 0xff));
 
             // Draw the tile
-            window.draw(mTiles[y * mWidth + x].getSprite());
+            window.draw(sprite);
         }
     }
     return;
 }
 
-/*void Map::findConnectedRegions(std::vector<Tile::Type> whitelist, int regionType)
-{
-    int label = 1;
-
-    // Reset the label of all tiles
-    for (Tile& tile : mTiles)
-        tile.getRegions()[regionType] = 0;
-
-    for (unsigned int y = 0; y < mHeight; ++y)
-    {
-        for (unsigned int x = 0; x < mWidth; ++x)
-        {
-            // Remove this test?
-            bool found = false;
-            for (Tile::Type type : whitelist)
-            {
-                if (type == mTiles[y * mWidth + x].getType())
-                {
-                    found = true;
-                    break;
-                }
-            }
-            if (mTiles[y * mWidth + x].getRegions()[regionType] == 0 && found)
-                depthFirstSearch(whitelist, x, y, label++, regionType);
-        }
-    }
-    mNumRegions[regionType] = label;
-}*/
-
-/*void Map::updateDirection(Tile::Type type)
-{
-    for (unsigned int y = 0; y < mHeight; ++y)
-    {
-        for (unsigned int x = 0; x < mWidth; ++x)
-        {
-            int pos = y * mWidth + x;
-
-            if (mTiles[pos].getType() != type)
-                continue;
-
-            bool adjacentTiles[3][3] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
-
-            // Check for adjacent tiles of the same type
-            if (x > 0 && y > 0)
-                adjacentTiles[0][0] = (mTiles[(y - 1) * mWidth + (x - 1)].getType() == type);
-            if (y > 0)
-                adjacentTiles[0][1] = (mTiles[(y - 1) * mWidth + x].getType() == type);
-            if (x < mWidth - 1 && y > 0)
-                adjacentTiles[0][2] = (mTiles[(y - 1) * mWidth + (x + 1)].getType() == type);
-            if (x > 0)
-                adjacentTiles[1][0] = (mTiles[y * mWidth + (x-1)].getType() == type);
-            if (x < mWidth - 1)
-                adjacentTiles[1][2] = (mTiles[y * mWidth + (x + 1)].getType() == type);
-            if (x > 0 && y < mHeight - 1)
-                adjacentTiles[2][0] = (mTiles[(y + 1) * mWidth + (x - 1)].getType() == type);
-            if (y < mHeight - 1)
-                adjacentTiles[2][1] = (mTiles[(y + 1) * mWidth + x].getType() == type);
-            if (x < mWidth-1 && y < mHeight-1)
-                adjacentTiles[2][2] = (mTiles[(y + 1) * mWidth + (x + 1)].getType() == type);
-
-            // Change the tile variant depending on the tile position
-            if (adjacentTiles[1][0] && adjacentTiles[1][2] && adjacentTiles[0][1] && adjacentTiles[2][1])
-                mTiles[pos].getVariant() = 2;
-            else if (adjacentTiles[1][0] && adjacentTiles[1][2] && adjacentTiles[0][1])
-                mTiles[pos].getVariant() = 7;
-            else if (adjacentTiles[1][0] && adjacentTiles[1][2] && adjacentTiles[2][1])
-                mTiles[pos].getVariant() = 8;
-            else if (adjacentTiles[0][1] && adjacentTiles[2][1] && adjacentTiles[1][0])
-                mTiles[pos].getVariant() = 9;
-            else if (adjacentTiles[0][1] && adjacentTiles[2][1] && adjacentTiles[1][2])
-                mTiles[pos].getVariant() = 10;
-            else if (adjacentTiles[1][0] && adjacentTiles[1][2])
-                mTiles[pos].getVariant() = 0;
-            else if (adjacentTiles[0][1] && adjacentTiles[2][1])
-                mTiles[pos].getVariant() = 1;
-            else if (adjacentTiles[2][1] && adjacentTiles[1][0])
-                mTiles[pos].getVariant() = 3;
-            else if (adjacentTiles[0][1] && adjacentTiles[1][2])
-                mTiles[pos].getVariant() = 4;
-            else if (adjacentTiles[1][0] && adjacentTiles[0][1])
-                mTiles[pos].getVariant() = 5;
-            else if (adjacentTiles[2][1] && adjacentTiles[1][2])
-                mTiles[pos].getVariant() = 6;
-            else if (adjacentTiles[1][0])
-                mTiles[pos].getVariant() = 0;
-            else if (adjacentTiles[1][2])
-                mTiles[pos].getVariant() = 0;
-            else if (adjacentTiles[0][1])
-                mTiles[pos].getVariant() = 1;
-            else if (adjacentTiles[2][1])
-                mTiles[pos].getVariant() = 1;
-        }
-    }
-}*/
-
-void Map::clearSelected()
+void Map::deselect()
 {
     for (Tile::State& state : mTileStates)
         state = Tile::State::DESELECTED;
@@ -226,7 +132,16 @@ void Map::clearSelected()
     mNumSelected = 0;
 }
 
-void Map::select(sf::Vector2i start, sf::Vector2i end, std::vector<Tile::Type> blacklist)
+void Map::bulldoze(Tile::Type type)
+{
+    for (unsigned int i = 0; i < mTiles.size(); ++i)
+    {
+        if (mTileStates[i] == Tile::State::SELECTED)
+            mTiles[i] = std::make_unique<Tile>(createTile(type));
+    }
+}
+
+void Map::select(sf::Vector2i start, sf::Vector2i end, const std::vector<Tile::Type>& blacklist)
 {
     // Swap coordinates if necessary
     if (end.y < start.y)
@@ -246,7 +161,7 @@ void Map::select(sf::Vector2i start, sf::Vector2i end, std::vector<Tile::Type> b
         {
             // Check if the tile type is in the blacklist. If it is, mark it as
             // invalid, otherwise select it
-            Tile::Type type = mTiles[y * mWidth + x].getType();
+            Tile::Type type = mTiles[y * mWidth + x]->getType();
             if (std::find(blacklist.begin(), blacklist.end(), type) == blacklist.end())
             {
                 mTileStates[y * mWidth + x] = Tile::State::SELECTED;
@@ -273,21 +188,6 @@ unsigned int Map::getNbTiles() const
     return mTiles.size();
 }
 
-Tile& Map::getTile(std::size_t position)
-{
-    return mTiles[position];
-}
-
-const Tile& Map::getTile(std::size_t position) const
-{
-    return mTiles[position];
-}
-
-void Map::setTile(std::size_t position, Tile tile)
-{
-    mTiles[position] = tile;
-}
-
 Tile::State Map::getTileState(std::size_t position) const
 {
     return mTileStates[position];
@@ -297,36 +197,3 @@ unsigned int Map::getNumSelected() const
 {
     return mNumSelected;
 }
-
-/*void Map::depthFirstSearch(std::vector<Tile::Type>& whitelist, int x, int y, int label, int regionType)
-{
-    // Outside of the map
-    if (x < 0 || x >= static_cast<int>(mWidth) || y < 0 || y >= static_cast<int>(mHeight))
-        return;
-
-    // Check if the tile is already assigned to a region
-    if (mTiles[y * mWidth + x].getRegions()[regionType] != 0)
-        return;
-
-    // Check if the type of the tile is in the whitelist
-    bool found = false;
-    for (Tile::Type type : whitelist)
-    {
-        if (type == mTiles[y * mWidth + x].getType())
-        {
-            found = true;
-            break;
-        }
-    }
-    if (!found)
-        return;
-
-    // Label the tile
-    mTiles[y * mWidth + x].getRegions()[regionType] = label;
-
-    // Recursive calls
-    depthFirstSearch(whitelist, x - 1, y, label, regionType);
-    depthFirstSearch(whitelist, x, y + 1, label, regionType);
-    depthFirstSearch(whitelist, x + 1, y, label, regionType);
-    depthFirstSearch(whitelist, x, y - 1, label, regionType);
-}*/

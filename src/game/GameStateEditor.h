@@ -32,6 +32,8 @@ private:
 
     void createGui();
 
+    void zoom(float factor);
+
     unsigned int getCost(Tile::Type type) const;
     unsigned int computeCostOfSelection() const;
 };

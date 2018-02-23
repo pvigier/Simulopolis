@@ -22,20 +22,13 @@ public:
 
     void draw(sf::RenderWindow& window);
 
-    //void findConnectedRegions(std::vector<Tile::Type> whitelist, int regionType = 0);
-    //void updateDirection(Tile::Type type);
-
-        // Select the tiles within the bounds
-    void select(sf::Vector2i start, sf::Vector2i end, std::vector<Tile::Type> blacklist);
-    // Deselect all tiles
-    void clearSelected();
+    void select(sf::Vector2i start, sf::Vector2i end, const std::vector<Tile::Type>& blacklist);
+    void deselect();
+    void bulldoze(Tile::Type type);
 
     unsigned int getWidth() const;
     unsigned int getHeight() const;
     unsigned int getNbTiles() const;
-    Tile& getTile(std::size_t position);
-    const Tile& getTile(std::size_t position) const;
-    void setTile(std::size_t position, Tile tile);
     Tile::State getTileState(std::size_t position) const;
     unsigned int getNumSelected() const;
 
@@ -43,11 +36,9 @@ private:
     static std::vector<Tile> sTileAtlas;
     unsigned int mWidth;
     unsigned int mHeight;
-    std::vector<Tile> mTiles;
+    std::vector<std::unique_ptr<Tile>> mTiles;
     unsigned int mSumSelected;
     unsigned int mNumRegions[1];
     std::vector<Tile::State> mTileStates;
     unsigned int mNumSelected;
-
-    //void depthFirstSearch(std::vector<Tile::Type>& whitelist, int x, int y, int label, int regionType);
 };

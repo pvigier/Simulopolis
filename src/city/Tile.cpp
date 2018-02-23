@@ -12,6 +12,11 @@ Tile::Tile(const sf::Texture& texture, sf::IntRect rect, Tile::Type type, unsign
     mSprite.setOrigin(sf::Vector2f(0.0f, Tile::SIZE * (height - 1)));
 }
 
+void Tile::updateVariant(Type neighbors[3][3])
+{
+
+}
+
 sf::Sprite& Tile::getSprite()
 {
     return mSprite;

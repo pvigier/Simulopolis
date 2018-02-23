@@ -12,6 +12,8 @@ public:
     Tile();
     Tile(const sf::Texture& texture, sf::IntRect rect, Type type, unsigned int height);
 
+    virtual void updateVariant(Type neighbors[3][3]);
+
     sf::Sprite& getSprite();
     Type getType() const;
 

@@ -13,9 +13,6 @@ GameStateEditor::GameStateEditor() :
     mCurrentTile(Tile::Type::GRASS),
     mGui(sf::Vector2f(sRenderEngine->getWindow().getSize()))
 {
-    // Initialize the city
-    mCity.shuffleTiles();
-
     // Views
     sf::Vector2f windowSize = sf::Vector2f(sRenderEngine->getWindow().getSize());
     mGuiView.setSize(windowSize);
@@ -23,6 +20,7 @@ GameStateEditor::GameStateEditor() :
     mGuiView.setCenter(windowSize * 0.5f);
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
         mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
+    zoom(8.0f);
 
     // Background
     mBackground.setTexture(sTextureManager->getTexture("background"));
@@ -59,8 +57,8 @@ void GameStateEditor::update(const float dt)
     // Update the info bar at the bottom of the screen
     mGui.get<GuiButton>("dayLabel")->setText("Day: " + std::to_string(mCity.getDay()));
     mGui.get<GuiButton>("fundsLabel")->setText("$" + std::to_string(long(mCity.getFunds())));
-    mGui.get<GuiButton>("populationLabel")->setText(std::to_string(long(mCity.getPopulation())) + " (" + std::to_string(long(mCity.getHomeless())) + ")");
-    mGui.get<GuiButton>("employmentLabel")->setText(std::to_string(long(mCity.getEmployable())) + " (" + std::to_string(long(mCity.getUnemployed())) + ")");
+    mGui.get<GuiButton>("populationLabel")->setText("Population: " + std::to_string(mCity.getPopulation()));
+    mGui.get<GuiButton>("employmentLabel")->setText("Unemployment: " + std::to_string(mCity.getUnemployed()));
     mGui.get<GuiButton>("currentTileLabel")->setText(tileTypeToStr(mCurrentTile));
 }
 
@@ -99,7 +97,7 @@ void GameStateEditor::handleMessages()
                         mSelectionEnd.x = gamePos.y / Tile::SIZE + 0.5f * (gamePos.x / Tile::SIZE - mCity.getMap().getWidth() - 1);
                         mSelectionEnd.y = gamePos.y / Tile::SIZE - 0.5f * (gamePos.x / Tile::SIZE - mCity.getMap().getWidth() - 1);
 
-                        mCity.getMap().clearSelected();
+                        mCity.getMap().deselect();
                         if(mCurrentTile == Tile::Type::GRASS)
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, {mCurrentTile, Tile::Type::WATER});
                         else
@@ -135,7 +133,7 @@ void GameStateEditor::handleMessages()
                         if (mActionState == ActionState::SELECTING)
                         {
                             mActionState = ActionState::NONE;
-                            mCity.getMap().clearSelected();
+                            mCity.getMap().deselect();
                         }
                         else
                         {
@@ -176,27 +174,20 @@ void GameStateEditor::handleMessages()
                             if(mCity.getFunds() >= totalCost)
                             {
                                 mCity.bulldoze(mCurrentTile);
-                                mCity.getFunds() -= totalCost;
-                                mCity.tileChanged();
+                                mCity.decreaseFunds(totalCost);
                             }
                             mGui.get("selectionCostText")->setVisible(false);
                             mActionState = ActionState::NONE;
-                            mCity.getMap().clearSelected();
+                            mCity.getMap().deselect();
                         }
                     }
                     break;
                 case sf::Event::MouseWheelMoved:
                     // Zoom the view
                     if (event.mouseWheel.delta < 0)
-                    {
-                        mGameView.zoom(2.0f);
-                        mZoomLevel *= 2.0f;
-                    }
+                        zoom(2.0f);
                     else
-                    {
-                        mGameView.zoom(0.5f);
-                        mZoomLevel *= 0.5f;
-                    }
+                        zoom(0.5f);
                     break;
                 default:
                     break;
@@ -317,6 +308,12 @@ void GameStateEditor::createGui()
     infoBarLayout->setVAlignment(GuiLayout::VAlignment::Bottom);
     infoBar->setLayout(infoBarLayout);
     mGui.addRoot("infoBar", infoBar);
+}
+
+void GameStateEditor::zoom(float factor)
+{
+    mGameView.zoom(factor);
+    mZoomLevel *= factor;
 }
 
 unsigned int GameStateEditor::getCost(Tile::Type type) const
