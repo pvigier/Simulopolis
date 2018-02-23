@@ -10,5 +10,10 @@ public:
 
     virtual std::unique_ptr<Tile> clone() const override;
 
-    virtual void updateVariant(Type neighbors[3][3]) override;
+    virtual bool updateVariant(Tile* neighbors[3][3]) override;
+
+    virtual bool hasSidewalk() const override;
+
+protected:
+    bool mSidewalk;
 };

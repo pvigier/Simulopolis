@@ -17,9 +17,19 @@ std::unique_ptr<Tile> Tile::clone() const
     return std::unique_ptr<Tile>(new Tile(*this));
 }
 
-void Tile::updateVariant(Type neighbors[3][3])
+bool Tile::updateVariant(Tile* neighbors[3][3])
 {
+    return false;
+}
 
+bool Tile::isBuilding() const
+{
+    return false;
+}
+
+bool Tile::hasSidewalk() const
+{
+    return false;
 }
 
 sf::Sprite& Tile::getSprite()

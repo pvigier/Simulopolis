@@ -14,8 +14,10 @@ public:
 
     virtual std::unique_ptr<Tile> clone() const;
 
-    virtual void updateVariant(Type neighbors[3][3]);
+    virtual bool updateVariant(Tile* neighbors[3][3]);
 
+    virtual bool isBuilding() const;
+    virtual bool hasSidewalk() const;
     sf::Sprite& getSprite();
     Type getType() const;
 

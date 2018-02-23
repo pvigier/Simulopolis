@@ -16,8 +16,14 @@ std::unique_ptr<Tile> Building::clone() const
     return std::unique_ptr<Tile>(new Building(*this));
 }
 
-void Building::updateVariant(Type neighbors[3][3])
+bool Building::updateVariant(Tile* neighbors[3][3])
 {
     sf::IntRect rect(0, 0, 132, 165);
     mSprite.setTextureRect(rect);
+    return false;
+}
+
+bool Building::isBuilding() const
+{
+    return true;
 }

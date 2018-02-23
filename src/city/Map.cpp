@@ -19,9 +19,8 @@ Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
 
 void Map::loadTiles(const TextureManager& textureManager)
 {
-    // void
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("grass"),
-        sf::IntRect(0, 0, 132, 101), Tile::Type::GRASS, 1)));
+        sf::IntRect(), Tile::Type::VOID, 0)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("grass"),
         sf::IntRect(0, 0, 132, 101), Tile::Type::GRASS, 1)));
@@ -198,19 +197,20 @@ std::unique_ptr<Tile> Map::createTile(Tile::Type type)
 
 void Map::updateTile(int pos)
 {
-    Tile::Type neighbors[3][3];
+    Tile* neighbors[3][3];
     for (int dy = 0; dy < 3; ++dy)
     {
         for (int dx = 0; dx < 3; ++dx)
         {
             int neighborPos = pos + (dy - 1) * mWidth + (dx - 1);
             if (neighborPos >= 0 && static_cast<std::size_t>(neighborPos) < mTiles.size())
-                neighbors[dx][dy] = mTiles[neighborPos]->getType();
+                neighbors[dx][dy] = mTiles[neighborPos].get();
             else
-                neighbors[dx][dy] = Tile::Type::VOID;
+                neighbors[dx][dy] = sTileAtlas[static_cast<int>(Tile::Type::VOID)].get();
         }
     }
-    mTiles[pos]->updateVariant(neighbors);
+    if (mTiles[pos]->updateVariant(neighbors))
+        updateNeighborhood(pos);
 }
 
 void Map::updateNeighborhood(std::size_t pos)
