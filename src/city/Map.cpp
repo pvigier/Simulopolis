@@ -2,6 +2,7 @@
 #include <fstream>
 #include "resource/TextureManager.h"
 #include "city/Road.h"
+#include "city/Building.h"
 
 std::vector<std::unique_ptr<Tile>> Map::sTileAtlas;
 
@@ -31,13 +32,13 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("water"),
         sf::IntRect(0, 0, 132, 101), Tile::Type::WATER, 1)));
 
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("residential"),
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("residential"),
         sf::IntRect(0, 0, 132, 165), Tile::Type::RESIDENTIAL, 2)));
 
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("commercial"),
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("commercial"),
         sf::IntRect(0, 0, 132, 165), Tile::Type::COMMERCIAL, 2)));
 
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("industrial"),
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("industrial"),
         sf::IntRect(0, 0, 132, 165), Tile::Type::INDUSTRIAL, 2)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road(textureManager.getTexture("road"),
