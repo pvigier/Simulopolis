@@ -37,11 +37,6 @@ bool Tile::hasSidewalk() const
     return false;
 }
 
-sf::Sprite& Tile::getSprite()
-{
-    return mSprite;
-}
-
 void Tile::setPosition(sf::Vector2f position)
 {
     mSprite.setPosition(position);
@@ -60,6 +55,11 @@ Tile::State Tile::getState() const
 void Tile::setState(Tile::State state)
 {
     mState = state;
+    // Change the color if the tile is selected
+    if(mState == Tile::State::SELECTED)
+        mSprite.setColor(sf::Color(0x7d, 0x7d, 0x7d));
+    else
+        mSprite.setColor(sf::Color(0xff, 0xff, 0xff));
 }
 
 std::string tileTypeToStr(Tile::Type type)

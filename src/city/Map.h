@@ -7,7 +7,7 @@
 
 class TextureManager;
 
-class Map
+class Map : public sf::Drawable
 {
 public:
 
@@ -16,10 +16,10 @@ public:
 
     static void loadTiles(const TextureManager& textureManager);
 
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
     void load(const std::string& filename, unsigned int width, unsigned int height);
     void save(const std::string& filename);
-
-    void draw(sf::RenderWindow& window);
 
     void select(sf::Vector2i start, sf::Vector2i end, const std::vector<Tile::Type>& blacklist);
     void deselect();
@@ -37,6 +37,7 @@ private:
     unsigned int mNbSelected;
 
     static std::unique_ptr<Tile> createTile(Tile::Type type);
+    sf::Vector2f computePosition(std::size_t pos);
 
     void updateTile(int pos);
     void updateNeighborhood(std::size_t pos);

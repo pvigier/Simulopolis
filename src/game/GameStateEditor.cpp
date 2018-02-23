@@ -45,7 +45,7 @@ void GameStateEditor::draw(const float dt)
     sRenderEngine->draw(mBackground);
 
     sRenderEngine->setView(mGameView);
-    mCity.getMap().draw(sRenderEngine->getWindow());
+    sRenderEngine->draw(mCity.getMap());
 
     sRenderEngine->draw(mGui);
 }

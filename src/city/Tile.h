@@ -20,7 +20,6 @@ public:
 
     virtual bool isBuilding() const;
     virtual bool hasSidewalk() const;
-    sf::Sprite& getSprite();
     void setPosition(sf::Vector2f position);
     Type getType() const;
     State getState() const;

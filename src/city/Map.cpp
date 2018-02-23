@@ -44,6 +44,15 @@ void Map::loadTiles(const TextureManager& textureManager)
         Tile::Type::ROAD, 1)));
 }
 
+void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    for (unsigned int y = 0; y < mHeight; ++y)
+    {
+        for (unsigned int x = 0; x < mWidth; ++x)
+            target.draw(*mTiles[y * mWidth + x]);
+    }
+}
+
 void Map::load(const std::string& filename, unsigned int width, unsigned int height)
 {
     std::ifstream inputFile;
@@ -52,11 +61,12 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
     mWidth = width;
     mHeight = height;
 
-    for (unsigned int pos = 0; pos < mWidth * mHeight; ++pos)
+    for (unsigned int i = 0; i < mWidth * mHeight; ++i)
     {
         Tile::Type type;
         inputFile.read((char*)&type, sizeof(type));
         mTiles.push_back(createTile(type));
+        mTiles.back()->setPosition(computePosition(mTiles.size() - 1));
         char tmp[4];
         inputFile.read(tmp, sizeof(unsigned int));
         inputFile.read(tmp, sizeof(unsigned int));
@@ -66,8 +76,8 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
 
     inputFile.close();
 
-    for (std::size_t pos = 0; pos < mTiles.size(); ++pos)
-        updateTile(pos);
+    for (std::size_t i = 0; i < mTiles.size(); ++i)
+        updateTile(i);
 }
 
 void Map::save(const std::string& filename)
@@ -75,7 +85,7 @@ void Map::save(const std::string& filename)
     std::ofstream outputFile;
     outputFile.open(filename, std::ios::out | std::ios::binary);
 
-    for(const std::unique_ptr<Tile>& tile : mTiles)
+    for (const std::unique_ptr<Tile>& tile : mTiles)
     {
         Tile::Type type = tile->getType();
         outputFile.write((char*)&type, sizeof(Tile::Type));
@@ -88,35 +98,9 @@ void Map::save(const std::string& filename)
     outputFile.close();
 }
 
-void Map::draw(sf::RenderWindow& window)
-{
-    for(unsigned int y = 0; y < mHeight; ++y)
-    {
-        for(unsigned int x = 0; x < mWidth; ++x)
-        {
-            sf::Sprite& sprite = mTiles[y * mWidth + x]->getSprite();
-            // Compute the position of the tile in the 2d world
-            sf::Vector2f pos;
-            pos.x = (x - y) * Tile::SIZE + mWidth * Tile::SIZE;
-            pos.y = (x + y) * Tile::SIZE * 0.5f;
-            sprite.setPosition(pos);
-
-            // Change the color if the tile is selected
-            if(mTiles[y * mWidth + x]->getState() == Tile::State::SELECTED)
-                sprite.setColor(sf::Color(0x7d, 0x7d, 0x7d));
-            else
-                sprite.setColor(sf::Color(0xff, 0xff, 0xff));
-
-            // Draw the tile
-            window.draw(sprite);
-        }
-    }
-    return;
-}
-
 void Map::deselect()
 {
-    for(std::unique_ptr<Tile>& tile : mTiles)
+    for (std::unique_ptr<Tile>& tile : mTiles)
         tile->setState(Tile::State::DESELECTED);
     mNbSelected = 0;
 }
@@ -128,6 +112,7 @@ void Map::bulldoze(Tile::Type type)
         if (mTiles[i]->getState() == Tile::State::SELECTED)
         {
             mTiles[i] = createTile(type);
+            mTiles[i]->setPosition(computePosition(i));
             updateNeighborhood(i);
         }
     }
@@ -185,33 +170,43 @@ std::unique_ptr<Tile> Map::createTile(Tile::Type type)
     return sTileAtlas[static_cast<int>(type)]->clone();
 }
 
-void Map::updateTile(int pos)
+sf::Vector2f Map::computePosition(std::size_t i)
+{
+    int x = i % mWidth;
+    int y = i / mWidth;
+    sf::Vector2f position;
+    position.x = (x - y) * Tile::SIZE + mWidth * Tile::SIZE;
+    position.y = (x + y) * Tile::SIZE * 0.5f;
+    return position;
+}
+
+void Map::updateTile(int i)
 {
     Tile* neighbors[3][3];
     for (int dy = 0; dy < 3; ++dy)
     {
         for (int dx = 0; dx < 3; ++dx)
         {
-            int neighborPos = pos + (dy - 1) * mWidth + (dx - 1);
-            if (neighborPos >= 0 && static_cast<std::size_t>(neighborPos) < mTiles.size())
-                neighbors[dx][dy] = mTiles[neighborPos].get();
+            int iNeighbor = i + (dy - 1) * mWidth + (dx - 1);
+            if (iNeighbor >= 0 && static_cast<std::size_t>(iNeighbor) < mTiles.size())
+                neighbors[dx][dy] = mTiles[iNeighbor].get();
             else
                 neighbors[dx][dy] = sTileAtlas[static_cast<int>(Tile::Type::VOID)].get();
         }
     }
-    if (mTiles[pos]->updateVariant(neighbors))
-        updateNeighborhood(pos);
+    if (mTiles[i]->updateVariant(neighbors))
+        updateNeighborhood(i);
 }
 
-void Map::updateNeighborhood(std::size_t pos)
+void Map::updateNeighborhood(std::size_t i)
 {
     for (int dy = 0; dy < 3; ++dy)
     {
         for (int dx = 0; dx < 3; ++dx)
         {
-            int neighborPos = pos + (dy - 1) * mWidth + (dx - 1);
-            if (neighborPos >= 0 && static_cast<std::size_t>(neighborPos) < mTiles.size())
-                updateTile(neighborPos);
+            int iNeighbor = i + (dy - 1) * mWidth + (dx - 1);
+            if (iNeighbor >= 0 && static_cast<std::size_t>(iNeighbor) < mTiles.size())
+                updateTile(iNeighbor);
         }
     }
 }
