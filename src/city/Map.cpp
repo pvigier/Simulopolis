@@ -1,6 +1,7 @@
 #include "Map.h"
 #include <fstream>
 #include "resource/TextureManager.h"
+#include "city/Road.h"
 
 std::vector<std::unique_ptr<Tile>> Map::sTileAtlas;
 
@@ -18,41 +19,29 @@ Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
 void Map::loadTiles(const TextureManager& textureManager)
 {
     // void
-    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("grass"),
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("grass"),
         sf::IntRect(0, 0, 132, 99), Tile::Type::GRASS, 1)));
 
-    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("grass"),
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("grass"),
         sf::IntRect(0, 0, 132, 99), Tile::Type::GRASS, 1)));
 
-    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("forest"),
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("forest"),
         sf::IntRect(0, 0, 132, 99), Tile::Type::FOREST, 1)));
 
-    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("water"),
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("water"),
         sf::IntRect(0, 0, 132, 99), Tile::Type::WATER, 1)));
 
-    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("residential"),
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("residential"),
         sf::IntRect(0, 0, 132, 163), Tile::Type::RESIDENTIAL, 2)));
 
-    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("commercial"),
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("commercial"),
         sf::IntRect(0, 0, 132, 163), Tile::Type::COMMERCIAL, 2)));
 
-    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("industrial"),
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("industrial"),
         sf::IntRect(0, 0, 132, 163), Tile::Type::INDUSTRIAL, 2)));
 
-    sTileAtlas.push_back(std::make_unique<Tile>(Tile(textureManager.getTexture("road"),
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Road(textureManager.getTexture("road"),
         sf::IntRect(0, 0, 132, 99), Tile::Type::ROAD, 1)));
-
-    /*{Animation({{sf::IntRect(0, 0, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 99, 132, 99), 0.5f}}),
-        Animation({{sf::IntRect(0, 198, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 297, 132, 99), 0.5f}}),
-        Animation({{sf::IntRect(0, 396, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 495, 132, 99), 0.5f}}),
-        Animation({{sf::IntRect(0, 594, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 693, 132, 99), 0.5f}}),
-        Animation({{sf::IntRect(0, 792, 132, 99), 0.5f}}), Animation({{sf::IntRect(0, 891, 132, 99), 0.5f}}),
-        Animation({{sf::IntRect(0, 990, 132, 99), 0.5f}})},*/
-}
-
-Tile Map::createTile(Tile::Type type)
-{
-    return *sTileAtlas[static_cast<int>(type)];
 }
 
 void Map::load(const std::string& filename, unsigned int width, unsigned int height)
@@ -69,7 +58,7 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
 
         Tile::Type type;
         inputFile.read((char*)&type, sizeof(type));
-        mTiles.push_back(std::unique_ptr<Tile>(new Tile(createTile(type))));
+        mTiles.push_back(createTile(type));
         char tmp[4];
         inputFile.read(tmp, sizeof(unsigned int));
         inputFile.read(tmp, sizeof(unsigned int));
@@ -134,10 +123,13 @@ void Map::deselect()
 
 void Map::bulldoze(Tile::Type type)
 {
-    for (unsigned int i = 0; i < mTiles.size(); ++i)
+    for (std::size_t i = 0; i < mTiles.size(); ++i)
     {
         if (mTileStates[i] == Tile::State::SELECTED)
-            mTiles[i] = std::make_unique<Tile>(createTile(type));
+        {
+            mTiles[i] = createTile(type);
+            updateNeighborhood(i);
+        }
     }
 }
 
@@ -196,4 +188,39 @@ Tile::State Map::getTileState(std::size_t position) const
 unsigned int Map::getNumSelected() const
 {
     return mNumSelected;
+}
+
+std::unique_ptr<Tile> Map::createTile(Tile::Type type)
+{
+    return sTileAtlas[static_cast<int>(type)]->clone();
+}
+
+void Map::updateTile(int pos)
+{
+    Tile::Type neighbors[3][3];
+    for (int dy = 0; dy < 3; ++dy)
+    {
+        for (int dx = 0; dx < 3; ++dx)
+        {
+            int neighborPos = pos + (dy - 1) * mWidth + (dx - 1);
+            if (neighborPos >= 0 && static_cast<std::size_t>(neighborPos) < mTiles.size())
+                neighbors[dx][dy] = mTiles[neighborPos]->getType();
+            else
+                neighbors[dx][dy] = Tile::Type::VOID;
+        }
+    }
+    mTiles[pos]->updateVariant(neighbors);
+}
+
+void Map::updateNeighborhood(std::size_t pos)
+{
+    for (int dy = 0; dy < 3; ++dy)
+    {
+        for (int dx = 0; dx < 3; ++dx)
+        {
+            int neighborPos = pos + (dy - 1) * mWidth + (dx - 1);
+            if (neighborPos >= 0 && static_cast<std::size_t>(neighborPos) < mTiles.size())
+                updateTile(neighborPos);
+        }
+    }
 }

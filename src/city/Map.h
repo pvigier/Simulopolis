@@ -15,7 +15,6 @@ public:
     Map(const std::string& filename, unsigned int width, unsigned int height);
 
     static void loadTiles(const TextureManager& textureManager);
-    static Tile createTile(Tile::Type type);
 
     void load(const std::string& filename, unsigned int width, unsigned int height);
     void save(const std::string& filename);
@@ -41,4 +40,9 @@ private:
     unsigned int mNumRegions[1];
     std::vector<Tile::State> mTileStates;
     unsigned int mNumSelected;
+
+    static std::unique_ptr<Tile> createTile(Tile::Type type);
+
+    void updateTile(int pos);
+    void updateNeighborhood(std::size_t pos);
 };

@@ -1,15 +1,20 @@
 #include "Tile.h"
 
-Tile::Tile()
-{
-
-}
-
 Tile::Tile(const sf::Texture& texture, sf::IntRect rect, Tile::Type type, unsigned int height) :
     mSprite(texture), mType(type)
 {
     mSprite.setTextureRect(rect);
     mSprite.setOrigin(sf::Vector2f(0.0f, Tile::SIZE * (height - 1)));
+}
+
+Tile::~Tile()
+{
+
+}
+
+std::unique_ptr<Tile> Tile::clone() const
+{
+    return std::unique_ptr<Tile>(new Tile(*this));
 }
 
 void Tile::updateVariant(Type neighbors[3][3])
