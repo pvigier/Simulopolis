@@ -18,9 +18,17 @@
 					<Add option="-s" />
 				</Linker>
 			</Target>
+			<Target title="Debug">
+				<Option output="bin/debug/CityBuilder" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-O2" />
 			<Add option="-Wall" />
 			<Add option="-std=c++14" />
 			<Add option="-fexceptions" />
@@ -30,10 +38,14 @@
 			<Add option="-ltinyxml2" />
 			<Add option="-lsfml-graphics -lsfml-window -lsfml-system" />
 		</Linker>
+		<Unit filename="src/city/Building.cpp" />
+		<Unit filename="src/city/Building.h" />
 		<Unit filename="src/city/City.cpp" />
 		<Unit filename="src/city/City.h" />
 		<Unit filename="src/city/Map.cpp" />
 		<Unit filename="src/city/Map.h" />
+		<Unit filename="src/city/Road.cpp" />
+		<Unit filename="src/city/Road.h" />
 		<Unit filename="src/city/Tile.cpp" />
 		<Unit filename="src/city/Tile.h" />
 		<Unit filename="src/game/Game.cpp" />
@@ -91,9 +103,7 @@
 		<Unit filename="src/util/Id.h" />
 		<Unit filename="src/util/IdManager.h" />
 		<Unit filename="src/util/NonCopyable.h" />
-		<Unit filename="src/util/NonMovable.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
+		<Unit filename="src/util/NonMovable.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
