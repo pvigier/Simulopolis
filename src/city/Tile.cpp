@@ -1,15 +1,19 @@
 #include "Tile.h"
 
-Tile::Tile(const sf::Texture& texture, sf::IntRect rect, Tile::Type type, unsigned int height) :
-    mSprite(texture), mType(type)
+Tile::Tile(const sf::Texture& texture, Tile::Type type, unsigned int height) :
+    mSprite(texture), mType(type), mState(Tile::State::DESELECTED)
 {
-    mSprite.setTextureRect(rect);
     mSprite.setOrigin(sf::Vector2f(0.0f, Tile::SIZE * (height - 1)));
 }
 
 Tile::~Tile()
 {
 
+}
+
+void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    target.draw(mSprite);
 }
 
 std::unique_ptr<Tile> Tile::clone() const
@@ -19,6 +23,7 @@ std::unique_ptr<Tile> Tile::clone() const
 
 bool Tile::updateVariant(Tile* neighbors[3][3])
 {
+    mSprite.setTextureRect(sf::IntRect(0, 0, 132, 101));
     return false;
 }
 
@@ -37,9 +42,24 @@ sf::Sprite& Tile::getSprite()
     return mSprite;
 }
 
+void Tile::setPosition(sf::Vector2f position)
+{
+    mSprite.setPosition(position);
+}
+
 Tile::Type Tile::getType() const
 {
     return mType;
+}
+
+Tile::State Tile::getState() const
+{
+    return mState;
+}
+
+void Tile::setState(Tile::State state)
+{
+    mState = state;
 }
 
 std::string tileTypeToStr(Tile::Type type)

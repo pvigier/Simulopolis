@@ -1,7 +1,7 @@
 #include "Road.h"
 
-Road::Road(const sf::Texture& texture, sf::IntRect rect, Type type, unsigned int height) :
-    Tile(texture, rect, type, height), mSidewalk(false)
+Road::Road(const sf::Texture& texture, Type type, unsigned int height) :
+    Tile(texture, type, height), mSidewalk(false)
 {
     //ctor
 }

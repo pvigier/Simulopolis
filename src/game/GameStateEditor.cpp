@@ -332,5 +332,5 @@ unsigned int GameStateEditor::getCost(Tile::Type type) const
 
 unsigned int GameStateEditor::computeCostOfSelection() const
 {
-    return getCost(mCurrentTile) * mCity.getMap().getNumSelected();
+    return getCost(mCurrentTile) * mCity.getMap().getNbSelected();
 }

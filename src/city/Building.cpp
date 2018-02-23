@@ -1,7 +1,7 @@
 #include "Building.h"
 
-Building::Building(const sf::Texture& texture, sf::IntRect rect, Type type, unsigned int height) :
-    Tile(texture, rect, type, height)
+Building::Building(const sf::Texture& texture, Type type, unsigned int height) :
+    Tile(texture, type, height)
 {
     //ctor
 }

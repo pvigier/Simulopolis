@@ -27,19 +27,14 @@ public:
 
     unsigned int getWidth() const;
     unsigned int getHeight() const;
-    unsigned int getNbTiles() const;
-    Tile::State getTileState(std::size_t position) const;
-    unsigned int getNumSelected() const;
+    unsigned int getNbSelected() const;
 
 private:
     static std::vector<std::unique_ptr<Tile>> sTileAtlas;
     unsigned int mWidth;
     unsigned int mHeight;
     std::vector<std::unique_ptr<Tile>> mTiles;
-    unsigned int mSumSelected;
-    unsigned int mNumRegions[1];
-    std::vector<Tile::State> mTileStates;
-    unsigned int mNumSelected;
+    unsigned int mNbSelected;
 
     static std::unique_ptr<Tile> createTile(Tile::Type type);
 

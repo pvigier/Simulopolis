@@ -5,7 +5,7 @@
 class Building : public Tile
 {
 public:
-    Building(const sf::Texture& texture, sf::IntRect rect, Type type, unsigned int height);
+    Building(const sf::Texture& texture, Type type, unsigned int height);
     virtual ~Building();
 
     virtual std::unique_ptr<Tile> clone() const override;

@@ -6,13 +6,13 @@
 
 std::vector<std::unique_ptr<Tile>> Map::sTileAtlas;
 
-Map::Map() : mWidth(0), mHeight(0), mNumSelected(0)
+Map::Map() : mWidth(0), mHeight(0), mNbSelected(0)
 {
-    mNumRegions[0] = 1;
+
 }
 
 Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
-    mNumSelected(0)
+    mNbSelected(0)
 {
     load(filename, width, height);
 }
@@ -20,28 +20,28 @@ Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
 void Map::loadTiles(const TextureManager& textureManager)
 {
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("grass"),
-        sf::IntRect(), Tile::Type::VOID, 0)));
+        Tile::Type::VOID, 0)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("grass"),
-        sf::IntRect(0, 0, 132, 101), Tile::Type::GRASS, 1)));
+        Tile::Type::GRASS, 1)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("forest"),
-        sf::IntRect(0, 0, 132, 101), Tile::Type::FOREST, 1)));
+         Tile::Type::FOREST, 1)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("water"),
-        sf::IntRect(0, 0, 132, 101), Tile::Type::WATER, 1)));
+        Tile::Type::WATER, 1)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("residential"),
-        sf::IntRect(0, 0, 132, 165), Tile::Type::RESIDENTIAL, 2)));
+        Tile::Type::RESIDENTIAL, 2)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("commercial"),
-        sf::IntRect(0, 0, 132, 165), Tile::Type::COMMERCIAL, 2)));
+        Tile::Type::COMMERCIAL, 2)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("industrial"),
-        sf::IntRect(0, 0, 132, 165), Tile::Type::INDUSTRIAL, 2)));
+        Tile::Type::INDUSTRIAL, 2)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road(textureManager.getTexture("road"),
-        sf::IntRect(0, 0, 132, 101), Tile::Type::ROAD, 1)));
+        Tile::Type::ROAD, 1)));
 }
 
 void Map::load(const std::string& filename, unsigned int width, unsigned int height)
@@ -54,8 +54,6 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
 
     for (unsigned int pos = 0; pos < mWidth * mHeight; ++pos)
     {
-        mTileStates.push_back(Tile::State::DESELECTED);
-
         Tile::Type type;
         inputFile.read((char*)&type, sizeof(type));
         mTiles.push_back(createTile(type));
@@ -67,6 +65,9 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
     }
 
     inputFile.close();
+
+    for (std::size_t pos = 0; pos < mTiles.size(); ++pos)
+        updateTile(pos);
 }
 
 void Map::save(const std::string& filename)
@@ -74,7 +75,7 @@ void Map::save(const std::string& filename)
     std::ofstream outputFile;
     outputFile.open(filename, std::ios::out | std::ios::binary);
 
-    for(std::unique_ptr<Tile>& tile : mTiles)
+    for(const std::unique_ptr<Tile>& tile : mTiles)
     {
         Tile::Type type = tile->getType();
         outputFile.write((char*)&type, sizeof(Tile::Type));
@@ -101,7 +102,7 @@ void Map::draw(sf::RenderWindow& window)
             sprite.setPosition(pos);
 
             // Change the color if the tile is selected
-            if(mTileStates[y * mWidth + x] == Tile::State::SELECTED)
+            if(mTiles[y * mWidth + x]->getState() == Tile::State::SELECTED)
                 sprite.setColor(sf::Color(0x7d, 0x7d, 0x7d));
             else
                 sprite.setColor(sf::Color(0xff, 0xff, 0xff));
@@ -115,17 +116,16 @@ void Map::draw(sf::RenderWindow& window)
 
 void Map::deselect()
 {
-    for (Tile::State& state : mTileStates)
-        state = Tile::State::DESELECTED;
-
-    mNumSelected = 0;
+    for(std::unique_ptr<Tile>& tile : mTiles)
+        tile->setState(Tile::State::DESELECTED);
+    mNbSelected = 0;
 }
 
 void Map::bulldoze(Tile::Type type)
 {
     for (std::size_t i = 0; i < mTiles.size(); ++i)
     {
-        if (mTileStates[i] == Tile::State::SELECTED)
+        if (mTiles[i]->getState() == Tile::State::SELECTED)
         {
             mTiles[i] = createTile(type);
             updateNeighborhood(i);
@@ -153,14 +153,14 @@ void Map::select(sf::Vector2i start, sf::Vector2i end, const std::vector<Tile::T
         {
             // Check if the tile type is in the blacklist. If it is, mark it as
             // invalid, otherwise select it
-            Tile::Type type = mTiles[y * mWidth + x]->getType();
-            if (std::find(blacklist.begin(), blacklist.end(), type) == blacklist.end())
+            const std::unique_ptr<Tile>& tile =mTiles[y * mWidth + x];
+            if (std::find(blacklist.begin(), blacklist.end(), tile->getType()) == blacklist.end())
             {
-                mTileStates[y * mWidth + x] = Tile::State::SELECTED;
-                ++mNumSelected;
+                tile->setState(Tile::State::SELECTED);
+                ++mNbSelected;
             }
             else
-                mTileStates[y * mWidth + x] = Tile::State::INVALID;
+                tile->setState(Tile::State::INVALID);
         }
     }
 }
@@ -175,19 +175,9 @@ unsigned int Map::getHeight() const
     return mHeight;
 }
 
-unsigned int Map::getNbTiles() const
+unsigned int Map::getNbSelected() const
 {
-    return mTiles.size();
-}
-
-Tile::State Map::getTileState(std::size_t position) const
-{
-    return mTileStates[position];
-}
-
-unsigned int Map::getNumSelected() const
-{
-    return mNumSelected;
+    return mNbSelected;
 }
 
 std::unique_ptr<Tile> Map::createTile(Tile::Type type)
