@@ -52,6 +52,8 @@
 		<Unit filename="src/gui/GuiButton.h" />
 		<Unit filename="src/gui/GuiHBoxLayout.cpp" />
 		<Unit filename="src/gui/GuiHBoxLayout.h" />
+		<Unit filename="src/gui/GuiImage.cpp" />
+		<Unit filename="src/gui/GuiImage.h" />
 		<Unit filename="src/gui/GuiLayout.cpp" />
 		<Unit filename="src/gui/GuiLayout.h" />
 		<Unit filename="src/gui/GuiStyle.cpp" />
