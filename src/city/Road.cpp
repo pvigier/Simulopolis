@@ -18,7 +18,7 @@ std::unique_ptr<Tile> Road::clone() const
 
 void Road::updateVariant(Type neighbors[3][3])
 {
-    sf::IntRect rect(0, 0, 132, 99);
+    sf::IntRect rect(0, 0, 132, 101);
 
     if (neighbors[0][1] == Type::RESIDENTIAL || neighbors[1][0] == Type::RESIDENTIAL ||
         neighbors[2][1] == Type::RESIDENTIAL || neighbors[1][2] == Type::RESIDENTIAL)
