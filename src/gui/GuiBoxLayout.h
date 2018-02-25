@@ -5,7 +5,7 @@
 class GuiBoxLayout : public GuiLayout
 {
 public:
-    GuiBoxLayout();
+    GuiBoxLayout(HAlignment hAlignment = HAlignment::Left, VAlignment vAlignment = VAlignment::Top);
     virtual ~GuiBoxLayout();
 
     virtual void setSpacing(float spacing);

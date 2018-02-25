@@ -1,6 +1,7 @@
 #include "gui/GuiBoxLayout.h"
 
-GuiBoxLayout::GuiBoxLayout() : mSpacing(0), mHAlignment(HAlignment::Left), mVAlignment(VAlignment::Top)
+GuiBoxLayout::GuiBoxLayout(HAlignment hAlignment, VAlignment vAlignment) : mSpacing(0),
+    mHAlignment(hAlignment), mVAlignment(vAlignment)
 {
     //ctor
 }

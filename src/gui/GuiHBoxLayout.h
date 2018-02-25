@@ -5,7 +5,7 @@
 class GuiHBoxLayout : public GuiBoxLayout
 {
 public:
-    GuiHBoxLayout();
+    GuiHBoxLayout(HAlignment hAlignment = HAlignment::Left, VAlignment vAlignment = VAlignment::Top);
     virtual ~GuiHBoxLayout();
 
     virtual void align() override;
