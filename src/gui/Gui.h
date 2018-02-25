@@ -17,7 +17,7 @@ using GuiWidgetPtr = std::shared_ptr<GuiWidget>;
 class Gui : public NonCopyable, public NonMovable, public sf::Transformable, public sf::Drawable
 {
 public:
-    Gui(sf::Vector2f windowSize);
+    Gui();
     ~Gui();
 
     static void setMessageBus(MessageBus* messageBus);
@@ -60,6 +60,7 @@ public:
 
     void update();
 
+    void setWindowSize(sf::Vector2f windowSize);
     void setVisible(bool visible);
     bool isVisible() const;
 

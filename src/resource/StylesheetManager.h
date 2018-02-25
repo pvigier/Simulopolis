@@ -33,7 +33,7 @@ public:
      *
      * \param fontManager FontManager to use
      */
-    static void setFontManager(FontManager* fontManager);
+    void setFontManager(FontManager* fontManager);
 
     /**
      * \brief Set up the manager
@@ -66,7 +66,7 @@ public:
     const GuiStyle& getStylesheet(const std::string& name) const;
 
 private:
-    static FontManager* sFontManager;
+    FontManager* mFontManager;
     std::string mPrefixPath; /**< Path of the folder in which is located "stylesheets.xml" */
     std::unordered_map<std::string, GuiStyle> mStylesheets; /**< Hash map that contains the stylesheets */
 

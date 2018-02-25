@@ -6,8 +6,7 @@
 MessageBus* Gui::sMessageBus = nullptr;
 InputEngine* Gui::sInputEngine = nullptr;
 
-Gui::Gui(sf::Vector2f windowSize) :
-    mView(sf::FloatRect(sf::Vector2f(0.0f, 0.0f), windowSize)), mVisible(true)
+Gui::Gui() : mVisible(true)
 {
     // Register the mailbox
     sMessageBus->addMailbox(mMailbox);
@@ -84,6 +83,12 @@ void Gui::update()
                 break;
         }
     }
+}
+
+void Gui::setWindowSize(sf::Vector2f windowSize)
+{
+    mView.setCenter(windowSize * 0.5f);
+    mView.setSize(windowSize);
 }
 
 void Gui::setVisible(bool visible)

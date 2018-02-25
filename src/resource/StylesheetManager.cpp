@@ -5,9 +5,7 @@
 
 using namespace tinyxml2;
 
-FontManager* StylesheetManager::sFontManager = nullptr;
-
-StylesheetManager::StylesheetManager() : mPrefixPath("media/")
+StylesheetManager::StylesheetManager() : mFontManager(nullptr), mPrefixPath("media/")
 {
     //ctor
 }
@@ -19,7 +17,7 @@ StylesheetManager::~StylesheetManager()
 
 void StylesheetManager::setFontManager(FontManager* fontManager)
 {
-    sFontManager = fontManager;
+    mFontManager = fontManager;
 }
 
 void StylesheetManager::setUp()
@@ -74,7 +72,7 @@ void StylesheetManager::loadStylesheet(XMLElement* node)
 
     // Text
     XMLElement* textNode = node->FirstChildElement("text");
-    const sf::Font* font = &sFontManager->getFont(textNode->Attribute("font"));
+    const sf::Font* font = &mFontManager->getFont(textNode->Attribute("font"));
     sf::Color textColor = stringToColor(textNode->Attribute("color"));
     sf::Color textHighlightColor = stringToColor(textNode->Attribute("highlightColor"));
 

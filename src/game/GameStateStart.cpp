@@ -10,9 +10,10 @@
 #include "gui/GuiVBoxLayout.h"
 
 GameStateStart::GameStateStart() :
-    mGui(sf::Vector2f(sRenderEngine->getWindow().getSize()))
+    mGui()
 {
     // Gui
+    mGui.setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     createGui();
 
     // Subscribe to inputs

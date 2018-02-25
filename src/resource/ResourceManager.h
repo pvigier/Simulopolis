@@ -4,6 +4,7 @@
 #include "resource/TextureManager.h"
 #include "resource/FontManager.h"
 #include "resource/StylesheetManager.h"
+#include "resource/GuiManager.h"
 
 /**
  * \brief Manager that manages the specific resource managers
@@ -54,8 +55,16 @@ public:
      */
     StylesheetManager& getStylesheetManager();
 
+    /**
+     * \brief Get the gui manager
+     *
+     * \return The gui manager
+     */
+    GuiManager& getGuiManager();
+
 private:
     TextureManager mTextureManager; /**< Texture manager */
     FontManager mFontManager; /**< Font manager */
     StylesheetManager mStylesheetManager; /**< Stylesheet manager */
+    GuiManager mGuiManager; /**< Gui manager */
 };

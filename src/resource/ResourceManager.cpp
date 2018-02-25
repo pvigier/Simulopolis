@@ -16,6 +16,10 @@ void ResourceManager::setUp()
     mFontManager.setUp();
     mStylesheetManager.setFontManager(&mFontManager);
     mStylesheetManager.setUp();
+    mGuiManager.setTextureManager(&mTextureManager);
+    mGuiManager.setFontManager(&mFontManager);
+    mGuiManager.setStylesheetManager(&mStylesheetManager);
+    mGuiManager.setUp();
 }
 
 void ResourceManager::tearDown()
@@ -23,6 +27,7 @@ void ResourceManager::tearDown()
     mTextureManager.tearDown();
     mFontManager.tearDown();
     mStylesheetManager.tearDown();
+    mGuiManager.tearDown();
 }
 
 TextureManager& ResourceManager::getTextureManager()
@@ -40,4 +45,7 @@ StylesheetManager& ResourceManager::getStylesheetManager()
     return mStylesheetManager;
 }
 
-
+GuiManager& ResourceManager::getGuiManager()
+{
+    return mGuiManager;
+}

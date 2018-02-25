@@ -11,7 +11,7 @@
 GameStateEditor::GameStateEditor() :
     mCity("saves/city"), mActionState(ActionState::NONE), mZoomLevel(1.0f),
     mCurrentTile(Tile::Type::GRASS),
-    mGui(sf::Vector2f(sRenderEngine->getWindow().getSize()))
+    mGui()
 {
     // Views
     sf::Vector2f windowSize = sf::Vector2f(sRenderEngine->getWindow().getSize());
@@ -26,6 +26,7 @@ GameStateEditor::GameStateEditor() :
     mBackground.setTexture(sTextureManager->getTexture("background"));
 
     // Gui
+    mGui.setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     createGui();
 
     // Subscribe to inputs
