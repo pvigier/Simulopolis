@@ -9,8 +9,7 @@ class GuiStyle;
 class GuiButton : public GuiWidget
 {
 public:
-    GuiButton(const GuiStyle& style, const std::string& text, sf::Vector2f dimensions,
-        unsigned int characterSize, Message message);
+    GuiButton(sf::Vector2f dimensions, Message message, const GuiStyle& style);
 
     virtual void setPosition(sf::Vector2f position) override;
     virtual void setSize(sf::Vector2f size) override;
@@ -34,8 +33,6 @@ private:
     GuiStyle mStyle;
     // Handles appearance of the button
     sf::RectangleShape mShape;
-    // Text displayed on the button
-    sf::Text mText;
     // Integer returned when the button is activated
     Message mMessage;
 };

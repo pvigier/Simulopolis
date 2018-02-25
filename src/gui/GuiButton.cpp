@@ -1,8 +1,7 @@
 #include "gui/GuiButton.h"
 
-GuiButton::GuiButton(const GuiStyle& style, const std::string& text, sf::Vector2f dimensions,
-    unsigned int characterSize, Message message) :
-    mStyle(style), mShape(dimensions), mText(text, *mStyle.font, characterSize), mMessage(message)
+GuiButton::GuiButton(sf::Vector2f dimensions, Message message, const GuiStyle& style) :
+    mStyle(style), mShape(dimensions), mMessage(message)
 {
     mShape.setOutlineThickness(-mStyle.borderSize);
     setHighlight(false);
@@ -13,10 +12,6 @@ void GuiButton::setPosition(sf::Vector2f position)
 {
     GuiWidget::setPosition(position);
     mShape.setPosition(position);
-    mText.setPosition(position);
-    /*sf::Vector2f offset(sf::Vector2f(mText.getGlobalBounds().left, mText.getGlobalBounds().top) - mShape.getPosition());
-    sf::Vector2f textSize(mText.getGlobalBounds().width, mText.getGlobalBounds().height);
-    mText.setPosition(mShape.getPosition() - offset + mShape.getSize() * 0.5f - textSize * 0.5f);*/
 }
 
 void GuiButton::setSize(sf::Vector2f size)
@@ -41,31 +36,18 @@ Message GuiButton::getMessage() const
     return mMessage;
 }
 
-void GuiButton::setText(const std::string& text)
-{
-    mText.setString(text);
-}
-
 void GuiButton::setHighlight(bool highlight)
 {
     if (highlight)
     {
         mShape.setFillColor(mStyle.bodyHighlightColor);
         mShape.setOutlineColor(mStyle.borderHighlightColor);
-        mText.setFillColor(mStyle.textHighlightColor);
     }
     else
     {
         mShape.setFillColor(mStyle.bodyColor);
         mShape.setOutlineColor(mStyle.borderColor);
-        mText.setFillColor(mStyle.textColor);
     }
-}
-
-void GuiButton::resize(sf::Vector2f dimensions, unsigned int characterSize)
-{
-    mShape.setSize(dimensions);
-    mText.setCharacterSize(characterSize);
 }
 
 bool GuiButton::hitButton(sf::Vector2f position) const
@@ -76,5 +58,4 @@ bool GuiButton::hitButton(sf::Vector2f position) const
 void GuiButton::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mShape);
-    target.draw(mText);
 }

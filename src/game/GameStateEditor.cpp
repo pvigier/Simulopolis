@@ -55,11 +55,11 @@ void GameStateEditor::update(const float dt)
     mCity.update(dt);
 
     // Update the info bar at the bottom of the screen
-    mGui.get<GuiButton>("dayLabel")->setText("Day: " + std::to_string(mCity.getDay()));
+    /*mGui.get<GuiButton>("dayLabel")->setText("Day: " + std::to_string(mCity.getDay()));
     mGui.get<GuiButton>("fundsLabel")->setText("$" + std::to_string(long(mCity.getFunds())));
     mGui.get<GuiButton>("populationLabel")->setText("Population: " + std::to_string(mCity.getPopulation()));
     mGui.get<GuiButton>("employmentLabel")->setText("Unemployment: " + std::to_string(mCity.getUnemployed()));
-    mGui.get<GuiButton>("currentTileLabel")->setText(tileTypeToStr(mCurrentTile));
+    mGui.get<GuiButton>("currentTileLabel")->setText(tileTypeToStr(mCurrentTile));*/
 }
 
 void GameStateEditor::handleMessages()
@@ -108,11 +108,11 @@ void GameStateEditor::handleMessages()
                         }
                         // Update the GUI
                         unsigned int totalCost = computeCostOfSelection();
-                        std::shared_ptr<GuiButton> selectionCostText = mGui.get<GuiButton>("selectionCostText");
+                        /*std::shared_ptr<GuiButton> selectionCostText = mGui.get<GuiButton>("selectionCostText");
                         selectionCostText->setText("$" + std::to_string(totalCost));
                         selectionCostText->setHighlight(mCity.getFunds() < totalCost);
                         selectionCostText->setPosition(sf::Vector2f(mousePosition) + sf::Vector2f(16, -16));
-                        selectionCostText->setVisible(true);
+                        selectionCostText->setVisible(true);*/
                     }
                     break;
                 case sf::Event::MouseButtonPressed:
@@ -222,7 +222,7 @@ void GameStateEditor::handleMessages()
 
 void GameStateEditor::createGui()
 {
-    // Right click menu
+    /*// Right click menu
     auto grassButton = mGui.create<GuiButton>("grassButton",
         sStylesheetManager->getStylesheet("button"), "Flatten $" + std::to_string(getCost(Tile::Type::GRASS)),
         sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::GRASS));
@@ -293,6 +293,14 @@ void GameStateEditor::createGui()
     GuiHBoxLayout* infoBarLayout = new GuiHBoxLayout();
     infoBarLayout->setVAlignment(GuiLayout::VAlignment::Bottom);
     infoBar->setLayout(GuiLayoutPtr(new GuiHBoxLayout(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Bottom)));
+
+
+    // Right bar
+    auto roadMenu = mGui.create<GuiButton>("roadMenu", sStylesheetManager->getStylesheet("button"),
+        "R", sf::Vector2f(32 , 32), 12, Message(MessageType::GUI));
+
+    auto rightBar = mGui.createRoot<GuiWidget>("rightBar");
+    rightBar->add(roadMenu);*/
 }
 
 void GameStateEditor::zoom(float factor)

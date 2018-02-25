@@ -24,9 +24,11 @@ void GuiWidget::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void GuiWidget::update()
 {
     if (mLayout != nullptr)
+    {
         mLayout->align();
-    for (GuiWidgetPtr& widget : mChildren)
-        widget->update();
+        for (GuiWidgetPtr& widget : mChildren)
+            widget->update();
+    }
 }
 
 void GuiWidget::add(GuiWidgetPtr widget)

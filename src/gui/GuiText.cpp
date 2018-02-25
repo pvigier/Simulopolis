@@ -14,7 +14,8 @@ GuiText::~GuiText()
 
 void GuiText::setPosition(sf::Vector2f position)
 {
-    sf::Vector2f offset(sf::Vector2f(mText.getGlobalBounds().left, mText.getGlobalBounds().top) - mPosition);
+    sf::Vector2f offset(sf::Vector2f(mText.getGlobalBounds().left, mText.getGlobalBounds().top) - mText.getPosition());
+    position = sf::Vector2f(sf::Vector2i(position));
     GuiWidget::setPosition(position);
     mText.setPosition(position - offset);
 }
