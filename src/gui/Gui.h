@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <memory>
 #include <SFML/Graphics.hpp>
 #include "util/NonCopyable.h"
 #include "util/NonMovable.h"
@@ -10,6 +11,8 @@
 class MessageBus;
 class InputEngine;
 class GuiWidget;
+
+using GuiWidgetPtr = std::shared_ptr<GuiWidget>;
 
 class Gui : public NonCopyable, public NonMovable, public sf::Transformable, public sf::Drawable
 {
@@ -23,21 +26,36 @@ public:
     // Draw the menu.
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    void add(const std::string& name, GuiWidget* widget);
-    void addRoot(const std::string& name, GuiWidget* widget);
-    GuiWidget* get(const std::string& name);
-    const GuiWidget* get(const std::string& name) const;
+    template<typename T, typename... Args>
+    std::shared_ptr<T> create(const std::string& name, Args&&... args)
+    {
+        std::shared_ptr<T> widget(new T(args...));
+        mWidgets[name] = widget;
+        return widget;
+    }
+
+    template<typename T, typename... Args>
+    std::shared_ptr<T> createRoot(const std::string& name, Args&&... args)
+    {
+        std::shared_ptr<T> widget(new T(args...));
+        mWidgets[name] = widget;
+        mRootWidgets.push_back(widget);
+        return widget;
+    }
+
+    GuiWidgetPtr get(const std::string& name);
+    const GuiWidgetPtr get(const std::string& name) const;
 
     template<typename T>
-    T* get(const std::string& name)
+    std::shared_ptr<T> get(const std::string& name)
     {
-            return static_cast<T*>(mWidgets[name]);
+        return std::static_pointer_cast<T>(mWidgets[name]);
     }
 
     template <typename T>
-    const T* get(const std::string& name) const
+    std::shared_ptr<T> get(const std::string& name) const
     {
-        return static_cast<T*>(mWidgets.at(name));
+        return std::static_pointer_cast<T>(mWidgets.at(name));
     }
 
     void update();
@@ -51,6 +69,6 @@ private:
     Mailbox mMailbox;
     sf::View mView;
     bool mVisible;
-    std::unordered_map<std::string, GuiWidget*> mWidgets;
-    std::vector<GuiWidget*> mRootWidgets;
+    std::unordered_map<std::string, GuiWidgetPtr> mWidgets;
+    std::vector<GuiWidgetPtr> mRootWidgets;
 };

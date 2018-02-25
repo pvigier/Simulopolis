@@ -108,7 +108,7 @@ void GameStateEditor::handleMessages()
                         }
                         // Update the GUI
                         unsigned int totalCost = computeCostOfSelection();
-                        GuiButton* selectionCostText = mGui.get<GuiButton>("selectionCostText");
+                        std::shared_ptr<GuiButton> selectionCostText = mGui.get<GuiButton>("selectionCostText");
                         selectionCostText->setText("$" + std::to_string(totalCost));
                         selectionCostText->setHighlight(mCity.getFunds() < totalCost);
                         selectionCostText->setPosition(sf::Vector2f(mousePosition) + sf::Vector2f(16, -16));
@@ -223,81 +223,67 @@ void GameStateEditor::handleMessages()
 void GameStateEditor::createGui()
 {
     // Right click menu
-    GuiButton* grassButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "Flatten $" + std::to_string(getCost(Tile::Type::GRASS)),
+    auto grassButton = mGui.create<GuiButton>("grassButton",
+        sStylesheetManager->getStylesheet("button"), "Flatten $" + std::to_string(getCost(Tile::Type::GRASS)),
         sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::GRASS));
-    mGui.add("grassButton", grassButton);
     grassButton->subscribe(mMailbox.getId());
 
-    GuiButton* forestButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "Forest $" + std::to_string(getCost(Tile::Type::FOREST)),
+    auto forestButton = mGui.create<GuiButton>("forestButton",
+        sStylesheetManager->getStylesheet("button"), "Forest $" + std::to_string(getCost(Tile::Type::FOREST)),
         sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::FOREST));
-    mGui.add("forestButton", forestButton);
     forestButton->subscribe(mMailbox.getId());
 
-    GuiButton* residentialButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
-        "Residential Zone $" + std::to_string(getCost(Tile::Type::RESIDENTIAL)),
+    auto residentialButton = mGui.create<GuiButton>("residentialButton",
+        sStylesheetManager->getStylesheet("button"), "Residential Zone $" + std::to_string(getCost(Tile::Type::RESIDENTIAL)),
         sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::RESIDENTIAL));
-    mGui.add("residentialButton", residentialButton);
     residentialButton->subscribe(mMailbox.getId());
 
-    GuiButton* commercialButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
+    auto commercialButton = mGui.create<GuiButton>("commercialButton", sStylesheetManager->getStylesheet("button"),
         "Commercial Zone $" + std::to_string(getCost(Tile::Type::COMMERCIAL)),
         sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::COMMERCIAL));
-    mGui.add("commercialButton", commercialButton);
     commercialButton->subscribe(mMailbox.getId());
 
-    GuiButton* industrialButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
+    auto industrialButton = mGui.create<GuiButton>("industrialButton", sStylesheetManager->getStylesheet("button"),
         "Industrial Zone $" + std::to_string(getCost(Tile::Type::INDUSTRIAL)),
         sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::INDUSTRIAL));
-    mGui.add("industrialButton", industrialButton);
     industrialButton->subscribe(mMailbox.getId());
 
-    GuiButton* roadButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
+    auto roadButton = mGui.create<GuiButton>("roadButton", sStylesheetManager->getStylesheet("button"),
         "Road $" + std::to_string(getCost(Tile::Type::ROAD)),
         sf::Vector2f(196, 16), 12, Message::create(MessageType::GUI, Tile::Type::ROAD));
-    mGui.add("roadButton", roadButton);
     roadButton->subscribe(mMailbox.getId());
 
-    GuiWidget* rightClickMenu = new GuiWidget();
+    auto rightClickMenu = mGui.createRoot<GuiWidget>("rightClickMenu");
     rightClickMenu->add(grassButton);
     rightClickMenu->add(forestButton);
     rightClickMenu->add(residentialButton);
     rightClickMenu->add(commercialButton);
     rightClickMenu->add(industrialButton);
     rightClickMenu->add(roadButton);
-    rightClickMenu->setLayout(new GuiVBoxLayout());
+    rightClickMenu->setLayout(GuiLayoutPtr(new GuiVBoxLayout()));
     rightClickMenu->fitSizeToContent();
     rightClickMenu->setVisible(false);
 
-    mGui.addRoot("rightClickMenu", rightClickMenu);
-
-    GuiButton* selectionCostText = new GuiButton(sStylesheetManager->getStylesheet("text"), "",
-        sf::Vector2f(196, 16), 12, Message(MessageType::GUI));
-    mGui.addRoot("selectionCostText", selectionCostText);
+    auto selectionCostText = mGui.createRoot<GuiButton>("selectionCostText",
+        sStylesheetManager->getStylesheet("text"), "", sf::Vector2f(196, 16), 12, Message(MessageType::GUI));
 
     // Info bar
-    GuiButton* dayLabel = new GuiButton(sStylesheetManager->getStylesheet("button"),
+    auto dayLabel = mGui.create<GuiButton>("dayLabel", sStylesheetManager->getStylesheet("button"),
         "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, Message(MessageType::GUI));
-    mGui.add("dayLabel", dayLabel);
 
-    GuiButton* fundsLabel = new GuiButton(sStylesheetManager->getStylesheet("button"),
+    auto fundsLabel = mGui.create<GuiButton>("fundsLabel", sStylesheetManager->getStylesheet("button"),
         "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, Message(MessageType::GUI));
-    mGui.add("fundsLabel", fundsLabel);
 
-    GuiButton* populationLabel = new GuiButton(sStylesheetManager->getStylesheet("button"),
+    auto populationLabel = mGui.create<GuiButton>("populationLabel", sStylesheetManager->getStylesheet("button"),
         "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, Message(MessageType::GUI));
-    mGui.add("populationLabel", populationLabel);
 
-    GuiButton* employmentLabel = new GuiButton(sStylesheetManager->getStylesheet("button"),
+    auto employmentLabel = mGui.create<GuiButton>("employmentLabel", sStylesheetManager->getStylesheet("button"),
         "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, Message(MessageType::GUI));
-    mGui.add("employmentLabel", employmentLabel);
 
-    GuiButton* currentTileLabel = new GuiButton(sStylesheetManager->getStylesheet("button"),
+    auto currentTileLabel = mGui.create<GuiButton>("currentTileLabel", sStylesheetManager->getStylesheet("button"),
         "", sf::Vector2f(sRenderEngine->getWindow().getSize().x / 5 , 16), 12, Message(MessageType::GUI));
-    mGui.add("currentTileLabel", currentTileLabel);
 
-    GuiWidget* infoBar = new GuiWidget();
+    auto infoBar = mGui.createRoot<GuiWidget>("infoBar");
     infoBar->add(dayLabel);
     infoBar->add(fundsLabel);
     infoBar->add(populationLabel);
@@ -306,8 +292,7 @@ void GameStateEditor::createGui()
     infoBar->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     GuiHBoxLayout* infoBarLayout = new GuiHBoxLayout();
     infoBarLayout->setVAlignment(GuiLayout::VAlignment::Bottom);
-    infoBar->setLayout(infoBarLayout);
-    mGui.addRoot("infoBar", infoBar);
+    infoBar->setLayout(GuiLayoutPtr(new GuiHBoxLayout(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Bottom)));
 }
 
 void GameStateEditor::zoom(float factor)

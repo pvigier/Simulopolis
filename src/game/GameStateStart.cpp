@@ -6,6 +6,7 @@
 #include "resource/StylesheetManager.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiImage.h"
+#include "gui/GuiText.h"
 #include "gui/GuiVBoxLayout.h"
 
 GameStateStart::GameStateStart() :
@@ -71,29 +72,23 @@ void GameStateStart::handleMessages()
 void GameStateStart::createGui()
 {
     // Background
-    GuiImage* background = new GuiImage(sTextureManager->getTexture("background"));
-    mGui.addRoot("background", background);
+    auto background = mGui.createRoot<GuiImage>("background", sTextureManager->getTexture("background"));
 
     // Load button
-    GuiButton* loadGameButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
+    auto loadGameButton = mGui.create<GuiButton>("loadGameButton", sStylesheetManager->getStylesheet("button"),
         "Load Game", sf::Vector2f(192, 32), 24, Message::create<std::string>(MessageType::GUI, "load_game"));
-    mGui.add("loadGameButton", loadGameButton);
 
     // Exit button
-    GuiButton* exitButton = new GuiButton(sStylesheetManager->getStylesheet("button"),
+    auto exitButton = mGui.create<GuiButton>("exitButton", sStylesheetManager->getStylesheet("button"),
         "Exit", sf::Vector2f(192, 32), 24, Message::create<std::string>(MessageType::GUI, "exit"));
-    mGui.add("exitButton", exitButton);
 
-    GuiWidget* menu = new GuiWidget();
+    auto menu = mGui.createRoot<GuiWidget>("menu");
     menu->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     menu->add(loadGameButton);
     menu->add(exitButton);
-    GuiVBoxLayout* menuLayout = new GuiVBoxLayout();
-    menuLayout->setHAlignment(GuiLayout::HAlignment::Center);
-    menuLayout->setVAlignment(GuiLayout::VAlignment::Center);
+    std::unique_ptr<GuiVBoxLayout> menuLayout(new GuiVBoxLayout(GuiLayout::HAlignment::Center, GuiLayout::VAlignment::Center));
     menuLayout->setSpacing(16.0f);
-    menu->setLayout(menuLayout);
-    mGui.addRoot("menu", menu);
+    menu->setLayout(std::move(menuLayout));
 
     // Register to events
     loadGameButton->subscribe(mMailbox.getId());

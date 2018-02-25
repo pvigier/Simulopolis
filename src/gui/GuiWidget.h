@@ -4,7 +4,10 @@
 #include <SFML/Graphics.hpp>
 #include "message/Subject.h"
 
+class GuiWidget;
 class GuiLayout;
+
+using GuiWidgetPtr = std::shared_ptr<GuiWidget>;
 
 class GuiWidget : public sf::Drawable, public Subject
 {
@@ -16,14 +19,14 @@ public:
 
     virtual void update();
 
-    virtual void add(GuiWidget* widget);
-    std::vector<GuiWidget*>& getChildren();
-    const std::vector<GuiWidget*>& getChildren() const;
+    virtual void add(GuiWidgetPtr widget);
+    std::vector<GuiWidgetPtr>& getChildren();
+    const std::vector<GuiWidgetPtr>& getChildren() const;
 
     void fitSizeToContent();
 
     // Parameters
-    void setLayout(GuiLayout* layout);
+    void setLayout(std::unique_ptr<GuiLayout> layout);
     virtual sf::Vector2f getPosition() const;
     virtual void setPosition(sf::Vector2f position);
     virtual sf::Vector2f getSize() const;
@@ -38,8 +41,8 @@ public:
     void updateMouseButtonReleased(sf::Vector2f position);
 
 protected:
-    std::vector<GuiWidget*> mChildren;
-    GuiLayout* mLayout;
+    std::vector<GuiWidgetPtr> mChildren;
+    std::unique_ptr<GuiLayout> mLayout;
     sf::Vector2f mPosition;
     sf::Vector2f mSize;
     bool mVisible;

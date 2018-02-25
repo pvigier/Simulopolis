@@ -1,15 +1,14 @@
 #include "gui/GuiWidget.h"
 #include "gui/GuiLayout.h"
 
-GuiWidget::GuiWidget() : mLayout(nullptr), mVisible(true)
+GuiWidget::GuiWidget() : mVisible(true)
 {
     //ctor
 }
 
 GuiWidget::~GuiWidget()
 {
-    if (mLayout != nullptr)
-        delete mLayout;
+
 }
 
 void GuiWidget::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -17,7 +16,7 @@ void GuiWidget::draw(sf::RenderTarget& target, sf::RenderStates states) const
     if (mVisible)
     {
         render(target, states);
-        for (const GuiWidget* widget : mChildren)
+        for (const GuiWidgetPtr& widget : mChildren)
             target.draw(*widget);
     }
 }
@@ -26,22 +25,22 @@ void GuiWidget::update()
 {
     if (mLayout != nullptr)
         mLayout->align();
-    for (GuiWidget* widget : mChildren)
+    for (GuiWidgetPtr& widget : mChildren)
         widget->update();
 }
 
-void GuiWidget::add(GuiWidget* widget)
+void GuiWidget::add(GuiWidgetPtr widget)
 {
     mChildren.push_back(widget);
     update();
 }
 
-std::vector<GuiWidget*>& GuiWidget::getChildren()
+std::vector<GuiWidgetPtr>& GuiWidget::getChildren()
 {
     return mChildren;
 }
 
-const std::vector<GuiWidget*>& GuiWidget::getChildren() const
+const std::vector<GuiWidgetPtr>& GuiWidget::getChildren() const
 {
     return mChildren;
 }
@@ -51,9 +50,9 @@ void GuiWidget::fitSizeToContent()
     setSize(mLayout->computeSize());
 }
 
-void GuiWidget::setLayout(GuiLayout* layout)
+void GuiWidget::setLayout(std::unique_ptr<GuiLayout> layout)
 {
-    mLayout = layout;
+    mLayout = std::move(layout);
     mLayout->setOwner(this);
     update();
 }
@@ -100,7 +99,7 @@ void GuiWidget::updateMouseMoved(sf::Vector2f position)
     if (mVisible)
     {
         onHover(position);
-        for (GuiWidget* widget : mChildren)
+        for (GuiWidgetPtr& widget : mChildren)
             widget->updateMouseMoved(position);
     }
 }
@@ -110,7 +109,7 @@ void GuiWidget::updateMouseButtonPressed(sf::Vector2f position)
     if (mVisible)
     {
         onPress(position);
-        for (GuiWidget* widget : mChildren)
+        for (GuiWidgetPtr& widget : mChildren)
             widget->updateMouseButtonPressed(position);
     }
 }
@@ -120,7 +119,7 @@ void GuiWidget::updateMouseButtonReleased(sf::Vector2f position)
     if (mVisible)
     {
         onRelease(position);
-        for (GuiWidget* widget : mChildren)
+        for (GuiWidgetPtr& widget : mChildren)
             widget->updateMouseButtonReleased(position);
     }
 }

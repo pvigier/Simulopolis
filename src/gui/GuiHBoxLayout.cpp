@@ -20,7 +20,7 @@ void GuiHBoxLayout::align()
         offset.x += mOwner->getSize().x * 0.5f - size.x * 0.5f;
     else if (mHAlignment == HAlignment::Right)
         offset.x += mOwner->getSize().x - size.x;
-    for (GuiWidget* widget : mOwner->getChildren())
+    for (GuiWidgetPtr& widget : mOwner->getChildren())
     {
         offset.y = mOwner->getPosition().y;
         if (mVAlignment == VAlignment::Center)
@@ -35,7 +35,7 @@ void GuiHBoxLayout::align()
 sf::Vector2f GuiHBoxLayout::computeSize() const
 {
     sf::Vector2f size;
-    for (GuiWidget* widget : mOwner->getChildren())
+    for (const GuiWidgetPtr& widget : mOwner->getChildren())
     {
         size.x += widget->getSize().x + mSpacing;
         size.y = std::max(size.y, widget->getSize().y);
