@@ -44,11 +44,6 @@ Message GuiButton::getMessage() const
 void GuiButton::setText(const std::string& text)
 {
     mText.setString(text);
-
-    /*mText.setPosition(mShape.getPosition());
-    sf::Vector2f offset(sf::Vector2f(mText.getGlobalBounds().left, mText.getGlobalBounds().top) - mShape.getPosition());
-    sf::Vector2f textSize(mText.getGlobalBounds().width, mText.getGlobalBounds().height);
-    mText.setPosition(mShape.getPosition() - offset + mShape.getSize() * 0.5f - textSize * 0.5f);*/
 }
 
 void GuiButton::setHighlight(bool highlight)

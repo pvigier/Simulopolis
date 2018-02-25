@@ -2,7 +2,7 @@
 
 GuiImage::GuiImage(const sf::Texture& texture) : mSprite(texture)
 {
-    //ctor
+    GuiImage::setSize(sf::Vector2f(texture.getSize()));
 }
 
 GuiImage::~GuiImage()
