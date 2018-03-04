@@ -38,29 +38,29 @@ void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.setView(mView);
 
     // Draw each button of the menu
-    for (const GuiWidgetPtr& widget : mRootWidgets)
+    for (GuiWidget* widget : mRootWidgets)
         target.draw(*widget);
 }
 
-void Gui::add(const std::string& name, GuiWidgetPtr widget)
+void Gui::add(const std::string& name, std::unique_ptr<GuiWidget> widget)
 {
-    mWidgets[name] = widget;
+    mWidgets[name] = std::move(widget);
 }
 
-void Gui::addRoot(const std::string& name, GuiWidgetPtr widget)
+void Gui::addRoot(const std::string& name, std::unique_ptr<GuiWidget> widget)
 {
-    mWidgets[name] = widget;
-    mRootWidgets.push_back(widget);
+    mRootWidgets.push_back(widget.get());
+    mWidgets[name] = std::move(widget);
 }
 
-GuiWidgetPtr Gui::get(const std::string& name)
+GuiWidget* Gui::get(const std::string& name)
 {
-    return mWidgets[name];
+    return mWidgets[name].get();
 }
 
-const GuiWidgetPtr Gui::get(const std::string& name) const
+const GuiWidget* Gui::get(const std::string& name) const
 {
-    return mWidgets.at(name);
+    return mWidgets.at(name).get();
 }
 
 void Gui::update()
@@ -79,15 +79,15 @@ void Gui::update()
                 mView.setSize(event.size.width, event.size.height);
                 break;
             case sf::Event::MouseMoved:
-                for (GuiWidgetPtr& widget : mRootWidgets)
+                for (GuiWidget* widget : mRootWidgets)
                     widget->updateMouseMoved(mousePosition);
                 break;
             case sf::Event::MouseButtonPressed:
-                for (GuiWidgetPtr& widget : mRootWidgets)
+                for (GuiWidget* widget : mRootWidgets)
                     widget->updateMouseButtonPressed(mousePosition);
                 break;
             case sf::Event::MouseButtonReleased:
-                for (GuiWidgetPtr& widget : mRootWidgets)
+                for (GuiWidget* widget : mRootWidgets)
                     widget->updateMouseButtonReleased(mousePosition);
                 break;
             default:

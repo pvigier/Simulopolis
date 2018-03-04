@@ -103,18 +103,18 @@ void GuiManager::loadRootWidget(Gui* gui, XMLNode* node)
         gui->addRoot(child->Attribute("name"), loadWidget(gui, child));
 }
 
-GuiWidgetPtr GuiManager::loadWidget(Gui* gui, XMLElement* node)
+std::unique_ptr<GuiWidget> GuiManager::loadWidget(Gui* gui, XMLElement* node)
 {
     // Create widget
-    GuiWidgetPtr widget = createWidget(node);
+    std::unique_ptr<GuiWidget> widget = createWidget(node);
     // Create children
     for (XMLElement* child = node->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
     {
         if (isWidget(child))
         {
-            GuiWidgetPtr childWidget = loadWidget(gui, child);
-            widget->add(childWidget);
-            gui->add(child->Attribute("name"), childWidget);
+            std::unique_ptr<GuiWidget> childWidget = loadWidget(gui, child);
+            widget->add(childWidget.get());
+            gui->add(child->Attribute("name"), std::move(childWidget));
         }
         else if (isLayout(child))
             widget->setLayout(createLayout(child));
@@ -134,37 +134,37 @@ bool GuiManager::isLayout(tinyxml2::XMLElement* node)
     return (type == "hboxlayout" || type == "vboxlayout");
 }
 
-GuiWidgetPtr GuiManager::createWidget(tinyxml2::XMLElement* node)
+std::unique_ptr<GuiWidget> GuiManager::createWidget(tinyxml2::XMLElement* node)
 {
-    GuiWidgetPtr widget(nullptr);
+    std::unique_ptr<GuiWidget> widget;
     std::string type = node->Name();
     if (type == "widget")
-        widget = GuiWidgetPtr(new GuiWidget());
+        widget = std::unique_ptr<GuiWidget>(new GuiWidget());
     else if (type == "button")
     {
         sf::Vector2f dimensions = stringToVector(node->Attribute("dimensions"));
         Message message = Message::create<std::string>(MessageType::GUI, node->Attribute("message"));
         const GuiStyle& style = mStylesheetManager->getStylesheet(node->Attribute("style"));
-        widget = std::make_shared<GuiButton>(dimensions, message, style);
+        widget = std::unique_ptr<GuiButton>(new GuiButton(dimensions, message, style));
     }
     else if (type == "text")
     {
         std::string text = node->Attribute("text");
         unsigned int characterSize = node->IntAttribute("characterSize");
         const GuiStyle& style = mStylesheetManager->getStylesheet(node->Attribute("style"));
-        widget = std::make_shared<GuiText>(text, characterSize, style);
+        widget = std::unique_ptr<GuiText>(new GuiText(text, characterSize, style));
     }
     else if (type == "image")
     {
         const sf::Texture& texture = mTextureManager->getTexture(node->Attribute("texture"));
-        widget = std::make_shared<GuiImage>(texture);
+        widget = std::unique_ptr<GuiImage>(new GuiImage(texture));
     }
     return std::move(widget);
 }
 
-GuiLayoutPtr GuiManager::createLayout(tinyxml2::XMLElement* node)
+std::unique_ptr<GuiLayout> GuiManager::createLayout(tinyxml2::XMLElement* node)
 {
-    GuiLayoutPtr layout(nullptr);
+    std::unique_ptr<GuiLayout> layout(nullptr);
     std::string type = node->Name();
     if (type == "hboxlayout")
     {

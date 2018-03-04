@@ -14,8 +14,6 @@ class FontManager;
 class StylesheetManager;
 class GuiWidget;
 
-using GuiWidgetPtr = std::shared_ptr<GuiWidget>;
-
 /**
  * \brief Manager that manages the gui's
  *
@@ -100,11 +98,11 @@ private:
     void loadGui(tinyxml2::XMLElement* node);
 
     void loadRootWidget(Gui* gui, tinyxml2::XMLNode* node);
-    GuiWidgetPtr loadWidget(Gui* gui, tinyxml2::XMLElement* node);
+    std::unique_ptr<GuiWidget> loadWidget(Gui* gui, tinyxml2::XMLElement* node);
     bool isWidget(tinyxml2::XMLElement* node);
     bool isLayout(tinyxml2::XMLElement* node);
-    GuiWidgetPtr createWidget(tinyxml2::XMLElement* node);
-    GuiLayoutPtr createLayout(tinyxml2::XMLElement* node);
+    std::unique_ptr<GuiWidget> createWidget(tinyxml2::XMLElement* node);
+    std::unique_ptr<GuiLayout> createLayout(tinyxml2::XMLElement* node);
     sf::Vector2f stringToVector(const std::string& s) const;
     GuiLayout::HAlignment stringToHAlignment(const std::string& s) const;
     GuiLayout::VAlignment stringToVAlignment(const std::string& s) const;

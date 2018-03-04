@@ -7,8 +7,6 @@
 class GuiWidget;
 class GuiLayout;
 
-using GuiWidgetPtr = std::shared_ptr<GuiWidget>;
-
 class GuiWidget : public sf::Drawable, public Subject
 {
 public:
@@ -19,13 +17,14 @@ public:
 
     virtual void update();
 
-    virtual void add(GuiWidgetPtr widget);
-    std::vector<GuiWidgetPtr>& getChildren();
-    const std::vector<GuiWidgetPtr>& getChildren() const;
+    virtual void add(GuiWidget* widget);
+    std::vector<GuiWidget*>& getChildren();
+    const std::vector<GuiWidget*>& getChildren() const;
 
     void fitSizeToContent();
 
     // Parameters
+    void setParent(GuiWidget* parent);
     void setLayout(std::unique_ptr<GuiLayout> layout);
     virtual sf::Vector2f getPosition() const;
     virtual void setPosition(sf::Vector2f position);
@@ -41,7 +40,8 @@ public:
     void updateMouseButtonReleased(sf::Vector2f position);
 
 protected:
-    std::vector<GuiWidgetPtr> mChildren;
+    GuiWidget* mParent;
+    std::vector<GuiWidget*> mChildren;
     std::unique_ptr<GuiLayout> mLayout;
     sf::Vector2f mPosition;
     sf::Vector2f mSize;

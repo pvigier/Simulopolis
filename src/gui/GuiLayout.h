@@ -21,5 +21,3 @@ public:
 protected:
     GuiWidget* mOwner;
 };
-
-using GuiLayoutPtr = std::unique_ptr<GuiLayout>;

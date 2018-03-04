@@ -12,8 +12,6 @@ class MessageBus;
 class InputEngine;
 class GuiWidget;
 
-using GuiWidgetPtr = std::shared_ptr<GuiWidget>;
-
 class Gui : public NonCopyable, public NonMovable, public sf::Transformable, public sf::Drawable
 {
 public:
@@ -26,39 +24,37 @@ public:
     // Draw the menu.
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    void add(const std::string& name, GuiWidgetPtr widget);
-    void addRoot(const std::string& name, GuiWidgetPtr widget);
+    void add(const std::string& name, std::unique_ptr<GuiWidget> widget);
+    void addRoot(const std::string& name, std::unique_ptr<GuiWidget> widget);
 
     template<typename T, typename... Args>
-    std::shared_ptr<T> create(const std::string& name, Args&&... args)
+    T* create(const std::string& name, Args&&... args)
     {
-        std::shared_ptr<T> widget(new T(args...));
-        mWidgets[name] = widget;
-        return widget;
+        mWidgets[name] = std::unique_ptr<T>(new T(args...));
+        return mWidgets[name].get();
     }
 
     template<typename T, typename... Args>
-    std::shared_ptr<T> createRoot(const std::string& name, Args&&... args)
+    T* createRoot(const std::string& name, Args&&... args)
     {
-        std::shared_ptr<T> widget(new T(args...));
-        mWidgets[name] = widget;
-        mRootWidgets.push_back(widget);
-        return widget;
+        mWidgets[name] = std::unique_ptr<T>(new T(args...));
+        mRootWidgets.push_back(mWidgets[name].get());
+        return mWidgets[name].get();
     }
 
-    GuiWidgetPtr get(const std::string& name);
-    const GuiWidgetPtr get(const std::string& name) const;
+    GuiWidget* get(const std::string& name);
+    const GuiWidget* get(const std::string& name) const;
 
     template<typename T>
-    std::shared_ptr<T> get(const std::string& name)
+    T* get(const std::string& name)
     {
-        return std::static_pointer_cast<T>(mWidgets[name]);
+        return static_cast<T*>(mWidgets[name].get());
     }
 
     template <typename T>
-    std::shared_ptr<T> get(const std::string& name) const
+    T* get(const std::string& name) const
     {
-        return std::static_pointer_cast<T>(mWidgets.at(name));
+        return static_cast<T*>(mWidgets.at(name).get());
     }
 
     void update();
@@ -73,6 +69,6 @@ private:
     Mailbox mMailbox;
     sf::View mView;
     bool mVisible;
-    std::unordered_map<std::string, GuiWidgetPtr> mWidgets;
-    std::vector<GuiWidgetPtr> mRootWidgets;
+    std::unordered_map<std::string, std::unique_ptr<GuiWidget>> mWidgets;
+    std::vector<GuiWidget*> mRootWidgets;
 };
