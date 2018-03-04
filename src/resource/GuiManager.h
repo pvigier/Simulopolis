@@ -74,7 +74,7 @@ public:
      * \param name Name of the gui
      * \param gui Gui to add
      */
-    void addGui(const std::string& name, std::shared_ptr<Gui> gui);
+    void addGui(const std::string& name, std::unique_ptr<Gui> gui);
 
     /**
      * \brief Get a gui
@@ -83,14 +83,14 @@ public:
      *
      * \return Gui that corresponds to name
      */
-    std::shared_ptr<Gui> getGui(const std::string& name);
+    Gui* getGui(const std::string& name);
 
 private:
     TextureManager* mTextureManager;
     FontManager* mFontManager;
     StylesheetManager* mStylesheetManager;
     std::string mPrefixPath; /**< Path of the folder in which is located "guis.xml" */
-    std::unordered_map<std::string, std::shared_ptr<Gui>> mGuis; /**< Hash map that contains the gui's */
+    std::unordered_map<std::string, std::unique_ptr<Gui>> mGuis; /**< Hash map that contains the gui's */
 
     /**
      * \brief Load a stylesheet from a XML node
@@ -99,8 +99,8 @@ private:
      */
     void loadGui(tinyxml2::XMLElement* node);
 
-    void loadRootWidget(std::shared_ptr<Gui> gui, tinyxml2::XMLNode* node);
-    GuiWidgetPtr loadWidget(std::shared_ptr<Gui> gui, tinyxml2::XMLElement* node);
+    void loadRootWidget(Gui* gui, tinyxml2::XMLNode* node);
+    GuiWidgetPtr loadWidget(Gui* gui, tinyxml2::XMLElement* node);
     bool isWidget(tinyxml2::XMLElement* node);
     bool isLayout(tinyxml2::XMLElement* node);
     GuiWidgetPtr createWidget(tinyxml2::XMLElement* node);

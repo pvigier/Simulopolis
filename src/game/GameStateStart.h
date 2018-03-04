@@ -16,7 +16,7 @@ public:
     virtual void handleMessages() override;
 
 private:
-    std::shared_ptr<Gui> mGui;
+    Gui* mGui;
 
     void createGui();
     void loadGame();

@@ -63,14 +63,14 @@ void GuiManager::tearDown()
 
 }
 
-void GuiManager::addGui(const std::string& name, std::shared_ptr<Gui> gui)
+void GuiManager::addGui(const std::string& name, std::unique_ptr<Gui> gui)
 {
-    mGuis[name] = gui;
+    mGuis[name] = std::move(gui);
 }
 
-std::shared_ptr<Gui> GuiManager::getGui(const std::string& name)
+Gui* GuiManager::getGui(const std::string& name)
 {
-    return mGuis[name];
+    return mGuis[name].get();
 }
 
 void GuiManager::loadGui(XMLElement* node)
@@ -92,18 +92,18 @@ void GuiManager::loadGui(XMLElement* node)
     }
 
     // Gui's
-    std::shared_ptr<Gui> gui(new Gui());
-    loadRootWidget(gui, root);
-    mGuis[name] = gui;
+    std::unique_ptr<Gui> gui(new Gui());
+    loadRootWidget(gui.get(), root);
+    mGuis[name] = std::move(gui);
 }
 
-void GuiManager::loadRootWidget(std::shared_ptr<Gui> gui, XMLNode* node)
+void GuiManager::loadRootWidget(Gui* gui, XMLNode* node)
 {
     for (XMLElement* child = node->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
         gui->addRoot(child->Attribute("name"), loadWidget(gui, child));
 }
 
-GuiWidgetPtr GuiManager::loadWidget(std::shared_ptr<Gui> gui, XMLElement* node)
+GuiWidgetPtr GuiManager::loadWidget(Gui* gui, XMLElement* node)
 {
     // Create widget
     GuiWidgetPtr widget = createWidget(node);
@@ -159,7 +159,7 @@ GuiWidgetPtr GuiManager::createWidget(tinyxml2::XMLElement* node)
         const sf::Texture& texture = mTextureManager->getTexture(node->Attribute("texture"));
         widget = std::make_shared<GuiImage>(texture);
     }
-    return widget;
+    return std::move(widget);
 }
 
 GuiLayoutPtr GuiManager::createLayout(tinyxml2::XMLElement* node)

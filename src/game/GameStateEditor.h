@@ -28,7 +28,7 @@ private:
     sf::Vector2i mSelectionStart;
     sf::Vector2i mSelectionEnd;
     Tile::Type mCurrentTile;
-    std::shared_ptr<Gui> mGui;
+    Gui* mGui;
 
     void createGui();
 
