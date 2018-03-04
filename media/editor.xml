@@ -1,0 +1,53 @@
+<gui>
+	<widget name="rightClickMenu">
+		<button name="grassButton" dimensions="192 16" message="grass" style="button">
+			<text name="grassText" text="Grass $50" characterSize="12" style="button" />
+			<hboxlayout hAlignment="left" vAlignment="center" spacing="0" />
+		</button>
+		<button name="forestButton" dimensions="192 16" message="forest" style="button">
+			<text name="forestText" text="Forest $100" characterSize="12" style="button" />
+			<hboxlayout hAlignment="left" vAlignment="center" spacing="0" />
+		</button>
+		<button name="residentialButton" dimensions="192 16" message="residential" style="button">
+			<text name="residentialText" text="Residential Zone $300" characterSize="12" style="button" />
+			<hboxlayout hAlignment="left" vAlignment="center" spacing="0" />
+		</button>
+		<button name="commercialButton" dimensions="192 16" message="commercial" style="button">
+			<text name="commercialText" text="Commercial Zone $300" characterSize="12" style="button" />
+			<hboxlayout hAlignment="left" vAlignment="center" spacing="0" />
+		</button>
+		<button name="industrialButton" dimensions="192 16" message="industrial" style="button">
+			<text name="industrialText" text="Industrial Zone $300" characterSize="12" style="button" />
+			<hboxlayout hAlignment="left" vAlignment="center" spacing="0" />
+		</button>
+		<button name="roadButton" dimensions="192 16" message="road" style="button">
+			<text name="roadText" text="Road $100" characterSize="12" style="button" />
+			<hboxlayout hAlignment="left" vAlignment="center" spacing="0" />
+		</button>
+		<vboxlayout hAlignment="left" vAlignment="top" spacing="0" />
+	</widget>
+	<text name="selectionCostText" text="" characterSize="12" style="text" />
+	<widget name="infoBar">
+		<button name="dayButton" dimensions="160 16" message="" style="button">
+			<text name="dayText" text="" characterSize="12" style="button" />
+			<hboxlayout hAlignment="center" vAlignment="center" spacing="0" />
+		</button>
+		<button name="fundsButton" dimensions="160 16" message="" style="button">
+			<text name="fundsText" text="" characterSize="12" style="button" />
+			<hboxlayout hAlignment="left" vAlignment="center" spacing="0" />
+		</button>
+		<button name="populationButton" dimensions="160 16" message="" style="button">
+			<text name="populationText" text="" characterSize="12" style="button" />
+			<hboxlayout hAlignment="left" vAlignment="center" spacing="0" />
+		</button>
+		<button name="employmentButton" dimensions="160 16" message="" style="button">
+			<text name="employmentText" text="" characterSize="12" style="button" />
+			<hboxlayout hAlignment="left" vAlignment="center" spacing="0" />
+		</button>
+		<button name="currentTileButton" dimensions="160 16" message="" style="button">
+			<text name="currentTileText" text="" characterSize="12" style="button" />
+			<hboxlayout hAlignment="left" vAlignment="center" spacing="0" />
+		</button>
+		<hboxlayout hAlignment="left" vAlignment="bottom" spacing="0" />
+	</widget>
+</gui>

@@ -11,10 +11,6 @@ Game::Game()
     // Initialize the input engine
     mInputEngine.setWindow(&mRenderEngine.getWindow());
 
-    // Load resources
-    mResourceManager.setUp();
-    Map::loadTiles(mResourceManager.getTextureManager());
-
     // Push dependencies
     Subject::setMessageBus(&mMessageBus);
     Gui::setMessageBus(&mMessageBus);
@@ -25,6 +21,11 @@ Game::Game()
     GameState::setInputEngine(&mInputEngine);
     GameState::setTextureManager(&mResourceManager.getTextureManager());
     GameState::setStylesheetManager(&mResourceManager.getStylesheetManager());
+    GameState::setGuiManager(&mResourceManager.getGuiManager());
+
+    // Load resources
+    mResourceManager.setUp();
+    Map::loadTiles(mResourceManager.getTextureManager());
 
     // Add the start state
     pushState(new GameStateStart());

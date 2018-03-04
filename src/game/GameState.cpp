@@ -7,6 +7,7 @@ RenderEngine* GameState::sRenderEngine = nullptr;
 InputEngine* GameState::sInputEngine = nullptr;
 TextureManager* GameState::sTextureManager = nullptr;
 StylesheetManager* GameState::sStylesheetManager = nullptr;
+GuiManager* GameState::sGuiManager = nullptr;
 
 GameState::GameState()
 {
@@ -47,4 +48,9 @@ void GameState::setTextureManager(TextureManager* textureManager)
 void GameState::setStylesheetManager(StylesheetManager* stylesheetManager)
 {
     sStylesheetManager = stylesheetManager;
+}
+
+void GameState::setGuiManager(GuiManager* guiManager)
+{
+    sGuiManager = guiManager;
 }

@@ -1,0 +1,14 @@
+<gui>
+	<image name="background" texture="background" />
+	<widget name="menu">
+		<button name="loadGameButton" dimensions="192 32" message="load_game" style="button">
+			<text name="loadGameText" text="Load game" characterSize="24" style="button" />
+			<hboxlayout hAlignment="center" vAlignment="center" spacing="0" />
+		</button>
+		<button name="exitButton" dimensions="192 32" message="exit" style="button">
+			<text name="exitText" text="Exit" characterSize="24" style="button" />
+			<hboxlayout hAlignment="center" vAlignment="center" spacing="0" />
+		</button>
+		<vboxlayout hAlignment="center" vAlignment="center" spacing="16" />
+	</widget>
+</gui>

@@ -1,0 +1,4 @@
+<guis>
+	<gui name="menu" path="menu.xml" />
+	<gui name="editor" path="editor.xml" />
+</guis>

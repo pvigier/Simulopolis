@@ -2,7 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "game/GameState.h"
-#include "gui/Gui.h"
+
+class Gui;
 
 class GameStateStart : public GameState
 {
@@ -15,7 +16,7 @@ public:
     virtual void handleMessages() override;
 
 private:
-    Gui mGui;
+    std::shared_ptr<Gui> mGui;
 
     void createGui();
     void loadGame();

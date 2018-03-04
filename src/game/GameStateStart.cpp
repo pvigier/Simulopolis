@@ -4,16 +4,16 @@
 #include "input/InputEngine.h"
 #include "resource/TextureManager.h"
 #include "resource/StylesheetManager.h"
+#include "resource/GuiManager.h"
+#include "gui/Gui.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiImage.h"
 #include "gui/GuiText.h"
 #include "gui/GuiVBoxLayout.h"
 
-GameStateStart::GameStateStart() :
-    mGui()
+GameStateStart::GameStateStart() : mGui(sGuiManager->getGui("menu"))
 {
     // Gui
-    mGui.setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     createGui();
 
     // Subscribe to inputs
@@ -27,7 +27,7 @@ GameStateStart::~GameStateStart()
 
 void GameStateStart::draw(const float dt)
 {
-    sRenderEngine->draw(mGui);
+    sRenderEngine->draw(*mGui);
 }
 
 void GameStateStart::update(const float dt)
@@ -37,7 +37,7 @@ void GameStateStart::update(const float dt)
 
 void GameStateStart::handleMessages()
 {
-    mGui.update();
+    mGui->update();
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();
@@ -72,34 +72,12 @@ void GameStateStart::handleMessages()
 
 void GameStateStart::createGui()
 {
-    // Background
-    auto background = mGui.createRoot<GuiImage>("background", sTextureManager->getTexture("background"));
-
-    // Load button
-    auto loadGameButton = mGui.create<GuiButton>("loadGameButton", sf::Vector2f(192, 32),
-        Message::create<std::string>(MessageType::GUI, "load_game"), sStylesheetManager->getStylesheet("button"));
-    auto loadGameText = mGui.create<GuiText>("loadGameText", "Load Game", 24, sStylesheetManager->getStylesheet("button"));
-    loadGameButton->add(loadGameText);
-    loadGameButton->setLayout(GuiLayoutPtr(new GuiVBoxLayout(GuiLayout::HAlignment::Center, GuiLayout::VAlignment::Center)));
-
-    // Exit button
-    auto exitButton = mGui.create<GuiButton>("exitButton", sf::Vector2f(192, 32),
-        Message::create<std::string>(MessageType::GUI, "exit"), sStylesheetManager->getStylesheet("button"));
-    auto exitText = mGui.create<GuiText>("exitText", "Exit", 24, sStylesheetManager->getStylesheet("button"));
-    exitButton->add(exitText);
-    exitButton->setLayout(GuiLayoutPtr(new GuiVBoxLayout(GuiLayout::HAlignment::Center, GuiLayout::VAlignment::Center)));
-
-    auto menu = mGui.createRoot<GuiWidget>("menu");
-    menu->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
-    menu->add(loadGameButton);
-    menu->add(exitButton);
-    std::unique_ptr<GuiVBoxLayout> menuLayout(new GuiVBoxLayout(GuiLayout::HAlignment::Center, GuiLayout::VAlignment::Center));
-    menuLayout->setSpacing(16.0f);
-    menu->setLayout(std::move(menuLayout));
+    mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
+    mGui->get("menu")->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
     // Register to events
-    loadGameButton->subscribe(mMailbox.getId());
-    exitButton->subscribe(mMailbox.getId());
+    mGui->get("loadGameButton")->subscribe(mMailbox.getId());
+    mGui->get("exitButton")->subscribe(mMailbox.getId());
 }
 
 void GameStateStart::loadGame()
