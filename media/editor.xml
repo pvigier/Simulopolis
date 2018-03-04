@@ -30,7 +30,7 @@
 	<widget name="infoBar">
 		<button name="dayButton" dimensions="160 16" message="" style="button">
 			<text name="dayText" text="" characterSize="12" style="button" />
-			<hboxlayout hAlignment="center" vAlignment="center" spacing="0" />
+			<hboxlayout hAlignment="left" vAlignment="center" spacing="0" />
 		</button>
 		<button name="fundsButton" dimensions="160 16" message="" style="button">
 			<text name="fundsText" text="" characterSize="12" style="button" />

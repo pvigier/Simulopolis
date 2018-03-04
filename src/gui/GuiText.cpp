@@ -29,6 +29,8 @@ void GuiText::setCharacterSize(unsigned int characterSize)
 void GuiText::setText(const std::string& text)
 {
     mText.setString(text);
+    computeSize();
+    setDirty();
 }
 
 void GuiText::render(sf::RenderTarget& target, sf::RenderStates states) const

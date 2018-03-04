@@ -55,7 +55,7 @@ void GameStateEditor::update(const float dt)
 
     // Update the info bar at the bottom of the screen
     mGui->get<GuiText>("dayText")->setText("Day: " + std::to_string(mCity.getDay()));
-    mGui->get<GuiText>("fundsText")->setText("$" + std::to_string(long(mCity.getFunds())));
+    mGui->get<GuiText>("fundsText")->setText("$" + std::to_string(mCity.getFunds()));
     mGui->get<GuiText>("populationText")->setText("Population: " + std::to_string(mCity.getPopulation()));
     mGui->get<GuiText>("employmentText")->setText("Unemployment: " + std::to_string(mCity.getUnemployed()));
     mGui->get<GuiText>("currentTileText")->setText(Tile::typeToString(mCurrentTile));

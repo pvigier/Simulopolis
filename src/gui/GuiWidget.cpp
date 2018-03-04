@@ -1,7 +1,7 @@
 #include "gui/GuiWidget.h"
 #include "gui/GuiLayout.h"
 
-GuiWidget::GuiWidget() : mParent(nullptr), mVisible(true)
+GuiWidget::GuiWidget() : mParent(nullptr), mVisible(true), mDirty(false)
 {
     //ctor
 }
@@ -29,12 +29,14 @@ void GuiWidget::update()
         for (GuiWidget* widget : mChildren)
             widget->update();
     }
+    mDirty = false;
 }
 
 void GuiWidget::add(GuiWidget* widget)
 {
+    widget->setParent(this);
     mChildren.push_back(widget);
-    update();
+    setDirty();
 }
 
 std::vector<GuiWidget*>& GuiWidget::getChildren()
@@ -61,7 +63,7 @@ void GuiWidget::setLayout(std::unique_ptr<GuiLayout> layout)
 {
     mLayout = std::move(layout);
     mLayout->setOwner(this);
-    update();
+    setDirty();
 }
 
 sf::Vector2f GuiWidget::getPosition() const
@@ -72,7 +74,7 @@ sf::Vector2f GuiWidget::getPosition() const
 void GuiWidget::setPosition(sf::Vector2f position)
 {
     mPosition = position;
-    update();
+    setDirty();
 }
 
 sf::Vector2f GuiWidget::getSize() const
@@ -83,7 +85,7 @@ sf::Vector2f GuiWidget::getSize() const
 void GuiWidget::setSize(sf::Vector2f size)
 {
     mSize = size;
-    update();
+    setDirty();
 }
 
 sf::FloatRect GuiWidget::getRect() const
@@ -99,6 +101,11 @@ bool GuiWidget::isVisible() const
 void GuiWidget::setVisible(bool visible)
 {
     mVisible = visible;
+}
+
+bool GuiWidget::isDirty() const
+{
+    return mDirty;
 }
 
 void GuiWidget::updateMouseMoved(sf::Vector2f position)
@@ -129,6 +136,13 @@ void GuiWidget::updateMouseButtonReleased(sf::Vector2f position)
         for (GuiWidget* widget : mChildren)
             widget->updateMouseButtonReleased(position);
     }
+}
+
+void GuiWidget::setDirty()
+{
+    mDirty = true;
+    if (mParent != nullptr)
+        mParent->setDirty();
 }
 
 void GuiWidget::render(sf::RenderTarget& target, sf::RenderStates states) const

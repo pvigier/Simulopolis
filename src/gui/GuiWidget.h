@@ -15,9 +15,9 @@ public:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const final override;
 
-    virtual void update();
+    void update();
 
-    virtual void add(GuiWidget* widget);
+    void add(GuiWidget* widget);
     std::vector<GuiWidget*>& getChildren();
     const std::vector<GuiWidget*>& getChildren() const;
 
@@ -33,6 +33,7 @@ public:
     virtual sf::FloatRect getRect() const;
     bool isVisible() const;
     void setVisible(bool visible);
+    bool isDirty() const;
 
     // Events
     void updateMouseMoved(sf::Vector2f position);
@@ -47,10 +48,15 @@ protected:
     sf::Vector2f mSize;
     bool mVisible;
 
+    void setDirty();
+
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const;
 
     // Events
     virtual void onHover(sf::Vector2f position);
     virtual void onPress(sf::Vector2f position);
     virtual void onRelease(sf::Vector2f position);
+
+private:
+    bool mDirty;
 };
