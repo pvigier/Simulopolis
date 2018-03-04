@@ -11,6 +11,51 @@ Tile::~Tile()
 
 }
 
+Tile::Type Tile::stringToType(const std::string& s)
+{
+    if (s == "grass")
+        return Tile::Type::GRASS;
+    else if (s == "forest")
+        return Tile::Type::FOREST;
+    else if (s == "water")
+        return Tile::Type::WATER;
+    else if (s == "residential")
+        return Tile::Type::RESIDENTIAL;
+    else if (s == "commercial")
+        return Tile::Type::COMMERCIAL;
+    else if (s == "industrial")
+        return Tile::Type::INDUSTRIAL;
+    else if (s == "road")
+        return Tile::Type::ROAD;
+    else
+        return Tile::Type::VOID;
+}
+
+std::string Tile::typeToString(Tile::Type type)
+{
+    switch (type)
+    {
+        case Tile::Type::VOID:
+            return "Void";
+        case Tile::Type::GRASS:
+            return "Grass";
+        case Tile::Type::FOREST:
+            return "Forest";
+        case Tile::Type::WATER:
+            return "Water";
+        case Tile::Type::RESIDENTIAL:
+            return "Residential Zone";
+        case Tile::Type::COMMERCIAL:
+            return "Commercial Zone";
+        case Tile::Type::INDUSTRIAL:
+            return "Industrial Zone";
+        case Tile::Type::ROAD:
+            return "Road";
+        default:
+            return "";
+    }
+}
+
 void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite);
@@ -60,29 +105,4 @@ void Tile::setState(Tile::State state)
         mSprite.setColor(sf::Color(0x7d, 0x7d, 0x7d));
     else
         mSprite.setColor(sf::Color(0xff, 0xff, 0xff));
-}
-
-std::string tileTypeToStr(Tile::Type type)
-{
-    switch (type)
-    {
-        case Tile::Type::VOID:
-            return "Void";
-        case Tile::Type::GRASS:
-            return "Flatten";
-        case Tile::Type::FOREST:
-            return "Forest";
-        case Tile::Type::WATER:
-            return "Water";
-        case Tile::Type::RESIDENTIAL:
-            return "Residential Zone";
-        case Tile::Type::COMMERCIAL:
-            return "Commercial Zone";
-        case Tile::Type::INDUSTRIAL:
-            return "Industrial Zone";
-        case Tile::Type::ROAD:
-            return "Road";
-        default:
-            return "";
-    }
 }

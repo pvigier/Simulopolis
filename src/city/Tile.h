@@ -9,6 +9,9 @@ public:
     enum class State{DESELECTED, SELECTED, INVALID};
     static constexpr unsigned int SIZE = 64;
 
+    static Type stringToType(const std::string& s);
+    static std::string typeToString(Type type);
+
     Tile(const sf::Texture& texture, Type type, unsigned int height);
     virtual ~Tile();
 
@@ -30,5 +33,3 @@ protected:
     Type mType;
     State mState;
 };
-
-std::string tileTypeToStr(Tile::Type type);

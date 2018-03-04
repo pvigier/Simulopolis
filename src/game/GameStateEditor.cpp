@@ -58,7 +58,7 @@ void GameStateEditor::update(const float dt)
     mGui->get<GuiText>("fundsText")->setText("$" + std::to_string(long(mCity.getFunds())));
     mGui->get<GuiText>("populationText")->setText("Population: " + std::to_string(mCity.getPopulation()));
     mGui->get<GuiText>("employmentText")->setText("Unemployment: " + std::to_string(mCity.getUnemployed()));
-    mGui->get<GuiText>("currentTileText")->setText(tileTypeToStr(mCurrentTile));
+    mGui->get<GuiText>("currentTileText")->setText(Tile::typeToString(mCurrentTile));
 }
 
 void GameStateEditor::handleMessages()
@@ -195,28 +195,9 @@ void GameStateEditor::handleMessages()
         if (message.type == MessageType::GUI && message.hasInfo())
         {
             // Select a context menu button
-            mCurrentTile = message.getInfo<Tile::Type>();
+            mCurrentTile = Tile::stringToType(message.getInfo<std::string>());
         }
     }
-    /*while (!mMailbox.isEmpty())
-    {
-        switch (event.type)
-        {
-            case sf::Event::Resized:
-                // Maybe we could simplify this?
-                mGameView.setSize(event.size.width, event.size.height);
-                mGameView.zoom(mZoomLevel);
-                //mGuiView.setSize(event.size.width, event.size.height);
-                //mGuiSystem.at("infoBar").setDimensions(sf::Vector2f(event.size.width / mGuiSystem.at("infoBar").getNbEntries(), 16));
-                //mGuiSystem.at("infoBar").setPosition(sRenderEngine->getWindow().mapPixelToCoords(sf::Vector2i(0, event.size.height - 16), mGuiView));
-                //mGuiSystem.at("infoBar").show();
-                mBackground.setPosition(sRenderEngine->getWindow().mapPixelToCoords(sf::Vector2i(0, 0), mGuiView));
-                mBackground.setScale(
-                    float(event.size.width) / float(mBackground.getTexture()->getSize().x),
-                    float(event.size.height) / float(mBackground.getTexture()->getSize().y));
-                break;
-        }
-    }*/
 }
 
 void GameStateEditor::createGui()
@@ -233,12 +214,12 @@ void GameStateEditor::createGui()
     mGui->get("rightClickMenu")->setVisible(false);
     mGui->get("rightClickMenu")->fitSizeToContent();
 
-    /*grassButton->subscribe(mMailbox.getId());
-    forestButton->subscribe(mMailbox.getId());
-    residentialButton->subscribe(mMailbox.getId());
-    commercialButton->subscribe(mMailbox.getId());
-    industrialButton->subscribe(mMailbox.getId());
-    roadButton->subscribe(mMailbox.getId());*/
+    mGui->get<GuiButton>("grassButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("forestButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("residentialButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("commercialButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("industrialButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadButton")->subscribe(mMailbox.getId());
 }
 
 void GameStateEditor::zoom(float factor)
