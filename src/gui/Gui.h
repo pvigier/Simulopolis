@@ -26,6 +26,9 @@ public:
     // Draw the menu.
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    void add(const std::string& name, GuiWidgetPtr widget);
+    void addRoot(const std::string& name, GuiWidgetPtr widget);
+
     template<typename T, typename... Args>
     std::shared_ptr<T> create(const std::string& name, Args&&... args)
     {

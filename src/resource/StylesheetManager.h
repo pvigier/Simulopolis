@@ -76,5 +76,6 @@ private:
      * \param node XML node that describes the stylesheet
      */
     void loadStylesheet(tinyxml2::XMLElement* node);
+
     sf::Color stringToColor(const std::string& s) const;
 };

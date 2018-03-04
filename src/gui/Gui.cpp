@@ -42,6 +42,17 @@ void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
         target.draw(*widget);
 }
 
+void Gui::add(const std::string& name, GuiWidgetPtr widget)
+{
+    mWidgets[name] = widget;
+}
+
+void Gui::addRoot(const std::string& name, GuiWidgetPtr widget)
+{
+    mWidgets[name] = widget;
+    mRootWidgets.push_back(widget);
+}
+
 GuiWidgetPtr Gui::get(const std::string& name)
 {
     return mWidgets[name];

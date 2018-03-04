@@ -7,10 +7,14 @@
 #include <tinyxml2.h>
 // My includes
 #include "gui/Gui.h"
+#include "gui/GuiLayout.h"
 
 class TextureManager;
 class FontManager;
 class StylesheetManager;
+class GuiWidget;
+
+using GuiWidgetPtr = std::shared_ptr<GuiWidget>;
 
 /**
  * \brief Manager that manages the gui's
@@ -94,4 +98,14 @@ private:
      * \param node XML node that describes the stylesheet
      */
     void loadGui(tinyxml2::XMLElement* node);
+
+    void loadRootWidget(std::shared_ptr<Gui> gui, tinyxml2::XMLNode* node);
+    GuiWidgetPtr loadWidget(std::shared_ptr<Gui> gui, tinyxml2::XMLElement* node);
+    bool isWidget(tinyxml2::XMLElement* node);
+    bool isLayout(tinyxml2::XMLElement* node);
+    GuiWidgetPtr createWidget(tinyxml2::XMLElement* node);
+    GuiLayoutPtr createLayout(tinyxml2::XMLElement* node);
+    sf::Vector2f stringToVector(const std::string& s) const;
+    GuiLayout::HAlignment stringToHAlignment(const std::string& s) const;
+    GuiLayout::VAlignment stringToVAlignment(const std::string& s) const;
 };
