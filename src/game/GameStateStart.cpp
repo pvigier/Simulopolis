@@ -32,12 +32,12 @@ void GameStateStart::draw(const float dt)
 
 void GameStateStart::update(const float dt)
 {
-
+    mGui->update();
 }
 
 void GameStateStart::handleMessages()
 {
-    mGui->update();
+    mGui->handleMessages();
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();

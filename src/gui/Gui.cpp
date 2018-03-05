@@ -65,13 +65,15 @@ const GuiWidget* Gui::get(const std::string& name) const
 
 void Gui::update()
 {
-    // Update widgets
     for (GuiWidget* widget : mRootWidgets)
     {
         if (widget->isDirty())
             widget->update();
     }
+}
 
+void Gui::handleMessages()
+{
     // Poll events
     sf::Vector2f mousePosition(sInputEngine->getMousePosition());
     while (!mMailbox.isEmpty())

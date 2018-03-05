@@ -59,11 +59,13 @@ void GameStateEditor::update(const float dt)
     mGui->get<GuiText>("populationText")->setText("Population: " + std::to_string(mCity.getPopulation()));
     mGui->get<GuiText>("employmentText")->setText("Unemployment: " + std::to_string(mCity.getUnemployed()));
     mGui->get<GuiText>("currentTileText")->setText(Tile::typeToString(mCurrentTile));
+
+    mGui->update();
 }
 
 void GameStateEditor::handleMessages()
 {
-    mGui->update();
+    mGui->handleMessages();
 
     sf::Vector2i mousePosition = sInputEngine->getMousePosition();
     sf::Vector2f gamePos = sRenderEngine->getWindow().mapPixelToCoords(mousePosition, mGameView);
@@ -211,7 +213,6 @@ void GameStateEditor::createGui()
 
     mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     mGui->get("infoBar")->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
-    mGui->get("rightClickMenu")->setVisible(false);
     mGui->get("rightClickMenu")->fitSizeToContent();
 
     mGui->get<GuiButton>("grassButton")->subscribe(mMailbox.getId());

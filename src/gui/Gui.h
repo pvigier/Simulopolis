@@ -58,6 +58,7 @@ public:
     }
 
     void update();
+    void handleMessages();
 
     void setWindowSize(sf::Vector2f windowSize);
     void setVisible(bool visible);
