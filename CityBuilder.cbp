@@ -70,6 +70,8 @@
 		<Unit filename="src/gui/GuiLayout.h" />
 		<Unit filename="src/gui/GuiStyle.cpp" />
 		<Unit filename="src/gui/GuiStyle.h" />
+		<Unit filename="src/gui/GuiText.cpp" />
+		<Unit filename="src/gui/GuiText.h" />
 		<Unit filename="src/gui/GuiVBoxLayout.cpp" />
 		<Unit filename="src/gui/GuiVBoxLayout.h" />
 		<Unit filename="src/gui/GuiWidget.cpp" />
@@ -93,6 +95,10 @@
 		<Unit filename="src/render/RenderEngine.h" />
 		<Unit filename="src/resource/FontManager.cpp" />
 		<Unit filename="src/resource/FontManager.h" />
+		<Unit filename="src/resource/GuiManager.cpp" />
+		<Unit filename="src/resource/GuiManager.h" />
+		<Unit filename="src/resource/PropertyList.cpp" />
+		<Unit filename="src/resource/PropertyList.h" />
 		<Unit filename="src/resource/ResourceManager.cpp" />
 		<Unit filename="src/resource/ResourceManager.h" />
 		<Unit filename="src/resource/StylesheetManager.cpp" />
