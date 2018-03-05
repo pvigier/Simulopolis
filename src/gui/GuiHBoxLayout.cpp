@@ -7,6 +7,11 @@ GuiHBoxLayout::GuiHBoxLayout(HAlignment hAlignment, VAlignment vAlignment) :
     //ctor
 }
 
+GuiHBoxLayout::GuiHBoxLayout(const PropertyList& properties) : GuiBoxLayout(properties)
+{
+
+}
+
 GuiHBoxLayout::~GuiHBoxLayout()
 {
     //dtor

@@ -1,9 +1,17 @@
 #include "gui/GuiWidget.h"
 #include "gui/GuiLayout.h"
+#include "resource/PropertyList.h"
 
-GuiWidget::GuiWidget() : mParent(nullptr), mVisible(true), mDirty(false)
+GuiWidget::GuiWidget() : mParent(nullptr), mVisible(true), mDirty(true)
 {
     //ctor
+}
+
+GuiWidget::GuiWidget(const PropertyList& properties) : mParent(nullptr), mDirty(true)
+{
+    mVisible = properties.get<bool>("visible", true);
+    mPosition = properties.get<sf::Vector2f>("position", sf::Vector2f());
+    mSize = properties.get<sf::Vector2f>("size", sf::Vector2f());
 }
 
 GuiWidget::~GuiWidget()

@@ -1,4 +1,5 @@
 #include "resource/ResourceManager.h"
+#include "resource/PropertyList.h"
 
 ResourceManager::ResourceManager()
 {
@@ -16,6 +17,9 @@ void ResourceManager::setUp()
     mFontManager.setUp();
     mStylesheetManager.setFontManager(&mFontManager);
     mStylesheetManager.setUp();
+    PropertyList::setTextureManager(&mTextureManager);
+    PropertyList::setFontManager(&mFontManager);
+    PropertyList::setStylesheetManager(&mStylesheetManager);
     mGuiManager.setTextureManager(&mTextureManager);
     mGuiManager.setFontManager(&mFontManager);
     mGuiManager.setStylesheetManager(&mStylesheetManager);

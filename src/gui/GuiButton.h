@@ -5,20 +5,20 @@
 #include "gui/GuiStyle.h"
 
 class GuiStyle;
+class PropertyList;
 
 class GuiButton : public GuiWidget
 {
 public:
-    GuiButton(sf::Vector2f dimensions, Message message, const GuiStyle& style);
+    GuiButton(sf::Vector2f size, Message message, const GuiStyle& style);
+    GuiButton(const PropertyList& properties);
 
     virtual void setPosition(sf::Vector2f position) override;
     virtual void setSize(sf::Vector2f size) override;
 
     Message getMessage() const;
 
-    void setText(const std::string& text);
     void setHighlight(bool highlight);
-    void resize(sf::Vector2f dimensions, unsigned int characterSize);
 
     bool hitButton(sf::Vector2f position) const;
 

@@ -4,6 +4,7 @@
 #include "resource/TextureManager.h"
 #include "resource/FontManager.h"
 #include "resource/StylesheetManager.h"
+#include "resource/PropertyList.h"
 #include "gui/GuiWidget.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiText.h"
@@ -138,27 +139,15 @@ std::unique_ptr<GuiWidget> GuiManager::createWidget(tinyxml2::XMLElement* node)
 {
     std::unique_ptr<GuiWidget> widget;
     std::string type = node->Name();
+    PropertyList properties = createProperties(node);
     if (type == "widget")
-        widget = std::unique_ptr<GuiWidget>(new GuiWidget());
+        widget = std::unique_ptr<GuiWidget>(new GuiWidget(properties));
     else if (type == "button")
-    {
-        sf::Vector2f dimensions = stringToVector(node->Attribute("dimensions"));
-        Message message = Message::create<std::string>(MessageType::GUI, node->Attribute("message"));
-        const GuiStyle& style = mStylesheetManager->getStylesheet(node->Attribute("style"));
-        widget = std::unique_ptr<GuiButton>(new GuiButton(dimensions, message, style));
-    }
+        widget = std::unique_ptr<GuiButton>(new GuiButton(properties));
     else if (type == "text")
-    {
-        std::string text = node->Attribute("text");
-        unsigned int characterSize = node->IntAttribute("characterSize");
-        const GuiStyle& style = mStylesheetManager->getStylesheet(node->Attribute("style"));
-        widget = std::unique_ptr<GuiText>(new GuiText(text, characterSize, style));
-    }
+        widget = std::unique_ptr<GuiText>(new GuiText(properties));
     else if (type == "image")
-    {
-        const sf::Texture& texture = mTextureManager->getTexture(node->Attribute("texture"));
-        widget = std::unique_ptr<GuiImage>(new GuiImage(texture));
-    }
+        widget = std::unique_ptr<GuiImage>(new GuiImage(properties));
     return std::move(widget);
 }
 
@@ -166,25 +155,20 @@ std::unique_ptr<GuiLayout> GuiManager::createLayout(tinyxml2::XMLElement* node)
 {
     std::unique_ptr<GuiLayout> layout(nullptr);
     std::string type = node->Name();
+    PropertyList properties = createProperties(node);
     if (type == "hboxlayout")
-    {
-        GuiLayout::HAlignment hAlignment = stringToHAlignment(node->Attribute("hAlignment"));
-        GuiLayout::VAlignment vAlignment = stringToVAlignment(node->Attribute("vAlignment"));
-        float spacing = node->FloatAttribute("spacing");
-        std::unique_ptr<GuiHBoxLayout> hboxlayout(new GuiHBoxLayout(hAlignment, vAlignment));
-        hboxlayout->setSpacing(spacing);
-        layout = std::move(hboxlayout);
-    }
+        layout = std::unique_ptr<GuiHBoxLayout>(new GuiHBoxLayout(properties));
     else if (type == "vboxlayout")
-    {
-        GuiLayout::HAlignment hAlignment = stringToHAlignment(node->Attribute("hAlignment"));
-        GuiLayout::VAlignment vAlignment = stringToVAlignment(node->Attribute("vAlignment"));
-        float spacing = node->FloatAttribute("spacing");
-        std::unique_ptr<GuiVBoxLayout> vboxlayout(new GuiVBoxLayout(hAlignment, vAlignment));
-        vboxlayout->setSpacing(spacing);
-        layout = std::move(vboxlayout);
-    }
+        layout = std::unique_ptr<GuiVBoxLayout>(new GuiVBoxLayout(properties));
     return std::move(layout);
+}
+
+PropertyList GuiManager::createProperties(XMLElement* node)
+{
+    PropertyList properties;
+    for (const XMLAttribute* attribute = node->FirstAttribute(); attribute != nullptr; attribute = attribute->Next())
+        properties.add(attribute->Name(), attribute->Value());
+    return std::move(properties);
 }
 
 sf::Vector2f GuiManager::stringToVector(const std::string& s) const
@@ -193,24 +177,4 @@ sf::Vector2f GuiManager::stringToVector(const std::string& s) const
     std::string x, y;
     stream >> x >> y;
     return sf::Vector2f(std::stof(x), std::stof(y));
-}
-
-GuiLayout::HAlignment GuiManager::stringToHAlignment(const std::string& s) const
-{
-    if (s == "left")
-        return GuiLayout::HAlignment::Left;
-    else if (s == "center")
-        return GuiLayout::HAlignment::Center;
-    else
-        return GuiLayout::HAlignment::Right;
-}
-
-GuiLayout::VAlignment GuiManager::stringToVAlignment(const std::string& s) const
-{
-    if (s == "top")
-        return GuiLayout::VAlignment::Top;
-    else if (s == "center")
-        return GuiLayout::VAlignment::Center;
-    else
-        return GuiLayout::VAlignment::Bottom;
 }

@@ -1,11 +1,23 @@
 #include "gui/GuiButton.h"
+#include "resource/ResourceManager.h"
 
-GuiButton::GuiButton(sf::Vector2f dimensions, Message message, const GuiStyle& style) :
-    mStyle(style), mShape(dimensions), mMessage(message)
+GuiButton::GuiButton(sf::Vector2f size, Message message, const GuiStyle& style) :
+    mStyle(style), mMessage(message)
 {
+    setSize(size);
     mShape.setOutlineThickness(-mStyle.borderSize);
     setHighlight(false);
-    GuiWidget::setSize(mShape.getSize());
+}
+
+GuiButton::GuiButton(const PropertyList& properties) :
+    GuiWidget(properties), mMessage(Message::create(MessageType::GUI))
+{
+    mMessage = Message::create(MessageType::GUI, properties.get<std::string>("message", ""));
+    mStyle = properties.get<const GuiStyle&>("style");
+    mShape.setPosition(mPosition);
+    mShape.setSize(mSize);
+    mShape.setOutlineThickness(-mStyle.borderSize);
+    setHighlight(properties.get<bool>("highlight", false));
 }
 
 void GuiButton::setPosition(sf::Vector2f position)

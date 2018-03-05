@@ -6,6 +6,7 @@ class GuiVBoxLayout : public GuiBoxLayout
 {
 public:
     GuiVBoxLayout(HAlignment hAlignment = HAlignment::Left, VAlignment vAlignment = VAlignment::Top);
+    GuiVBoxLayout(const PropertyList& properties);
     virtual ~GuiVBoxLayout();
 
     virtual void align() override;

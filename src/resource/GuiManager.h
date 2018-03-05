@@ -8,6 +8,7 @@
 // My includes
 #include "gui/Gui.h"
 #include "gui/GuiLayout.h"
+#include "resource/PropertyList.h"
 
 class TextureManager;
 class FontManager;
@@ -103,7 +104,7 @@ private:
     bool isLayout(tinyxml2::XMLElement* node);
     std::unique_ptr<GuiWidget> createWidget(tinyxml2::XMLElement* node);
     std::unique_ptr<GuiLayout> createLayout(tinyxml2::XMLElement* node);
+    PropertyList createProperties(tinyxml2::XMLElement* node);
+
     sf::Vector2f stringToVector(const std::string& s) const;
-    GuiLayout::HAlignment stringToHAlignment(const std::string& s) const;
-    GuiLayout::VAlignment stringToVAlignment(const std::string& s) const;
 };

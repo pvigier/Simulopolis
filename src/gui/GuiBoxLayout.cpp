@@ -1,9 +1,17 @@
 #include "gui/GuiBoxLayout.h"
+#include "resource/PropertyList.h"
 
-GuiBoxLayout::GuiBoxLayout(HAlignment hAlignment, VAlignment vAlignment) : mSpacing(0),
+GuiBoxLayout::GuiBoxLayout(HAlignment hAlignment, VAlignment vAlignment) : mSpacing(0.0f),
     mHAlignment(hAlignment), mVAlignment(vAlignment)
 {
     //ctor
+}
+
+GuiBoxLayout::GuiBoxLayout(const PropertyList& properties)
+{
+    mHAlignment = properties.get("hAlignment", HAlignment::Left);
+    mVAlignment = properties.get("vAlignment", VAlignment::Top);
+    mSpacing = properties.get("spacing", 0.0f);
 }
 
 GuiBoxLayout::~GuiBoxLayout()

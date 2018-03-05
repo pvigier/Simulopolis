@@ -157,7 +157,6 @@ public:
      *
      * \param type Type of the message
      */
-    template<typename T>
     static Message create(MessageType type)
     {
         return Message(type);

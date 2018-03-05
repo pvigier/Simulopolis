@@ -4,10 +4,13 @@
 #include "gui/GuiWidget.h"
 #include "gui/GuiStyle.h"
 
+class PropertyList;
+
 class GuiText : public GuiWidget
 {
 public:
     GuiText(const std::string& text, unsigned int characterSize, const GuiStyle& style);
+    GuiText(const PropertyList& properties);
     virtual ~GuiText();
 
     virtual void setPosition(sf::Vector2f position) override;

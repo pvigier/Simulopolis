@@ -3,10 +3,13 @@
 #include "SFML/Graphics.hpp"
 #include "gui/GuiWidget.h"
 
+class PropertyList;
+
 class GuiImage : public GuiWidget
 {
 public:
     GuiImage(const sf::Texture& texture);
+    GuiImage(const PropertyList& properties);
     virtual ~GuiImage();
 
     virtual void setPosition(sf::Vector2f position) override;

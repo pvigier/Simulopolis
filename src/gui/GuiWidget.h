@@ -6,11 +6,13 @@
 
 class GuiWidget;
 class GuiLayout;
+class PropertyList;
 
 class GuiWidget : public sf::Drawable, public Subject
 {
 public:
     GuiWidget();
+    GuiWidget(const PropertyList& properties);
     virtual ~GuiWidget();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const final override;

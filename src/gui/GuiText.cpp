@@ -1,8 +1,19 @@
-#include "GuiText.h"
+#include "gui/GuiText.h"
+#include "resource/PropertyList.h"
 
 GuiText::GuiText(const std::string& text, unsigned int characterSize, const GuiStyle& style) :
     mText(text, *style.font, characterSize)
 {
+    mText.setFillColor(style.textColor);
+    computeSize();
+}
+
+GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
+{
+    const GuiStyle& style = properties.get<const GuiStyle&>("style");
+    mText.setString(properties.get<std::string>("text", ""));
+    mText.setFont(*style.font);
+    mText.setCharacterSize(properties.get<unsigned int>("characterSize", 0));
     mText.setFillColor(style.textColor);
     computeSize();
 }
