@@ -64,6 +64,9 @@ template<>
 sf::Vector2f PropertyList::get(const std::string& name) const;
 
 template<>
+sf::IntRect PropertyList::get(const std::string& name) const;
+
+template<>
 const sf::Texture& PropertyList::get(const std::string& name) const;
 
 template<>

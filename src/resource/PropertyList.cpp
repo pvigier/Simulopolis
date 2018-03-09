@@ -75,6 +75,15 @@ sf::Vector2f PropertyList::get(const std::string& name) const
 }
 
 template<>
+sf::IntRect PropertyList::get(const std::string& name) const
+{
+    std::istringstream stream(mProperties.at(name));
+    std::string x, y, width, height;
+    stream >> x >> y >> width >> height;
+    return sf::IntRect(std::stoi(x), std::stoi(y), std::stoi(width), std::stoi(height));
+}
+
+template<>
 const sf::Texture& PropertyList::get(const std::string& name) const
 {
     return sTextureManager->getTexture(mProperties.at(name));

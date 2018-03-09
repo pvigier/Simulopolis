@@ -52,28 +52,28 @@
 	</widget>
 	<widget name="rightMenu">
 		<button name="grassMenu" size="32 32" message="grass" style="button">
-			<image name="grassMenuImage" texture="grass" />
+			<image name="grassMenuImage" texture="grass" size="24 24" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<button name="forestMenu" size="32 32" message="forest" style="button">
-			<text name="forestMenuText" text="Forest $100" characterSize="12" style="button" />
-			<hboxlayout vAlignment="center" />
+			<image name="forestMenuImage" texture="forest" size="24 24" />
+			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<button name="residentialMenu" size="32 32" message="residential" style="button">
-			<text name="residentialMenuText" text="Residential Zone $300" characterSize="12" style="button" />
-			<hboxlayout vAlignment="center" />
+			<image name="residentialMenuImage" texture="residential" rect="0 32 132 132" size="24 24" />
+			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<button name="commercialMenu" size="32 32" message="commercial" style="button">
-			<text name="commercialMenuText" text="Commercial Zone $300" characterSize="12" style="button" />
-			<hboxlayout vAlignment="center" />
+			<image name="commercialMenuImage" texture="commercial" rect="0 32 132 132" size="24 24" />
+			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<button name="industrialMenu" size="32 32" message="industrial" style="button">
-			<text name="industrialMenuText" text="Industrial Zone $300" characterSize="12" style="button" />
-			<hboxlayout vAlignment="center" />
+			<image name="industrialMenuImage" texture="industrial" rect="0 32 132 132" size="24 24" />
+			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<button name="roadMenu" size="32 32" message="road" style="button">
-			<text name="roadMenuText" text="Road $100" characterSize="12" style="button" />
-			<hboxlayout vAlignment="center" />
+			<image name="roadMenuImage" texture="road" rect="0 0 132 101" size="24 24" />
+			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<vboxlayout />
 	</widget>
