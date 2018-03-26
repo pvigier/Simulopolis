@@ -1,7 +1,7 @@
 #include "Building.h"
 
-Building::Building(const sf::Texture& texture, Type type, unsigned int height) :
-    Tile(texture, type, height)
+Building::Building(const sf::Texture& texture, Type type) :
+    Tile(texture, type), mNbStairs(3)
 {
     //ctor
 }
@@ -11,6 +11,19 @@ Building::~Building()
     //dtor
 }
 
+void Building::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    target.draw(mSprite);
+    // Stairs
+    sf::Sprite sprite(mSprite);
+    sprite.setTextureRect(sf::IntRect(mSprite.getTextureRect().left, 0, 132, 85));
+    for (unsigned int i = 0; i < mNbStairs - 1; ++i)
+    {
+        sprite.move(0, -STAIR_HEIGHT);
+        target.draw(sprite);
+    }
+}
+
 std::unique_ptr<Tile> Building::clone() const
 {
     return std::unique_ptr<Tile>(new Building(*this));
@@ -18,7 +31,7 @@ std::unique_ptr<Tile> Building::clone() const
 
 bool Building::updateVariant(Tile* neighbors[3][3])
 {
-    sf::IntRect rect(0, 0, 132, 165);
+    sf::IntRect rect(0, 85, 132, 127);
 
     if (neighbors[0][1]->getType() == Type::ROAD)
         rect.left = 264;
@@ -37,4 +50,9 @@ bool Building::updateVariant(Tile* neighbors[3][3])
 bool Building::isBuilding() const
 {
     return true;
+}
+
+void Building::setPosition(sf::Vector2f position)
+{
+    mSprite.setPosition(sf::Vector2f(position.x, position.y - OFFSET_Y));
 }

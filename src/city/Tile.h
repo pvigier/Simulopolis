@@ -12,7 +12,7 @@ public:
     static Type stringToType(const std::string& s);
     static std::string typeToString(Type type);
 
-    Tile(const sf::Texture& texture, Type type, unsigned int height);
+    Tile(const sf::Texture& texture, Type type);
     virtual ~Tile();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -23,7 +23,7 @@ public:
 
     virtual bool isBuilding() const;
     virtual bool hasSidewalk() const;
-    void setPosition(sf::Vector2f position);
+    virtual void setPosition(sf::Vector2f position);
     Type getType() const;
     State getState() const;
     void setState(State state);

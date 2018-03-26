@@ -20,28 +20,28 @@ Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
 void Map::loadTiles(const TextureManager& textureManager)
 {
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("grass"),
-        Tile::Type::VOID, 0)));
+        Tile::Type::VOID)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("grass"),
-        Tile::Type::GRASS, 1)));
+        Tile::Type::GRASS)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("forest"),
-         Tile::Type::FOREST, 1)));
+         Tile::Type::FOREST)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("water"),
-        Tile::Type::WATER, 1)));
+        Tile::Type::WATER)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("residential"),
-        Tile::Type::RESIDENTIAL, 2)));
+        Tile::Type::RESIDENTIAL)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("commercial"),
-        Tile::Type::COMMERCIAL, 2)));
+        Tile::Type::COMMERCIAL)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("industrial"),
-        Tile::Type::INDUSTRIAL, 2)));
+        Tile::Type::INDUSTRIAL)));
 
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road(textureManager.getTexture("road"),
-        Tile::Type::ROAD, 1)));
+        Tile::Type::ROAD)));
 }
 
 void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const

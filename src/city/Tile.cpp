@@ -1,9 +1,9 @@
 #include "Tile.h"
 
-Tile::Tile(const sf::Texture& texture, Tile::Type type, unsigned int height) :
+Tile::Tile(const sf::Texture& texture, Tile::Type type) :
     mSprite(texture), mType(type), mState(Tile::State::DESELECTED)
 {
-    mSprite.setOrigin(sf::Vector2f(0.0f, Tile::SIZE * (height - 1)));
+
 }
 
 Tile::~Tile()
