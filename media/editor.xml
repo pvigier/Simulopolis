@@ -1,31 +1,4 @@
 <gui>
-	<widget name="rightClickMenu" visible="false">
-		<button name="grassButton" size="192 16" message="grass" style="button">
-			<text name="grassText" text="Grass $50" characterSize="12" style="button" />
-			<hboxlayout vAlignment="center" />
-		</button>
-		<button name="forestButton" size="192 16" message="forest" style="button">
-			<text name="forestText" text="Forest $100" characterSize="12" style="button" />
-			<hboxlayout vAlignment="center" />
-		</button>
-		<button name="residentialButton" size="192 16" message="residential" style="button">
-			<text name="residentialText" text="Residential Zone $300" characterSize="12" style="button" />
-			<hboxlayout vAlignment="center" />
-		</button>
-		<button name="commercialButton" size="192 16" message="commercial" style="button">
-			<text name="commercialText" text="Commercial Zone $300" characterSize="12" style="button" />
-			<hboxlayout vAlignment="center" />
-		</button>
-		<button name="industrialButton" size="192 16" message="industrial" style="button">
-			<text name="industrialText" text="Industrial Zone $300" characterSize="12" style="button" />
-			<hboxlayout vAlignment="center" />
-		</button>
-		<button name="roadButton" size="192 16" message="road" style="button">
-			<text name="roadText" text="Road $100" characterSize="12" style="button" />
-			<hboxlayout vAlignment="center" />
-		</button>
-		<vboxlayout />
-	</widget>
 	<text name="selectionCostText" characterSize="12" style="text" />
 	<widget name="infoBar">
 		<button name="dayButton" size="160 16" style="button">

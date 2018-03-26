@@ -120,7 +120,6 @@ void GameStateEditor::handleMessages()
                     // Start panning
                     if (event.mouseButton.button == sf::Mouse::Middle)
                     {
-                        mGui->get("rightClickMenu")->setVisible(false);
                         mGui->get("selectionCostText")->setVisible(false);
                         if (mActionState != ActionState::PANNING)
                         {
@@ -136,23 +135,9 @@ void GameStateEditor::handleMessages()
                             mActionState = ActionState::NONE;
                             mCity.getMap().deselect();
                         }
-                        else
-                        {
-                            // Open the tile select menu
-                            sf::Vector2f menuPosition(mousePosition);
-                            sf::Vector2f menuSize = mGui->get("rightClickMenu")->getSize();
-                            sf::Vector2f windowSize(sRenderEngine->getWindow().getSize());
-                            if(menuPosition.x > windowSize.x - menuSize.x)
-                                menuPosition.x -= menuSize.x;
-                            if(menuPosition.y > windowSize.y - menuSize.y)
-                                menuPosition.y -= menuSize.y;
-                            mGui->get("rightClickMenu")->setPosition(menuPosition);
-                            mGui->get("rightClickMenu")->setVisible(true);
-                        }
                     }
                     else if (event.mouseButton.button == sf::Mouse::Left)
                     {
-                        mGui->get("rightClickMenu")->setVisible(false);
                         // Select map tile
                         if (mActionState != ActionState::SELECTING)
                         {
@@ -204,23 +189,15 @@ void GameStateEditor::handleMessages()
 
 void GameStateEditor::createGui()
 {
-    /*// Right bar
-    auto roadMenu = mGui.create<GuiButton>("roadMenu", sStylesheetManager->getStylesheet("button"),
-        "R", sf::Vector2f(32 , 32), 12, Message(MessageType::GUI));
-
-    auto rightBar = mGui.createRoot<GuiWidget>("rightBar");
-    rightBar->add(roadMenu);*/
-
     mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     mGui->get("infoBar")->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
-    mGui->get("rightClickMenu")->fitSizeToContent();
 
-    mGui->get<GuiButton>("grassButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("forestButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("residentialButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("commercialButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("industrialButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("grassMenu")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("forestMenu")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("residentialMenu")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("commercialMenu")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("industrialMenu")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadMenu")->subscribe(mMailbox.getId());
 }
 
 void GameStateEditor::zoom(float factor)
