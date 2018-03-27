@@ -7,7 +7,7 @@ class Building : public Tile
 {
 public:
     static constexpr int STAIR_HEIGHT = 33;
-    static constexpr int OFFSET_Y = 26;
+    static constexpr int OFFSET_Y = 27;
 
     Building(const sf::Texture& texture, Type type);
     virtual ~Building();

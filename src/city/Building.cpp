@@ -31,7 +31,7 @@ std::unique_ptr<Tile> Building::clone() const
 
 bool Building::updateVariant(Tile* neighbors[3][3])
 {
-    sf::IntRect rect(0, 85, 132, 127);
+    sf::IntRect rect(0, 85, 132, 128);
 
     if (neighbors[0][1]->getType() == Type::ROAD)
         rect.left = 264;
