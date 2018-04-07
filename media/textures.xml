@@ -7,4 +7,5 @@
 	<texture name="residential" path="residential.png" />
 	<texture name="road" path="road.png" />
 	<texture name="water" path="water.png" />
+	<texture name="car" path="car.png" />
 </textures>

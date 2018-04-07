@@ -46,6 +46,9 @@ void GameStateEditor::draw(const float dt)
     sRenderEngine->setView(mGameView);
     sRenderEngine->draw(mCity.getMap());
 
+    for (const Car& car : mCity.getCars())
+        sRenderEngine->draw(car);
+
     sRenderEngine->draw(*mGui);
 }
 

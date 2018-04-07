@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Map.h"
+#include "Car.h"
 
 class City
 {
@@ -17,6 +18,7 @@ public:
 
     Map& getMap();
     const Map& getMap() const;
+    const std::vector<Car>& getCars() const;
     unsigned int getDay() const;
     unsigned int getPopulation() const;
     unsigned int getUnemployed() const;
@@ -34,5 +36,7 @@ private:
     unsigned int mUnemployed;
 
     unsigned int mFunds;
+
+    std::vector<Car> mCars;
 };
 

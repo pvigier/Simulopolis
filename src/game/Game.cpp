@@ -22,6 +22,7 @@ Game::Game()
     GameState::setTextureManager(&mResourceManager.getTextureManager());
     GameState::setStylesheetManager(&mResourceManager.getStylesheetManager());
     GameState::setGuiManager(&mResourceManager.getGuiManager());
+    Car::setTextureManager(&mResourceManager.getTextureManager());
 
     // Load resources
     mResourceManager.setUp();

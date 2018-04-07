@@ -6,7 +6,9 @@
 City::City() :
     mCurrentTime(0.0), mTimePerDay(1.0), mDay(0), mPopulation(0), mUnemployed(0), mFunds(0)
 {
-
+    mCars.emplace_back();
+    mCars.back().getKinematic().setPosition(Vector2f(1500.0f, 1500.0f));
+    mCars.back().getSteering().setPath(Path({Vector2f(2000.0f, 2000.0f), Vector2f(2300.0f, 2100.0f), Vector2f(2800.0f, 1300.0f)}, true));
 }
 
 City::City(std::string cityName) : City()
@@ -71,7 +73,8 @@ void City::save(std::string cityName)
 
 void City::update(float dt)
 {
-
+    for (Car& car : mCars)
+        car.update(dt);
 }
 
 void City::bulldoze(Tile::Type type)
@@ -87,6 +90,11 @@ Map& City::getMap()
 const Map& City::getMap() const
 {
     return mMap;
+}
+
+const std::vector<Car>& City::getCars() const
+{
+    return mCars;
 }
 
 unsigned int City::getDay() const
