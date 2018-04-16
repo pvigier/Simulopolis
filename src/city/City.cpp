@@ -18,10 +18,18 @@ City::City(std::string cityName) : City()
     mMap.select(sf::Vector2i(10, 11), sf::Vector2i(10, 20), {});
     mMap.select(sf::Vector2i(11, 20), sf::Vector2i(20, 20), {});
     bulldoze(Tile::Type::ROAD);
+
+    mCars.reserve(2);
+
     mCars.emplace_back();
     Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(20, 20));
     mCars.back().getKinematic().setPosition(path.getCurrentPoint());
     mCars.back().getSteering().setPath(path);
+
+    mCars.emplace_back();
+    Path otherPath = mMap.getPath(sf::Vector2i(20, 20), sf::Vector2i(0, 0));
+    mCars.back().getKinematic().setPosition(otherPath.getCurrentPoint());
+    mCars.back().getSteering().setPath(otherPath);
 }
 
 void City::load(std::string cityName)
@@ -100,7 +108,7 @@ const Map& City::getMap() const
     return mMap;
 }
 
-const std::vector<Car>& City::getCars() const
+std::vector<Car>& City::getCars()
 {
     return mCars;
 }
