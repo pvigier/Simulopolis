@@ -2,14 +2,14 @@
 
 TextureManager* Car::sTextureManager = nullptr;
 
-Car::Car() : mKinematic(1.0f, 150.0f, 1200.0f), mSteering(mKinematic)
+Car::Car() : mKinematic(1.0f, 150.0f, 800.0f), mSteering(mKinematic)
 {
     mSprite.setTexture(sTextureManager->getTexture("car"));
     mSprite.setTextureRect(sf::IntRect(0, 0, WIDTH, HEIGHT));
     mSprite.setOrigin(sf::Vector2f(WIDTH * 0.5f, HEIGHT * 0.5f));
 
-    mSteering.setSeekDistance(20.0f);
-    mSteering.setArriveDistance(100.0f);
+    mSteering.setSeekDistance(32.0f);
+    mSteering.setArriveDistance(32.0f);
 }
 
 void Car::setTextureManager(TextureManager* textureManager)

@@ -160,8 +160,23 @@ Path Map::getPath(sf::Vector2i start, sf::Vector2i end) const
 {
     std::vector<sf::Vector2i> coordinates = mNetwork.getPath(start, end);
     std::vector<Vector2f> points;
-    for (const sf::Vector2i& coords : coordinates)
-        points.push_back(computePosition(coords.x + coords.y * mWidth) + sf::Vector2f(Tile::SIZE, Tile::SIZE * 0.5f));
+    for (std::size_t i = 0; i < coordinates.size(); ++i)
+    {
+        const sf::Vector2i& coords = coordinates[i];
+        // offset
+        constexpr float t = 0.15f;
+        const sf::Vector2f xOffset = sf::Vector2f(-0.5f, 0.25f) * Tile::SIZE;
+        const sf::Vector2f yOffset = sf::Vector2f(-0.5f, -0.25f) * Tile::SIZE;
+        sf::Vector2i iOffset;
+        if (i > 0)
+            iOffset += coords - coordinates[i-1];
+        if (i < coordinates.size() - 1)
+            iOffset += coordinates[i+1] - coords;
+        float denom = std::abs(iOffset.x) == 0 || std::abs(iOffset.y) == 0 ? std::max(std::abs(iOffset.x), std::abs(iOffset.y)) : 0.5f;
+        sf::Vector2f offset = t * (xOffset * iOffset.x + yOffset * iOffset.y) / denom;
+        //std::cout << iOffset.x << " " << iOffset.y << " " << denom << " " << offset << std::endl;
+        points.push_back(computePosition(coords.x + coords.y * mWidth) + sf::Vector2f(Tile::SIZE, Tile::SIZE * 0.5f) + offset);
+    }
     return Path(points);
 }
 
