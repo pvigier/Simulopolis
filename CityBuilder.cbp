@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -25,6 +26,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 		</Build>
@@ -38,12 +40,26 @@
 			<Add option="-ltinyxml2" />
 			<Add option="-lsfml-graphics -lsfml-window -lsfml-system" />
 		</Linker>
+		<Unit filename="src/ai/Kinematic.cpp" />
+		<Unit filename="src/ai/Kinematic.h" />
+		<Unit filename="src/ai/Path.cpp" />
+		<Unit filename="src/ai/Path.h" />
+		<Unit filename="src/ai/SteeringBehaviors.cpp" />
+		<Unit filename="src/ai/SteeringBehaviors.h" />
+		<Unit filename="src/ai/Vector.cpp" />
+		<Unit filename="src/ai/Vector.h" />
+		<Unit filename="src/ai/common.cpp" />
+		<Unit filename="src/ai/common.h" />
 		<Unit filename="src/city/Building.cpp" />
 		<Unit filename="src/city/Building.h" />
+		<Unit filename="src/city/Car.cpp" />
+		<Unit filename="src/city/Car.h" />
 		<Unit filename="src/city/City.cpp" />
 		<Unit filename="src/city/City.h" />
 		<Unit filename="src/city/Map.cpp" />
 		<Unit filename="src/city/Map.h" />
+		<Unit filename="src/city/Network.cpp" />
+		<Unit filename="src/city/Network.h" />
 		<Unit filename="src/city/Road.cpp" />
 		<Unit filename="src/city/Road.h" />
 		<Unit filename="src/city/Tile.cpp" />

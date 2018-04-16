@@ -6,14 +6,22 @@
 City::City() :
     mCurrentTime(0.0), mTimePerDay(1.0), mDay(0), mPopulation(0), mUnemployed(0), mFunds(0)
 {
-    mCars.emplace_back();
-    mCars.back().getKinematic().setPosition(Vector2f(1500.0f, 1500.0f));
-    mCars.back().getSteering().setPath(Path({Vector2f(2000.0f, 2000.0f), Vector2f(2300.0f, 2100.0f), Vector2f(2800.0f, 1300.0f)}, true));
+
 }
 
 City::City(std::string cityName) : City()
 {
     load(cityName);
+
+    mMap.select(sf::Vector2i(0, 0), sf::Vector2i(0, 10), {});
+    mMap.select(sf::Vector2i(1, 10), sf::Vector2i(10, 10), {});
+    mMap.select(sf::Vector2i(10, 11), sf::Vector2i(10, 20), {});
+    mMap.select(sf::Vector2i(11, 20), sf::Vector2i(20, 20), {});
+    bulldoze(Tile::Type::ROAD);
+    mCars.emplace_back();
+    Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(20, 20));
+    mCars.back().getKinematic().setPosition(path.getCurrentPoint());
+    mCars.back().getSteering().setPath(path);
 }
 
 void City::load(std::string cityName)
