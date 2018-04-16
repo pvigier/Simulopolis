@@ -6,13 +6,13 @@
 
 std::vector<std::unique_ptr<Tile>> Map::sTileAtlas;
 
-Map::Map() : mWidth(0), mHeight(0), mNbSelected(0)
+Map::Map() : mWidth(0), mHeight(0), mNbSelected(0), mNetwork(mWidth, mHeight)
 {
 
 }
 
 Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
-    mNbSelected(0)
+    mNbSelected(0), mNetwork(width, height)
 {
     load(filename, width, height);
 }
@@ -78,6 +78,8 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
 
     for (std::size_t i = 0; i < mTiles.size(); ++i)
         updateTile(i);
+
+    mNetwork.resize(mWidth, mHeight);
 }
 
 void Map::save(const std::string& filename)
@@ -114,6 +116,10 @@ void Map::bulldoze(Tile::Type type)
             mTiles[i] = createTile(type);
             mTiles[i]->setPosition(computePosition(i));
             updateNeighborhood(i);
+            if (type == Tile::Type::ROAD)
+                mNetwork.addRoad(sf::Vector2i(i % mWidth, i / mWidth));
+            else if (type == Tile::Type::VOID)
+                mNetwork.removeRoad(sf::Vector2i(i % mWidth, i / mWidth));
         }
     }
 }
@@ -150,6 +156,15 @@ void Map::select(sf::Vector2i start, sf::Vector2i end, const std::vector<Tile::T
     }
 }
 
+Path Map::getPath(sf::Vector2i start, sf::Vector2i end) const
+{
+    std::vector<sf::Vector2i> coordinates = mNetwork.getPath(start, end);
+    std::vector<Vector2f> points;
+    for (const sf::Vector2i& coords : coordinates)
+        points.push_back(computePosition(coords.x + coords.y * mWidth) + sf::Vector2f(Tile::SIZE, Tile::SIZE * 0.5f));
+    return Path(points);
+}
+
 unsigned int Map::getWidth() const
 {
     return mWidth;
@@ -170,7 +185,7 @@ std::unique_ptr<Tile> Map::createTile(Tile::Type type)
     return sTileAtlas[static_cast<int>(type)]->clone();
 }
 
-sf::Vector2f Map::computePosition(std::size_t i)
+sf::Vector2f Map::computePosition(std::size_t i) const
 {
     int x = i % mWidth;
     int y = i / mWidth;

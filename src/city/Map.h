@@ -3,7 +3,9 @@
 #include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "ai/Path.h"
 #include "Tile.h"
+#include "Network.h"
 
 class TextureManager;
 
@@ -25,6 +27,8 @@ public:
     void deselect();
     void bulldoze(Tile::Type type);
 
+    Path getPath(sf::Vector2i start, sf::Vector2i end) const;
+
     unsigned int getWidth() const;
     unsigned int getHeight() const;
     unsigned int getNbSelected() const;
@@ -35,9 +39,10 @@ private:
     unsigned int mHeight;
     std::vector<std::unique_ptr<Tile>> mTiles;
     unsigned int mNbSelected;
+    Network mNetwork;
 
     static std::unique_ptr<Tile> createTile(Tile::Type type);
-    sf::Vector2f computePosition(std::size_t pos);
+    sf::Vector2f computePosition(std::size_t pos) const;
 
     void updateTile(int pos);
     void updateNeighborhood(std::size_t pos);
