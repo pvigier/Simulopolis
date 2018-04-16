@@ -18,7 +18,7 @@ public:
 
     Map& getMap();
     const Map& getMap() const;
-    const std::vector<Car>& getCars() const;
+    std::vector<Car>& getCars();
     unsigned int getDay() const;
     unsigned int getPopulation() const;
     unsigned int getUnemployed() const;
