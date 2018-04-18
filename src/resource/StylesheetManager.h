@@ -3,11 +3,10 @@
 // STL
 #include <string>
 #include <unordered_map>
-// tinyxml2
-#include <tinyxml2.h>
-// My includes
-#include "gui/GuiStyle.h"
+#include <memory>
 
+class XmlManager;
+class XmlDocument;
 class FontManager;
 
 /**
@@ -29,11 +28,11 @@ public:
     ~StylesheetManager();
 
     /**
-     * \brief Set font manager
+     * \brief Set xml manager
      *
-     * \param fontManager FontManager to use
+     * \param xmlManager XmlManager to use
      */
-    void setFontManager(FontManager* fontManager);
+    void setXmlManager(XmlManager* xmlManager);
 
     /**
      * \brief Set up the manager
@@ -54,7 +53,7 @@ public:
      * \param name Name of the stylesheet
      * \param stylesheet Stylesheet to add
      */
-    void addStylesheet(const std::string& name, GuiStyle stylesheet);
+    void addStylesheet(const std::string& name, XmlDocument stylesheet);
 
     /**
      * \brief Get a stylesheet
@@ -63,19 +62,10 @@ public:
      *
      * \return Stylesheet that corresponds to name
      */
-    const GuiStyle& getStylesheet(const std::string& name) const;
+    const XmlDocument* getStylesheet(const std::string& name) const;
 
 private:
-    FontManager* mFontManager;
+    XmlManager* mXmlManager;
     std::string mPrefixPath; /**< Path of the folder in which is located "stylesheets.xml" */
-    std::unordered_map<std::string, GuiStyle> mStylesheets; /**< Hash map that contains the stylesheets */
-
-    /**
-     * \brief Load a stylesheet from a XML node
-     *
-     * \param node XML node that describes the stylesheet
-     */
-    void loadStylesheet(tinyxml2::XMLElement* node);
-
-    sf::Color stringToColor(const std::string& s) const;
+    std::unordered_map<std::string, std::unique_ptr<XmlDocument>> mStylesheets; /**< Hash map that contains the stylesheets */
 };

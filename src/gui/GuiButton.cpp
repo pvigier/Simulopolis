@@ -1,11 +1,11 @@
 #include "gui/GuiButton.h"
-#include "resource/ResourceManager.h"
+#include "resource/XmlDocument.h"
 
-GuiButton::GuiButton(sf::Vector2f size, Message message, const GuiStyle& style) :
+GuiButton::GuiButton(sf::Vector2f size, Message message, const XmlDocument* style) :
     mStyle(style), mMessage(message)
 {
     setSize(size);
-    mShape.setOutlineThickness(-mStyle.borderSize);
+    mShape.setOutlineThickness(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
     setHighlight(false);
 }
 
@@ -13,10 +13,10 @@ GuiButton::GuiButton(const PropertyList& properties) :
     GuiWidget(properties), mMessage(Message::create(MessageType::GUI))
 {
     mMessage = Message::create(MessageType::GUI, properties.get<std::string>("message", ""));
-    mStyle = properties.get<const GuiStyle&>("style");
+    mStyle = properties.get<const XmlDocument*>("style");
     mShape.setPosition(mPosition);
     mShape.setSize(mSize);
-    mShape.setOutlineThickness(-mStyle.borderSize);
+    mShape.setOutlineThickness(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
     setHighlight(properties.get<bool>("highlight", false));
 }
 
@@ -52,13 +52,13 @@ void GuiButton::setHighlight(bool highlight)
 {
     if (highlight)
     {
-        mShape.setFillColor(mStyle.bodyHighlightColor);
-        mShape.setOutlineColor(mStyle.borderHighlightColor);
+        mShape.setFillColor(mStyle->getFirstChildByName("body").getAttributes().get<sf::Color>("highlightColor"));
+        mShape.setOutlineColor(mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("highlightColor"));
     }
     else
     {
-        mShape.setFillColor(mStyle.bodyColor);
-        mShape.setOutlineColor(mStyle.borderColor);
+        mShape.setFillColor(mStyle->getFirstChildByName("body").getAttributes().get<sf::Color>("color"));
+        mShape.setOutlineColor(mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("color"));
     }
 }
 

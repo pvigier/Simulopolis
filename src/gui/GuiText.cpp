@@ -1,20 +1,20 @@
 #include "gui/GuiText.h"
-#include "resource/PropertyList.h"
+#include "resource/XmlDocument.h"
 
-GuiText::GuiText(const std::string& text, unsigned int characterSize, const GuiStyle& style) :
-    mText(text, *style.font, characterSize)
+GuiText::GuiText(const std::string& text, unsigned int characterSize, const XmlDocument* style) :
+    mText(text, style->getFirstChildByName("text").getAttributes().get<const sf::Font&>("font"), characterSize)
 {
-    mText.setFillColor(style.textColor);
+    mText.setFillColor(style->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
     computeSize();
 }
 
 GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
 {
-    const GuiStyle& style = properties.get<const GuiStyle&>("style");
+    const XmlDocument* style = properties.get<const XmlDocument*>("style");
     mText.setString(properties.get<std::string>("text", ""));
-    mText.setFont(*style.font);
+    mText.setFont(style->getFirstChildByName("text").getAttributes().get<const sf::Font&>("font"));
     mText.setCharacterSize(properties.get<unsigned int>("characterSize", 0));
-    mText.setFillColor(style.textColor);
+    mText.setFillColor(style->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
     computeSize();
 }
 

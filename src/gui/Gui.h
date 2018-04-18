@@ -31,7 +31,7 @@ public:
     T* create(const std::string& name, Args&&... args)
     {
         mWidgets[name] = std::unique_ptr<T>(new T(args...));
-        return mWidgets[name].get();
+        return get<T>(name);
     }
 
     template<typename T, typename... Args>
@@ -39,7 +39,7 @@ public:
     {
         mWidgets[name] = std::unique_ptr<T>(new T(args...));
         mRootWidgets.push_back(mWidgets[name].get());
-        return mWidgets[name].get();
+        return get<T>(name);
     }
 
     GuiWidget* get(const std::string& name);

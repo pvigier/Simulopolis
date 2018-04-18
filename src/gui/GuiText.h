@@ -4,12 +4,13 @@
 #include "gui/GuiWidget.h"
 #include "gui/GuiStyle.h"
 
+class XmlDocument;
 class PropertyList;
 
 class GuiText : public GuiWidget
 {
 public:
-    GuiText(const std::string& text, unsigned int characterSize, const GuiStyle& style);
+    GuiText(const std::string& text, unsigned int characterSize, const XmlDocument* style);
     GuiText(const PropertyList& properties);
     virtual ~GuiText();
 

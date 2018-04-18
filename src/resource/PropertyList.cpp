@@ -84,6 +84,18 @@ sf::IntRect PropertyList::get(const std::string& name) const
 }
 
 template<>
+sf::Color PropertyList::get(const std::string& name) const
+{
+    std::istringstream stream(mProperties.at(name));
+    std::string r, g, b, a;
+    stream >> r >> g >> b;
+    if (!(stream >> a))
+        a = "0xff";
+    return sf::Color(std::stoi(r, nullptr, 16), std::stoi(g, nullptr, 16), std::stoi(b, nullptr, 16),
+        std::stoi(a, nullptr, 16));
+}
+
+template<>
 const sf::Texture& PropertyList::get(const std::string& name) const
 {
     return sTextureManager->getTexture(mProperties.at(name));
@@ -96,7 +108,7 @@ const sf::Font& PropertyList::get(const std::string& name) const
 }
 
 template<>
-const GuiStyle& PropertyList::get(const std::string& name) const
+const XmlDocument* PropertyList::get(const std::string& name) const
 {
     return sStylesheetManager->getStylesheet(mProperties.at(name));
 }

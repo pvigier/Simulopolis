@@ -2,12 +2,13 @@
 
 #include <unordered_map>
 #include <sstream>
+#include <SFML/Graphics.hpp>
 #include "gui/GuiLayout.h"
 
 class TextureManager;
 class FontManager;
 class StylesheetManager;
-class GuiStyle;
+class XmlDocument;
 
 class PropertyList
 {
@@ -67,13 +68,16 @@ template<>
 sf::IntRect PropertyList::get(const std::string& name) const;
 
 template<>
+sf::Color PropertyList::get(const std::string& name) const;
+
+template<>
 const sf::Texture& PropertyList::get(const std::string& name) const;
 
 template<>
 const sf::Font& PropertyList::get(const std::string& name) const;
 
 template<>
-const GuiStyle& PropertyList::get(const std::string& name) const;
+const XmlDocument* PropertyList::get(const std::string& name) const;
 
 template<>
 GuiLayout::HAlignment PropertyList::get(const std::string& name) const;

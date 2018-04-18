@@ -18,7 +18,7 @@ void ResourceManager::setUp()
     mTextureManager.setUp();
     mFontManager.setXmlManager(&mXmlManager);
     mFontManager.setUp();
-    mStylesheetManager.setFontManager(&mFontManager);
+    mStylesheetManager.setXmlManager(&mXmlManager);
     mStylesheetManager.setUp();
     PropertyList::setTextureManager(&mTextureManager);
     PropertyList::setFontManager(&mFontManager);

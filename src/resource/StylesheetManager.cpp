@@ -1,11 +1,11 @@
 #include "resource/StylesheetManager.h"
 #include <iostream>
 #include <sstream>
-#include "resource/FontManager.h"
+#include "resource/XmlManager.h"
 
 using namespace tinyxml2;
 
-StylesheetManager::StylesheetManager() : mFontManager(nullptr), mPrefixPath("media/")
+StylesheetManager::StylesheetManager() : mXmlManager(nullptr), mPrefixPath("media/")
 {
     //ctor
 }
@@ -15,28 +15,21 @@ StylesheetManager::~StylesheetManager()
     //dtor
 }
 
-void StylesheetManager::setFontManager(FontManager* fontManager)
+void StylesheetManager::setXmlManager(XmlManager* xmlManager)
 {
-    mFontManager = fontManager;
+    mXmlManager = xmlManager;
 }
 
 void StylesheetManager::setUp()
 {
-    XMLDocument doc;
     std::string path = mPrefixPath + "stylesheets.xml";
-    doc.LoadFile(path.c_str());
+    XmlDocument doc = mXmlManager->loadDocument(path);
 
-    XMLNode* root = doc.FirstChild();
-
-    if (root == nullptr)
+    for (const XmlDocument& child : doc.getChildren())
     {
-        std::cout << mPrefixPath + "stylesheets.xml" << " has not been loaded correctly." << std::endl;
-        return;
+        const std::string& name = child.getAttributes().get("name");
+        mStylesheets[name] = std::make_unique<XmlDocument>(child);
     }
-
-    // Stylesheets
-    for (XMLElement* node = root->FirstChildElement("stylesheet"); node != nullptr; node = node->NextSiblingElement("stylesheet"))
-        loadStylesheet(node);
 }
 
 void StylesheetManager::tearDown()
@@ -44,49 +37,12 @@ void StylesheetManager::tearDown()
 
 }
 
-void StylesheetManager::addStylesheet(const std::string& name, GuiStyle stylesheet)
+void StylesheetManager::addStylesheet(const std::string& name, XmlDocument stylesheet)
 {
-    mStylesheets[name] = stylesheet;
+    mStylesheets[name] = std::make_unique<XmlDocument>(std::move(stylesheet));
 }
 
-const GuiStyle& StylesheetManager::getStylesheet(const std::string& name) const
+const XmlDocument* StylesheetManager::getStylesheet(const std::string& name) const
 {
-    return mStylesheets.at(name);
-}
-
-void StylesheetManager::loadStylesheet(XMLElement* node)
-{
-    // Name
-    std::string name = node->Attribute("name");
-
-    // Body
-    XMLElement* bodyNode = node->FirstChildElement("body");
-    sf::Color bodyColor = stringToColor(bodyNode->Attribute("color"));
-    sf::Color bodyHighlightColor = stringToColor(bodyNode->Attribute("highlightColor"));
-
-    // Border
-    XMLElement* borderNode = node->FirstChildElement("border");
-    float borderSize = borderNode->FloatAttribute("size");
-    sf::Color borderColor = stringToColor(borderNode->Attribute("color"));
-    sf::Color borderHighlightColor = stringToColor(borderNode->Attribute("highlightColor"));
-
-    // Text
-    XMLElement* textNode = node->FirstChildElement("text");
-    const sf::Font* font = &mFontManager->getFont(textNode->Attribute("font"));
-    sf::Color textColor = stringToColor(textNode->Attribute("color"));
-    sf::Color textHighlightColor = stringToColor(textNode->Attribute("highlightColor"));
-
-    mStylesheets[name] = GuiStyle(bodyColor, bodyHighlightColor, borderColor, borderHighlightColor,
-        borderSize, textColor, textHighlightColor, font);
-}
-
-sf::Color StylesheetManager::stringToColor(const std::string& s) const
-{
-    std::istringstream stream(s);
-    std::string r, g, b, a;
-    stream >> r >> g >> b;
-    if (!(stream >> a))
-        a = "0xff";
-    return sf::Color(std::stoi(r, nullptr, 16), std::stoi(g, nullptr, 16), std::stoi(b, nullptr, 16),
-        std::stoi(a, nullptr, 16));
+    return mStylesheets.at(name).get();
 }

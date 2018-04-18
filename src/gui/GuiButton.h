@@ -4,13 +4,12 @@
 #include "gui/GuiWidget.h"
 #include "gui/GuiStyle.h"
 
-class GuiStyle;
-class PropertyList;
+class XmlDocument;
 
 class GuiButton : public GuiWidget
 {
 public:
-    GuiButton(sf::Vector2f size, Message message, const GuiStyle& style);
+    GuiButton(sf::Vector2f size, Message message, const XmlDocument* style);
     GuiButton(const PropertyList& properties);
 
     virtual void setPosition(sf::Vector2f position) override;
@@ -29,8 +28,7 @@ protected:
     virtual void onPress(sf::Vector2f position) override;
 
 private:
-    // Reference?
-    GuiStyle mStyle;
+    const XmlDocument* mStyle;
     // Handles appearance of the button
     sf::RectangleShape mShape;
     // Integer returned when the button is activated

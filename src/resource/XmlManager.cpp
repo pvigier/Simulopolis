@@ -37,7 +37,7 @@ XmlDocument XmlManager::loadDocument(const std::string& path)
         return XmlDocument("", PropertyList(), {});
     }
 
-    return std::move(loadDocument(root->ToElement()));
+    return loadDocument(root->ToElement());
 }
 
 XmlDocument XmlManager::loadDocument(XMLElement* node)
@@ -48,7 +48,7 @@ XmlDocument XmlManager::loadDocument(XMLElement* node)
     for (XMLElement* child = node->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
         children.push_back(loadDocument(child));
 
-    return std::move(XmlDocument(name, attributes, children));
+    return XmlDocument(name, attributes, children);
 }
 
 PropertyList XmlManager::createProperties(XMLElement* node)
