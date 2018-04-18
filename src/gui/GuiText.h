@@ -2,7 +2,6 @@
 
 #include "SFML/Graphics.hpp"
 #include "gui/GuiWidget.h"
-#include "gui/GuiStyle.h"
 
 class XmlDocument;
 class PropertyList;

@@ -1,24 +1,17 @@
 #pragma once
 
-#include <string>
 #include "gui/GuiWidget.h"
 
 class XmlDocument;
 
-class GuiButton : public GuiWidget
+class GuiWindow : public GuiWidget
 {
 public:
-    GuiButton(sf::Vector2f size, Message message, const XmlDocument* style);
-    GuiButton(const PropertyList& properties);
+    GuiWindow(sf::Vector2f size, const XmlDocument* style);
+    GuiWindow(const PropertyList& properties);
 
     virtual void setPosition(sf::Vector2f position) override;
     virtual void setSize(sf::Vector2f size) override;
-
-    Message getMessage() const;
-
-    void setHighlight(bool highlight);
-
-    bool hitButton(sf::Vector2f position) const;
 
 protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -28,8 +21,11 @@ protected:
 
 private:
     const XmlDocument* mStyle;
-    // Handles appearance of the button
-    sf::RectangleShape mShape;
-    // Integer returned when the button is activated
-    Message mMessage;
+    // Handles appearance of the window
+    sf::RectangleShape mBar;
+    sf::RectangleShape mBody;
+    sf::Text mTitle;
+    sf::FloatRect mCrossRect;
+
+    void applyStyle();
 };
