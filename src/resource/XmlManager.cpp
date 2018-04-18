@@ -24,7 +24,7 @@ void XmlManager::tearDown()
 
 }
 
-XmlDocument* XmlManager::loadDocument(const std::string& name, const std::string& path)
+XmlDocument XmlManager::loadDocument(const std::string& path)
 {
     XMLDocument doc;
     doc.LoadFile(path.c_str());
@@ -34,16 +34,10 @@ XmlDocument* XmlManager::loadDocument(const std::string& name, const std::string
     if (root == nullptr)
     {
         std::cout << path << " has not been loaded correctly." << std::endl;
-        return nullptr;
+        return XmlDocument("", PropertyList(), {});
     }
 
-    mDocuments[name] = std::make_unique<XmlDocument>(loadDocument(root->ToElement()));
-    return getDocument(name);
-}
-
-XmlDocument* XmlManager::getDocument(const std::string& name)
-{
-    return mDocuments[name].get();
+    return std::move(loadDocument(root->ToElement()));
 }
 
 XmlDocument XmlManager::loadDocument(XMLElement* node)

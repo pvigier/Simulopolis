@@ -41,24 +41,11 @@ public:
      * \param name Name of the document
      * \param path Path of the document
      *
-     * \return Return the loaded document
+     * \return The loaded document
      */
-    XmlDocument* loadDocument(const std::string& name, const std::string& path);
-
-    /**
-     * \brief Get a document
-     *
-     * \param name Name of the document to retrieve
-     *
-     * \return XmlDocument that corresponds to name
-     */
-    XmlDocument* getDocument(const std::string& name);
+    XmlDocument loadDocument(const std::string& path);
 
 private:
-    std::unordered_map<std::string, std::unique_ptr<XmlDocument>> mDocuments; /**< Hash map that contains the documents */
-
     XmlDocument loadDocument(tinyxml2::XMLElement* node);
     PropertyList createProperties(tinyxml2::XMLElement* node);
-
-    sf::Vector2f stringToVector(const std::string& s) const;
 };
