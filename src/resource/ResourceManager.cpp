@@ -14,16 +14,16 @@ ResourceManager::~ResourceManager()
 void ResourceManager::setUp()
 {
     mXmlManager.setUp();
+    mTextureManager.setXmlManager(&mXmlManager);
     mTextureManager.setUp();
+    mFontManager.setXmlManager(&mXmlManager);
     mFontManager.setUp();
     mStylesheetManager.setFontManager(&mFontManager);
     mStylesheetManager.setUp();
     PropertyList::setTextureManager(&mTextureManager);
     PropertyList::setFontManager(&mFontManager);
     PropertyList::setStylesheetManager(&mStylesheetManager);
-    mGuiManager.setTextureManager(&mTextureManager);
-    mGuiManager.setFontManager(&mFontManager);
-    mGuiManager.setStylesheetManager(&mStylesheetManager);
+    mGuiManager.setXmlManager(&mXmlManager);
     mGuiManager.setUp();
 }
 

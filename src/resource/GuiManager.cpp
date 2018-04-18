@@ -1,9 +1,7 @@
 #include "resource/GuiManager.h"
 #include <iostream>
 #include <sstream>
-#include "resource/TextureManager.h"
-#include "resource/FontManager.h"
-#include "resource/StylesheetManager.h"
+#include "resource/XmlManager.h"
 #include "resource/PropertyList.h"
 #include "gui/GuiWidget.h"
 #include "gui/GuiButton.h"
@@ -12,10 +10,7 @@
 #include "gui/GuiHBoxLayout.h"
 #include "gui/GuiVBoxLayout.h"
 
-using namespace tinyxml2;
-
-GuiManager::GuiManager() : mTextureManager(nullptr), mFontManager(nullptr), mStylesheetManager(nullptr),
-    mPrefixPath("media/")
+GuiManager::GuiManager() : mXmlManager(nullptr), mPrefixPath("media/")
 {
     //ctor
 }
@@ -25,38 +20,18 @@ GuiManager::~GuiManager()
     //dtor
 }
 
-void GuiManager::setTextureManager(TextureManager* textureManager)
+void GuiManager::setXmlManager(XmlManager* xmlManager)
 {
-    mTextureManager = textureManager;
-}
-
-void GuiManager::setFontManager(FontManager* fontManager)
-{
-    mFontManager = fontManager;
-}
-
-void GuiManager::setStylesheetManager(StylesheetManager* stylesheetManager)
-{
-    mStylesheetManager = stylesheetManager;
+    mXmlManager = xmlManager;
 }
 
 void GuiManager::setUp()
 {
-    XMLDocument doc;
     std::string path = mPrefixPath + "guis.xml";
-    doc.LoadFile(path.c_str());
+    XmlDocument doc = mXmlManager->loadDocument(path);
 
-    XMLNode* root = doc.FirstChild();
-
-    if (root == nullptr)
-    {
-        std::cout << mPrefixPath + "guis.xml" << " has not been loaded correctly." << std::endl;
-        return;
-    }
-
-    // Gui's
-    for (XMLElement* node = root->FirstChildElement("gui"); node != nullptr; node = node->NextSiblingElement("gui"))
-        loadGui(node);
+    for (const XmlDocument& child : doc.getChildren())
+        loadGui(child);
 }
 
 void GuiManager::tearDown()
@@ -74,48 +49,36 @@ Gui* GuiManager::getGui(const std::string& name)
     return mGuis[name].get();
 }
 
-void GuiManager::loadGui(XMLElement* node)
+void GuiManager::loadGui(const XmlDocument& node)
 {
     // Name and path
-    std::string name = node->Attribute("name");
-    std::string path = mPrefixPath + node->Attribute("path");
+    std::string name = node.getAttributes().get("name");
+    std::string path = mPrefixPath + node.getAttributes().get("path");
 
-    // Load the gui
-    XMLDocument doc;
-    doc.LoadFile(path.c_str());
-
-    XMLNode* root = doc.FirstChild();
-
-    if (root == nullptr)
-    {
-        std::cout << path << " has not been loaded correctly." << std::endl;
-        return;
-    }
-
-    // Gui's
+    XmlDocument doc = mXmlManager->loadDocument(path);
     std::unique_ptr<Gui> gui(new Gui());
-    loadRootWidget(gui.get(), root);
+    loadRootWidgets(gui.get(), doc);
     mGuis[name] = std::move(gui);
 }
 
-void GuiManager::loadRootWidget(Gui* gui, XMLNode* node)
+void GuiManager::loadRootWidgets(Gui* gui, const XmlDocument& node)
 {
-    for (XMLElement* child = node->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
-        gui->addRoot(child->Attribute("name"), loadWidget(gui, child));
+    for (const XmlDocument& child : node.getChildren())
+        gui->addRoot(child.getAttributes().get("name"), loadWidgets(gui, child));
 }
 
-std::unique_ptr<GuiWidget> GuiManager::loadWidget(Gui* gui, XMLElement* node)
+std::unique_ptr<GuiWidget> GuiManager::loadWidgets(Gui* gui, const XmlDocument& node)
 {
     // Create widget
     std::unique_ptr<GuiWidget> widget = createWidget(node);
     // Create children
-    for (XMLElement* child = node->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
+    for (const XmlDocument& child : node.getChildren())
     {
         if (isWidget(child))
         {
-            std::unique_ptr<GuiWidget> childWidget = loadWidget(gui, child);
+            std::unique_ptr<GuiWidget> childWidget = loadWidgets(gui, child);
             widget->add(childWidget.get());
-            gui->add(child->Attribute("name"), std::move(childWidget));
+            gui->add(child.getAttributes().get("name"), std::move(childWidget));
         }
         else if (isLayout(child))
             widget->setLayout(createLayout(child));
@@ -123,58 +86,40 @@ std::unique_ptr<GuiWidget> GuiManager::loadWidget(Gui* gui, XMLElement* node)
     return widget;
 }
 
-bool GuiManager::isWidget(tinyxml2::XMLElement* node)
+bool GuiManager::isWidget(const XmlDocument& node)
 {
-    std::string type = node->Name();
+    const std::string& type = node.getName();
     return (type == "widget" || type == "button" || type == "text" || type == "image");
 }
 
-bool GuiManager::isLayout(tinyxml2::XMLElement* node)
+bool GuiManager::isLayout(const XmlDocument& node)
 {
-    std::string type = node->Name();
+    const std::string& type = node.getName();
     return (type == "hboxlayout" || type == "vboxlayout");
 }
 
-std::unique_ptr<GuiWidget> GuiManager::createWidget(tinyxml2::XMLElement* node)
+std::unique_ptr<GuiWidget> GuiManager::createWidget(const XmlDocument& node)
 {
     std::unique_ptr<GuiWidget> widget;
-    std::string type = node->Name();
-    PropertyList properties = createProperties(node);
+    const std::string& type = node.getName();
     if (type == "widget")
-        widget = std::unique_ptr<GuiWidget>(new GuiWidget(properties));
+        widget = std::unique_ptr<GuiWidget>(new GuiWidget(node.getAttributes()));
     else if (type == "button")
-        widget = std::unique_ptr<GuiButton>(new GuiButton(properties));
+        widget = std::unique_ptr<GuiButton>(new GuiButton(node.getAttributes()));
     else if (type == "text")
-        widget = std::unique_ptr<GuiText>(new GuiText(properties));
+        widget = std::unique_ptr<GuiText>(new GuiText(node.getAttributes()));
     else if (type == "image")
-        widget = std::unique_ptr<GuiImage>(new GuiImage(properties));
+        widget = std::unique_ptr<GuiImage>(new GuiImage(node.getAttributes()));
     return std::move(widget);
 }
 
-std::unique_ptr<GuiLayout> GuiManager::createLayout(tinyxml2::XMLElement* node)
+std::unique_ptr<GuiLayout> GuiManager::createLayout(const XmlDocument& node)
 {
     std::unique_ptr<GuiLayout> layout(nullptr);
-    std::string type = node->Name();
-    PropertyList properties = createProperties(node);
+    const std::string& type = node.getName();
     if (type == "hboxlayout")
-        layout = std::unique_ptr<GuiHBoxLayout>(new GuiHBoxLayout(properties));
+        layout = std::unique_ptr<GuiHBoxLayout>(new GuiHBoxLayout(node.getAttributes()));
     else if (type == "vboxlayout")
-        layout = std::unique_ptr<GuiVBoxLayout>(new GuiVBoxLayout(properties));
+        layout = std::unique_ptr<GuiVBoxLayout>(new GuiVBoxLayout(node.getAttributes()));
     return std::move(layout);
-}
-
-PropertyList GuiManager::createProperties(XMLElement* node)
-{
-    PropertyList properties;
-    for (const XMLAttribute* attribute = node->FirstAttribute(); attribute != nullptr; attribute = attribute->Next())
-        properties.add(attribute->Name(), attribute->Value());
-    return std::move(properties);
-}
-
-sf::Vector2f GuiManager::stringToVector(const std::string& s) const
-{
-    std::istringstream stream(s);
-    std::string x, y;
-    stream >> x >> y;
-    return sf::Vector2f(std::stof(x), std::stof(y));
 }

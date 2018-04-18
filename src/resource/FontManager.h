@@ -5,8 +5,8 @@
 #include <unordered_map>
 // SFML
 #include <SFML/Graphics/Font.hpp>
-// tinyxml2
-#include <tinyxml2.h>
+
+class XmlManager;
 
 /**
  * \brief Manager that manages the fonts
@@ -25,6 +25,13 @@ public:
      * \brief Destructor
      */
     ~FontManager();
+
+    /**
+     * \brief Set xml manager
+     *
+     * \param xmlManager XmlManager to use
+     */
+    void setXmlManager(XmlManager* xmlManager);
 
     /**
      * \brief Set up the manager
@@ -57,13 +64,7 @@ public:
     const sf::Font& getFont(const std::string& name) const;
 
 private:
+    XmlManager* mXmlManager;
     std::string mPrefixPath; /**< Path of the folder in which is located "fonts.xml" */
     std::unordered_map<std::string, sf::Font> mFonts; /**< Hash map that contains the fonts */
-
-    /**
-     * \brief Load a font from a XML node
-     *
-     * \param node XML node that describes the font
-     */
-    void loadFont(tinyxml2::XMLElement* node);
 };

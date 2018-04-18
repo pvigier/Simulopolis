@@ -5,8 +5,8 @@
 #include <unordered_map>
 // SFML
 #include <SFML/Graphics/Texture.hpp>
-// tinyxml2
-#include <tinyxml2.h>
+
+class XmlManager;
 
 /**
  * \brief Manager that manages the textures
@@ -25,6 +25,13 @@ public:
      * \brief Destructor
      */
     ~TextureManager();
+
+    /**
+     * \brief Set xml manager
+     *
+     * \param xmlManager XmlManager to use
+     */
+    void setXmlManager(XmlManager* xmlManager);
 
     /**
      * \brief Set up the manager
@@ -57,13 +64,7 @@ public:
     const sf::Texture& getTexture(const std::string& name) const;
 
 private:
+    XmlManager* mXmlManager;
     std::string mPrefixPath; /**< Path of the folder in which is located "textures.xml" */
     std::unordered_map<std::string, sf::Texture> mTextures; /**< Hash map that contains the textures */
-
-    /**
-     * \brief Load a texture from a XML node
-     *
-     * \param node XML node that describes the texture
-     */
-    void loadTexture(tinyxml2::XMLElement* node);
 };
