@@ -1,6 +1,7 @@
 #pragma once
 
 // My includes
+#include "resource/XmlManager.h"
 #include "resource/TextureManager.h"
 #include "resource/FontManager.h"
 #include "resource/StylesheetManager.h"
@@ -35,6 +36,13 @@ public:
     void tearDown();
 
     /**
+     * \brief Get the xml manager
+     *
+     * \return The xml manager
+     */
+    XmlManager& getXmlManager();
+
+    /**
      * \brief Get the texture manager
      *
      * \return The texture manager
@@ -63,6 +71,7 @@ public:
     GuiManager& getGuiManager();
 
 private:
+    XmlManager mXmlManager; /**< Xml manager */
     TextureManager mTextureManager; /**< Texture manager */
     FontManager mFontManager; /**< Font manager */
     StylesheetManager mStylesheetManager; /**< Stylesheet manager */

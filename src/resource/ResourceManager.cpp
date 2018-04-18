@@ -13,6 +13,7 @@ ResourceManager::~ResourceManager()
 
 void ResourceManager::setUp()
 {
+    mXmlManager.setUp();
     mTextureManager.setUp();
     mFontManager.setUp();
     mStylesheetManager.setFontManager(&mFontManager);
@@ -28,10 +29,15 @@ void ResourceManager::setUp()
 
 void ResourceManager::tearDown()
 {
-    mTextureManager.tearDown();
-    mFontManager.tearDown();
-    mStylesheetManager.tearDown();
     mGuiManager.tearDown();
+    mStylesheetManager.tearDown();
+    mFontManager.tearDown();
+    mTextureManager.tearDown();
+}
+
+XmlManager& ResourceManager::getXmlManager()
+{
+    return mXmlManager;
 }
 
 TextureManager& ResourceManager::getTextureManager()
