@@ -1,18 +1,20 @@
 #include "gui/GuiWindow.h"
 #include "resource/ResourceManager.h"
 
-GuiWindow::GuiWindow(sf::Vector2f size, const XmlDocument* style) :
-    mStyle(style)
+GuiWindow::GuiWindow(sf::Vector2f size, const std::string& title, const XmlDocument* style) :
+    mStyle(style), mOnMove(false)
 {
     setSize(size);
+    setTitle(title);
     applyStyle();
 }
 
 GuiWindow::GuiWindow(const PropertyList& properties) :
     GuiWidget(properties), mStyle(properties.get<const XmlDocument*>("style"))
 {
-    setPosition(mPosition);
     setSize(mSize);
+    setPosition(mPosition);
+    setTitle(properties.get("title"));
     applyStyle();
 }
 
@@ -21,6 +23,11 @@ void GuiWindow::setPosition(sf::Vector2f position)
     GuiWidget::setPosition(position);
     mBody.setPosition(position);
     mBar.setPosition(position);
+    // Title
+    sf::Vector2f offset(sf::Vector2f(mTitle.getGlobalBounds().left, mTitle.getGlobalBounds().top) - mTitle.getPosition());
+    sf::Vector2f titleSize = sf::Vector2f(mTitle.getGlobalBounds().width, mTitle.getGlobalBounds().height);
+    sf::Vector2i titlePosition(position + sf::Vector2f(mSize.x * 0.5f, -mBar.getSize().y * 0.5f) - offset - titleSize * 0.5f);
+    mTitle.setPosition(sf::Vector2f(titlePosition));
 }
 
 void GuiWindow::setSize(sf::Vector2f size)
@@ -30,20 +37,39 @@ void GuiWindow::setSize(sf::Vector2f size)
     mBar.setSize(sf::Vector2f(size.x, mStyle->getFirstChildByName("bar").getAttributes().get<float>("height")));
 }
 
+void GuiWindow::setTitle(const std::string& title)
+{
+    mTitle.setString(title);
+}
+
 void GuiWindow::onHover(sf::Vector2f position)
 {
-
+    if (mOnMove)
+    {
+        setPosition(mPosition + position - mAnchor);
+        mAnchor = position;
+    }
 }
 
 void GuiWindow::onPress(sf::Vector2f position)
 {
+    if (mBar.getGlobalBounds().contains(position))
+    {
+        mOnMove = true;
+        mAnchor = position;
+    }
+}
 
+void GuiWindow::onRelease(sf::Vector2f position)
+{
+    mOnMove = false;
 }
 
 void GuiWindow::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mBody);
     target.draw(mBar);
+    target.draw(mTitle);
 }
 
 void GuiWindow::applyStyle()
@@ -58,4 +84,7 @@ void GuiWindow::applyStyle()
     mBar.setOutlineThickness(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
     mBar.setFillColor(mStyle->getFirstChildByName("bar").getAttributes().get<sf::Color>("color"));
     mBar.setOutlineColor(mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("color"));
+    // Title
+    mTitle.setFont(mStyle->getFirstChildByName("title").getAttributes().get<const sf::Font&>("font"));
+    mTitle.setCharacterSize(mStyle->getFirstChildByName("title").getAttributes().get<int>("characterSize"));
 }
