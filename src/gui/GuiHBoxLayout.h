@@ -5,7 +5,7 @@
 class GuiHBoxLayout : public GuiBoxLayout
 {
 public:
-    GuiHBoxLayout(HAlignment hAlignment = HAlignment::Left, VAlignment vAlignment = VAlignment::Top);
+    GuiHBoxLayout(HAlignment hAlignment = HAlignment::Left, VAlignment vAlignment = VAlignment::Top, float spacing = 0.0f);
     GuiHBoxLayout(const PropertyList& properties);
     virtual ~GuiHBoxLayout();
 

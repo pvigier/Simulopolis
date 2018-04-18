@@ -1,8 +1,8 @@
 #include "gui/GuiHBoxLayout.h"
 #include "gui/GuiWidget.h"
 
-GuiHBoxLayout::GuiHBoxLayout(HAlignment hAlignment, VAlignment vAlignment) :
-    GuiBoxLayout(hAlignment, vAlignment)
+GuiHBoxLayout::GuiHBoxLayout(HAlignment hAlignment, VAlignment vAlignment, float spacing) :
+    GuiBoxLayout(hAlignment, vAlignment, spacing)
 {
     //ctor
 }
