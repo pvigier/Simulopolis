@@ -26,6 +26,10 @@ public:
     void fitSizeToContent();
 
     // Parameters
+    const std::string& getName() const;
+    void setName(const std::string& name);
+    bool isRoot() const;
+    void setRoot(bool root);
     void setParent(GuiWidget* parent);
     void setLayout(std::unique_ptr<GuiLayout> layout);
     virtual sf::Vector2f getPosition() const;
@@ -42,7 +46,11 @@ public:
     void updateMouseButtonPressed(sf::Vector2f position);
     void updateMouseButtonReleased(sf::Vector2f position);
 
+    virtual bool hasGuiEvents() const;
+
 protected:
+    std::string mName;
+    bool mRoot;
     GuiWidget* mParent;
     std::vector<GuiWidget*> mChildren;
     std::unique_ptr<GuiLayout> mLayout;

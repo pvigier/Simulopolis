@@ -2,12 +2,12 @@
 #include "gui/GuiLayout.h"
 #include "resource/PropertyList.h"
 
-GuiWidget::GuiWidget() : mParent(nullptr), mVisible(true), mDirty(true)
+GuiWidget::GuiWidget() : mRoot(false), mParent(nullptr), mVisible(true), mDirty(true)
 {
     //ctor
 }
 
-GuiWidget::GuiWidget(const PropertyList& properties) : mParent(nullptr), mDirty(true)
+GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nullptr), mDirty(true)
 {
     mVisible = properties.get<bool>("visible", true);
     mPosition = properties.get<sf::Vector2f>("position", sf::Vector2f());
@@ -60,6 +60,26 @@ const std::vector<GuiWidget*>& GuiWidget::getChildren() const
 void GuiWidget::fitSizeToContent()
 {
     setSize(mLayout->computeSize());
+}
+
+const std::string& GuiWidget::getName() const
+{
+    return mName;
+}
+
+void GuiWidget::setName(const std::string& name)
+{
+    mName = name;
+}
+
+bool GuiWidget::isRoot() const
+{
+    return mRoot;
+}
+
+void GuiWidget::setRoot(bool root)
+{
+    mRoot = root;
 }
 
 void GuiWidget::setParent(GuiWidget* parent)
@@ -144,6 +164,11 @@ void GuiWidget::updateMouseButtonReleased(sf::Vector2f position)
         for (GuiWidget* widget : mChildren)
             widget->updateMouseButtonReleased(position);
     }
+}
+
+bool GuiWidget::hasGuiEvents() const
+{
+    return false;
 }
 
 void GuiWidget::setDirty()

@@ -8,9 +8,9 @@
 #include "util/NonMovable.h"
 #include "message/Mailbox.h"
 
+class GuiWidget;
 class MessageBus;
 class InputEngine;
-class GuiWidget;
 
 class Gui : public NonCopyable, public NonMovable, public sf::Transformable, public sf::Drawable
 {
@@ -30,15 +30,14 @@ public:
     template<typename T, typename... Args>
     T* create(const std::string& name, Args&&... args)
     {
-        mWidgets[name] = std::unique_ptr<T>(new T(args...));
+        add(name, std::make_unique<T>(args...));
         return get<T>(name);
     }
 
     template<typename T, typename... Args>
     T* createRoot(const std::string& name, Args&&... args)
     {
-        mWidgets[name] = std::unique_ptr<T>(new T(args...));
-        mRootWidgets.push_back(mWidgets[name].get());
+        addRoot(name, std::make_unique<T>(args...));
         return get<T>(name);
     }
 
@@ -56,6 +55,9 @@ public:
     {
         return static_cast<T*>(mWidgets.at(name).get());
     }
+
+    void remove(const std::string& name);
+    void remove(GuiWidget* widget);
 
     void update();
     void handleMessages();

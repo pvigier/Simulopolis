@@ -2,6 +2,7 @@
 #include "message/MessageBus.h"
 #include "input/InputEngine.h"
 #include "gui/GuiWidget.h"
+#include "gui/GuiWindow.h"
 
 MessageBus* Gui::sMessageBus = nullptr;
 InputEngine* Gui::sInputEngine = nullptr;
@@ -44,11 +45,19 @@ void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Gui::add(const std::string& name, std::unique_ptr<GuiWidget> widget)
 {
+    if (widget->hasGuiEvents())
+        widget->subscribe(mMailbox.getId());
+    widget->setName(name);
+    widget->setRoot(false);
     mWidgets[name] = std::move(widget);
 }
 
 void Gui::addRoot(const std::string& name, std::unique_ptr<GuiWidget> widget)
 {
+    if (widget->hasGuiEvents())
+        widget->subscribe(mMailbox.getId());
+    widget->setName(name);
+    widget->setRoot(true);
     mRootWidgets.push_back(widget.get());
     mWidgets[name] = std::move(widget);
 }
@@ -61,6 +70,20 @@ GuiWidget* Gui::get(const std::string& name)
 const GuiWidget* Gui::get(const std::string& name) const
 {
     return mWidgets.at(name).get();
+}
+
+void Gui::remove(const std::string& name)
+{
+    remove(mWidgets[name].get());
+}
+
+void Gui::remove(GuiWidget* widget)
+{
+    if (widget->isRoot())
+        mRootWidgets.erase(std::find(mRootWidgets.begin(), mRootWidgets.end(), widget));
+    for (GuiWidget* child : widget->getChildren())
+        remove(child);
+    mWidgets.erase(widget->getName());
 }
 
 void Gui::update()
@@ -79,29 +102,39 @@ void Gui::handleMessages()
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();
-        if (message.type != MessageType::INPUT)
-            continue;
-
-        sf::Event event = message.getInfo<sf::Event>();
-        switch (event.type)
+        if (message.type == MessageType::INPUT)
         {
-            case sf::Event::Resized:
-                mView.setSize(event.size.width, event.size.height);
-                break;
-            case sf::Event::MouseMoved:
-                for (GuiWidget* widget : mRootWidgets)
-                    widget->updateMouseMoved(mousePosition);
-                break;
-            case sf::Event::MouseButtonPressed:
-                for (GuiWidget* widget : mRootWidgets)
-                    widget->updateMouseButtonPressed(mousePosition);
-                break;
-            case sf::Event::MouseButtonReleased:
-                for (GuiWidget* widget : mRootWidgets)
-                    widget->updateMouseButtonReleased(mousePosition);
-                break;
-            default:
-                break;
+            sf::Event event = message.getInfo<sf::Event>();
+            switch (event.type)
+            {
+                case sf::Event::Resized:
+                    mView.setSize(event.size.width, event.size.height);
+                    break;
+                case sf::Event::MouseMoved:
+                    for (GuiWidget* widget : mRootWidgets)
+                        widget->updateMouseMoved(mousePosition);
+                    break;
+                case sf::Event::MouseButtonPressed:
+                    for (GuiWidget* widget : mRootWidgets)
+                        widget->updateMouseButtonPressed(mousePosition);
+                    break;
+                case sf::Event::MouseButtonReleased:
+                    for (GuiWidget* widget : mRootWidgets)
+                        widget->updateMouseButtonReleased(mousePosition);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (message.type == MessageType::GUI_WINDOW)
+        {
+            GuiWindow::Event event = message.getInfo<GuiWindow::Event>();
+            switch (event.type)
+            {
+                case GuiWindow::Event::Type::CLOSE:
+                    remove(event.window->getName());
+                    break;
+            }
         }
     }
 }

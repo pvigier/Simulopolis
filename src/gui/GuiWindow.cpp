@@ -48,6 +48,11 @@ void GuiWindow::setTitle(const std::string& title)
     mTitle.setString(title);
 }
 
+bool GuiWindow::hasGuiEvents() const
+{
+    return true;
+}
+
 void GuiWindow::onHover(sf::Vector2f position)
 {
     if (mOnMove)
@@ -68,6 +73,8 @@ void GuiWindow::onPress(sf::Vector2f position)
         mOnMove = true;
         mAnchor = position;
     }
+    if (mCloseButton.getGlobalBounds().contains(position))
+        notify(Message::create(MessageType::GUI_WINDOW, Event{this, Event::Type::CLOSE}));
 }
 
 void GuiWindow::onRelease(sf::Vector2f position)
