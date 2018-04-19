@@ -84,14 +84,14 @@
 		<Unit filename="src/gui/GuiImage.h" />
 		<Unit filename="src/gui/GuiLayout.cpp" />
 		<Unit filename="src/gui/GuiLayout.h" />
-		<Unit filename="src/gui/GuiStyle.cpp" />
-		<Unit filename="src/gui/GuiStyle.h" />
 		<Unit filename="src/gui/GuiText.cpp" />
 		<Unit filename="src/gui/GuiText.h" />
 		<Unit filename="src/gui/GuiVBoxLayout.cpp" />
 		<Unit filename="src/gui/GuiVBoxLayout.h" />
 		<Unit filename="src/gui/GuiWidget.cpp" />
 		<Unit filename="src/gui/GuiWidget.h" />
+		<Unit filename="src/gui/GuiWindow.cpp" />
+		<Unit filename="src/gui/GuiWindow.h" />
 		<Unit filename="src/input/InputEngine.cpp" />
 		<Unit filename="src/input/InputEngine.h" />
 		<Unit filename="src/main.cpp" />
@@ -121,6 +121,10 @@
 		<Unit filename="src/resource/StylesheetManager.h" />
 		<Unit filename="src/resource/TextureManager.cpp" />
 		<Unit filename="src/resource/TextureManager.h" />
+		<Unit filename="src/resource/XmlDocument.cpp" />
+		<Unit filename="src/resource/XmlDocument.h" />
+		<Unit filename="src/resource/XmlManager.cpp" />
+		<Unit filename="src/resource/XmlManager.h" />
 		<Unit filename="src/util/Array2.h" />
 		<Unit filename="src/util/Id.h" />
 		<Unit filename="src/util/IdManager.h" />

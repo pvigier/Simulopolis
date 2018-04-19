@@ -27,7 +27,7 @@ private:
     sf::RectangleShape mBar;
     sf::RectangleShape mBody;
     sf::Text mTitle;
-    sf::FloatRect mCrossRect;
+    sf::CircleShape mCloseButton;
     // Events
     bool mOnMove;
     sf::Vector2f mAnchor;
