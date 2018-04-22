@@ -60,26 +60,25 @@ void GuiWindow::onHover(sf::Vector2f position)
         setPosition(mPosition + position - mAnchor);
         mAnchor = position;
     }
-    if (mCloseButton.getGlobalBounds().contains(position))
-        mCloseButton.setFillColor(mStyle->getFirstChildByName("close").getAttributes().get<sf::Color>("highlightColor"));
-    else
-        mCloseButton.setFillColor(mStyle->getFirstChildByName("close").getAttributes().get<sf::Color>("color"));
 }
 
 void GuiWindow::onPress(sf::Vector2f position)
 {
-    if (mBar.getGlobalBounds().contains(position))
+    if (mBar.getGlobalBounds().contains(position) && !mCloseButton.getGlobalBounds().contains(position))
     {
         mOnMove = true;
         mAnchor = position;
     }
-    if (mCloseButton.getGlobalBounds().contains(position))
-        notify(Message::create(MessageType::GUI_WINDOW, Event{this, Event::Type::CLOSE}));
+    else if (mCloseButton.getGlobalBounds().contains(position))
+        mCloseButton.setFillColor(mStyle->getFirstChildByName("close").getAttributes().get<sf::Color>("highlightColor"));
 }
 
 void GuiWindow::onRelease(sf::Vector2f position)
 {
     mOnMove = false;
+    if (mCloseButton.getGlobalBounds().contains(position))
+        notify(Message::create(MessageType::GUI_WINDOW, Event{this, Event::Type::CLOSE}));
+    mCloseButton.setFillColor(mStyle->getFirstChildByName("close").getAttributes().get<sf::Color>("color"));
 }
 
 void GuiWindow::render(sf::RenderTarget& target, sf::RenderStates states) const

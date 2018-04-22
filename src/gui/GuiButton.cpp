@@ -37,7 +37,7 @@ void GuiButton::onHover(sf::Vector2f position)
     setHighlight(hitButton(position));
 }
 
-void GuiButton::onPress(sf::Vector2f position)
+void GuiButton::onRelease(sf::Vector2f position)
 {
     if (hitButton(position))
         notify(mMessage);
