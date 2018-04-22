@@ -136,33 +136,45 @@ bool GuiWidget::isDirty() const
     return mDirty;
 }
 
-void GuiWidget::updateMouseMoved(sf::Vector2f position)
+bool GuiWidget::updateMouseMoved(sf::Vector2f position)
 {
     if (mVisible)
     {
-        onHover(position);
+        if (onHover(position))
+            return true;
         for (GuiWidget* widget : mChildren)
-            widget->updateMouseMoved(position);
+        {
+            if (widget->updateMouseMoved(position))
+                return true;
+        }
     }
 }
 
-void GuiWidget::updateMouseButtonPressed(sf::Vector2f position)
+bool GuiWidget::updateMouseButtonPressed(sf::Vector2f position)
 {
     if (mVisible)
     {
-        onPress(position);
+        if (onPress(position))
+            return true;
         for (GuiWidget* widget : mChildren)
-            widget->updateMouseButtonPressed(position);
+        {
+            if (widget->updateMouseButtonPressed(position))
+                return true;
+        }
     }
 }
 
-void GuiWidget::updateMouseButtonReleased(sf::Vector2f position)
+bool GuiWidget::updateMouseButtonReleased(sf::Vector2f position)
 {
     if (mVisible)
     {
-        onRelease(position);
+        if (onRelease(position))
+            return true;
         for (GuiWidget* widget : mChildren)
-            widget->updateMouseButtonReleased(position);
+        {
+            if (widget->updateMouseButtonReleased(position))
+                return true;
+        }
     }
 }
 
@@ -183,17 +195,17 @@ void GuiWidget::render(sf::RenderTarget& target, sf::RenderStates states) const
 
 }
 
-void GuiWidget::onHover(sf::Vector2f position)
+bool GuiWidget::onHover(sf::Vector2f position)
 {
-
+    return false;
 }
 
-void GuiWidget::onPress(sf::Vector2f position)
+bool GuiWidget::onPress(sf::Vector2f position)
 {
-
+    return false;
 }
 
-void GuiWidget::onRelease(sf::Vector2f position)
+bool GuiWidget::onRelease(sf::Vector2f position)
 {
-
+    return false;
 }

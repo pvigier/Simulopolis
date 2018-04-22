@@ -32,15 +32,17 @@ void GuiButton::setSize(sf::Vector2f size)
     mShape.setSize(size);
 }
 
-void GuiButton::onHover(sf::Vector2f position)
+bool GuiButton::onHover(sf::Vector2f position)
 {
     setHighlight(hitButton(position));
+    return false;
 }
 
-void GuiButton::onRelease(sf::Vector2f position)
+bool GuiButton::onRelease(sf::Vector2f position)
 {
     if (hitButton(position))
         notify(mMessage);
+    return false;
 }
 
 Message GuiButton::getMessage() const

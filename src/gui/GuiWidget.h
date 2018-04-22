@@ -42,9 +42,9 @@ public:
     bool isDirty() const;
 
     // Events
-    void updateMouseMoved(sf::Vector2f position);
-    void updateMouseButtonPressed(sf::Vector2f position);
-    void updateMouseButtonReleased(sf::Vector2f position);
+    bool updateMouseMoved(sf::Vector2f position);
+    bool updateMouseButtonPressed(sf::Vector2f position);
+    bool updateMouseButtonReleased(sf::Vector2f position);
 
     virtual bool hasGuiEvents() const;
 
@@ -63,9 +63,9 @@ protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const;
 
     // Events
-    virtual void onHover(sf::Vector2f position);
-    virtual void onPress(sf::Vector2f position);
-    virtual void onRelease(sf::Vector2f position);
+    virtual bool onHover(sf::Vector2f position);
+    virtual bool onPress(sf::Vector2f position);
+    virtual bool onRelease(sf::Vector2f position);
 
 private:
     bool mDirty;

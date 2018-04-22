@@ -111,16 +111,25 @@ void Gui::handleMessages()
                     mView.setSize(event.size.width, event.size.height);
                     break;
                 case sf::Event::MouseMoved:
-                    for (GuiWidget* widget : mRootWidgets)
-                        widget->updateMouseMoved(mousePosition);
+                    for (int i = mRootWidgets.size() - 1; i >= 0; --i)
+                    {
+                        if (mRootWidgets[i]->updateMouseMoved(mousePosition))
+                            break;
+                    }
                     break;
                 case sf::Event::MouseButtonPressed:
-                    for (GuiWidget* widget : mRootWidgets)
-                        widget->updateMouseButtonPressed(mousePosition);
+                    for (int i = mRootWidgets.size() - 1; i >= 0; --i)
+                    {
+                        if (mRootWidgets[i]->updateMouseButtonPressed(mousePosition))
+                            break;
+                    }
                     break;
                 case sf::Event::MouseButtonReleased:
-                    for (GuiWidget* widget : mRootWidgets)
-                        widget->updateMouseButtonReleased(mousePosition);
+                    for (int i = mRootWidgets.size() - 1; i >= 0; --i)
+                    {
+                        if (mRootWidgets[i]->updateMouseButtonReleased(mousePosition))
+                            break;
+                    }
                     break;
                 default:
                     break;

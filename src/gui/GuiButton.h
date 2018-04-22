@@ -23,8 +23,8 @@ public:
 protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    virtual void onHover(sf::Vector2f position) override;
-    virtual void onRelease(sf::Vector2f position) override;
+    virtual bool onHover(sf::Vector2f position) override;
+    virtual bool onRelease(sf::Vector2f position) override;
 
 private:
     const XmlDocument* mStyle;

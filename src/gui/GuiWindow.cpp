@@ -53,16 +53,17 @@ bool GuiWindow::hasGuiEvents() const
     return true;
 }
 
-void GuiWindow::onHover(sf::Vector2f position)
+bool GuiWindow::onHover(sf::Vector2f position)
 {
     if (mOnMove)
     {
         setPosition(mPosition + position - mAnchor);
         mAnchor = position;
     }
+    return mBody.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);
 }
 
-void GuiWindow::onPress(sf::Vector2f position)
+bool GuiWindow::onPress(sf::Vector2f position)
 {
     if (mBar.getGlobalBounds().contains(position) && !mCloseButton.getGlobalBounds().contains(position))
     {
@@ -71,14 +72,16 @@ void GuiWindow::onPress(sf::Vector2f position)
     }
     else if (mCloseButton.getGlobalBounds().contains(position))
         mCloseButton.setFillColor(mStyle->getFirstChildByName("close").getAttributes().get<sf::Color>("highlightColor"));
+    return mBody.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);
 }
 
-void GuiWindow::onRelease(sf::Vector2f position)
+bool GuiWindow::onRelease(sf::Vector2f position)
 {
     mOnMove = false;
     if (mCloseButton.getGlobalBounds().contains(position))
         notify(Message::create(MessageType::GUI_WINDOW, Event{this, Event::Type::CLOSE}));
     mCloseButton.setFillColor(mStyle->getFirstChildByName("close").getAttributes().get<sf::Color>("color"));
+    return mBody.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);
 }
 
 void GuiWindow::render(sf::RenderTarget& target, sf::RenderStates states) const
