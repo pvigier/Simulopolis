@@ -21,6 +21,9 @@ GameStateEditor::GameStateEditor() :
         mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
     zoom(8.0f);
 
+    // Render texture
+    mRenderTexture.create(windowSize.x, windowSize.y);
+
     // Background
     mBackground.setTexture(sTextureManager->getTexture("background"));
 
@@ -40,19 +43,21 @@ void GameStateEditor::draw(const float dt)
 {
     sRenderEngine->clear();
 
-    sRenderEngine->setView(mGuiView);
-    sRenderEngine->draw(mBackground);
-
-    sRenderEngine->setView(mGameView);
-    sRenderEngine->draw(mCity.getMap());
-
+    mRenderTexture.clear(sf::Color::Transparent);
+    mRenderTexture.setView(mGameView);
+    mRenderTexture.draw(mCity.getMap());
     std::vector<Car*> cars;
     for (Car& car : mCity.getCars())
         cars.push_back(&car);
     std::sort(cars.begin(), cars.end(), [](Car* car1, Car* car2) { return car1->getKinematic().getPosition().y < car2->getKinematic().getPosition().y; });
     for (const Car* car : cars)
-        sRenderEngine->draw(*car);
+        mRenderTexture.draw(*car);
+    mRenderTexture.display();
 
+
+    sRenderEngine->setView(mGuiView);
+    sRenderEngine->draw(mBackground);
+    sRenderEngine->draw(sf::Sprite(mRenderTexture.getTexture()));
     sRenderEngine->draw(*mGui);
 }
 

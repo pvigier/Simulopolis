@@ -18,6 +18,7 @@ public:
     virtual void handleMessages() override;
 
 private:
+    sf::RenderTexture mRenderTexture;
     sf::View mGameView;
     sf::View mGuiView;
     sf::Sprite mBackground;
