@@ -44,15 +44,6 @@ void Map::loadTiles(const TextureManager& textureManager)
         Tile::Type::ROAD)));
 }
 
-void Map::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    for (unsigned int y = 0; y < mHeight; ++y)
-    {
-        for (unsigned int x = 0; x < mWidth; ++x)
-            target.draw(*mTiles[y * mWidth + x]);
-    }
-}
-
 void Map::load(const std::string& filename, unsigned int width, unsigned int height)
 {
     std::ifstream inputFile;
@@ -188,6 +179,11 @@ unsigned int Map::getWidth() const
 unsigned int Map::getHeight() const
 {
     return mHeight;
+}
+
+const std::vector<std::unique_ptr<Tile>>& Map::getTiles() const
+{
+    return mTiles;
 }
 
 unsigned int Map::getNbSelected() const

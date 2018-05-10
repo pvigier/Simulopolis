@@ -87,6 +87,31 @@ void City::save(std::string cityName)
     mMap.save(cityName + "_map.dat");
 }
 
+void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    const std::vector<std::unique_ptr<Tile>>& tiles = mMap.getTiles();
+    std::vector<std::vector<const Car*>> carsByTile(tiles.size());
+    for (const Car& car : mCars)
+    {
+        sf::Vector2i indices = toTileIndices(car.getBottomRight());
+        carsByTile[indices.y * mMap.getWidth() + indices.x].push_back(&car);
+    }
+    for (unsigned int y = 0; y < mMap.getHeight(); ++y)
+    {
+        for (unsigned int x = 0; x < mMap.getWidth(); ++x)
+        {
+            std::size_t i = y * mMap.getWidth() + x;
+            target.draw(*tiles[i]);
+            if (!carsByTile[i].empty())
+            {
+                std::sort(carsByTile[i].begin(), carsByTile[i].end(), [](const Car* car1, const Car* car2) { return car1->getBottomRight().y < car2->getBottomRight().y; });
+                for (const Car* car : carsByTile[i])
+                    target.draw(*car);
+            }
+        }
+    }
+}
+
 void City::update(float dt)
 {
     for (Car& car : mCars)

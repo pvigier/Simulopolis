@@ -45,13 +45,7 @@ void GameStateEditor::draw(const float dt)
 
     mRenderTexture.clear(sf::Color::Transparent);
     mRenderTexture.setView(mGameView);
-    mRenderTexture.draw(mCity.getMap());
-    std::vector<Car*> cars;
-    for (Car& car : mCity.getCars())
-        cars.push_back(&car);
-    std::sort(cars.begin(), cars.end(), [](Car* car1, Car* car2) { return car1->getKinematic().getPosition().y < car2->getKinematic().getPosition().y; });
-    for (const Car* car : cars)
-        mRenderTexture.draw(*car);
+    mRenderTexture.draw(mCity);
     mRenderTexture.display();
 
 

@@ -4,7 +4,7 @@
 #include "Map.h"
 #include "Car.h"
 
-class City
+class City : public sf::Drawable
 {
 public:
     City();
@@ -12,6 +12,8 @@ public:
 
     void load(std::string cityName);
     void save(std::string cityName);
+
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     void update(float dt);
     void bulldoze(Tile::Type type);

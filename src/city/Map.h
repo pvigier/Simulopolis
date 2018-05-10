@@ -2,14 +2,13 @@
 
 #include <string>
 #include <vector>
-#include <SFML/Graphics.hpp>
 #include "ai/Path.h"
 #include "Tile.h"
 #include "Network.h"
 
 class TextureManager;
 
-class Map : public sf::Drawable
+class Map
 {
 public:
 
@@ -17,8 +16,6 @@ public:
     Map(const std::string& filename, unsigned int width, unsigned int height);
 
     static void loadTiles(const TextureManager& textureManager);
-
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     void load(const std::string& filename, unsigned int width, unsigned int height);
     void save(const std::string& filename);
@@ -31,6 +28,7 @@ public:
 
     unsigned int getWidth() const;
     unsigned int getHeight() const;
+    const std::vector<std::unique_ptr<Tile>>& getTiles() const;
     unsigned int getNbSelected() const;
 
 private:

@@ -22,6 +22,8 @@ public:
     Kinematic& getKinematic();
     SteeringBehaviors& getSteering();
 
+    sf::Vector2f getBottomRight() const;
+
 private:
     static TextureManager* sTextureManager;
 
