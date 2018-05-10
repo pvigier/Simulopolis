@@ -27,6 +27,8 @@ public:
     unsigned int getFunds() const;
     void decreaseFunds(unsigned int amount);
 
+    sf::Vector2i toTileIndices(const Vector2f& coord) const;
+
 private:
     float mCurrentTime;
     float mTimePerDay;

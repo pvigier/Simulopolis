@@ -101,9 +101,7 @@ void GameStateEditor::handleMessages()
                     // Select tiles
                     else if(mActionState == ActionState::SELECTING)
                     {
-                        mSelectionEnd.x = gamePos.y / Tile::SIZE + 0.5f * (gamePos.x / Tile::SIZE - mCity.getMap().getWidth() - 1);
-                        mSelectionEnd.y = gamePos.y / Tile::SIZE - 0.5f * (gamePos.x / Tile::SIZE - mCity.getMap().getWidth() - 1);
-
+                        mSelectionEnd = mCity.toTileIndices(gamePos);
                         mCity.getMap().deselect();
                         if(mCurrentTile == Tile::Type::GRASS)
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, {mCurrentTile, Tile::Type::WATER});
@@ -148,8 +146,7 @@ void GameStateEditor::handleMessages()
                         if (mActionState != ActionState::SELECTING)
                         {
                             mActionState = ActionState::SELECTING;
-                            mSelectionStart.x = gamePos.y / Tile::SIZE + 0.5f * (gamePos.x / Tile::SIZE - mCity.getMap().getWidth() - 1);
-                            mSelectionStart.y = gamePos.y / Tile::SIZE - 0.5f * (gamePos.x / Tile::SIZE - mCity.getMap().getWidth() - 1);
+                            mSelectionStart = mCity.toTileIndices(gamePos);
                         }
                     }
                     break;

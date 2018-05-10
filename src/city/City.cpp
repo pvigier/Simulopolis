@@ -22,12 +22,12 @@ City::City(std::string cityName) : City()
     mCars.reserve(2);
 
     mCars.emplace_back();
-    Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(20, 20));
+    Path path = mMap.getPath(sf::Vector2i(0, 10), sf::Vector2i(20, 20));
     mCars.back().getKinematic().setPosition(path.getCurrentPoint());
     mCars.back().getSteering().setPath(path);
 
     mCars.emplace_back();
-    Path otherPath = mMap.getPath(sf::Vector2i(20, 20), sf::Vector2i(0, 0));
+    Path otherPath = mMap.getPath(sf::Vector2i(10, 10), sf::Vector2i(0, 0));
     mCars.back().getKinematic().setPosition(otherPath.getCurrentPoint());
     mCars.back().getSteering().setPath(otherPath);
 }
@@ -161,4 +161,11 @@ unsigned int City::getFunds() const
 void City::decreaseFunds(unsigned int amount)
 {
     mFunds -= amount;
+}
+
+sf::Vector2i City::toTileIndices(const Vector2f& coord) const
+{
+    int x = coord.y / Tile::SIZE + 0.5f * (coord.x / Tile::SIZE - mMap.getWidth() - 1);
+    int y = coord.y / Tile::SIZE - 0.5f * (coord.x / Tile::SIZE - mMap.getWidth() - 1);
+    return sf::Vector2i(x, y);
 }
