@@ -1,10 +1,12 @@
 #pragma once
 
+#include <string>
+
 class Person
 {
 public:
-    enum class Gender{MALE, FEMALE};
-    enum class State{RESTING, WORKING, MOVING, SHOPPING}
+    enum class Gender{MALE = 0, FEMALE = 1};
+    enum class State{RESTING, WORKING, MOVING, SHOPPING};
 
     Person(const std::string& firstName, const std::string& lastName, Gender gender);
 
