@@ -1,7 +1,7 @@
 <textures>
 	<texture name="background" path="background.png" />
 	<texture name="commercial" path="commercial.png" />
-	<texture name="forest" path="forest.png" />
+	<texture name="forest" path="dirt.png" />
 	<texture name="grass" path="grass.png" />
 	<texture name="industrial" path="industrial.png" />
 	<texture name="residential" path="residential.png" />
