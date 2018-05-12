@@ -35,3 +35,6 @@ bin/
 
 # Doxygen
 doxygen/
+
+# Gimp
+media/gimp
