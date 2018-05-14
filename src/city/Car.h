@@ -8,10 +8,7 @@
 class Car : public sf::Drawable
 {
 public:
-    static constexpr unsigned int WIDTH = 33;
-    static constexpr unsigned int HEIGHT = 27;
-
-    Car();
+    Car(const std::string& model);
 
     static void setTextureManager(TextureManager* textureManager);
 
@@ -27,6 +24,8 @@ public:
 private:
     static TextureManager* sTextureManager;
 
+    int mWidth;
+    int mHeight;
     Kinematic mKinematic;
     SteeringBehaviors mSteering;
     sf::Sprite mSprite;

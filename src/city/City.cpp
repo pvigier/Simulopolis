@@ -21,12 +21,12 @@ City::City(std::string cityName) : City()
 
     mCars.reserve(2);
 
-    mCars.emplace_back();
+    mCars.emplace_back("car_blue_sedan_2");
     Path path = mMap.getPath(sf::Vector2i(0, 10), sf::Vector2i(20, 20));
     mCars.back().getKinematic().setPosition(path.getCurrentPoint());
     mCars.back().getSteering().setPath(path);
 
-    mCars.emplace_back();
+    mCars.emplace_back("car_blue_pick-up_1");
     Path otherPath = mMap.getPath(sf::Vector2i(10, 10), sf::Vector2i(0, 0));
     mCars.back().getKinematic().setPosition(otherPath.getCurrentPoint());
     mCars.back().getSteering().setPath(otherPath);

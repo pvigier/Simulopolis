@@ -7,5 +7,37 @@
 	<texture name="residential" path="residential.png" />
 	<texture name="road" path="road.png" />
 	<texture name="water" path="water.png" />
-	<texture name="car" path="car.png" />
+    <texture name="car_black_pick-up_1" path="vehicles/car_black_pick-up_1.png" />
+    <texture name="car_black_sedan_1" path="vehicles/car_black_sedan_1.png" />
+	<texture name="car_black_sedan_2" path="vehicles/car_black_sedan_2.png" />
+    <texture name="car_black_sedan_3" path="vehicles/car_black_sedan_3.png" />
+    <texture name="car_black_sedan_4" path="vehicles/car_black_sedan_4.png" />
+    <texture name="car_black_truck_1" path="vehicles/car_black_truck_1.png" />
+    <texture name="car_blue_pick-up_1" path="vehicles/car_blue_pick-up_1.png" />
+    <texture name="car_blue_sedan_1" path="vehicles/car_blue_sedan_1.png" />
+	<texture name="car_blue_sedan_2" path="vehicles/car_blue_sedan_2.png" />
+    <texture name="car_blue_sedan_3" path="vehicles/car_blue_sedan_3.png" />
+    <texture name="car_blue_sedan_4" path="vehicles/car_blue_sedan_4.png" />
+    <texture name="car_blue_truck_1" path="vehicles/car_blue_truck_1.png" />
+    <texture name="car_green_pick-up_1" path="vehicles/car_green_pick-up_1.png" />
+    <texture name="car_green_sedan_1" path="vehicles/car_green_sedan_1.png" />
+	<texture name="car_green_sedan_2" path="vehicles/car_green_sedan_2.png" />
+    <texture name="car_green_sedan_3" path="vehicles/car_green_sedan_3.png" />
+    <texture name="car_green_sedan_4" path="vehicles/car_green_sedan_4.png" />
+    <texture name="car_green_truck_1" path="vehicles/car_green_truck_1.png" />
+    <texture name="car_red_pick-up_1" path="vehicles/car_red_pick-up_1.png" />
+    <texture name="car_red_sedan_1" path="vehicles/car_red_sedan_1.png" />
+	<texture name="car_red_sedan_2" path="vehicles/car_red_sedan_2.png" />
+    <texture name="car_red_sedan_3" path="vehicles/car_red_sedan_3.png" />
+    <texture name="car_red_sedan_4" path="vehicles/car_red_sedan_4.png" />
+    <texture name="car_red_truck_1" path="vehicles/car_red_truck_1.png" />
+    <texture name="car_silver_pick-up_1" path="vehicles/car_silver_pick-up_1.png" />
+    <texture name="car_silver_sedan_1" path="vehicles/car_silver_sedan_1.png" />
+	<texture name="car_silver_sedan_2" path="vehicles/car_silver_sedan_2.png" />
+    <texture name="car_silver_sedan_3" path="vehicles/car_silver_sedan_3.png" />
+    <texture name="car_silver_sedan_4" path="vehicles/car_silver_sedan_4.png" />
+    <texture name="car_silver_truck_1" path="vehicles/car_silver_truck_1.png" />
+    <texture name="police_car" path="vehicles/police_car.png" />
+    <texture name="ambulance" path="vehicles/ambulance.png" />
+    <texture name="school_bus" path="vehicles/school_bus.png" />
 </textures>

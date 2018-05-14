@@ -60,6 +60,8 @@
 		<Unit filename="src/city/Map.h" />
 		<Unit filename="src/city/Network.cpp" />
 		<Unit filename="src/city/Network.h" />
+		<Unit filename="src/city/Person.cpp" />
+		<Unit filename="src/city/Person.h" />
 		<Unit filename="src/city/Road.cpp" />
 		<Unit filename="src/city/Road.h" />
 		<Unit filename="src/city/Tile.cpp" />
@@ -103,6 +105,8 @@
 		<Unit filename="src/message/MessageType.h" />
 		<Unit filename="src/message/Subject.cpp" />
 		<Unit filename="src/message/Subject.h" />
+		<Unit filename="src/pcg/PersonGenerator.cpp" />
+		<Unit filename="src/pcg/PersonGenerator.h" />
 		<Unit filename="src/render/Animation.cpp" />
 		<Unit filename="src/render/Animation.h" />
 		<Unit filename="src/render/Animator.cpp" />
