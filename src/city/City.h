@@ -42,5 +42,6 @@ private:
     unsigned int mFunds;
 
     std::vector<Car> mCars;
+    std::vector<std::vector<const Car*>> mCarsByTile;
 };
 

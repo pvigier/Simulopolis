@@ -53,8 +53,7 @@ SteeringBehaviors& Car::getSteering()
     return mSteering;
 }
 
-sf::Vector2f Car::getBottomRight() const
+sf::FloatRect Car::getBounds() const
 {
-    return sf::Vector2f(mSprite.getGlobalBounds().left + mSprite.getGlobalBounds().width,
-        mSprite.getGlobalBounds().top + mSprite.getGlobalBounds().height);
+    return mSprite.getGlobalBounds();
 }

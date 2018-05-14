@@ -15,21 +15,23 @@ City::City(std::string cityName) : City()
 
     mMap.select(sf::Vector2i(0, 0), sf::Vector2i(0, 10), {});
     mMap.select(sf::Vector2i(1, 10), sf::Vector2i(10, 10), {});
-    mMap.select(sf::Vector2i(10, 11), sf::Vector2i(10, 20), {});
-    mMap.select(sf::Vector2i(11, 20), sf::Vector2i(20, 20), {});
+    mMap.select(sf::Vector2i(10, 9), sf::Vector2i(10, 0), {});
+    mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), {});
     bulldoze(Tile::Type::ROAD);
 
     mCars.reserve(2);
 
     mCars.emplace_back("car_blue_sedan_2");
-    Path path = mMap.getPath(sf::Vector2i(0, 10), sf::Vector2i(20, 20));
+    Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(2, 0));
     mCars.back().getKinematic().setPosition(path.getCurrentPoint());
     mCars.back().getSteering().setPath(path);
 
-    mCars.emplace_back("car_blue_pick-up_1");
-    Path otherPath = mMap.getPath(sf::Vector2i(10, 10), sf::Vector2i(0, 0));
+    mCars.emplace_back("car_blue_sedan_2");
+    Path otherPath = mMap.getPath(sf::Vector2i(2, 0), sf::Vector2i(0, 0));
     mCars.back().getKinematic().setPosition(otherPath.getCurrentPoint());
     mCars.back().getSteering().setPath(otherPath);
+
+    mCarsByTile.resize(mMap.getWidth() * mMap.getHeight());
 }
 
 void City::load(std::string cityName)
@@ -90,24 +92,14 @@ void City::save(std::string cityName)
 void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     const std::vector<std::unique_ptr<Tile>>& tiles = mMap.getTiles();
-    std::vector<std::vector<const Car*>> carsByTile(tiles.size());
-    for (const Car& car : mCars)
-    {
-        sf::Vector2i indices = toTileIndices(car.getBottomRight());
-        carsByTile[indices.y * mMap.getWidth() + indices.x].push_back(&car);
-    }
     for (unsigned int y = 0; y < mMap.getHeight(); ++y)
     {
         for (unsigned int x = 0; x < mMap.getWidth(); ++x)
         {
             std::size_t i = y * mMap.getWidth() + x;
             target.draw(*tiles[i]);
-            if (!carsByTile[i].empty())
-            {
-                std::sort(carsByTile[i].begin(), carsByTile[i].end(), [](const Car* car1, const Car* car2) { return car1->getBottomRight().y < car2->getBottomRight().y; });
-                for (const Car* car : carsByTile[i])
-                    target.draw(*car);
-            }
+            for (const Car* car : mCarsByTile[i])
+                target.draw(*car);
         }
     }
 }
@@ -116,6 +108,32 @@ void City::update(float dt)
 {
     for (Car& car : mCars)
         car.update(dt);
+
+    for (unsigned int y = 0; y < mMap.getHeight(); ++y)
+    {
+        for (unsigned int x = 0; x < mMap.getWidth(); ++x)
+        {
+            std::size_t i = y * mMap.getWidth() + x;
+            mCarsByTile[i].clear();
+        }
+    }
+    for (const Car& car : mCars)
+    {
+        sf::Vector2f bottomLeft(car.getBounds().left, car.getBounds().top + car.getBounds().height);
+        sf::Vector2f bottomRight(bottomLeft.x + car.getBounds().width, bottomLeft.y);
+        sf::Vector2i iBottomLeft = toTileIndices(bottomLeft);
+        sf::Vector2i iBottomRight = toTileIndices(bottomRight);
+        sf::Vector2i indices(std::max(iBottomLeft.x, iBottomRight.x), std::max(iBottomLeft.y, iBottomRight.y));
+        mCarsByTile[indices.y * mMap.getWidth() + indices.x].push_back(&car);
+    }
+    for (unsigned int y = 0; y < mMap.getHeight(); ++y)
+    {
+        for (unsigned int x = 0; x < mMap.getWidth(); ++x)
+        {
+            std::size_t i = y * mMap.getWidth() + x;
+            std::sort(mCarsByTile[i].begin(), mCarsByTile[i].end(), [](const Car* car1, const Car* car2) { return car1->getBounds().top < car2->getBounds().top; });
+        }
+    }
 }
 
 void City::bulldoze(Tile::Type type)

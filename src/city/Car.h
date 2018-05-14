@@ -19,7 +19,7 @@ public:
     Kinematic& getKinematic();
     SteeringBehaviors& getSteering();
 
-    sf::Vector2f getBottomRight() const;
+    sf::FloatRect getBounds() const;
 
 private:
     static TextureManager* sTextureManager;
