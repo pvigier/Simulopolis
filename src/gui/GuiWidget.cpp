@@ -148,6 +148,7 @@ bool GuiWidget::updateMouseMoved(sf::Vector2f position)
                 return true;
         }
     }
+    return false;
 }
 
 bool GuiWidget::updateMouseButtonPressed(sf::Vector2f position)
@@ -162,6 +163,7 @@ bool GuiWidget::updateMouseButtonPressed(sf::Vector2f position)
                 return true;
         }
     }
+    return false;
 }
 
 bool GuiWidget::updateMouseButtonReleased(sf::Vector2f position)
@@ -176,6 +178,7 @@ bool GuiWidget::updateMouseButtonReleased(sf::Vector2f position)
                 return true;
         }
     }
+    return false;
 }
 
 bool GuiWidget::hasGuiEvents() const
