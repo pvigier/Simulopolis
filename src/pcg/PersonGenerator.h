@@ -12,7 +12,7 @@ public:
 
     void setUp();
 
-    Person generate();
+    Person generate(int year);
 
 private:
     std::default_random_engine mGenerator;

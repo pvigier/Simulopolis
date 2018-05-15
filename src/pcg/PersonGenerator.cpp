@@ -38,7 +38,7 @@ void PersonGenerator::setUp()
     }
 }
 
-Person PersonGenerator::generate()
+Person PersonGenerator::generate(int year)
 {
     std::uniform_int_distribution<int> genderPdf(0, 1);
     Person::Gender gender = static_cast<Person::Gender>(genderPdf(mGenerator));
@@ -55,5 +55,8 @@ Person PersonGenerator::generate()
     }
     std::uniform_int_distribution<std::size_t> lastNamePdf(0, mLastNames.size() - 1);
     std::string lastName = mLastNames[lastNamePdf(mGenerator)];
-    return Person(firstName, lastName, gender);
+    std::uniform_int_distribution<int> agePdf(20, 60);
+    int age = agePdf(mGenerator);
+    int birth = year - age;
+    return Person(firstName, lastName, gender, birth);
 }

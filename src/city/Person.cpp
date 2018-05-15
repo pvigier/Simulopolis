@@ -1,7 +1,7 @@
 #include "Person.h"
 
-Person::Person(const std::string& firstName, const std::string& lastName, Gender gender) :
-    mFirstName(firstName), mLastName(lastName), mGender(gender), mState(State::RESTING),
+Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth) :
+    mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mState(State::RESTING),
     mMoney(0.0f), mSleep(1.0f), mHygiene(1.0f), mSafety(1.0f), mHunger(1.0f), mHappiness(0.0f)
 {
     //ctor
@@ -15,6 +15,11 @@ const std::string& Person::getFirstName() const
 const std::string& Person::getLastName() const
 {
     return mLastName;
+}
+
+std::string Person::getFullName() const
+{
+    return mFirstName + " " + mLastName;
 }
 
 Person::Gender Person::getGender() const

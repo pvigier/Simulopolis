@@ -8,10 +8,11 @@ public:
     enum class Gender{MALE = 0, FEMALE = 1};
     enum class State{RESTING, WORKING, MOVING, SHOPPING};
 
-    Person(const std::string& firstName, const std::string& lastName, Gender gender);
+    Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth);
 
     const std::string& getFirstName() const;
     const std::string& getLastName() const;
+    std::string getFullName() const;
     Gender getGender() const;
     int getAge(int year) const;
     State getState() const;
