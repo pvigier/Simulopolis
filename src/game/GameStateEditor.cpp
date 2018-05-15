@@ -31,12 +31,12 @@ GameStateEditor::GameStateEditor() :
     createGui();
 
     // Subscribe to inputs
-    sInputEngine->subscribe(mMailbox.getId());
+    mGui->subscribe(mMailbox.getId());
 }
 
 GameStateEditor::~GameStateEditor()
 {
-    sInputEngine->unsubscribe(mMailbox.getId());
+    mGui->unsubscribe(mMailbox.getId());
 }
 
 void GameStateEditor::draw(const float dt)

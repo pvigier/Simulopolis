@@ -4,15 +4,14 @@
 #include <unordered_map>
 #include <memory>
 #include <SFML/Graphics.hpp>
-#include "util/NonCopyable.h"
-#include "util/NonMovable.h"
 #include "message/Mailbox.h"
+#include "message/Subject.h"
 
 class GuiWidget;
 class MessageBus;
 class InputEngine;
 
-class Gui : public NonCopyable, public NonMovable, public sf::Transformable, public sf::Drawable
+class Gui : public sf::Drawable, public Subject
 {
 public:
     Gui();
@@ -21,7 +20,6 @@ public:
     static void setMessageBus(MessageBus* messageBus);
     static void setInputEngine(InputEngine* inputEngine);
 
-    // Draw the menu.
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     void add(const std::string& name, std::unique_ptr<GuiWidget> widget);

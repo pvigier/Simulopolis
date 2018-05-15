@@ -105,6 +105,7 @@ void Gui::handleMessages()
         if (message.type == MessageType::INPUT)
         {
             sf::Event event = message.getInfo<sf::Event>();
+            bool processed = false;
             switch (event.type)
             {
                 case sf::Event::Resized:
@@ -114,26 +115,37 @@ void Gui::handleMessages()
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
                     {
                         if (mRootWidgets[i]->updateMouseMoved(mousePosition))
+                        {
+                            processed = true;
                             break;
+                        }
                     }
                     break;
                 case sf::Event::MouseButtonPressed:
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
                     {
                         if (mRootWidgets[i]->updateMouseButtonPressed(mousePosition))
+                        {
+                            processed = true;
                             break;
+                        }
                     }
                     break;
                 case sf::Event::MouseButtonReleased:
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
                     {
                         if (mRootWidgets[i]->updateMouseButtonReleased(mousePosition))
+                        {
+                            processed = true;
                             break;
+                        }
                     }
                     break;
                 default:
                     break;
             }
+            if (!processed)
+                notify(message);
         }
         else if (message.type == MessageType::GUI_WINDOW)
         {

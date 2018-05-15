@@ -17,12 +17,12 @@ GameStateStart::GameStateStart() : mGui(sGuiManager->getGui("menu"))
     createGui();
 
     // Subscribe to inputs
-    sInputEngine->subscribe(mMailbox.getId());
+    mGui->subscribe(mMailbox.getId());
 }
 
 GameStateStart::~GameStateStart()
 {
-    sInputEngine->unsubscribe(mMailbox.getId());
+    mGui->unsubscribe(mMailbox.getId());
 }
 
 void GameStateStart::draw(const float dt)
