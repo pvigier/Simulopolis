@@ -161,6 +161,11 @@ unsigned int City::getDay() const
     return mDay;
 }
 
+unsigned int City::getYear() const
+{
+    return mDay / 365;
+}
+
 unsigned int City::getPopulation() const
 {
     return mPopulation;

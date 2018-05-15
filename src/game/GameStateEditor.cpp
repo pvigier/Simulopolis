@@ -203,6 +203,32 @@ void GameStateEditor::createGui()
     mGui->get<GuiButton>("roadMenu")->subscribe(mMailbox.getId());
 }
 
+void GameStateEditor::createPersonWindow(const Person& person)
+{
+    std::string fullname = person.getFullName();
+    auto window = mGui->createRoot<GuiWindow>(fullname + "Window", sf::Vector2f(200.0f, 120.0f), fullname, sStylesheetManager->getStylesheet("window"));
+    auto firstNameText = mGui->create<GuiText>(fullname + "FirstNameText", "First name: " + person.getFirstName(), 10, sStylesheetManager->getStylesheet("text"));
+    auto lastNameText = mGui->create<GuiText>(fullname + "LastNameText", "Last name: " + person.getLastName(), 10, sStylesheetManager->getStylesheet("text"));
+    auto ageText = mGui->create<GuiText>(fullname + "AgeText", "Age: " + std::to_string(person.getAge(mCity.getYear())), 10, sStylesheetManager->getStylesheet("text"));
+    auto stateText = mGui->create<GuiText>(fullname + "StateText", "State: " + std::to_string(static_cast<int>(person.getState())), 10, sStylesheetManager->getStylesheet("text"));
+    auto sleepText = mGui->create<GuiText>(fullname + "SleepText", "Sleep: " + std::to_string(person.getSleep()), 10, sStylesheetManager->getStylesheet("text"));
+    auto hygieneText = mGui->create<GuiText>(fullname + "HygieneText", "Hygiene: " + std::to_string(person.getHygiene()), 10, sStylesheetManager->getStylesheet("text"));
+    auto safetyText = mGui->create<GuiText>(fullname + "SafetyText", "Safety: " + std::to_string(person.getSafety()), 10, sStylesheetManager->getStylesheet("text"));
+    auto hungerText = mGui->create<GuiText>(fullname + "HungerText", "Hunger: " + std::to_string(person.getHunger()), 10, sStylesheetManager->getStylesheet("text"));
+    auto happinessText = mGui->create<GuiText>(fullname + "HapinessText", "Happiness: " + std::to_string(person.getHappiness()), 10, sStylesheetManager->getStylesheet("text"));
+    window->add(firstNameText);
+    window->add(lastNameText);
+    window->add(ageText);
+    window->add(stateText);
+    window->add(sleepText);
+    window->add(hygieneText);
+    window->add(safetyText);
+    window->add(hungerText);
+    window->add(happinessText);
+    window->setPosition(sf::Vector2f(50.0f, 50.0f));
+    window->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
+}
+
 void GameStateEditor::zoom(float factor)
 {
     mGameView.zoom(factor);

@@ -32,6 +32,7 @@ private:
     Gui* mGui;
 
     void createGui();
+    void createPersonWindow(const Person& person);
 
     void zoom(float factor);
 
