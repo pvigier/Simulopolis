@@ -3,7 +3,8 @@
 Building::Building(const sf::Texture& texture, Type type) :
     Tile(texture, type), mNbStairs(3)
 {
-    //ctor
+    if (type == Type::HOSPITAL || type == Type::POLICE || type == Type::SCHOOL)
+        mNbStairs = 2;
 }
 
 Building::~Building()

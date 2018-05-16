@@ -46,6 +46,16 @@
 		</button>
 		<button name="roadMenu" size="32 32" message="road" style="button">
 			<image name="roadMenuImage" texture="road" rect="0 0 132 101" size="24 18" />
+        <button name="hospitalMenu" size="32 32" message="hospital" style="button">
+			<image name="hospitalMenuImage" texture="hospital" rect="0 85 132 132" size="24 24" />
+			<hboxlayout hAlignment="center" vAlignment="center" />
+		</button>
+        <button name="policeMenu" size="32 32" message="police" style="button">
+			<image name="policeMenuImage" texture="police" rect="0 85 132 132" size="24 24" />
+			<hboxlayout hAlignment="center" vAlignment="center" />
+		</button>
+        <button name="schoolMenu" size="32 32" message="school" style="button">
+			<image name="schoolMenuImage" texture="school" rect="0 85 132 132" size="24 24" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<vboxlayout />

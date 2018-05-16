@@ -200,6 +200,9 @@ void GameStateEditor::createGui()
     mGui->get<GuiButton>("residentialMenu")->subscribe(mMailbox.getId());
     mGui->get<GuiButton>("commercialMenu")->subscribe(mMailbox.getId());
     mGui->get<GuiButton>("industrialMenu")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("hospitalMenu")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("policeMenu")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("schoolMenu")->subscribe(mMailbox.getId());
     mGui->get<GuiButton>("roadMenu")->subscribe(mMailbox.getId());
 }
 

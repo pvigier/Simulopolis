@@ -25,6 +25,12 @@ Tile::Type Tile::stringToType(const std::string& s)
         return Tile::Type::COMMERCIAL;
     else if (s == "industrial")
         return Tile::Type::INDUSTRIAL;
+    else if (s == "hospital")
+        return Tile::Type::HOSPITAL;
+    else if (s == "police")
+        return Tile::Type::POLICE;
+    else if (s == "school")
+        return Tile::Type::SCHOOL;
     else if (s == "road")
         return Tile::Type::ROAD;
     else
@@ -49,6 +55,12 @@ std::string Tile::typeToString(Tile::Type type)
             return "Commercial Zone";
         case Tile::Type::INDUSTRIAL:
             return "Industrial Zone";
+        case Tile::Type::HOSPITAL:
+            return "Hospital";
+        case Tile::Type::POLICE:
+            return "Police";
+        case Tile::Type::SCHOOL:
+            return "School";
         case Tile::Type::ROAD:
             return "Road";
         default:
