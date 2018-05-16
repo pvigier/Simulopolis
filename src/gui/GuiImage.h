@@ -8,7 +8,7 @@ class PropertyList;
 class GuiImage : public GuiWidget
 {
 public:
-    GuiImage(const sf::Texture& texture);
+    GuiImage(const sf::Sprite& sprite);
     GuiImage(const PropertyList& properties);
     virtual ~GuiImage();
 

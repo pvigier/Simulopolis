@@ -23,29 +23,29 @@
 		</button>
 		<hboxlayout vAlignment="bottom" />
 	</widget>
-	<widget name="rightMenu">
+	<widget name="leftMenu">
 		<button name="grassMenu" size="32 32" message="grass" style="button">
-			<image name="grassMenuImage" texture="grass" size="24 24" />
+			<image name="grassMenuImage" texture="grass" size="24 18" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<button name="forestMenu" size="32 32" message="forest" style="button">
-			<image name="forestMenuImage" texture="forest" size="24 24" />
+			<image name="forestMenuImage" texture="forest" size="24 18" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<button name="residentialMenu" size="32 32" message="residential" style="button">
-			<image name="residentialMenuImage" texture="residential" rect="0 32 132 132" size="24 24" />
+			<image name="residentialMenuImage" texture="residential" rect="0 85 132 132" size="24 24" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<button name="commercialMenu" size="32 32" message="commercial" style="button">
-			<image name="commercialMenuImage" texture="commercial" rect="0 32 132 132" size="24 24" />
+			<image name="commercialMenuImage" texture="commercial" rect="0 85 132 132" size="24 24" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<button name="industrialMenu" size="32 32" message="industrial" style="button">
-			<image name="industrialMenuImage" texture="industrial" rect="0 32 132 132" size="24 24" />
+			<image name="industrialMenuImage" texture="industrial" rect="0 85 132 132" size="24 24" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<button name="roadMenu" size="32 32" message="road" style="button">
-			<image name="roadMenuImage" texture="road" rect="0 0 132 101" size="24 24" />
+			<image name="roadMenuImage" texture="road" rect="0 0 132 101" size="24 18" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<vboxlayout />

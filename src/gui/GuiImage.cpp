@@ -1,9 +1,9 @@
 #include "gui/GuiImage.h"
 #include "resource/PropertyList.h"
 
-GuiImage::GuiImage(const sf::Texture& texture) : mSprite(texture)
+GuiImage::GuiImage(const sf::Sprite& sprite) : mSprite(sprite)
 {
-    GuiWidget::setSize(sf::Vector2f(texture.getSize()));
+    GuiWidget::setSize(sf::Vector2f(sprite.getTextureRect().width, sprite.getTextureRect().height));
 }
 
 GuiImage::GuiImage(const PropertyList& properties) : GuiWidget(properties)
@@ -16,10 +16,10 @@ GuiImage::GuiImage(const PropertyList& properties) : GuiWidget(properties)
         mSprite.setTextureRect(properties.get<sf::IntRect>("rect"));
     if (properties.has("size"))
     {
-        sf::Vector2f factor;
-        factor.x = properties.get<sf::Vector2f>("size").x / mSprite.getTextureRect().width;
-        factor.y = properties.get<sf::Vector2f>("size").y / mSprite.getTextureRect().height;
-        mSprite.scale(factor);
+        sf::Vector2f scale;
+        scale.x = properties.get<sf::Vector2f>("size").x / mSprite.getTextureRect().width;
+        scale.y = properties.get<sf::Vector2f>("size").y / mSprite.getTextureRect().height;
+        mSprite.scale(scale);
     }
     else
         GuiWidget::setSize(sf::Vector2f(mSprite.getTextureRect().width, mSprite.getTextureRect().height));
