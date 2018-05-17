@@ -34,11 +34,11 @@ bool Building::updateVariant(Tile* neighbors[3][3])
 {
     sf::IntRect rect(0, 85, 132, 128);
 
-    if (neighbors[0][1]->getType() == Type::ROAD)
+    if (neighbors[0][1]->isRoad())
         rect.left = 264;
-    else if (neighbors[1][2]->getType() == Type::ROAD)
+    else if (neighbors[1][2]->isRoad())
         rect.left = 132;
-    else if (neighbors[1][0]->getType() == Type::ROAD)
+    else if (neighbors[1][0]->isRoad())
         rect.left = 396;
 
     if (mSprite.getTextureRect() == rect)

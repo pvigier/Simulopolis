@@ -31,8 +31,12 @@ Tile::Type Tile::stringToType(const std::string& s)
         return Tile::Type::POLICE;
     else if (s == "school")
         return Tile::Type::SCHOOL;
-    else if (s == "road")
-        return Tile::Type::ROAD;
+    else if (s == "roadGrass")
+        return Tile::Type::ROAD_GRASS;
+    else if (s == "roadSidewalk")
+        return Tile::Type::ROAD_SIDEWALK;
+    else if (s == "roadWater")
+        return Tile::Type::ROAD_WATER;
     else
         return Tile::Type::VOID;
 }
@@ -61,8 +65,12 @@ std::string Tile::typeToString(Tile::Type type)
             return "Police";
         case Tile::Type::SCHOOL:
             return "School";
-        case Tile::Type::ROAD:
+        case Tile::Type::ROAD_GRASS:
             return "Road";
+        case Tile::Type::ROAD_SIDEWALK:
+            return "Road with sidewalk";
+        case Tile::Type::ROAD_WATER:
+            return "Road on water";
         default:
             return "";
     }
@@ -85,6 +93,11 @@ bool Tile::updateVariant(Tile* neighbors[3][3])
 }
 
 bool Tile::isBuilding() const
+{
+    return false;
+}
+
+bool Tile::isRoad() const
 {
     return false;
 }

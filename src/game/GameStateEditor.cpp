@@ -103,13 +103,23 @@ void GameStateEditor::handleMessages()
                     {
                         mSelectionEnd = mCity.toTileIndices(gamePos);
                         mCity.getMap().deselect();
-                        if(mCurrentTile == Tile::Type::GRASS)
+                        if (mCurrentTile == Tile::Type::GRASS)
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, {mCurrentTile, Tile::Type::WATER});
+                        else if (mCurrentTile == Tile::Type::ROAD_WATER)
+                        {
+                            mCity.getMap().select(mSelectionStart, mSelectionEnd, {
+                                mCurrentTile, Tile::Type::GRASS, Tile::Type::FOREST,
+                                Tile::Type::ROAD_GRASS, Tile::Type::ROAD_SIDEWALK, Tile::Type::ROAD_WATER,
+                                Tile::Type::RESIDENTIAL, Tile::Type::COMMERCIAL, Tile::Type::INDUSTRIAL,
+                                Tile::Type::HOSPITAL, Tile::Type::POLICE, Tile::Type::SCHOOL});
+                        }
                         else
                         {
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, {
-                                mCurrentTile, Tile::Type::FOREST, Tile::Type::WATER, Tile::Type::ROAD,
-                                Tile::Type::RESIDENTIAL, Tile::Type::COMMERCIAL, Tile::Type::INDUSTRIAL});
+                                mCurrentTile, Tile::Type::FOREST, Tile::Type::WATER,
+                                Tile::Type::ROAD_GRASS, Tile::Type::ROAD_SIDEWALK, Tile::Type::ROAD_WATER,
+                                Tile::Type::RESIDENTIAL, Tile::Type::COMMERCIAL, Tile::Type::INDUSTRIAL,
+                                Tile::Type::HOSPITAL, Tile::Type::POLICE, Tile::Type::SCHOOL});
                         }
                         // Update the GUI
                         unsigned int totalCost = computeCostOfSelection();

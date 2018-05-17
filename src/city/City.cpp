@@ -17,7 +17,7 @@ City::City(std::string cityName) : City()
     mMap.select(sf::Vector2i(1, 10), sf::Vector2i(10, 10), {});
     mMap.select(sf::Vector2i(10, 9), sf::Vector2i(10, 0), {});
     mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), {});
-    bulldoze(Tile::Type::ROAD);
+    bulldoze(Tile::Type::ROAD_GRASS);
 
     mCars.reserve(2);
 
@@ -186,9 +186,9 @@ void City::decreaseFunds(unsigned int amount)
     mFunds -= amount;
 }
 
-sf::Vector2i City::toTileIndices(const Vector2f& coord) const
+sf::Vector2i City::toTileIndices(const Vector2f& position) const
 {
-    int x = coord.y / Tile::SIZE + 0.5f * (coord.x / Tile::SIZE - mMap.getWidth() - 1);
-    int y = coord.y / Tile::SIZE - 0.5f * (coord.x / Tile::SIZE - mMap.getWidth() - 1);
+    int x = position.y / Tile::SIZE + 0.5f * (position.x / Tile::SIZE - mMap.getWidth() - 1);
+    int y = position.y / Tile::SIZE - 0.5f * (position.x / Tile::SIZE - mMap.getWidth() - 1);
     return sf::Vector2i(x, y);
 }

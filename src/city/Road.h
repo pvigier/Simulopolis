@@ -12,8 +12,8 @@ public:
 
     virtual bool updateVariant(Tile* neighbors[3][3]) override;
 
+    virtual bool isRoad() const override;
     virtual bool hasSidewalk() const override;
 
 protected:
-    bool mSidewalk;
 };

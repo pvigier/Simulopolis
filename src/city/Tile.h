@@ -6,7 +6,7 @@ class Tile : public sf::Drawable
 {
 public:
     enum class Type : int {VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL,
-        HOSPITAL, POLICE, SCHOOL, ROAD};
+        HOSPITAL, POLICE, SCHOOL, ROAD_GRASS, ROAD_SIDEWALK, ROAD_WATER};
     enum class State{DESELECTED, SELECTED, INVALID};
     static constexpr unsigned int SIZE = 64;
 
@@ -23,6 +23,7 @@ public:
     virtual bool updateVariant(Tile* neighbors[3][3]);
 
     virtual bool isBuilding() const;
+    virtual bool isRoad() const;
     virtual bool hasSidewalk() const;
     virtual void setPosition(sf::Vector2f position);
     Type getType() const;

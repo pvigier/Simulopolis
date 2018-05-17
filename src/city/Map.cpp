@@ -40,8 +40,23 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("industrial"),
         Tile::Type::INDUSTRIAL)));
 
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("hospital"),
+        Tile::Type::HOSPITAL)));
+
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("police"),
+        Tile::Type::POLICE)));
+
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("school"),
+        Tile::Type::SCHOOL)));
+
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road(textureManager.getTexture("road"),
-        Tile::Type::ROAD)));
+        Tile::Type::ROAD_GRASS)));
+
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Road(textureManager.getTexture("road"),
+        Tile::Type::ROAD_SIDEWALK)));
+
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Road(textureManager.getTexture("road"),
+        Tile::Type::ROAD_WATER)));
 }
 
 void Map::load(const std::string& filename, unsigned int width, unsigned int height)
@@ -107,7 +122,8 @@ void Map::bulldoze(Tile::Type type)
             mTiles[i] = createTile(type);
             mTiles[i]->setPosition(computePosition(i));
             updateNeighborhood(i);
-            if (type == Tile::Type::ROAD)
+            if (type == Tile::Type::ROAD_GRASS || type == Tile::Type::ROAD_SIDEWALK ||
+                type == Tile::Type::ROAD_WATER)
                 mNetwork.addRoad(sf::Vector2i(i % mWidth, i / mWidth));
             else if (type == Tile::Type::VOID)
                 mNetwork.removeRoad(sf::Vector2i(i % mWidth, i / mWidth));

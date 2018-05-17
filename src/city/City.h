@@ -22,12 +22,13 @@ public:
     const Map& getMap() const;
     std::vector<Car>& getCars();
     unsigned int getDay() const;
+    unsigned int getYear() const;
     unsigned int getPopulation() const;
     unsigned int getUnemployed() const;
     unsigned int getFunds() const;
     void decreaseFunds(unsigned int amount);
 
-    sf::Vector2i toTileIndices(const Vector2f& coord) const;
+    sf::Vector2i toTileIndices(const Vector2f& position) const;
 
 private:
     float mCurrentTime;
