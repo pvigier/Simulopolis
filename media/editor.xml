@@ -44,8 +44,6 @@
 			<image name="industrialMenuImage" texture="industrial" rect="0 85 132 132" size="24 24" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
-		<button name="roadMenu" size="32 32" message="road" style="button">
-			<image name="roadMenuImage" texture="road" rect="0 0 132 101" size="24 18" />
         <button name="hospitalMenu" size="32 32" message="hospital" style="button">
 			<image name="hospitalMenuImage" texture="hospital" rect="0 85 132 132" size="24 24" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
@@ -58,6 +56,29 @@
 			<image name="schoolMenuImage" texture="school" rect="0 85 132 132" size="24 24" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
+        <!-- Roads -->
+        <widget name="roadMenu">
+            <button name="roadMenuButton" size="32 32" message="open_road_menu" style="button">
+                <image name="roadMenuImage" texture="road" rect="0 0 132 101" size="24 18" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <widget name="roadMenuButtons" visible="false">
+                <button name="roadGrassButton" size="32 32" message="roadGrass" style="button">
+                    <image name="roadGrassImage" texture="road" rect="0 0 132 101" size="24 18" />
+                    <hboxlayout hAlignment="center" vAlignment="center" />
+                </button>
+                <button name="roadSidewalkButton" size="32 32" message="roadSidewalk" style="button">
+                    <image name="roadSidewalkImage" texture="road" rect="132 0 132 101" size="24 18" />
+                    <hboxlayout hAlignment="center" vAlignment="center" />
+                </button>
+                <button name="roadWaterButton" size="32 32" message="roadWater" style="button">
+                    <image name="roadWaterImage" texture="road" rect="264 0 132 101" size="24 18" />
+                    <hboxlayout hAlignment="center" vAlignment="center" />
+                </button>
+                <hboxlayout hAlignment="left" vAlignment="top" />
+            </widget>
+            <hboxlayout hAlignment="left" vAlignment="top" />
+        </widget>
 		<vboxlayout />
 	</widget>
 </gui>

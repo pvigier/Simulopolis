@@ -194,8 +194,16 @@ void GameStateEditor::handleMessages()
         }
         if (message.type == MessageType::GUI && message.hasInfo())
         {
+            std::string info = message.getInfo<std::string>();
+            closeMenus();
+            if (info == "open_road_menu")
+            {
+                mGui->get("roadMenuButtons")->setVisible(true);
+                mGui->get<GuiButton>("roadMenuButton")->setState(GuiButton::State::PRESSED);
+            }
             // Select a context menu button
-            mCurrentTile = Tile::stringToType(message.getInfo<std::string>());
+            else
+                mCurrentTile = Tile::stringToType(info);
         }
     }
 }
@@ -213,7 +221,10 @@ void GameStateEditor::createGui()
     mGui->get<GuiButton>("hospitalMenu")->subscribe(mMailbox.getId());
     mGui->get<GuiButton>("policeMenu")->subscribe(mMailbox.getId());
     mGui->get<GuiButton>("schoolMenu")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadMenu")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadMenuButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadGrassButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadSidewalkButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadWaterButton")->subscribe(mMailbox.getId());
 }
 
 void GameStateEditor::createPersonWindow(const Person& person)
@@ -242,6 +253,12 @@ void GameStateEditor::createPersonWindow(const Person& person)
     window->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
 }
 
+void GameStateEditor::closeMenus()
+{
+    mGui->get("roadMenuButtons")->setVisible(false);
+    mGui->get<GuiButton>("roadMenuButton")->setState(GuiButton::State::NORMAL);
+}
+
 void GameStateEditor::zoom(float factor)
 {
     mGameView.zoom(factor);
@@ -257,7 +274,7 @@ unsigned int GameStateEditor::getCost(Tile::Type type) const
         case Tile::Type::RESIDENTIAL: return 300;
         case Tile::Type::COMMERCIAL: return 300;
         case Tile::Type::INDUSTRIAL: return 300;
-        case Tile::Type::ROAD: return 100;
+        case Tile::Type::ROAD_GRASS: return 100;
         default: return 0;
     }
 }

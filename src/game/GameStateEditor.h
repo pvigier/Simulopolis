@@ -33,6 +33,7 @@ private:
 
     void createGui();
     void createPersonWindow(const Person& person);
+    void closeMenus();
 
     void zoom(float factor);
 
