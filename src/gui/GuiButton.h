@@ -8,6 +8,8 @@ class XmlDocument;
 class GuiButton : public GuiWidget
 {
 public:
+    enum class State{NORMAL, HOVERED, PRESSED};
+
     GuiButton(sf::Vector2f size, Message message, const XmlDocument* style);
     GuiButton(const PropertyList& properties);
 
@@ -16,7 +18,7 @@ public:
 
     Message getMessage() const;
 
-    void setHighlight(bool highlight);
+    void setState(State state);
 
     bool hitButton(sf::Vector2f position) const;
 
@@ -24,10 +26,12 @@ protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     virtual bool onHover(sf::Vector2f position) override;
+    virtual bool onPress(sf::Vector2f position) override;
     virtual bool onRelease(sf::Vector2f position) override;
 
 private:
     const XmlDocument* mStyle;
+    State mState;
     // Handles appearance of the button
     sf::RectangleShape mShape;
     // Integer returned when the button is activated
