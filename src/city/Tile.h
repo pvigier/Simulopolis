@@ -9,6 +9,7 @@ public:
         HOSPITAL, POLICE, SCHOOL, ROAD_GRASS, ROAD_SIDEWALK, ROAD_WATER};
     enum class State{DESELECTED, SELECTED, INVALID};
     static constexpr unsigned int SIZE = 64;
+    static constexpr float TILE_HEIGHT = 101.f;
 
     static Type stringToType(const std::string& s);
     static std::string typeToString(Type type);

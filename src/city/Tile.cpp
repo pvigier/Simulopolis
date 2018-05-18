@@ -88,7 +88,7 @@ std::unique_ptr<Tile> Tile::clone() const
 
 bool Tile::updateVariant(Tile* neighbors[3][3])
 {
-    mSprite.setTextureRect(sf::IntRect(0, 0, 132, 101));
+    mSprite.setOrigin(sf::Vector2f(0.0f, mSprite.getTextureRect().height - TILE_HEIGHT));
     return false;
 }
 
