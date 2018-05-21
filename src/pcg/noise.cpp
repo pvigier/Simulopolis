@@ -62,5 +62,19 @@ double perlin_noise_2d(double x, double y)
     double n0 = (1.0 - t0) * n00 + t0 * n10;
     double n1 = (1.0 - t0) * n01 + t0 * n11;
     double t1 = poly_interp(v);
-    return SQRT_2 * (1.0 - t1) * n0 + t1 * n1;
+    return SQRT_2 * ((1.0 - t1) * n0 + t1 * n1);
+}
+
+double fractal_noise_2d(double x, double y, unsigned int octaves, double lacunarity, double persistence)
+{
+    double n = 0.0;
+    double frequency = 1.0;
+    double amplitude = 1.0;
+    for (unsigned int i = 0; i < octaves; ++i)
+    {
+        n += amplitude * perlin_noise_2d(frequency * x, frequency * y);
+        frequency *= lacunarity;
+        amplitude *= persistence;
+    }
+    return n;
 }
