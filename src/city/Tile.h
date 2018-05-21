@@ -5,7 +5,7 @@
 class Tile : public sf::Drawable
 {
 public:
-    enum class Type : int {VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL,
+    enum class Type : int {VOID, GRASS, FOREST, DIRT, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL,
         HOSPITAL, POLICE, SCHOOL, ROAD_GRASS, ROAD_SIDEWALK, ROAD_WATER};
     enum class State{DESELECTED, SELECTED, INVALID};
     static constexpr unsigned int SIZE = 64;

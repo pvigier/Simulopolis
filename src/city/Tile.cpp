@@ -17,6 +17,8 @@ Tile::Type Tile::stringToType(const std::string& s)
         return Tile::Type::GRASS;
     else if (s == "forest")
         return Tile::Type::FOREST;
+    else if (s == "dirt")
+        return Tile::Type::DIRT;
     else if (s == "water")
         return Tile::Type::WATER;
     else if (s == "residential")
@@ -51,6 +53,8 @@ std::string Tile::typeToString(Tile::Type type)
             return "Grass";
         case Tile::Type::FOREST:
             return "Forest";
+        case Tile::Type::DIRT:
+            return "Dirt";
         case Tile::Type::WATER:
             return "Water";
         case Tile::Type::RESIDENTIAL:

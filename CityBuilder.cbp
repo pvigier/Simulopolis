@@ -46,10 +46,6 @@
 		<Unit filename="src/ai/Path.h" />
 		<Unit filename="src/ai/SteeringBehaviors.cpp" />
 		<Unit filename="src/ai/SteeringBehaviors.h" />
-		<Unit filename="src/ai/Vector.cpp" />
-		<Unit filename="src/ai/Vector.h" />
-		<Unit filename="src/ai/common.cpp" />
-		<Unit filename="src/ai/common.h" />
 		<Unit filename="src/city/Building.cpp" />
 		<Unit filename="src/city/Building.h" />
 		<Unit filename="src/city/Car.cpp" />
@@ -107,6 +103,10 @@
 		<Unit filename="src/message/Subject.h" />
 		<Unit filename="src/pcg/PersonGenerator.cpp" />
 		<Unit filename="src/pcg/PersonGenerator.h" />
+		<Unit filename="src/pcg/TerrainGenerator.cpp" />
+		<Unit filename="src/pcg/TerrainGenerator.h" />
+		<Unit filename="src/pcg/noise.cpp" />
+		<Unit filename="src/pcg/noise.h" />
 		<Unit filename="src/render/Animation.cpp" />
 		<Unit filename="src/render/Animation.h" />
 		<Unit filename="src/render/Animator.cpp" />
@@ -134,6 +134,10 @@
 		<Unit filename="src/util/IdManager.h" />
 		<Unit filename="src/util/NonCopyable.h" />
 		<Unit filename="src/util/NonMovable.h" />
+		<Unit filename="src/util/Vector.cpp" />
+		<Unit filename="src/util/Vector.h" />
+		<Unit filename="src/util/common.cpp" />
+		<Unit filename="src/util/common.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

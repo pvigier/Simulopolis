@@ -28,6 +28,9 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("forest"),
          Tile::Type::FOREST)));
 
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("dirt"),
+         Tile::Type::DIRT)));
+
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("water"),
         Tile::Type::WATER)));
 
