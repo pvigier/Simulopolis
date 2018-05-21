@@ -27,9 +27,9 @@ public:
      * \param width Number of rows
      * \param height Number of columns
      */
-    Array2(const std::size_t width, const std::size_t height) : mWidth(width), mHeight(height)
+    Array2(std::size_t width = 0, std::size_t height = 0) : mWidth(width), mHeight(height)
     {
-        mData.resize(mWidth * mHeight);
+        reshape(mWidth, mHeight);
     }
 
     /**
@@ -39,10 +39,10 @@ public:
      * \param height Number of columns
      * \param defaultValue Default value to fill the array with
      */
-    Array2(const std::size_t width, const std::size_t height, const T defaultValue) :
+    Array2(std::size_t width, std::size_t height, const T& defaultValue) :
         mWidth(width), mHeight(height)
     {
-        mData.resize(mWidth * mHeight, defaultValue);
+        reshape(mWidth, mHeight, defaultValue);
     }
 
     /**
@@ -54,22 +54,37 @@ public:
     }
 
     /**
-     * \brief Get an element
+     * \brief Get reference to an element
      *
      * The element is passed by value not by reference.
      *
      * \param i First coordinate of the element
      * \param j Second coordinate of the element
      *
-     * \return Element at position (i, j)
+     * \return Reference to element at position (i, j)
      */
-    inline T get(const std::size_t i, const std::size_t j) const
+    inline T& get(std::size_t i, std::size_t j)
     {
         return mData[i * mHeight + j];
     }
 
     /**
-     *\brief Set an element
+     * \brief Get const reference to an element
+     *
+     * The element is passed by value not by reference.
+     *
+     * \param i First coordinate of the element
+     * \param j Second coordinate of the element
+     *
+     * \return Const reference to element at position (i, j)
+     */
+    inline const T& get(std::size_t i, std::size_t j) const
+    {
+        return mData[i * mHeight + j];
+    }
+
+    /**
+     * \brief Set an element
      *
      * The element is copied in the array.
      *
@@ -77,9 +92,31 @@ public:
      * \param j Second coordinate of the element
      * \param value Value to copy in the array
      */
-    inline void set(const std::size_t i, const std::size_t j, const T value)
+    inline void set(std::size_t i, std::size_t j, T value)
     {
-        mData[i * mHeight + j] = value;
+        mData[i * mHeight + j] = std::move(value);
+    }
+
+    /**
+     * \brief Reshape the array
+     *
+     * \param width New width
+     * \param height New height
+     */
+    inline void reshape(std::size_t width, std::size_t height)
+    {
+        mData.resize(mWidth * mHeight);
+    }
+
+    /**
+     * \brief Reshape the array
+     *
+     * \param width New width
+     * \param height New height
+     */
+    inline void reshape(std::size_t width, std::size_t height, const T& defaultValue)
+    {
+        mData.resize(mWidth * mHeight, defaultValue);
     }
 
     /**
