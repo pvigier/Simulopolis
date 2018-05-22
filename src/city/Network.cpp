@@ -29,7 +29,7 @@ std::vector<sf::Vector2i> Network::getPath(sf::Vector2i start, sf::Vector2i end)
 
     // BFS
     std::queue<sf::Vector2i> frontier;
-    Array2<int> states(mRoads.getWidth(), mRoads.getHeight(), -1);
+    Array2<int> states(mRoads.getHeight(), mRoads.getWidth(), -1);
     frontier.push(start);
     while (!frontier.empty() && frontier.front() != end) {
         sf::Vector2i position = frontier.front();
@@ -37,8 +37,8 @@ std::vector<sf::Vector2i> Network::getPath(sf::Vector2i start, sf::Vector2i end)
         for (int i = 0; i < 4; ++i)
         {
             sf::Vector2i neighbor = position + sDirections[i];
-            if (neighbor.y >= 0 && neighbor.y < mRoads.getWidth() &&
-                neighbor.x >= 0 && neighbor.x < mRoads.getHeight() &&
+            if (neighbor.y >= 0 && neighbor.y < mRoads.getHidth() &&
+                neighbor.x >= 0 && neighbor.x < mRoads.getWidth() &&
                 mRoads.get(neighbor.y, neighbor.x) && states.get(neighbor.y, neighbor.x) == -1)
             {
                 frontier.push(neighbor);

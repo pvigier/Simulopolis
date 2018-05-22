@@ -7,14 +7,6 @@
 /**
  * \brief 2D Array that stores the elements in 1D under the hood
  *
- * There are two notations for the coordinates in a 2D array:
- * \li matrix notation (i, j): the size corresponds to the number of
- * rows and the number of columns.
- * \li cartesian notation (x, y): the size corresponds to the width and
- * the height.
- *
- * We mix the two notations here.
- *
  * \author Pierre Vigier
  */
 template<typename T>
@@ -24,24 +16,24 @@ public:
     /**
      * \brief Create a 2D array with specified size
      *
-     * \param width Number of rows
-     * \param height Number of columns
+     * \param height Number of rows
+     * \param width Number of columns
      */
-    Array2(std::size_t width = 0, std::size_t height = 0)
+    Array2(std::size_t height = 0, std::size_t width = 0)
     {
-        reshape(width, height);
+        reshape(height, width);
     }
 
     /**
      * \brief Create a 2D array with specified size fiiled with a default value
      *
-     * \param width Number of rows
-     * \param height Number of columns
+     * \param height Number of rows
+     * \param width Number of columns
      * \param defaultValue Default value to fill the array with
      */
-    Array2(std::size_t width, std::size_t height, const T& defaultValue)
+    Array2(std::size_t height, std::size_t width, const T& defaultValue)
     {
-        reshape(width, height, defaultValue);
+        reshape(height, width, defaultValue);
     }
 
     /**
@@ -64,7 +56,7 @@ public:
      */
     inline T& get(std::size_t i, std::size_t j)
     {
-        return mData[i * mHeight + j];
+        return mData[i * mWidth + j];
     }
 
     /**
@@ -79,7 +71,7 @@ public:
      */
     inline const T& get(std::size_t i, std::size_t j) const
     {
-        return mData[i * mHeight + j];
+        return mData[i * mWidth + j];
     }
 
     /**
@@ -93,55 +85,45 @@ public:
      */
     inline void set(std::size_t i, std::size_t j, T value)
     {
-        mData[i * mHeight + j] = std::move(value);
+        mData[i * mWidth + j] = std::move(value);
     }
 
     /**
      * \brief Reshape the array
      *
-     * \param width New width
      * \param height New height
+     * \param width New width
      */
-    inline void reshape(std::size_t width, std::size_t height)
+    inline void reshape(std::size_t height, std::size_t width)
     {
-        mWidth = width;
         mHeight = height;
-        mData.resize(mWidth * mHeight);
+        mWidth = width;
+        mData.resize(mHeight * mWidth);
     }
 
     /**
      * \brief Reshape the array
      *
-     * \param width New width
      * \param height New height
+     * \param width New width
      */
-    inline void reshape(std::size_t width, std::size_t height, const T& defaultValue)
+    inline void reshape(std::size_t height, std::size_t width, const T& defaultValue)
     {
-        mWidth = width;
         mHeight = height;
-        mData.resize(mWidth * mHeight, defaultValue);
+        mWidth = width;
+        mData.resize(mHeight * mWidth, defaultValue);
     }
 
     /**
      * \brief Return the number of elements in the array
      *
-     * The size corresponds to mWidth*mHeight
+     * The size corresponds to mHeight*mWidth
      *
      * \return Number of elements in the array
      */
     inline std::size_t getSize() const
     {
         return mData.size();
-    }
-
-    /**
-     * \brief Return the width
-     *
-     * \return Width of the array
-     */
-    inline std::size_t getWidth() const
-    {
-        return mWidth;
     }
 
     /**
@@ -152,6 +134,16 @@ public:
     inline std::size_t getHeight() const
     {
         return mHeight;
+    }
+
+    /**
+     * \brief Return the width
+     *
+     * \return Width of the array
+     */
+    inline std::size_t getWidth() const
+    {
+        return mWidth;
     }
 
     /**
@@ -175,8 +167,8 @@ public:
     }
 
 private:
-    std::size_t mWidth; /**< Width or number of rows of the array */
-    std::size_t mHeight; /**< Height or number of columns of the array */
+    std::size_t mHeight; /**< Height or number of rows of the array */
+    std::size_t mWidth; /**< Width or number of columns of the array */
     std::vector<T> mData; /**< std::vector where the elements are stored in */
 };
 
@@ -184,14 +176,14 @@ template<>
 class Array2<bool>
 {
 public:
-    Array2(std::size_t width = 0, std::size_t height = 0)
+    Array2(std::size_t height = 0, std::size_t width = 0)
     {
-        reshape(width, height);
+        reshape(height, width);
     }
 
-    Array2(std::size_t width, std::size_t height, const bool& defaultValue)
+    Array2(std::size_t height, std::size_t width, const bool& defaultValue)
     {
-        reshape(width, height, defaultValue);
+        reshape(height, width, defaultValue);
     }
 
     ~Array2()
@@ -201,26 +193,26 @@ public:
 
     inline bool get(std::size_t i, std::size_t j) const
     {
-        return mData[i * mHeight + j];
+        return mData[i * mWidth + j];
     }
 
     inline void set(std::size_t i, std::size_t j, bool value)
     {
-        mData[i * mHeight + j] = std::move(value);
+        mData[i * mWidth + j] = std::move(value);
     }
 
-    inline void reshape(std::size_t width, std::size_t height)
+    inline void reshape(std::size_t height, std::size_t width)
     {
-        mWidth = width;
         mHeight = height;
-        mData.resize(mWidth * mHeight);
+        mWidth = width;
+        mData.resize(mHeight * mWidth);
     }
 
-    inline void reshape(std::size_t width, std::size_t height, const bool& defaultValue)
+    inline void reshape(std::size_t height, std::size_t width, const bool& defaultValue)
     {
-        mWidth = width;
         mHeight = height;
-        mData.resize(mWidth * mHeight, defaultValue);
+        mWidth = width;
+        mData.resize(mHeight * mWidth, defaultValue);
     }
 
     inline std::size_t getSize() const
@@ -228,14 +220,14 @@ public:
         return mData.size();
     }
 
-    inline std::size_t getWidth() const
-    {
-        return mWidth;
-    }
-
     inline std::size_t getHeight() const
     {
         return mHeight;
+    }
+
+    inline std::size_t getWidth() const
+    {
+        return mWidth;
     }
 
     std::vector<bool>& getData()
@@ -249,8 +241,8 @@ public:
     }
 
 private:
-    std::size_t mWidth;
     std::size_t mHeight;
+    std::size_t mWidth;
     std::vector<bool> mData;
 };
 
