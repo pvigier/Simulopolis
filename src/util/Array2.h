@@ -179,3 +179,78 @@ private:
     std::size_t mHeight; /**< Height or number of columns of the array */
     std::vector<T> mData; /**< std::vector where the elements are stored in */
 };
+
+template<>
+class Array2<bool>
+{
+public:
+    Array2(std::size_t width = 0, std::size_t height = 0)
+    {
+        reshape(width, height);
+    }
+
+    Array2(std::size_t width, std::size_t height, const bool& defaultValue)
+    {
+        reshape(width, height, defaultValue);
+    }
+
+    ~Array2()
+    {
+
+    }
+
+    inline bool get(std::size_t i, std::size_t j) const
+    {
+        return mData[i * mHeight + j];
+    }
+
+    inline void set(std::size_t i, std::size_t j, bool value)
+    {
+        mData[i * mHeight + j] = std::move(value);
+    }
+
+    inline void reshape(std::size_t width, std::size_t height)
+    {
+        mWidth = width;
+        mHeight = height;
+        mData.resize(mWidth * mHeight);
+    }
+
+    inline void reshape(std::size_t width, std::size_t height, const bool& defaultValue)
+    {
+        mWidth = width;
+        mHeight = height;
+        mData.resize(mWidth * mHeight, defaultValue);
+    }
+
+    inline std::size_t getSize() const
+    {
+        return mData.size();
+    }
+
+    inline std::size_t getWidth() const
+    {
+        return mWidth;
+    }
+
+    inline std::size_t getHeight() const
+    {
+        return mHeight;
+    }
+
+    std::vector<bool>& getData()
+    {
+        return mData;
+    }
+
+    const std::vector<bool>& getData() const
+    {
+        return mData;
+    }
+
+private:
+    std::size_t mWidth;
+    std::size_t mHeight;
+    std::vector<bool> mData;
+};
+
