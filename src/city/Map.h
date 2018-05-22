@@ -2,7 +2,6 @@
 
 #include <string>
 #include <vector>
-#include "util/Array2.h"
 #include "ai/Path.h"
 #include "Tile.h"
 #include "Network.h"

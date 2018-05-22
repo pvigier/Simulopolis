@@ -95,7 +95,7 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
             updateTile(i, j);
     }
 
-    mNetwork.resize(mWidth, mHeight);
+    mNetwork.reshape(mWidth, mHeight);
 }
 
 void Map::save(const std::string& filename)
@@ -135,9 +135,9 @@ void Map::bulldoze(Tile::Type type)
                 mTiles.get(i, j)->setPosition(computePosition(i, j));
                 updateNeighborhood(i, j);
                 if (mTiles.get(i, j)->isRoad())
-                    mNetwork.addRoad(sf::Vector2i(j, i));
+                    mNetwork.addRoad(i, j);
                 else if (type == Tile::Type::VOID)
-                    mNetwork.removeRoad(sf::Vector2i(j, i));
+                    mNetwork.removeRoad(i, j);
             }
         }
     }

@@ -2,27 +2,24 @@
 
 const sf::Vector2i Network::sDirections[4] = {sf::Vector2i(-1, 0), sf::Vector2i(1, 0), sf::Vector2i(0, -1), sf::Vector2i(0, 1)};
 
-Network::Network(unsigned int width, unsigned int height) :
-    mWidth(width), mHeight(height), mRoads(mWidth * mHeight, false)
+Network::Network(unsigned int width, unsigned int height) : mRoads(height, width, false)
 {
 
 }
 
-void Network::resize(unsigned int width, unsigned int height)
+void Network::reshape(unsigned int width, unsigned int height)
 {
-    mRoads.resize(width * height, false);
-    mWidth = width;
-    mHeight = height;
+    mRoads.reshape(height, width, false);
 }
 
-void Network::addRoad(sf::Vector2i position)
+void Network::addRoad(int i, int j)
 {
-    mRoads[positionToIndex(position)] = true;
+    mRoads.set(i, j, true);
 }
 
-void Network::removeRoad(sf::Vector2i position)
+void Network::removeRoad(int i, int j)
 {
-    mRoads[positionToIndex(position)] = false;
+    mRoads.set(i, j, false);
 }
 
 std::vector<sf::Vector2i> Network::getPath(sf::Vector2i start, sf::Vector2i end) const
@@ -32,7 +29,7 @@ std::vector<sf::Vector2i> Network::getPath(sf::Vector2i start, sf::Vector2i end)
 
     // BFS
     std::queue<sf::Vector2i> frontier;
-    std::vector<int> states(mWidth * mHeight, -1);
+    Array2<int> states(mRoads.getWidth(), mRoads.getHeight(), -1);
     frontier.push(start);
     while (!frontier.empty() && frontier.front() != end) {
         sf::Vector2i position = frontier.front();
@@ -40,33 +37,28 @@ std::vector<sf::Vector2i> Network::getPath(sf::Vector2i start, sf::Vector2i end)
         for (int i = 0; i < 4; ++i)
         {
             sf::Vector2i neighbor = position + sDirections[i];
-            std::size_t iNeighbor = positionToIndex(neighbor);
-            if (iNeighbor < mRoads.size() && mRoads[iNeighbor] && states[iNeighbor] == -1)
+            if (neighbor.y >= 0 && neighbor.y < mRoads.getWidth() &&
+                neighbor.x >= 0 && neighbor.x < mRoads.getHeight() &&
+                mRoads.get(neighbor.y, neighbor.x) && states.get(neighbor.y, neighbor.x) == -1)
             {
                 frontier.push(neighbor);
-                states[iNeighbor] = i;
+                states.set(neighbor.y, neighbor.x, i);
             }
         }
     }
 
     // Retrieve path
     std::vector<sf::Vector2i> points;
-    if (states[positionToIndex(end)] != -1)
+    if (states.get(end.y, end.x) != -1)
     {
         sf::Vector2i point = end;
         while (point != start)
         {
             points.push_back(point);
-            std::size_t iPoint = positionToIndex(point);
-            point -= sDirections[states[iPoint]];
+            point -= sDirections[states.get(point.y, point.x)];
         }
         points.push_back(start);
     }
 
     return points;
-}
-
-std::size_t Network::positionToIndex(sf::Vector2i position) const
-{
-    return position.x + position.y * mWidth;
 }
