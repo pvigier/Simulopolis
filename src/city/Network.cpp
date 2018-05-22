@@ -37,7 +37,7 @@ std::vector<sf::Vector2i> Network::getPath(sf::Vector2i start, sf::Vector2i end)
         for (int i = 0; i < 4; ++i)
         {
             sf::Vector2i neighbor = position + sDirections[i];
-            if (neighbor.y >= 0 && neighbor.y < mRoads.getHidth() &&
+            if (neighbor.y >= 0 && neighbor.y < mRoads.getHeight() &&
                 neighbor.x >= 0 && neighbor.x < mRoads.getWidth() &&
                 mRoads.get(neighbor.y, neighbor.x) && states.get(neighbor.y, neighbor.x) == -1)
             {
