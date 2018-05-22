@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include "util/Array2.h"
 #include "ai/Path.h"
 #include "Tile.h"
 #include "Network.h"
@@ -28,20 +29,20 @@ public:
 
     unsigned int getWidth() const;
     unsigned int getHeight() const;
-    const std::vector<std::unique_ptr<Tile>>& getTiles() const;
+    const Array2<std::unique_ptr<Tile>>& getTiles() const;
     unsigned int getNbSelected() const;
 
 private:
     static std::vector<std::unique_ptr<Tile>> sTileAtlas;
     unsigned int mWidth;
     unsigned int mHeight;
-    std::vector<std::unique_ptr<Tile>> mTiles;
+    Array2<std::unique_ptr<Tile>> mTiles;
     unsigned int mNbSelected;
     Network mNetwork;
 
     static std::unique_ptr<Tile> createTile(Tile::Type type);
-    sf::Vector2f computePosition(std::size_t pos) const;
+    sf::Vector2f computePosition(std::size_t i, std::size_t j) const;
 
-    void updateTile(int pos);
-    void updateNeighborhood(std::size_t pos);
+    void updateTile(int i, int j);
+    void updateNeighborhood(std::size_t i, std::size_t j);
 };

@@ -27,9 +27,9 @@ public:
      * \param width Number of rows
      * \param height Number of columns
      */
-    Array2(std::size_t width = 0, std::size_t height = 0) : mWidth(width), mHeight(height)
+    Array2(std::size_t width = 0, std::size_t height = 0)
     {
-        reshape(mWidth, mHeight);
+        reshape(width, height);
     }
 
     /**
@@ -39,10 +39,9 @@ public:
      * \param height Number of columns
      * \param defaultValue Default value to fill the array with
      */
-    Array2(std::size_t width, std::size_t height, const T& defaultValue) :
-        mWidth(width), mHeight(height)
+    Array2(std::size_t width, std::size_t height, const T& defaultValue)
     {
-        reshape(mWidth, mHeight, defaultValue);
+        reshape(width, height, defaultValue);
     }
 
     /**
@@ -105,6 +104,8 @@ public:
      */
     inline void reshape(std::size_t width, std::size_t height)
     {
+        mWidth = width;
+        mHeight = height;
         mData.resize(mWidth * mHeight);
     }
 
@@ -116,6 +117,8 @@ public:
      */
     inline void reshape(std::size_t width, std::size_t height, const T& defaultValue)
     {
+        mWidth = width;
+        mHeight = height;
         mData.resize(mWidth * mHeight, defaultValue);
     }
 

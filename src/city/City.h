@@ -43,6 +43,6 @@ private:
     unsigned int mFunds;
 
     std::vector<Car> mCars;
-    std::vector<std::vector<const Car*>> mCarsByTile;
+    Array2<std::vector<const Car*>> mCarsByTile;
 };
 
