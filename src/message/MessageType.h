@@ -7,6 +7,7 @@ enum class MessageType
     GUI_WINDOW,
     NEW_GAME,
     LOAD_GAME,
+    DISPLAY_MENU,
 };
 
 inline std::ostream& operator<<(std::ostream& os, const MessageType& type)

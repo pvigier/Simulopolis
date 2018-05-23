@@ -49,10 +49,10 @@ void GameStateStart::handleMessages()
                 case sf::Event::Closed:
                     sRenderEngine->getWindow().close();
                     break;
-                case sf::Event::KeyPressed:
+                /*case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
                         sRenderEngine->getWindow().close();
-                    break;
+                    break;*/
                 default:
                     break;
             }

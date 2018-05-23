@@ -3,6 +3,7 @@
 #include <chrono>
 #include "render/RenderEngine.h"
 #include "input/InputEngine.h"
+#include "message/MessageBus.h"
 #include "resource/TextureManager.h"
 #include "resource/StylesheetManager.h"
 #include "resource/GuiManager.h"
@@ -17,9 +18,6 @@ GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel
     mGuiView.setSize(windowSize);
     mGameView.setSize(windowSize);
     mGuiView.setCenter(windowSize * 0.5f);
-    mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
-        mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
-    zoom(8.0f);
 
     // Render texture
     mRenderTexture.create(windowSize.x, windowSize.y);
@@ -88,7 +86,7 @@ void GameStateEditor::handleMessages()
                     break;
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
-                        sRenderEngine->getWindow().close();
+                        sMessageBus->send(Message::create(sGameId, MessageType::DISPLAY_MENU));
                     break;
                 case sf::Event::MouseMoved:
                     // Pan the camera

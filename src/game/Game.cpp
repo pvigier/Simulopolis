@@ -108,5 +108,7 @@ void Game::handleMessages()
             state->loadGame("saves/city");
             pushState(state);
         }
+        else if (message.type == MessageType::DISPLAY_MENU)
+            changeState(new GameStateStart());
     }
 }
