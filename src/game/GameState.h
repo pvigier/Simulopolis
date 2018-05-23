@@ -4,8 +4,6 @@
 #include "util/NonMovable.h"
 #include "message/Mailbox.h"
 
-enum class GameStateName{START, EDITOR};
-
 class MessageBus;
 class RenderEngine;
 class InputEngine;

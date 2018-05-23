@@ -11,12 +11,6 @@ Map::Map() : mWidth(0), mHeight(0), mNbSelected(0), mNetwork(mWidth, mHeight)
 
 }
 
-Map::Map(const std::string& filename, unsigned int width, unsigned int height) :
-    mNbSelected(0), mNetwork(width, height)
-{
-    load(filename, width, height);
-}
-
 void Map::loadTiles(const TextureManager& textureManager)
 {
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("grass"),
@@ -114,6 +108,29 @@ void Map::save(const std::string& filename)
     }*/
 
     outputFile.close();
+}
+
+void Map::fromArray(const Array2<Tile::Type>& tiles)
+{
+    mHeight = tiles.getHeight();
+    mWidth = tiles.getWidth();
+    mTiles.reshape(mHeight, mWidth);
+    for (unsigned int i = 0; i < mHeight; ++i)
+    {
+        for (unsigned int j = 0; j < mWidth; ++j)
+        {
+            mTiles.set(i, j, createTile(tiles.get(i, j)));
+            mTiles.get(i, j)->setPosition(computePosition(i, j));
+        }
+    }
+
+    for (unsigned int i = 0; i < mHeight; ++i)
+    {
+        for (unsigned int j = 0; j < mWidth; ++j)
+            updateTile(i, j);
+    }
+
+    mNetwork.reshape(mWidth, mHeight);
 }
 
 void Map::deselect()
@@ -250,7 +267,7 @@ void Map::updateTile(int i, int j)
         updateNeighborhood(i, j);
 }
 
-void Map::updateNeighborhood(std::size_t i, std::size_t j)
+void Map::updateNeighborhood(int i, int j)
 {
     for (int di = -1; di <= 1; ++di)
     {

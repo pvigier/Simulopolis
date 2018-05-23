@@ -8,8 +8,7 @@
 #include "gui/GuiButton.h"
 #include "gui/GuiText.h"
 
-GameStateEditor::GameStateEditor() :
-    mCity("saves/city"), mActionState(ActionState::NONE), mZoomLevel(1.0f),
+GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel(1.0f),
     mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor"))
 {
     // Views
@@ -206,6 +205,22 @@ void GameStateEditor::handleMessages()
                 mCurrentTile = Tile::stringToType(info);
         }
     }
+}
+
+void GameStateEditor::newGame()
+{
+    mCity.createMap(mTerrainGenerator.generate(0));
+    mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
+        mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
+    zoom(8.0f);
+}
+
+void GameStateEditor::loadGame(const std::string& path)
+{
+    mCity.load(path);
+    mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
+        mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
+    zoom(8.0f);
 }
 
 void GameStateEditor::createGui()

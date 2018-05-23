@@ -96,10 +96,17 @@ void Game::handleMessages()
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();
-        if (message.type == MessageType::PUSH_GAME_STATE)
+        if (message.type == MessageType::NEW_GAME)
         {
-            if (message.getInfo<GameStateName>() == GameStateName::EDITOR)
-                pushState(new GameStateEditor());
+            GameStateEditor* state = new GameStateEditor();
+            state->newGame();
+            pushState(state);
+        }
+        else if (message.type == MessageType::LOAD_GAME)
+        {
+            GameStateEditor* state = new GameStateEditor();
+            state->loadGame("saves/city");
+            pushState(state);
         }
     }
 }

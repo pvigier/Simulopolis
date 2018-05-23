@@ -13,12 +13,12 @@ class Map
 public:
 
     Map();
-    Map(const std::string& filename, unsigned int width, unsigned int height);
 
     static void loadTiles(const TextureManager& textureManager);
 
     void load(const std::string& filename, unsigned int width, unsigned int height);
     void save(const std::string& filename);
+    void fromArray(const Array2<Tile::Type>& tiles);
 
     void select(sf::Vector2i start, sf::Vector2i end, const std::vector<Tile::Type>& blacklist);
     void deselect();
@@ -43,5 +43,5 @@ private:
     sf::Vector2f computePosition(std::size_t i, std::size_t j) const;
 
     void updateTile(int i, int j);
-    void updateNeighborhood(std::size_t i, std::size_t j);
+    void updateNeighborhood(int i, int j);
 };

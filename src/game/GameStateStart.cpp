@@ -52,8 +52,6 @@ void GameStateStart::handleMessages()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
                         sRenderEngine->getWindow().close();
-                    else if (event.key.code == sf::Keyboard::Space)
-                        loadGame();
                     break;
                 default:
                     break;
@@ -62,8 +60,10 @@ void GameStateStart::handleMessages()
         if (message.type == MessageType::GUI)
         {
             std::string info = message.getInfo<std::string>();
-            if (info == "load_game")
-                loadGame();
+            if (info == "new_game")
+                sMessageBus->send(Message::create(sGameId, MessageType::NEW_GAME));
+            else if (info == "load_game")
+                sMessageBus->send(Message::create(sGameId, MessageType::LOAD_GAME));
             else if (info == "exit")
                 sRenderEngine->getWindow().close();
         }
@@ -76,11 +76,7 @@ void GameStateStart::createGui()
     mGui->get("menu")->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
     // Register to events
+    mGui->get("newGameButton")->subscribe(mMailbox.getId());
     mGui->get("loadGameButton")->subscribe(mMailbox.getId());
     mGui->get("exitButton")->subscribe(mMailbox.getId());
-}
-
-void GameStateStart::loadGame()
-{
-    sMessageBus->send(Message::create(sGameId, MessageType::PUSH_GAME_STATE, GameStateName::EDITOR));
 }

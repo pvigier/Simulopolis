@@ -3,43 +3,17 @@
 #include <sstream>
 #include <iostream>
 
-City::City() :
-    mCurrentTime(0.0), mTimePerDay(1.0), mDay(0), mPopulation(0), mUnemployed(0), mFunds(0)
+City::City() : mCurrentTime(0.0), mTimePerDay(1.0), mDay(0), mPopulation(0), mUnemployed(0), mFunds(0)
 {
 
 }
 
-City::City(std::string cityName) : City()
-{
-    load(cityName);
-
-    mMap.select(sf::Vector2i(0, 0), sf::Vector2i(0, 10), {});
-    mMap.select(sf::Vector2i(1, 10), sf::Vector2i(10, 10), {});
-    mMap.select(sf::Vector2i(10, 9), sf::Vector2i(10, 0), {});
-    mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), {});
-    bulldoze(Tile::Type::ROAD_GRASS);
-
-    mCars.reserve(2);
-
-    mCars.emplace_back("car_blue_sedan_2");
-    Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(2, 0));
-    mCars.back().getKinematic().setPosition(path.getCurrentPoint());
-    mCars.back().getSteering().setPath(path);
-
-    mCars.emplace_back("car_blue_sedan_2");
-    Path otherPath = mMap.getPath(sf::Vector2i(2, 0), sf::Vector2i(0, 0));
-    mCars.back().getKinematic().setPosition(otherPath.getCurrentPoint());
-    mCars.back().getSteering().setPath(otherPath);
-
-    mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
-}
-
-void City::load(std::string cityName)
+void City::load(const std::string& name)
 {
     int width = 0;
     int height = 0;
 
-    std::ifstream inputFile(cityName + "_cfg.dat", std::ios::in);
+    std::ifstream inputFile(name + "_cfg.dat", std::ios::in);
     std::string line;
     while (std::getline(inputFile, line))
     {
@@ -70,12 +44,32 @@ void City::load(std::string cityName)
 
     inputFile.close();
 
-    mMap.load(cityName + "_map.dat", width, height);
+    mMap.load(name + "_map.dat", width, height);
+    mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
+
+    // Tests
+    mMap.select(sf::Vector2i(0, 0), sf::Vector2i(0, 10), {});
+    mMap.select(sf::Vector2i(1, 10), sf::Vector2i(10, 10), {});
+    mMap.select(sf::Vector2i(10, 9), sf::Vector2i(10, 0), {});
+    mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), {});
+    bulldoze(Tile::Type::ROAD_GRASS);
+
+    mCars.reserve(2);
+
+    mCars.emplace_back("car_blue_sedan_2");
+    Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(2, 0));
+    mCars.back().getKinematic().setPosition(path.getCurrentPoint());
+    mCars.back().getSteering().setPath(path);
+
+    mCars.emplace_back("car_blue_sedan_2");
+    Path otherPath = mMap.getPath(sf::Vector2i(2, 0), sf::Vector2i(0, 0));
+    mCars.back().getKinematic().setPosition(otherPath.getCurrentPoint());
+    mCars.back().getSteering().setPath(otherPath);
 }
 
-void City::save(std::string cityName)
+void City::save(const std::string& name)
 {
-    std::ofstream outputFile(cityName + "_cfg.dat", std::ios::out);
+    std::ofstream outputFile(name + "_cfg.dat", std::ios::out);
 
     outputFile << "width=" << mMap.getWidth() << std::endl;
     outputFile << "height=" << mMap.getHeight() << std::endl;
@@ -86,7 +80,13 @@ void City::save(std::string cityName)
 
     outputFile.close();
 
-    mMap.save(cityName + "_map.dat");
+    mMap.save(name + "_map.dat");
+}
+
+void City::createMap(const Array2<Tile::Type>& tiles)
+{
+    mMap.fromArray(tiles);
+    mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
 }
 
 void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -132,6 +132,11 @@ void City::update(float dt)
 void City::bulldoze(Tile::Type type)
 {
     mMap.bulldoze(type);
+}
+
+City::Intersection City::intersect(const sf::Vector2f& position)
+{
+
 }
 
 Map& City::getMap()

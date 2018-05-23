@@ -8,10 +8,10 @@ class City : public sf::Drawable
 {
 public:
     City();
-    City(std::string cityName);
 
-    void load(std::string cityName);
-    void save(std::string cityName);
+    void load(const std::string& name);
+    void save(const std::string& name);
+    void createMap(const Array2<Tile::Type>& tiles);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

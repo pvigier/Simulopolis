@@ -5,9 +5,8 @@ enum class MessageType
     INPUT,
     GUI,
     GUI_WINDOW,
-    PUSH_GAME_STATE,
-    POP_GAME_STATE,
-    CHANGE_GAME_STATE,
+    NEW_GAME,
+    LOAD_GAME,
 };
 
 inline std::ostream& operator<<(std::ostream& os, const MessageType& type)
@@ -23,14 +22,11 @@ inline std::ostream& operator<<(std::ostream& os, const MessageType& type)
         case MessageType::GUI_WINDOW:
             os << "gui window";
             break;
-        case MessageType::PUSH_GAME_STATE:
-            os << "push game state";
+        case MessageType::NEW_GAME:
+            os << "new game";
             break;
-        case MessageType::POP_GAME_STATE:
-            os << "pop game state";
-            break;
-        case MessageType::CHANGE_GAME_STATE:
-            os << "change game state";
+        case MessageType::LOAD_GAME:
+            os << "load game";
             break;
         default:
             os << "unknown";

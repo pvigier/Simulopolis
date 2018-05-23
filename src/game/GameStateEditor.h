@@ -4,6 +4,7 @@
 #include "game/GameState.h"
 #include "city/City.h"
 #include "gui/Gui.h"
+#include "pcg/TerrainGenerator.h"
 
 enum class ActionState{NONE, PANNING, SELECTING};
 
@@ -16,6 +17,9 @@ public:
     virtual void draw(const float dt) override;
     virtual void update(const float dt) override;
     virtual void handleMessages() override;
+
+    void newGame();
+    void loadGame(const std::string& path);
 
 private:
     sf::RenderTexture mRenderTexture;
@@ -30,6 +34,7 @@ private:
     sf::Vector2i mSelectionEnd;
     Tile::Type mCurrentTile;
     Gui* mGui;
+    TerrainGenerator mTerrainGenerator;
 
     void createGui();
     void createPersonWindow(const Person& person);

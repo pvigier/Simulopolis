@@ -133,7 +133,6 @@ public:
      * \param receiver Id of the receiver
      * \param type Type of the message
      */
-    template<typename T>
     static Message create(Id receiver, MessageType type)
     {
         return Message(receiver, type);
