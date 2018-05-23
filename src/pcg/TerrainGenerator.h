@@ -9,5 +9,5 @@ class TerrainGenerator
 public:
     TerrainGenerator();
 
-    Array2<Tile::Type> generate(unsigned int seed) const;
+    Array2<Tile::Type> generate(uint64_t seed) const;
 };

@@ -41,17 +41,17 @@ double poly_interp(double t)
     return t * t * t * (10.0 + t * (-15.0 + t * 6.0));
 }
 
-double perlin_noise_2d(double x, double y)
+double perlin_noise_2d(uint64_t seed, double x, double y)
 {
     uint64_t i = static_cast<uint64_t>(x);
     uint64_t j = static_cast<uint64_t>(y);
     double u = x - i;
     double v = y - j;
     // Gradients
-    double phi00 = 2 * PI * noise_2d(i    , j);
-    double phi10 = 2 * PI * noise_2d(i + 1, j);
-    double phi01 = 2 * PI * noise_2d(i    , j + 1);
-    double phi11 = 2 * PI * noise_2d(i + 1, j + 1);
+    double phi00 = 2 * PI * noise_3d(seed, i    , j);
+    double phi10 = 2 * PI * noise_3d(seed, i + 1, j);
+    double phi01 = 2 * PI * noise_3d(seed, i    , j + 1);
+    double phi11 = 2 * PI * noise_3d(seed, i + 1, j + 1);
     // Ramps
     double n00 = std::cos(phi00) * u          + std::sin(phi00) * v;
     double n10 = std::cos(phi10) * (u - 1.0f) + std::sin(phi10) * v;
@@ -65,14 +65,14 @@ double perlin_noise_2d(double x, double y)
     return SQRT_2 * ((1.0 - t1) * n0 + t1 * n1);
 }
 
-double fractal_noise_2d(double x, double y, unsigned int octaves, double lacunarity, double persistence)
+double fractal_noise_2d(uint64_t seed, double x, double y, unsigned int octaves, double lacunarity, double persistence)
 {
     double n = 0.0;
     double frequency = 1.0;
     double amplitude = 1.0;
     for (unsigned int i = 0; i < octaves; ++i)
     {
-        n += amplitude * perlin_noise_2d(frequency * x, frequency * y);
+        n += amplitude * perlin_noise_2d(seed, frequency * x, frequency * y);
         frequency *= lacunarity;
         amplitude *= persistence;
     }

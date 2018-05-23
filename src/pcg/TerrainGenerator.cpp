@@ -8,7 +8,7 @@ TerrainGenerator::TerrainGenerator()
     //ctor
 }
 
-Array2<Tile::Type> TerrainGenerator::generate(unsigned int seed) const
+Array2<Tile::Type> TerrainGenerator::generate(uint64_t seed) const
 {
     unsigned int n = 64;
     double delta = 1.0f / n;
@@ -17,7 +17,7 @@ Array2<Tile::Type> TerrainGenerator::generate(unsigned int seed) const
     for (unsigned int i = 0; i < n; ++i)
     {
         for (unsigned int j = 0; j < n; ++j)
-            z.set(i, j, fractal_noise_2d(i * delta, j * delta, 6));
+            z.set(i, j, fractal_noise_2d(seed, i * delta, j * delta, 6));
     }
     // Normalize
     double minZ = *std::min_element(z.getData().begin(), z.getData().end());

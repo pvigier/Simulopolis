@@ -1,5 +1,6 @@
 #include "game/GameStateEditor.h"
 #include <utility>
+#include <chrono>
 #include "render/RenderEngine.h"
 #include "input/InputEngine.h"
 #include "resource/TextureManager.h"
@@ -209,7 +210,7 @@ void GameStateEditor::handleMessages()
 
 void GameStateEditor::newGame()
 {
-    mCity.createMap(mTerrainGenerator.generate(0));
+    mCity.createMap(mTerrainGenerator.generate(std::chrono::system_clock::now().time_since_epoch().count()));
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
         mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
     zoom(8.0f);
