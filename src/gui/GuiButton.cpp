@@ -34,25 +34,31 @@ void GuiButton::setSize(sf::Vector2f size)
 
 bool GuiButton::onHover(sf::Vector2f position)
 {
-    if (mState != State::PRESSED && mState != State::INACTIVE && hitButton(position))
-        setState(State::HOVERED);
-    else if (mState != State::PRESSED && mState != State::INACTIVE)
+    if (hitButton(position))
+    {
+        if (mState == State::NORMAL)
+            setState(State::HOVERED);
+    }
+    else if (mState != State::FORCE_PRESSED && mState != State::DISABLED)
         setState(State::NORMAL);
     return false;
 }
 
 bool GuiButton::onPress(sf::Vector2f position)
 {
-    if (mState != State::INACTIVE && hitButton(position))
+    if (mState != State::DISABLED && hitButton(position))
         setState(State::PRESSED);
     return false;
 }
 
 bool GuiButton::onRelease(sf::Vector2f position)
 {
-    if (mState != State::INACTIVE && hitButton(position))
-        notify(mMessage);
-    if (mState != State::INACTIVE)
+    if (hitButton(position))
+    {
+        if (mState != State::DISABLED)
+            notify(mMessage);
+    }
+    if (mState != State::FORCE_PRESSED && mState != State::DISABLED)
         setState(State::NORMAL);
     return false;
 }
@@ -72,7 +78,7 @@ void GuiButton::setState(State state)
         bodyColor = mStyle->getFirstChildByName("body").getAttributes().get<sf::Color>("hoverColor", bodyColor);
         borderColor = mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("hoverColor", borderColor);
     }
-    else if (state == State::PRESSED)
+    else if (state == State::PRESSED || state == State::FORCE_PRESSED)
     {
         bodyColor = mStyle->getFirstChildByName("body").getAttributes().get<sf::Color>("pressColor", bodyColor);
         borderColor = mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("pressColor", borderColor);

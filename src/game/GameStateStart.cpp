@@ -76,7 +76,7 @@ void GameStateStart::createGui(bool resume)
     if (resume)
         mGui->get<GuiButton>("resumeGameButton")->setState(GuiButton::State::NORMAL);
     else
-        mGui->get<GuiButton>("resumeGameButton")->setState(GuiButton::State::INACTIVE);
+        mGui->get<GuiButton>("resumeGameButton")->setState(GuiButton::State::DISABLED);
 
     // Register to events
     mGui->get("resumeGameButton")->subscribe(mMailbox.getId());
