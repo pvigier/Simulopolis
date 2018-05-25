@@ -9,6 +9,8 @@
 #include "resource/GuiManager.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiText.h"
+#include "gui/GuiWindow.h"
+#include "gui/GuiVBoxLayout.h"
 
 GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel(1.0f),
     mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor"))
@@ -34,6 +36,18 @@ GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel
 
 GameStateEditor::~GameStateEditor()
 {
+    mGui->get<GuiButton>("grassMenu")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("forestMenu")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("residentialMenu")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("commercialMenu")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("industrialMenu")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("hospitalMenu")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("policeMenu")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("schoolMenu")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadMenuButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadGrassButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadSidewalkButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadWaterButton")->unsubscribe(mMailbox.getId());
     mGui->unsubscribe(mMailbox.getId());
 }
 
@@ -197,7 +211,7 @@ void GameStateEditor::handleMessages()
             if (info == "open_road_menu")
             {
                 mGui->get("roadMenuButtons")->setVisible(true);
-                mGui->get<GuiButton>("roadMenuButton")->setState(GuiButton::State::PRESSED);
+                mGui->get<GuiButton>("roadMenuButton")->setState(GuiButton::State::FORCE_PRESSED);
             }
             // Select a context menu button
             else

@@ -21,6 +21,10 @@ GameStateStart::GameStateStart(bool resume) : mGui(sGuiManager->getGui("menu"))
 
 GameStateStart::~GameStateStart()
 {
+    mGui->get("resumeGameButton")->unsubscribe(mMailbox.getId());
+    mGui->get("newGameButton")->unsubscribe(mMailbox.getId());
+    mGui->get("loadGameButton")->unsubscribe(mMailbox.getId());
+    mGui->get("exitButton")->unsubscribe(mMailbox.getId());
     mGui->unsubscribe(mMailbox.getId());
 }
 
@@ -59,7 +63,9 @@ void GameStateStart::handleMessages()
         if (message.type == MessageType::GUI)
         {
             std::string info = message.getInfo<std::string>();
-            if (info == "new_game")
+            if (info == "resume_game")
+                sMessageBus->send(Message::create(sGameId, MessageType::RESUME_GAME));
+            else if (info == "new_game")
                 sMessageBus->send(Message::create(sGameId, MessageType::NEW_GAME));
             else if (info == "load_game")
                 sMessageBus->send(Message::create(sGameId, MessageType::LOAD_GAME));

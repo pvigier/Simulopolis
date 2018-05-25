@@ -96,19 +96,21 @@ void Game::handleMessages()
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();
+        if (message.type == MessageType::RESUME_GAME)
+            popState();
         if (message.type == MessageType::NEW_GAME)
         {
             GameStateEditor* state = new GameStateEditor();
             state->newGame();
-            pushState(state);
+            changeState(state);
         }
         else if (message.type == MessageType::LOAD_GAME)
         {
             GameStateEditor* state = new GameStateEditor();
             state->loadGame("saves/city");
-            pushState(state);
+            changeState(state);
         }
         else if (message.type == MessageType::DISPLAY_MENU)
-            changeState(new GameStateStart(true));
+            pushState(new GameStateStart(true));
     }
 }

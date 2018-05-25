@@ -55,7 +55,7 @@ bool GuiButton::onRelease(sf::Vector2f position)
 {
     if (hitButton(position))
     {
-        if (mState != State::DISABLED)
+        if (mState == State::PRESSED)
             notify(mMessage);
     }
     if (mState != State::FORCE_PRESSED && mState != State::DISABLED)

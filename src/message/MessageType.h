@@ -5,6 +5,7 @@ enum class MessageType
     INPUT,
     GUI,
     GUI_WINDOW,
+    RESUME_GAME,
     NEW_GAME,
     LOAD_GAME,
     DISPLAY_MENU,
