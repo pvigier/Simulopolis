@@ -44,6 +44,11 @@ void GuiText::setText(const std::string& text)
     setDirty();
 }
 
+void GuiText::setColor(sf::Color color)
+{
+    mText.setColor(color);
+}
+
 void GuiText::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mText);

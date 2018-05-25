@@ -83,6 +83,11 @@ void GuiButton::setState(State state)
         bodyColor = mStyle->getFirstChildByName("body").getAttributes().get<sf::Color>("pressColor", bodyColor);
         borderColor = mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("pressColor", borderColor);
     }
+    else if (state == State::DISABLED)
+    {
+        bodyColor = mStyle->getFirstChildByName("body").getAttributes().get<sf::Color>("disableColor", bodyColor);
+        borderColor = mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("disableColor", borderColor);
+    }
     mShape.setFillColor(bodyColor);
     mShape.setOutlineColor(borderColor);
 }

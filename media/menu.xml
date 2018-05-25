@@ -1,6 +1,10 @@
 <gui>
 	<image name="background" texture="background" />
 	<widget name="menu">
+        <button name="resumeGameButton" size="192 32" message="resume_game" style="button">
+			<text name="resumeGameText" text="Resume game" characterSize="24" style="button" />
+			<hboxlayout hAlignment="center" vAlignment="center" />
+		</button>
         <button name="newGameButton" size="192 32" message="new_game" style="button">
 			<text name="newGameText" text="New game" characterSize="24" style="button" />
 			<hboxlayout hAlignment="center" vAlignment="center" />

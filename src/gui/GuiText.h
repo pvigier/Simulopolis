@@ -16,6 +16,7 @@ public:
     virtual void setPosition(sf::Vector2f position) override;
     virtual void setCharacterSize(unsigned int characterSize);
     void setText(const std::string& text);
+    void setColor(sf::Color color);
 
 protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
