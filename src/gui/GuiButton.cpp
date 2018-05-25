@@ -34,25 +34,26 @@ void GuiButton::setSize(sf::Vector2f size)
 
 bool GuiButton::onHover(sf::Vector2f position)
 {
-    if (hitButton(position) && mState != State::PRESSED)
+    if (mState != State::PRESSED && mState != State::INACTIVE && hitButton(position))
         setState(State::HOVERED);
-    else if (mState != State::PRESSED)
+    else if (mState != State::PRESSED && mState != State::INACTIVE)
         setState(State::NORMAL);
     return false;
 }
 
 bool GuiButton::onPress(sf::Vector2f position)
 {
-    if (hitButton(position))
+    if (mState != State::INACTIVE && hitButton(position))
         setState(State::PRESSED);
     return false;
 }
 
 bool GuiButton::onRelease(sf::Vector2f position)
 {
-    if (hitButton(position))
+    if (mState != State::INACTIVE && hitButton(position))
         notify(mMessage);
-    setState(State::NORMAL);
+    if (mState != State::INACTIVE)
+        setState(State::NORMAL);
     return false;
 }
 

@@ -7,14 +7,11 @@
 #include "resource/GuiManager.h"
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
-#include "gui/GuiImage.h"
-#include "gui/GuiText.h"
-#include "gui/GuiVBoxLayout.h"
 
-GameStateStart::GameStateStart() : mGui(sGuiManager->getGui("menu"))
+GameStateStart::GameStateStart(bool resume) : mGui(sGuiManager->getGui("menu"))
 {
     // Gui
-    createGui();
+    createGui(resume);
 
     // Subscribe to inputs
     mGui->subscribe(mMailbox.getId());
@@ -70,12 +67,19 @@ void GameStateStart::handleMessages()
     }
 }
 
-void GameStateStart::createGui()
+void GameStateStart::createGui(bool resume)
 {
     mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     mGui->get("menu")->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
+    // Resume button
+    if (resume)
+        mGui->get<GuiButton>("resumeGameButton")->setState(GuiButton::State::NORMAL);
+    else
+        mGui->get<GuiButton>("resumeGameButton")->setState(GuiButton::State::INACTIVE);
+
     // Register to events
+    mGui->get("resumeGameButton")->subscribe(mMailbox.getId());
     mGui->get("newGameButton")->subscribe(mMailbox.getId());
     mGui->get("loadGameButton")->subscribe(mMailbox.getId());
     mGui->get("exitButton")->subscribe(mMailbox.getId());

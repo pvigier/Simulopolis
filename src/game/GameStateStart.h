@@ -8,7 +8,7 @@ class Gui;
 class GameStateStart : public GameState
 {
 public:
-    GameStateStart();
+    GameStateStart(bool resume = false);
     virtual ~GameStateStart();
 
     virtual void draw(const float dt) override;
@@ -18,6 +18,5 @@ public:
 private:
     Gui* mGui;
 
-    void createGui();
-    void loadGame();
+    void createGui(bool resume);
 };

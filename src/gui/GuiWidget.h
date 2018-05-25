@@ -20,6 +20,7 @@ public:
     void update();
 
     void add(GuiWidget* widget);
+    void insert(std::size_t i, GuiWidget* widget);
     std::vector<GuiWidget*>& getChildren();
     const std::vector<GuiWidget*>& getChildren() const;
 

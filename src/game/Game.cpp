@@ -109,6 +109,6 @@ void Game::handleMessages()
             pushState(state);
         }
         else if (message.type == MessageType::DISPLAY_MENU)
-            changeState(new GameStateStart());
+            changeState(new GameStateStart(true));
     }
 }

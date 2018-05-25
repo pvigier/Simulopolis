@@ -8,7 +8,7 @@ class XmlDocument;
 class GuiButton : public GuiWidget
 {
 public:
-    enum class State{NORMAL, HOVERED, PRESSED};
+    enum class State{NORMAL, HOVERED, PRESSED, INACTIVE};
 
     GuiButton(sf::Vector2f size, Message message, const XmlDocument* style);
     GuiButton(const PropertyList& properties);

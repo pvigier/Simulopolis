@@ -47,6 +47,13 @@ void GuiWidget::add(GuiWidget* widget)
     setDirty();
 }
 
+void GuiWidget::insert(std::size_t i, GuiWidget* widget)
+{
+    widget->setParent(this);
+    mChildren.insert(mChildren.begin() + i, widget);
+    setDirty();
+}
+
 std::vector<GuiWidget*>& GuiWidget::getChildren()
 {
     return mChildren;
