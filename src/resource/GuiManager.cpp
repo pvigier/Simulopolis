@@ -39,14 +39,16 @@ void GuiManager::tearDown()
 
 }
 
-void GuiManager::addGui(const std::string& name, std::unique_ptr<Gui> gui)
+void GuiManager::addGui(const std::string& name, XmlDocument gui)
 {
-    mGuis[name] = std::move(gui);
+    mGuis[name] = std::make_unique<XmlDocument>(gui);
 }
 
-Gui* GuiManager::getGui(const std::string& name)
+std::unique_ptr<Gui> GuiManager::getGui(const std::string& name)
 {
-    return mGuis[name].get();
+    std::unique_ptr<Gui> gui(new Gui());
+    loadRootWidgets(gui.get(), *mGuis[name]);
+    return std::move(gui);
 }
 
 void GuiManager::loadGui(const XmlDocument& node)
@@ -55,10 +57,7 @@ void GuiManager::loadGui(const XmlDocument& node)
     std::string name = node.getAttributes().get("name");
     std::string path = mPrefixPath + node.getAttributes().get("path");
 
-    XmlDocument doc = mXmlManager->loadDocument(path);
-    std::unique_ptr<Gui> gui(new Gui());
-    loadRootWidgets(gui.get(), doc);
-    mGuis[name] = std::move(gui);
+    mGuis[name] = std::make_unique<XmlDocument>(mXmlManager->loadDocument(path));
 }
 
 void GuiManager::loadRootWidgets(Gui* gui, const XmlDocument& node)

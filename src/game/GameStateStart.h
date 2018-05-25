@@ -16,7 +16,7 @@ public:
     virtual void handleMessages() override;
 
 private:
-    Gui* mGui;
+    std::unique_ptr<Gui> mGui;
 
     void createGui(bool resume);
 };

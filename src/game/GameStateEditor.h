@@ -33,7 +33,7 @@ private:
     sf::Vector2i mSelectionStart;
     sf::Vector2i mSelectionEnd;
     Tile::Type mCurrentTile;
-    Gui* mGui;
+    std::unique_ptr<Gui> mGui;
     TerrainGenerator mTerrainGenerator;
 
     void createGui();

@@ -4,12 +4,11 @@
 #include <string>
 #include <unordered_map>
 // My includes
-#include "resource/PropertyList.h"
+#include "resource/XmlDocument.h"
 #include "gui/Gui.h"
 #include "gui/GuiLayout.h"
 
 class XmlManager;
-class XmlDocument;
 class GuiWidget;
 
 /**
@@ -56,7 +55,7 @@ public:
      * \param name Name of the gui
      * \param gui Gui to add
      */
-    void addGui(const std::string& name, std::unique_ptr<Gui> gui);
+    void addGui(const std::string& name, XmlDocument gui);
 
     /**
      * \brief Get a gui
@@ -65,12 +64,12 @@ public:
      *
      * \return Gui that corresponds to name
      */
-    Gui* getGui(const std::string& name);
+    std::unique_ptr<Gui> getGui(const std::string& name);
 
 private:
     XmlManager* mXmlManager;
     std::string mPrefixPath; /**< Path of the folder in which is located "guis.xml" */
-    std::unordered_map<std::string, std::unique_ptr<Gui>> mGuis; /**< Hash map that contains the gui's */
+    std::unordered_map<std::string, std::unique_ptr<XmlDocument>> mGuis; /**< Hash map that contains the gui's */
 
     /**
      * \brief Load a gui from a XML node
