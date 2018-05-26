@@ -19,14 +19,21 @@ Game::Game()
     GameState::setGameId(mMailbox.getId());
     GameState::setRenderEngine(&mRenderEngine);
     GameState::setInputEngine(&mInputEngine);
+    GameState::setAudioEngine(&mAudioEngine);
     GameState::setTextureManager(&mResourceManager.getTextureManager());
     GameState::setStylesheetManager(&mResourceManager.getStylesheetManager());
     GameState::setGuiManager(&mResourceManager.getGuiManager());
+    GameState::setMusicManager(&mResourceManager.getMusicManager());
     Car::setTextureManager(&mResourceManager.getTextureManager());
 
     // Load resources
     mResourceManager.setUp();
     Map::loadTiles(mResourceManager.getTextureManager());
+
+    // Add musics
+    mAudioEngine.addMusic(mResourceManager.getMusicManager().getMusic("gymnopedie1"));
+    mAudioEngine.addMusic(mResourceManager.getMusicManager().getMusic("gymnopedie2"));
+    mAudioEngine.addMusic(mResourceManager.getMusicManager().getMusic("gymnopedie3"));
 
     // Add the start state
     pushState(new GameStateStart());

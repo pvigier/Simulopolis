@@ -8,6 +8,7 @@
 #include "message/MessageBus.h"
 #include "render/RenderEngine.h"
 #include "input/InputEngine.h"
+#include "audio/AudioEngine.h"
 #include "resource/ResourceManager.h"
 
 class GameState;
@@ -31,6 +32,7 @@ private:
     Mailbox mMailbox;
     RenderEngine mRenderEngine;
     InputEngine mInputEngine;
+    AudioEngine mAudioEngine;
     ResourceManager mResourceManager;
 
     void handleMessages();

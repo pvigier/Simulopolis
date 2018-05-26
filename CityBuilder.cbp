@@ -46,12 +46,16 @@
 		<Unit filename="src/ai/Path.h" />
 		<Unit filename="src/ai/SteeringBehaviors.cpp" />
 		<Unit filename="src/ai/SteeringBehaviors.h" />
+		<Unit filename="src/audio/AudioEngine.cpp" />
+		<Unit filename="src/audio/AudioEngine.h" />
 		<Unit filename="src/city/Building.cpp" />
 		<Unit filename="src/city/Building.h" />
 		<Unit filename="src/city/Car.cpp" />
 		<Unit filename="src/city/Car.h" />
 		<Unit filename="src/city/City.cpp" />
 		<Unit filename="src/city/City.h" />
+		<Unit filename="src/city/Company.cpp" />
+		<Unit filename="src/city/Company.h" />
 		<Unit filename="src/city/Map.cpp" />
 		<Unit filename="src/city/Map.h" />
 		<Unit filename="src/city/Network.cpp" />
@@ -76,6 +80,8 @@
 		<Unit filename="src/gui/GuiBoxLayout.h" />
 		<Unit filename="src/gui/GuiButton.cpp" />
 		<Unit filename="src/gui/GuiButton.h" />
+		<Unit filename="src/gui/GuiEvent.cpp" />
+		<Unit filename="src/gui/GuiEvent.h" />
 		<Unit filename="src/gui/GuiHBoxLayout.cpp" />
 		<Unit filename="src/gui/GuiHBoxLayout.h" />
 		<Unit filename="src/gui/GuiImage.cpp" />
@@ -101,6 +107,8 @@
 		<Unit filename="src/message/MessageType.h" />
 		<Unit filename="src/message/Subject.cpp" />
 		<Unit filename="src/message/Subject.h" />
+		<Unit filename="src/pcg/CompanyGenerator.cpp" />
+		<Unit filename="src/pcg/CompanyGenerator.h" />
 		<Unit filename="src/pcg/PersonGenerator.cpp" />
 		<Unit filename="src/pcg/PersonGenerator.h" />
 		<Unit filename="src/pcg/TerrainGenerator.cpp" />
@@ -117,6 +125,8 @@
 		<Unit filename="src/resource/FontManager.h" />
 		<Unit filename="src/resource/GuiManager.cpp" />
 		<Unit filename="src/resource/GuiManager.h" />
+		<Unit filename="src/resource/MusicManager.cpp" />
+		<Unit filename="src/resource/MusicManager.h" />
 		<Unit filename="src/resource/PropertyList.cpp" />
 		<Unit filename="src/resource/PropertyList.h" />
 		<Unit filename="src/resource/ResourceManager.cpp" />

@@ -3,6 +3,7 @@
 #include <chrono>
 #include "render/RenderEngine.h"
 #include "input/InputEngine.h"
+#include "audio/AudioEngine.h"
 #include "message/MessageBus.h"
 #include "resource/TextureManager.h"
 #include "resource/StylesheetManager.h"
@@ -70,6 +71,7 @@ void GameStateEditor::draw(const float dt)
 
 void GameStateEditor::update(const float dt)
 {
+    sAudioEngine->update();
     mCity.update(dt);
 
     // Update the info bar at the bottom of the screen

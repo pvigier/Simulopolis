@@ -25,6 +25,7 @@ void ResourceManager::setUp()
     PropertyList::setStylesheetManager(&mStylesheetManager);
     mGuiManager.setXmlManager(&mXmlManager);
     mGuiManager.setUp();
+    mMusicManager.setUp();
 }
 
 void ResourceManager::tearDown()
@@ -33,6 +34,7 @@ void ResourceManager::tearDown()
     mStylesheetManager.tearDown();
     mFontManager.tearDown();
     mTextureManager.tearDown();
+    mMusicManager.tearDown();
 }
 
 XmlManager& ResourceManager::getXmlManager()
@@ -58,4 +60,9 @@ StylesheetManager& ResourceManager::getStylesheetManager()
 GuiManager& ResourceManager::getGuiManager()
 {
     return mGuiManager;
+}
+
+MusicManager& ResourceManager::getMusicManager()
+{
+    return mMusicManager;
 }

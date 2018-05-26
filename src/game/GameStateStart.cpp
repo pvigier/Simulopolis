@@ -2,6 +2,7 @@
 #include "message/MessageBus.h"
 #include "render/RenderEngine.h"
 #include "input/InputEngine.h"
+#include "audio/AudioEngine.h"
 #include "resource/TextureManager.h"
 #include "resource/StylesheetManager.h"
 #include "resource/GuiManager.h"
@@ -37,6 +38,7 @@ void GameStateStart::draw(const float dt)
 
 void GameStateStart::update(const float dt)
 {
+    sAudioEngine->update();
     mGui->update();
 }
 
