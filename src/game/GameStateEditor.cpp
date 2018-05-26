@@ -245,6 +245,11 @@ void GameStateEditor::loadGame(const std::string& path)
     zoom(8.0f);
 }
 
+const sf::Texture& GameStateEditor::getCityTexture() const
+{
+    return mRenderTexture.getTexture();
+}
+
 void GameStateEditor::createGui()
 {
     mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));

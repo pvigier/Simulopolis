@@ -111,6 +111,11 @@ void Game::handleMessages()
             changeState(state);
         }
         else if (message.type == MessageType::DISPLAY_MENU)
-            pushState(new GameStateStart(true));
+        {
+            const sf::Texture& texture = static_cast<GameStateEditor*>(mStates.top())->getCityTexture();
+            GameStateStart* state = new GameStateStart(true);
+            state->setCityTexture(texture);
+            pushState(state);
+        }
     }
 }

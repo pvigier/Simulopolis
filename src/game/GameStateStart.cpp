@@ -9,6 +9,7 @@
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiText.h"
+#include "gui/GuiImage.h"
 #include "gui/GuiEvent.h"
 
 GameStateStart::GameStateStart(bool resume) : mGui(sGuiManager->getGui("menu"))
@@ -83,6 +84,11 @@ void GameStateStart::handleMessages()
             }
         }
     }
+}
+
+void GameStateStart::setCityTexture(const sf::Texture& texture)
+{
+    mGui->get<GuiImage>("city")->setSprite(sf::Sprite(texture));
 }
 
 void GameStateStart::createGui(bool resume)

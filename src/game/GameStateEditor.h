@@ -21,6 +21,8 @@ public:
     void newGame();
     void loadGame(const std::string& path);
 
+    const sf::Texture& getCityTexture() const;
+
 private:
     sf::RenderTexture mRenderTexture;
     sf::View mGameView;

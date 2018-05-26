@@ -43,6 +43,11 @@ void GuiImage::setSize(sf::Vector2f size)
     mSprite.setScale(size.x / textureSize.x, size.y / textureSize.y);
 }
 
+void GuiImage::setSprite(sf::Sprite sprite)
+{
+    mSprite = sprite;
+}
+
 void GuiImage::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite);

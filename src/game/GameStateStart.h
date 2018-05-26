@@ -15,6 +15,8 @@ public:
     virtual void update(const float dt) override;
     virtual void handleMessages() override;
 
+    void setCityTexture(const sf::Texture& texture);
+
 private:
     std::unique_ptr<Gui> mGui;
 
