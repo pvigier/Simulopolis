@@ -30,35 +30,40 @@ void GuiButton::setSize(sf::Vector2f size)
     mShape.setSize(size);
 }
 
-bool GuiButton::onHover(sf::Vector2f position)
+bool GuiButton::onHover(sf::Vector2f position, bool processed)
 {
-    if (hitButton(position))
+    if (!processed && hitButton(position))
     {
         if (mState == State::NORMAL)
             setState(State::HOVERED);
+        return true;
     }
     else if (mState != State::FORCE_PRESSED && mState != State::DISABLED)
         setState(State::NORMAL);
     return false;
 }
 
-bool GuiButton::onPress(sf::Vector2f position)
+bool GuiButton::onPress(sf::Vector2f position, bool processed)
 {
-    if (mState != State::DISABLED && hitButton(position))
+    if (!processed && mState != State::FORCE_PRESSED && mState != State::DISABLED && hitButton(position))
+    {
         setState(State::PRESSED);
+        return true;
+    }
     return false;
 }
 
-bool GuiButton::onRelease(sf::Vector2f position)
+bool GuiButton::onRelease(sf::Vector2f position, bool processed)
 {
-    if (hitButton(position))
+    if (!processed && hitButton(position))
     {
         if (mState == State::PRESSED)
             notify(Message::create(MessageType::GUI, GuiEvent(this, GuiEvent::Type::BUTTON_RELEASED)));
+        processed = true;
     }
     if (mState != State::FORCE_PRESSED && mState != State::DISABLED)
         setState(State::NORMAL);
-    return false;
+    return processed;
 }
 
 void GuiButton::setState(State state)

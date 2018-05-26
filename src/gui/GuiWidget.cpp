@@ -143,49 +143,37 @@ bool GuiWidget::isDirty() const
     return mDirty;
 }
 
-bool GuiWidget::updateMouseMoved(sf::Vector2f position)
+bool GuiWidget::updateMouseMoved(sf::Vector2f position, bool processed)
 {
     if (mVisible)
     {
-        if (onHover(position))
-            return true;
         for (GuiWidget* widget : mChildren)
-        {
-            if (widget->updateMouseMoved(position))
-                return true;
-        }
+            processed = widget->updateMouseMoved(position, processed) || processed;
+        processed = onHover(position, processed) || processed;
     }
-    return false;
+    return processed;
 }
 
-bool GuiWidget::updateMouseButtonPressed(sf::Vector2f position)
+bool GuiWidget::updateMouseButtonPressed(sf::Vector2f position, bool processed)
 {
     if (mVisible)
     {
-        if (onPress(position))
-            return true;
         for (GuiWidget* widget : mChildren)
-        {
-            if (widget->updateMouseButtonPressed(position))
-                return true;
-        }
+            processed = widget->updateMouseButtonPressed(position, processed) || processed;
+        processed = onPress(position, processed) || processed;
     }
-    return false;
+    return processed;
 }
 
-bool GuiWidget::updateMouseButtonReleased(sf::Vector2f position)
+bool GuiWidget::updateMouseButtonReleased(sf::Vector2f position, bool processed)
 {
     if (mVisible)
     {
-        if (onRelease(position))
-            return true;
         for (GuiWidget* widget : mChildren)
-        {
-            if (widget->updateMouseButtonReleased(position))
-                return true;
-        }
+            processed = widget->updateMouseButtonReleased(position, processed) || processed;
+        processed = onRelease(position, processed) || processed;
     }
-    return false;
+    return processed;
 }
 
 bool GuiWidget::hasGuiEvents() const
@@ -205,17 +193,17 @@ void GuiWidget::render(sf::RenderTarget& target, sf::RenderStates states) const
 
 }
 
-bool GuiWidget::onHover(sf::Vector2f position)
+bool GuiWidget::onHover(sf::Vector2f position, bool processed)
 {
     return false;
 }
 
-bool GuiWidget::onPress(sf::Vector2f position)
+bool GuiWidget::onPress(sf::Vector2f position, bool processed)
 {
     return false;
 }
 
-bool GuiWidget::onRelease(sf::Vector2f position)
+bool GuiWidget::onRelease(sf::Vector2f position, bool processed)
 {
     return false;
 }

@@ -1,5 +1,6 @@
 <gui>
 	<image name="background" texture="background" />
+    <image name="city" />
 	<widget name="menu">
         <button name="resumeGameButton" size="192 32" style="button">
 			<text name="resumeGameText" text="Resume game" characterSize="24" style="button" />

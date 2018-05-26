@@ -114,33 +114,15 @@ void Gui::handleMessages()
                     break;
                 case sf::Event::MouseMoved:
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
-                    {
-                        if (mRootWidgets[i]->updateMouseMoved(mousePosition))
-                        {
-                            processed = true;
-                            break;
-                        }
-                    }
+                        processed = mRootWidgets[i]->updateMouseMoved(mousePosition, processed) || processed;
                     break;
                 case sf::Event::MouseButtonPressed:
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
-                    {
-                        if (mRootWidgets[i]->updateMouseButtonPressed(mousePosition))
-                        {
-                            processed = true;
-                            break;
-                        }
-                    }
+                        processed = mRootWidgets[i]->updateMouseButtonPressed(mousePosition, processed) || processed;
                     break;
                 case sf::Event::MouseButtonReleased:
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
-                    {
-                        if (mRootWidgets[i]->updateMouseButtonReleased(mousePosition))
-                        {
-                            processed = true;
-                            break;
-                        }
-                    }
+                        processed = mRootWidgets[i]->updateMouseButtonReleased(mousePosition, processed) || processed;
                     break;
                 default:
                     break;

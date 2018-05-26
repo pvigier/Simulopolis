@@ -19,9 +19,9 @@ public:
 protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    virtual bool onHover(sf::Vector2f position) override;
-    virtual bool onPress(sf::Vector2f position) override;
-    virtual bool onRelease(sf::Vector2f position) override;
+    virtual bool onHover(sf::Vector2f position, bool processed) override;
+    virtual bool onPress(sf::Vector2f position, bool processed) override;
+    virtual bool onRelease(sf::Vector2f position, bool processed) override;
 
 private:
     const XmlDocument* mStyle;
