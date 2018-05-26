@@ -37,14 +37,14 @@ GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel
 
 GameStateEditor::~GameStateEditor()
 {
-    mGui->get<GuiButton>("grassMenu")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("forestMenu")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("residentialMenu")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("commercialMenu")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("industrialMenu")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("hospitalMenu")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("policeMenu")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("schoolMenu")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("grassButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("forestButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("residentialButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("commercialButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("industrialButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("hospitalButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("policeButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("schoolButton")->unsubscribe(mMailbox.getId());
     mGui->get<GuiButton>("roadMenuButton")->unsubscribe(mMailbox.getId());
     mGui->get<GuiButton>("roadGrassButton")->unsubscribe(mMailbox.getId());
     mGui->get<GuiButton>("roadSidewalkButton")->unsubscribe(mMailbox.getId());
