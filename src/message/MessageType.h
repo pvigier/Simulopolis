@@ -4,7 +4,6 @@ enum class MessageType
 {
     INPUT,
     GUI,
-    GUI_WINDOW,
     RESUME_GAME,
     NEW_GAME,
     LOAD_GAME,
@@ -20,9 +19,6 @@ inline std::ostream& operator<<(std::ostream& os, const MessageType& type)
             break;
         case MessageType::GUI:
             os << "gui";
-            break;
-        case MessageType::GUI_WINDOW:
-            os << "gui window";
             break;
         case MessageType::NEW_GAME:
             os << "new game";

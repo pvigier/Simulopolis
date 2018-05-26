@@ -9,6 +9,7 @@
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiText.h"
+#include "gui/GuiEvent.h"
 
 GameStateStart::GameStateStart(bool resume) : mGui(sGuiManager->getGui("menu"))
 {
@@ -62,15 +63,24 @@ void GameStateStart::handleMessages()
         }
         if (message.type == MessageType::GUI)
         {
-            std::string info = message.getInfo<std::string>();
-            if (info == "resume_game")
-                sMessageBus->send(Message::create(sGameId, MessageType::RESUME_GAME));
-            else if (info == "new_game")
-                sMessageBus->send(Message::create(sGameId, MessageType::NEW_GAME));
-            else if (info == "load_game")
-                sMessageBus->send(Message::create(sGameId, MessageType::LOAD_GAME));
-            else if (info == "exit")
-                sRenderEngine->getWindow().close();
+            GuiEvent event = message.getInfo<GuiEvent>();
+            switch (event.type)
+            {
+                case GuiEvent::Type::BUTTON_RELEASED:
+                {
+                    const std::string& name = event.widget->getName();
+                    if (name == "resumeGameButton")
+                        sMessageBus->send(Message::create(sGameId, MessageType::RESUME_GAME));
+                    else if (name == "newGameButton")
+                        sMessageBus->send(Message::create(sGameId, MessageType::NEW_GAME));
+                    else if (name == "loadGameButton")
+                        sMessageBus->send(Message::create(sGameId, MessageType::LOAD_GAME));
+                    else if (name == "exitButton")
+                        sRenderEngine->getWindow().close();
+                }
+                default:
+                    break;
+            }
         }
     }
 }

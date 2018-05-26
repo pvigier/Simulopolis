@@ -16,8 +16,6 @@ public:
     virtual void setPosition(sf::Vector2f position) override;
     virtual void setSize(sf::Vector2f size) override;
 
-    Message getMessage() const;
-
     void setState(State state);
 
     bool hitButton(sf::Vector2f position) const;
@@ -34,6 +32,4 @@ private:
     State mState;
     // Handles appearance of the button
     sf::RectangleShape mShape;
-    // Integer returned when the button is activated
-    Message mMessage;
 };

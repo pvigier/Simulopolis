@@ -1,5 +1,6 @@
 #include "gui/GuiWindow.h"
 #include "resource/ResourceManager.h"
+#include "gui/GuiEvent.h"
 
 GuiWindow::GuiWindow(sf::Vector2f size, const std::string& title, const XmlDocument* style) :
     mStyle(style), mOnMove(false)
@@ -80,7 +81,7 @@ bool GuiWindow::onRelease(sf::Vector2f position)
 {
     mOnMove = false;
     if (mCloseButton.getGlobalBounds().contains(position))
-        notify(Message::create(MessageType::GUI_WINDOW, Event{this, Event::Type::CLOSE}));
+        notify(Message::create(MessageType::GUI, GuiEvent(this, GuiEvent::Type::WINDOW_CLOSED)));
     mCloseButton.setFillColor(mStyle->getFirstChildByName("close").getAttributes().get<sf::Color>("color"));
     return mBody.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);
 }

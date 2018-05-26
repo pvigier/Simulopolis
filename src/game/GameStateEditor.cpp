@@ -11,6 +11,7 @@
 #include "gui/GuiText.h"
 #include "gui/GuiWindow.h"
 #include "gui/GuiVBoxLayout.h"
+#include "gui/GuiEvent.h"
 
 GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel(1.0f),
     mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor"))
@@ -204,18 +205,26 @@ void GameStateEditor::handleMessages()
                     break;
             }
         }
-        if (message.type == MessageType::GUI && message.hasInfo())
+        if (message.type == MessageType::GUI)
         {
-            std::string info = message.getInfo<std::string>();
-            closeMenus();
-            if (info == "open_road_menu")
+            GuiEvent event = message.getInfo<GuiEvent>();
+            switch (event.type)
             {
-                mGui->get("roadMenuButtons")->setVisible(true);
-                mGui->get<GuiButton>("roadMenuButton")->setState(GuiButton::State::FORCE_PRESSED);
+                case GuiEvent::Type::BUTTON_RELEASED:
+                {
+                    closeMenus();
+                    const std::string& name = event.widget->getName();
+                    if (name == "roadMenuButton")
+                    {
+                        mGui->get("roadMenuButtons")->setVisible(true);
+                        mGui->get<GuiButton>("roadMenuButton")->setState(GuiButton::State::FORCE_PRESSED);
+                    }
+                    else
+                        mCurrentTile = Tile::stringToType(name.substr(0, name.size() - 6));
+                }
+                default:
+                    break;
             }
-            // Select a context menu button
-            else
-                mCurrentTile = Tile::stringToType(info);
         }
     }
 }
@@ -241,14 +250,14 @@ void GameStateEditor::createGui()
     mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     mGui->get("infoBar")->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
-    mGui->get<GuiButton>("grassMenu")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("forestMenu")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("residentialMenu")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("commercialMenu")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("industrialMenu")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("hospitalMenu")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("policeMenu")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("schoolMenu")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("grassButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("forestButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("residentialButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("commercialButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("industrialButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("hospitalButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("policeButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("schoolButton")->subscribe(mMailbox.getId());
     mGui->get<GuiButton>("roadMenuButton")->subscribe(mMailbox.getId());
     mGui->get<GuiButton>("roadGrassButton")->subscribe(mMailbox.getId());
     mGui->get<GuiButton>("roadSidewalkButton")->subscribe(mMailbox.getId());

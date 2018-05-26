@@ -1,18 +1,16 @@
 #include "gui/GuiButton.h"
 #include "resource/XmlDocument.h"
+#include "gui/GuiEvent.h"
 
-GuiButton::GuiButton(sf::Vector2f size, Message message, const XmlDocument* style) :
-    mStyle(style), mMessage(message)
+GuiButton::GuiButton(sf::Vector2f size, Message message, const XmlDocument* style) : mStyle(style)
 {
     setSize(size);
     mShape.setOutlineThickness(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
     setState(State::NORMAL);
 }
 
-GuiButton::GuiButton(const PropertyList& properties) :
-    GuiWidget(properties), mMessage(Message::create(MessageType::GUI))
+GuiButton::GuiButton(const PropertyList& properties) : GuiWidget(properties)
 {
-    mMessage = Message::create(MessageType::GUI, properties.get<std::string>("message", ""));
     mStyle = properties.get<const XmlDocument*>("style");
     mShape.setPosition(mPosition);
     mShape.setSize(mSize);
@@ -56,16 +54,11 @@ bool GuiButton::onRelease(sf::Vector2f position)
     if (hitButton(position))
     {
         if (mState == State::PRESSED)
-            notify(mMessage);
+            notify(Message::create(MessageType::GUI, GuiEvent(this, GuiEvent::Type::BUTTON_RELEASED)));
     }
     if (mState != State::FORCE_PRESSED && mState != State::DISABLED)
         setState(State::NORMAL);
     return false;
-}
-
-Message GuiButton::getMessage() const
-{
-    return mMessage;
 }
 
 void GuiButton::setState(State state)

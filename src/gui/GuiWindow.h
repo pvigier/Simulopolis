@@ -7,13 +7,6 @@ class XmlDocument;
 class GuiWindow : public GuiWidget
 {
 public:
-    struct Event
-    {
-        enum class Type{CLOSE};
-        GuiWidget* window;
-        Type type;
-    };
-
     GuiWindow(sf::Vector2f size, const std::string& title, const XmlDocument* style);
     GuiWindow(const PropertyList& properties);
 

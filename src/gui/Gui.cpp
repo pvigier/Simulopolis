@@ -3,6 +3,7 @@
 #include "input/InputEngine.h"
 #include "gui/GuiWidget.h"
 #include "gui/GuiWindow.h"
+#include "gui/GuiEvent.h"
 
 MessageBus* Gui::sMessageBus = nullptr;
 InputEngine* Gui::sInputEngine = nullptr;
@@ -147,13 +148,15 @@ void Gui::handleMessages()
             if (!processed)
                 notify(message);
         }
-        else if (message.type == MessageType::GUI_WINDOW)
+        else if (message.type == MessageType::GUI)
         {
-            GuiWindow::Event event = message.getInfo<GuiWindow::Event>();
+            GuiEvent event = message.getInfo<GuiEvent>();
             switch (event.type)
             {
-                case GuiWindow::Event::Type::CLOSE:
-                    remove(event.window->getName());
+                case GuiEvent::Type::WINDOW_CLOSED:
+                    remove(event.widget);
+                    break;
+                default:
                     break;
             }
         }
