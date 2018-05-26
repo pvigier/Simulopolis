@@ -37,7 +37,7 @@ void FontManager::tearDown()
 
 void FontManager::addFont(const std::string& name, sf::Font font)
 {
-    mFonts[name] = font;
+    mFonts[name] = std::move(font);
 }
 
 const sf::Font& FontManager::getFont(const std::string& name) const

@@ -41,7 +41,7 @@ void GuiManager::tearDown()
 
 void GuiManager::addGui(const std::string& name, XmlDocument gui)
 {
-    mGuis[name] = std::make_unique<XmlDocument>(gui);
+    mGuis[name] = std::make_unique<XmlDocument>(std::move(gui));
 }
 
 std::unique_ptr<Gui> GuiManager::getGui(const std::string& name)

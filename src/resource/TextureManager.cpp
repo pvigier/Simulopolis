@@ -37,7 +37,7 @@ void TextureManager::tearDown()
 
 void TextureManager::addTexture(const std::string& name, sf::Texture texture)
 {
-    mTextures[name] = texture;
+    mTextures[name] = std::move(texture);
 }
 
 const sf::Texture& TextureManager::getTexture(const std::string& name) const
