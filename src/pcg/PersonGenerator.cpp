@@ -1,4 +1,6 @@
 #include "PersonGenerator.h"
+#include <fstream>
+#include <chrono>
 
 PersonGenerator::PersonGenerator() : mGenerator(std::chrono::system_clock::now().time_since_epoch().count())
 {
@@ -11,7 +13,7 @@ void PersonGenerator::setUp()
     std::ifstream file;
 
     // Male first names
-    file.open("media/male_first_names.txt");
+    file.open("media/persons/male_first_names.txt");
     if (file.is_open())
     {
         while (std::getline(file, line))
@@ -20,7 +22,7 @@ void PersonGenerator::setUp()
     }
 
     // Female first names
-    file.open("media/female_first_names.txt");
+    file.open("media/persons/female_first_names.txt");
     if (file.is_open())
     {
         while (std::getline(file, line))
@@ -29,7 +31,7 @@ void PersonGenerator::setUp()
     }
 
     // Last names
-    file.open("media/last_names.txt");
+    file.open("media/persons/last_names.txt");
     if (file.is_open())
     {
         while (std::getline(file, line))

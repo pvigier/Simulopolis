@@ -38,7 +38,7 @@
 		</Compiler>
 		<Linker>
 			<Add option="-ltinyxml2" />
-			<Add option="-lsfml-graphics -lsfml-window -lsfml-system" />
+			<Add option="-lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system" />
 		</Linker>
 		<Unit filename="src/ai/Kinematic.cpp" />
 		<Unit filename="src/ai/Kinematic.h" />

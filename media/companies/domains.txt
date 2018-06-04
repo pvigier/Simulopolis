@@ -1,0 +1,9 @@
+Market
+Shop
+Discount
+Stuff
+Gear
+Soft
+Tel
+Tools
+Food

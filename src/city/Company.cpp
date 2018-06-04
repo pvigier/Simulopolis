@@ -1,6 +1,7 @@
 #include "Company.h"
 
-Company::Company(std::string name) : mName(std::move(name))
+Company::Company(std::string name, int creationYear, Person* owner) :
+    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner)
 {
     //ctor
 }
@@ -10,14 +11,14 @@ const std::string& Company::getName() const
     return mName;
 }
 
-Person* Company::getManager() const
+Person* Company::getOwner() const
 {
-    return mManager;
+    return mOwner;
 }
 
-void Company::setManager(Person* manager)
+void Company::setOwner(Person* owner)
 {
-    mManager = manager;
+    mOwner = owner;
 }
 
 const std::vector<Person*>& Company::getEmployees() const

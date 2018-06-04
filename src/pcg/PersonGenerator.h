@@ -1,8 +1,6 @@
 #pragma once
 
-#include <chrono>
 #include <random>
-#include <fstream>
 #include "city/Person.h"
 
 class PersonGenerator
