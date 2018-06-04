@@ -40,6 +40,7 @@ private:
 
     void createGui();
     void createPersonWindow(const Person& person);
+    void createCompanyWindow(const Company& company);
     void closeMenus();
 
     void zoom(float factor);
