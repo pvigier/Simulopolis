@@ -303,6 +303,8 @@ void GameStateEditor::createCompanyWindow(const Company& company)
     auto window = mGui->createRoot<GuiWindow>(name + "Window", sf::Vector2f(200.0f, 120.0f), name, sStylesheetManager->getStylesheet("window"));
     auto ownerText = mGui->create<GuiText>(name + "OwnerText", "Owner: " + company.getOwner()->getFullName(), 10, sStylesheetManager->getStylesheet("text"));
     auto yearText = mGui->create<GuiText>(name + "YearText", "Year: " + std::to_string(0), 10, sStylesheetManager->getStylesheet("text"));
+    window->add(ownerText);
+    window->add(yearText);
     window->setPosition(sf::Vector2f(200.0f, 50.0f));
     window->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
 }
