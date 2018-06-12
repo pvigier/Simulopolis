@@ -26,6 +26,8 @@ void ResourceManager::setUp()
     mGuiManager.setXmlManager(&mXmlManager);
     mGuiManager.setUp();
     mMusicManager.setUp();
+    mImageManager.setXmlManager(&mXmlManager);
+    mImageManager.setUp();
 }
 
 void ResourceManager::tearDown()
@@ -35,6 +37,7 @@ void ResourceManager::tearDown()
     mFontManager.tearDown();
     mTextureManager.tearDown();
     mMusicManager.tearDown();
+    mImageManager.tearDown();
 }
 
 XmlManager& ResourceManager::getXmlManager()
@@ -65,4 +68,9 @@ GuiManager& ResourceManager::getGuiManager()
 MusicManager& ResourceManager::getMusicManager()
 {
     return mMusicManager;
+}
+
+ImageManager& ResourceManager::getImageManager()
+{
+    return mImageManager;
 }

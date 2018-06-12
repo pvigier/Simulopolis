@@ -7,6 +7,7 @@
 #include "resource/StylesheetManager.h"
 #include "resource/GuiManager.h"
 #include "resource/MusicManager.h"
+#include "resource/ImageManager.h"
 
 /**
  * \brief Manager that manages the specific resource managers
@@ -78,6 +79,13 @@ public:
      */
     MusicManager& getMusicManager();
 
+    /**
+     * \brief Get the image manager
+     *
+     * \return The image manager
+     */
+    ImageManager& getImageManager();
+
 private:
     XmlManager mXmlManager; /**< Xml manager */
     TextureManager mTextureManager; /**< Texture manager */
@@ -85,4 +93,5 @@ private:
     StylesheetManager mStylesheetManager; /**< Stylesheet manager */
     GuiManager mGuiManager; /**< Gui manager */
     MusicManager mMusicManager; /**< Music manager */
+    ImageManager mImageManager; /**< Image manager */
 };
