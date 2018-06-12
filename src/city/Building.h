@@ -9,10 +9,11 @@ public:
     static constexpr int STAIR_HEIGHT = 33;
     static constexpr int OFFSET_Y = 27;
 
-    Building(const sf::Texture& texture, Type type);
+    Building(const std::string& name, Type type);
     virtual ~Building();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    virtual bool intersect(const sf::Vector2f& position) const override;
 
     virtual std::unique_ptr<Tile> clone() const override;
 

@@ -2,6 +2,22 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include "Building.h"
+
+City::Intersection::Intersection() : type(City::Intersection::Type::NONE), car(nullptr)
+{
+
+}
+
+City::Intersection::Intersection(const Car* car) : type(City::Intersection::Type::CAR), car(car)
+{
+
+}
+
+City::Intersection::Intersection(const Building* building) : type(City::Intersection::Type::BUILDING), building(building)
+{
+
+}
 
 City::City() : mCurrentTime(0.0), mTimePerDay(1.0), mDay(0), mPopulation(0), mUnemployed(0), mFunds(0)
 {
@@ -136,11 +152,27 @@ void City::bulldoze(Tile::Type type)
 
 City::Intersection City::intersect(const sf::Vector2f& position)
 {
-    Intersection intersection{Intersection::Type::NONE, nullptr};
-    for (const Car& car : mCars)
+    Intersection intersection;
+
+    const Array2<std::unique_ptr<Tile>>& tiles = mMap.getTiles();
+    for (unsigned int i = 0; i < mMap.getHeight(); ++i)
     {
-        if (car.intersect(position))
-            intersection = Intersection{Intersection::Type::CAR, &car};
+        for (unsigned int j = 0; j < mMap.getWidth(); ++j)
+        {
+            const Tile* tile = tiles.get(i, j).get();
+            if (tile->intersect(position))
+            {
+                if (tile->isBuilding())
+                    intersection = Intersection(static_cast<const Building*>(tile));
+                else
+                    intersection = Intersection();
+            }
+            for (const Car* car : mCarsByTile.get(i, j))
+            {
+                if (car->intersect(position))
+                    intersection = Intersection(car);
+            }
+        }
     }
     return intersection;
 }

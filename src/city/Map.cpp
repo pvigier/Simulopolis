@@ -13,47 +13,20 @@ Map::Map() : mWidth(0), mHeight(0), mNbSelected(0), mNetwork(mWidth, mHeight)
 
 void Map::loadTiles(const TextureManager& textureManager)
 {
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("grass"),
-        Tile::Type::VOID)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("grass"),
-        Tile::Type::GRASS)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("forest"),
-         Tile::Type::FOREST)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("dirt"),
-         Tile::Type::DIRT)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile(textureManager.getTexture("water"),
-        Tile::Type::WATER)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("residential"),
-        Tile::Type::RESIDENTIAL)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("commercial"),
-        Tile::Type::COMMERCIAL)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("industrial"),
-        Tile::Type::INDUSTRIAL)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("hospital"),
-        Tile::Type::HOSPITAL)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("police"),
-        Tile::Type::POLICE)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building(textureManager.getTexture("school"),
-        Tile::Type::SCHOOL)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Road(textureManager.getTexture("road"),
-        Tile::Type::ROAD_GRASS)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Road(textureManager.getTexture("road"),
-        Tile::Type::ROAD_SIDEWALK)));
-
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Road(textureManager.getTexture("road"),
-        Tile::Type::ROAD_WATER)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("grass", Tile::Type::VOID)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("grass", Tile::Type::GRASS)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("forest", Tile::Type::FOREST)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("dirt", Tile::Type::DIRT)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("water", Tile::Type::WATER)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("residential", Tile::Type::RESIDENTIAL)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("commercial", Tile::Type::COMMERCIAL)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("industrial", Tile::Type::INDUSTRIAL)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("hospital", Tile::Type::HOSPITAL)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("police", Tile::Type::POLICE)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("school", Tile::Type::SCHOOL)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_GRASS)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_SIDEWALK)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_WATER)));
 }
 
 void Map::load(const std::string& filename, unsigned int width, unsigned int height)

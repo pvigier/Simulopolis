@@ -5,7 +5,7 @@
 class Road : public Tile
 {
 public:
-    Road(const sf::Texture& texture, Type type);
+    Road(const std::string& name, Type type);
     virtual ~Road();
 
     virtual std::unique_ptr<Tile> clone() const override;

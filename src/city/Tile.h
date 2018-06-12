@@ -2,6 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
+class TextureManager;
+class ImageManager;
+
 class Tile : public sf::Drawable
 {
 public:
@@ -11,13 +14,17 @@ public:
     static constexpr unsigned int SIZE = 64;
     static constexpr float TILE_HEIGHT = 101.f;
 
+    static void setTextureManager(TextureManager* textureManager);
+    static void setImageManager(ImageManager* imageManager);
+
     static Type stringToType(const std::string& s);
     static std::string typeToString(Type type);
 
-    Tile(const sf::Texture& texture, Type type);
+    Tile(const std::string& name, Type type);
     virtual ~Tile();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    virtual bool intersect(const sf::Vector2f& position) const;
 
     virtual std::unique_ptr<Tile> clone() const;
 
@@ -32,7 +39,11 @@ public:
     void setState(State state);
 
 protected:
+    static TextureManager* sTextureManager;
+    static ImageManager* sImageManager;
+
     sf::Sprite mSprite;
+    const sf::Image& mMask;
     Type mType;
     State mState;
 };

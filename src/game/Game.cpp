@@ -25,6 +25,9 @@ Game::Game()
     GameState::setGuiManager(&mResourceManager.getGuiManager());
     GameState::setMusicManager(&mResourceManager.getMusicManager());
     Car::setTextureManager(&mResourceManager.getTextureManager());
+    Car::setImageManager(&mResourceManager.getImageManager());
+    Tile::setTextureManager(&mResourceManager.getTextureManager());
+    Tile::setImageManager(&mResourceManager.getImageManager());
 
     // Load resources
     mResourceManager.setUp();

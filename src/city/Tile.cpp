@@ -1,7 +1,14 @@
 #include "Tile.h"
+#include "resource/TextureManager.h"
+#include "resource/ImageManager.h"
+#include "render/sprite_intersection.h"
 
-Tile::Tile(const sf::Texture& texture, Tile::Type type) :
-    mSprite(texture), mType(type), mState(Tile::State::DESELECTED)
+TextureManager* Tile::sTextureManager = nullptr;
+ImageManager* Tile::sImageManager = nullptr;
+
+Tile::Tile(const std::string& name, Tile::Type type) :
+    mSprite(sTextureManager->getTexture(name)), mMask(sImageManager->getImage(name)),
+    mType(type), mState(Tile::State::DESELECTED)
 {
 
 }
@@ -9,6 +16,16 @@ Tile::Tile(const sf::Texture& texture, Tile::Type type) :
 Tile::~Tile()
 {
 
+}
+
+void Tile::setTextureManager(TextureManager* textureManager)
+{
+    sTextureManager = textureManager;
+}
+
+void Tile::setImageManager(ImageManager* imageManager)
+{
+    sImageManager = imageManager;
 }
 
 Tile::Type Tile::stringToType(const std::string& s)
@@ -83,6 +100,11 @@ std::string Tile::typeToString(Tile::Type type)
 void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite);
+}
+
+bool Tile::intersect(const sf::Vector2f& position) const
+{
+    return sprite_intersect(mSprite, mMask, position);
 }
 
 std::unique_ptr<Tile> Tile::clone() const

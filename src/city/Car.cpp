@@ -1,8 +1,10 @@
 #include "city/Car.h"
 
 TextureManager* Car::sTextureManager = nullptr;
+ImageManager* Car::sImageManager = nullptr;
 
-Car::Car(const std::string& model) : mKinematic(1.0f, 150.0f, 800.0f), mSteering(mKinematic)
+Car::Car(const std::string& model) :
+    mKinematic(1.0f, 150.0f, 800.0f), mSteering(mKinematic), mMask(sImageManager->getImage(model))
 {
     const sf::Texture& texture = sTextureManager->getTexture(model);
     mWidth = texture.getSize().x / 8;
@@ -19,6 +21,11 @@ Car::Car(const std::string& model) : mKinematic(1.0f, 150.0f, 800.0f), mSteering
 void Car::setTextureManager(TextureManager* textureManager)
 {
     sTextureManager = textureManager;
+}
+
+void Car::setImageManager(ImageManager* imageManager)
+{
+    sImageManager = imageManager;
 }
 
 void Car::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -44,7 +51,7 @@ void Car::update(float dt)
 
 bool Car::intersect(const sf::Vector2f& position) const
 {
-    return mSprite.getGlobalBounds().contains(position);
+    return sprite_intersect(mSprite, mMask, position);
 }
 
 Kinematic& Car::getKinematic()

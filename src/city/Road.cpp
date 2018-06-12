@@ -1,7 +1,7 @@
 #include "Road.h"
 
-Road::Road(const sf::Texture& texture, Type type) :
-    Tile(texture, type)
+Road::Road(const std::string& name, Type type) :
+    Tile(name, type)
 {
     sf::IntRect rect(0, 0, 132, 101);
     if (type == Type::ROAD_SIDEWALK)

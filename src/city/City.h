@@ -20,8 +20,12 @@ public:
         union
         {
             const Car* car;
-            Building* building;
+            const Building* building;
         };
+
+        Intersection();
+        Intersection(const Car* car);
+        Intersection(const Building* building);
     };
 
     City();
