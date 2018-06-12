@@ -42,6 +42,10 @@ void Car::update(float dt)
     mSprite.setTextureRect(sf::IntRect(i * mWidth, 0, mWidth, mHeight));
 }
 
+bool Car::intersect(const sf::Vector2f& position) const
+{
+    return mSprite.getGlobalBounds().contains(position);
+}
 
 Kinematic& Car::getKinematic()
 {

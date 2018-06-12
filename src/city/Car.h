@@ -13,8 +13,8 @@ public:
     static void setTextureManager(TextureManager* textureManager);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
     void update(float dt);
+    bool intersect(const sf::Vector2f& position) const;
 
     Kinematic& getKinematic();
     SteeringBehaviors& getSteering();

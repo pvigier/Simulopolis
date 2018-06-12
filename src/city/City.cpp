@@ -136,7 +136,13 @@ void City::bulldoze(Tile::Type type)
 
 City::Intersection City::intersect(const sf::Vector2f& position)
 {
-
+    Intersection intersection{Intersection::Type::NONE, nullptr};
+    for (const Car& car : mCars)
+    {
+        if (car.intersect(position))
+            intersection = Intersection{Intersection::Type::CAR, &car};
+    }
+    return intersection;
 }
 
 Map& City::getMap()

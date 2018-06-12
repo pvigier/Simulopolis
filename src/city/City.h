@@ -1,12 +1,29 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include "Map.h"
 #include "Car.h"
+#include "Person.h"
+#include "Company.h"
+
+class Building;
 
 class City : public sf::Drawable
 {
 public:
+    struct Intersection
+    {
+        enum class Type{NONE, CAR, BUILDING};
+
+        Type type;
+        union
+        {
+            const Car* car;
+            Building* building;
+        };
+    };
+
     City();
 
     void load(const std::string& name);
@@ -17,6 +34,8 @@ public:
 
     void update(float dt);
     void bulldoze(Tile::Type type);
+
+    Intersection intersect(const sf::Vector2f& position);
 
     Map& getMap();
     const Map& getMap() const;
@@ -42,6 +61,8 @@ private:
 
     unsigned int mFunds;
 
+    std::vector<std::unique_ptr<Person>> mPersons;
+    std::vector<std::unique_ptr<Company>> mCompanies;
     std::vector<Car> mCars;
     Array2<std::vector<const Car*>> mCarsByTile;
 };
