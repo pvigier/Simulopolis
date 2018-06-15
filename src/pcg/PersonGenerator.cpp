@@ -38,6 +38,15 @@ void PersonGenerator::setUp()
             mLastNames.push_back(line);
         file.close();
     }
+
+    // Cars
+    file.open("media/persons/cars.txt");
+    if (file.is_open())
+    {
+        while (std::getline(file, line))
+            mCars.push_back(line);
+        file.close();
+    }
 }
 
 Person PersonGenerator::generate(int year)
@@ -60,5 +69,7 @@ Person PersonGenerator::generate(int year)
     std::uniform_int_distribution<int> agePdf(20, 60);
     int age = agePdf(mGenerator);
     int birth = year - age;
-    return Person(firstName, lastName, gender, birth);
+    std::uniform_int_distribution<std::size_t> carPdf(0, mCars.size() - 1);
+    std::string car = mCars[carPdf(mGenerator)];
+    return Person(firstName, lastName, gender, birth, car);
 }

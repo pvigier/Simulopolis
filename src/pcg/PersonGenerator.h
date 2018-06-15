@@ -17,4 +17,5 @@ private:
     std::vector<std::string> mMaleFirstNames;
     std::vector<std::string> mFemaleFirstNames;
     std::vector<std::string> mLastNames;
+    std::vector<std::string> mCars;
 };
