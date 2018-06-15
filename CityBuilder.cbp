@@ -121,10 +121,14 @@
 		<Unit filename="src/render/Animator.h" />
 		<Unit filename="src/render/RenderEngine.cpp" />
 		<Unit filename="src/render/RenderEngine.h" />
+		<Unit filename="src/render/sprite_intersection.cpp" />
+		<Unit filename="src/render/sprite_intersection.h" />
 		<Unit filename="src/resource/FontManager.cpp" />
 		<Unit filename="src/resource/FontManager.h" />
 		<Unit filename="src/resource/GuiManager.cpp" />
 		<Unit filename="src/resource/GuiManager.h" />
+		<Unit filename="src/resource/ImageManager.cpp" />
+		<Unit filename="src/resource/ImageManager.h" />
 		<Unit filename="src/resource/MusicManager.cpp" />
 		<Unit filename="src/resource/MusicManager.h" />
 		<Unit filename="src/resource/PropertyList.cpp" />
