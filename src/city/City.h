@@ -3,9 +3,8 @@
 #include <vector>
 #include <memory>
 #include "Map.h"
-#include "Car.h"
-#include "Person.h"
-#include "Company.h"
+#include "pcg/PersonGenerator.h"
+#include "pcg/CompanyGenerator.h"
 
 class Building;
 
@@ -53,6 +52,10 @@ public:
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
 
 private:
+    // Generators
+    PersonGenerator mPersonGenerator;
+    CompanyGenerator mCompanyGenerator;
+
     float mCurrentTime;
     float mTimePerDay;
     unsigned int mDay;
@@ -66,7 +69,6 @@ private:
 
     std::vector<std::unique_ptr<Person>> mPersons;
     std::vector<std::unique_ptr<Company>> mCompanies;
-    std::vector<Car> mCars;
     Array2<std::vector<const Car*>> mCarsByTile;
 };
 

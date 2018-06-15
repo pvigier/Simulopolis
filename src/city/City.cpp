@@ -21,7 +21,9 @@ City::Intersection::Intersection(const Building* building) : type(City::Intersec
 
 City::City() : mCurrentTime(0.0), mTimePerDay(1.0), mDay(0), mPopulation(0), mUnemployed(0), mFunds(0)
 {
-
+    // Generators
+    mPersonGenerator.setUp();
+    mCompanyGenerator.setUp();
 }
 
 void City::load(const std::string& name)
@@ -70,17 +72,17 @@ void City::load(const std::string& name)
     mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), {});
     bulldoze(Tile::Type::ROAD_GRASS);
 
-    mCars.reserve(2);
-
-    mCars.emplace_back("car_blue_sedan_2");
+    mPersons.push_back(mPersonGenerator.generate(getYear()));
     Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(2, 0));
-    mCars.back().getKinematic().setPosition(path.getCurrentPoint());
-    mCars.back().getSteering().setPath(path);
+    mPersons.back()->getCar().getKinematic().setPosition(path.getCurrentPoint());
+    mPersons.back()->getCar().getSteering().setPath(path);
+    mPersons.back()->setState(Person::State::MOVING);
 
-    mCars.emplace_back("car_blue_sedan_2");
+    mPersons.push_back(mPersonGenerator.generate(getYear()));
     Path otherPath = mMap.getPath(sf::Vector2i(2, 0), sf::Vector2i(0, 0));
-    mCars.back().getKinematic().setPosition(otherPath.getCurrentPoint());
-    mCars.back().getSteering().setPath(otherPath);
+    mPersons.back()->getCar().getKinematic().setPosition(otherPath.getCurrentPoint());
+    mPersons.back()->getCar().getSteering().setPath(otherPath);
+    mPersons.back()->setState(Person::State::MOVING);
 }
 
 void City::save(const std::string& name)
@@ -140,22 +142,26 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void City::update(float dt)
 {
-    for (Car& car : mCars)
-        car.update(dt);
+    for (std::unique_ptr<Person>& person : mPersons)
+        person->update(dt);
 
     for (unsigned int i = 0; i < mMap.getHeight(); ++i)
     {
         for (unsigned int j = 0; j < mMap.getWidth(); ++j)
             mCarsByTile.get(i, j).clear();
     }
-    for (const Car& car : mCars)
+    for (const std::unique_ptr<Person>& person : mPersons)
     {
-        sf::Vector2f bottomLeft(car.getBounds().left, car.getBounds().top + car.getBounds().height);
-        sf::Vector2f bottomRight(bottomLeft.x + car.getBounds().width, bottomLeft.y);
-        sf::Vector2i iBottomLeft = toTileIndices(bottomLeft);
-        sf::Vector2i iBottomRight = toTileIndices(bottomRight);
-        sf::Vector2i indices(std::max(iBottomLeft.x, iBottomRight.x), std::max(iBottomLeft.y, iBottomRight.y));
-        mCarsByTile.get(indices.y, indices.x).push_back(&car);
+        if (person->getState() == Person::State::MOVING)
+        {
+            const Car& car = person->getCar();
+            sf::Vector2f bottomLeft(car.getBounds().left, car.getBounds().top + car.getBounds().height);
+            sf::Vector2f bottomRight(bottomLeft.x + car.getBounds().width, bottomLeft.y);
+            sf::Vector2i iBottomLeft = toTileIndices(bottomLeft);
+            sf::Vector2i iBottomRight = toTileIndices(bottomRight);
+            sf::Vector2i indices(std::max(iBottomLeft.x, iBottomRight.x), std::max(iBottomLeft.y, iBottomRight.y));
+            mCarsByTile.get(indices.y, indices.x).push_back(&car);
+        }
     }
     for (unsigned int i = 0; i < mMap.getHeight(); ++i)
     {

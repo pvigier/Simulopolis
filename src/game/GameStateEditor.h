@@ -6,6 +6,9 @@
 #include "gui/Gui.h"
 #include "pcg/TerrainGenerator.h"
 
+class GuiWindow;
+class GuiImage;
+
 enum class ActionState{NONE, PANNING, SELECTING};
 
 class GameStateEditor : public GameState
@@ -24,9 +27,16 @@ public:
     const sf::Texture& getCityTexture() const;
 
 private:
+    struct PersonWindow
+    {
+        const Person* person;
+        GuiWindow* window;
+        GuiImage* image;
+        sf::RenderTexture renderTexture;
+    };
+
     sf::RenderTexture mRenderTexture;
     sf::View mGameView;
-    sf::View mGuiView;
     sf::Sprite mBackground;
     City mCity;
     ActionState mActionState;
@@ -35,13 +45,19 @@ private:
     sf::Vector2i mSelectionStart;
     sf::Vector2i mSelectionEnd;
     Tile::Type mCurrentTile;
-    std::unique_ptr<Gui> mGui;
     TerrainGenerator mTerrainGenerator;
+    // Gui
+    std::unique_ptr<Gui> mGui;
+    sf::View mGuiView;
+    int mIWindow;
+    std::vector<std::unique_ptr<PersonWindow>> mPersonWindows;
+
     void drawCity(sf::RenderTexture& renderTexture, const sf::View& view);
 
     void createGui();
     void createPersonWindow(const Person& person);
     void createCompanyWindow(const Company& company);
+    void updateWindows();
     void closeMenus();
 
     void zoom(float factor);
