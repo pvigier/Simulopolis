@@ -37,6 +37,7 @@ private:
     Tile::Type mCurrentTile;
     std::unique_ptr<Gui> mGui;
     TerrainGenerator mTerrainGenerator;
+    void drawCity(sf::RenderTexture& renderTexture, const sf::View& view);
 
     void createGui();
     void createPersonWindow(const Person& person);

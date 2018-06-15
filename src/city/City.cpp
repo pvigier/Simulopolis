@@ -107,10 +107,29 @@ void City::createMap(const Array2<Tile::Type>& tiles)
 
 void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    // Compute the bounds
+    int margin = 3;
+    sf::View view = target.getView();
+    sf::Vector2f topLeft = view.getCenter() - view.getSize() * 0.5f;
+    sf::Vector2i iTopLeft = toTileIndices(topLeft);
+    sf::Vector2f topRight(view.getCenter().x + 0.5f * view.getSize().x, view.getCenter().y - 0.5f * view.getSize().y);
+    sf::Vector2i iTopRight = toTileIndices(topRight);
+    sf::Vector2f bottomLeft(view.getCenter().x - 0.5f * view.getSize().x, view.getCenter().y + 0.5f * view.getSize().y);
+    sf::Vector2i iBottomLeft = toTileIndices(bottomLeft);
+    sf::Vector2f bottomRight = view.getCenter() + view.getSize() * 0.5f;
+    sf::Vector2i iBottomRight = toTileIndices(bottomRight);
+    auto jBounds = std::minmax({iTopLeft.x, iTopRight.x, iBottomLeft.x, iBottomRight.x});
+    auto iBounds = std::minmax({iTopLeft.y, iTopRight.y, iBottomLeft.y, iBottomRight.y});
+    unsigned int iMin = std::max(iBounds.first - margin, 0);
+    unsigned int iMax = std::min(iBounds.second + margin + 1, static_cast<int>(mMap.getHeight()));
+    unsigned int jMin = std::max(jBounds.first - margin, 0);
+    unsigned int jMax = std::min(jBounds.second + margin + 1, static_cast<int>(mMap.getHeight()));
+
+    // Draw
     const Array2<std::unique_ptr<Tile>>& tiles = mMap.getTiles();
-    for (unsigned int i = 0; i < mMap.getHeight(); ++i)
+    for (unsigned int i = iMin; i < iMax; ++i)
     {
-        for (unsigned int j = 0; j < mMap.getWidth(); ++j)
+        for (unsigned int j = jMin; j < jMax; ++j)
         {
             target.draw(*tiles.get(i, j));
             for (const Car* car : mCarsByTile.get(i, j))

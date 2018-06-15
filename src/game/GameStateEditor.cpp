@@ -57,14 +57,11 @@ void GameStateEditor::draw(float dt)
 {
     sRenderEngine->clear();
 
-    mRenderTexture.clear(sf::Color::Transparent);
-    mRenderTexture.setView(mGameView);
-    mRenderTexture.draw(mCity);
-    mRenderTexture.display();
+    // City
+    drawCity(mRenderTexture, mGameView);
 
-
+    // GUI
     sRenderEngine->setView(mGuiView);
-    sRenderEngine->draw(mBackground);
     sRenderEngine->draw(sf::Sprite(mRenderTexture.getTexture()));
     sRenderEngine->draw(*mGui);
 }
@@ -250,6 +247,16 @@ void GameStateEditor::loadGame(const std::string& path)
 const sf::Texture& GameStateEditor::getCityTexture() const
 {
     return mRenderTexture.getTexture();
+}
+
+void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View& view)
+{
+    renderTexture.clear(sf::Color::Transparent);
+    renderTexture.setView(mGuiView);
+    renderTexture.draw(mBackground);
+    renderTexture.setView(view);
+    renderTexture.draw(mCity);
+    renderTexture.display();
 }
 
 void GameStateEditor::createGui()
