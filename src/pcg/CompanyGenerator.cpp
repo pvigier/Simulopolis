@@ -50,8 +50,6 @@ void CompanyGenerator::setUp()
     }
 }
 
-#include <iostream>
-
 Company CompanyGenerator::generate(int year, Person* owner)
 {
     std::discrete_distribution<int> typePdf{0.1, 0.4, 0.1, 0.4};
@@ -87,12 +85,8 @@ Company CompanyGenerator::generate(int year, Person* owner)
     }
 
     // Add the type of the company
-    std::uniform_int_distribution<int> addSuffixPdf(0, 1);
-    if (addSuffixPdf(mGenerator) == 1)
-    {
-        std::uniform_int_distribution<int> suffixPdf(0, mSuffixes.size() - 1);
-        name += " " + mSuffixes[suffixPdf(mGenerator)];
-    }
+    std::uniform_int_distribution<int> suffixPdf(0, mSuffixes.size() - 1);
+    std::string suffix = mSuffixes[suffixPdf(mGenerator)];
 
-    return Company(name, year, owner);
+    return Company(name, suffix, year, owner);
 }

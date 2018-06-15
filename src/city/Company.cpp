@@ -1,7 +1,7 @@
 #include "Company.h"
 
-Company::Company(std::string name, int creationYear, Person* owner) :
-    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner)
+Company::Company(std::string name, std::string suffix, int creationYear, Person* owner) :
+    mName(std::move(name)), mSuffix(std::move(suffix)), mCreationYear(creationYear), mOwner(owner)
 {
     //ctor
 }
@@ -9,6 +9,11 @@ Company::Company(std::string name, int creationYear, Person* owner) :
 const std::string& Company::getName() const
 {
     return mName;
+}
+
+std::string Company::getFullName() const
+{
+    return mName + " " + mSuffix;
 }
 
 Person* Company::getOwner() const
