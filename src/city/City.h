@@ -43,7 +43,6 @@ public:
 
     Map& getMap();
     const Map& getMap() const;
-    std::vector<Car>& getCars();
     unsigned int getDay() const;
     unsigned int getYear() const;
     unsigned int getPopulation() const;
@@ -51,7 +50,7 @@ public:
     unsigned int getFunds() const;
     void decreaseFunds(unsigned int amount);
 
-    sf::Vector2i toTileIndices(const Vector2f& position) const;
+    sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
 
 private:
     float mCurrentTime;

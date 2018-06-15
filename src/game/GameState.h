@@ -29,8 +29,8 @@ public:
     static void setGuiManager(GuiManager* guiManager);
     static void setMusicManager(MusicManager* musicManager);
 
-    virtual void draw(const float dt) = 0;
-    virtual void update(const float dt) = 0;
+    virtual void draw(float dt) = 0;
+    virtual void update(float dt) = 0;
     virtual void handleMessages() = 0;
 
 protected:

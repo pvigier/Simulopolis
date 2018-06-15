@@ -187,11 +187,6 @@ const Map& City::getMap() const
     return mMap;
 }
 
-std::vector<Car>& City::getCars()
-{
-    return mCars;
-}
-
 unsigned int City::getDay() const
 {
     return mDay;
@@ -222,7 +217,7 @@ void City::decreaseFunds(unsigned int amount)
     mFunds -= amount;
 }
 
-sf::Vector2i City::toTileIndices(const Vector2f& position) const
+sf::Vector2i City::toTileIndices(const sf::Vector2f& position) const
 {
     int x = position.y / Tile::SIZE + 0.5f * (position.x / Tile::SIZE - mMap.getWidth() - 1);
     int y = position.y / Tile::SIZE - 0.5f * (position.x / Tile::SIZE - mMap.getWidth() - 1);

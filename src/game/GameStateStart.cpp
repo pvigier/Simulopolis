@@ -31,12 +31,12 @@ GameStateStart::~GameStateStart()
     mGui->unsubscribe(mMailbox.getId());
 }
 
-void GameStateStart::draw(const float dt)
+void GameStateStart::draw(float dt)
 {
     sRenderEngine->draw(*mGui);
 }
 
-void GameStateStart::update(const float dt)
+void GameStateStart::update(float dt)
 {
     sAudioEngine->update();
     mGui->update();

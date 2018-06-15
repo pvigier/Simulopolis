@@ -49,7 +49,7 @@ void PersonGenerator::setUp()
     }
 }
 
-Person PersonGenerator::generate(int year)
+std::unique_ptr<Person> PersonGenerator::generate(int year)
 {
     std::uniform_int_distribution<int> genderPdf(0, 1);
     Person::Gender gender = static_cast<Person::Gender>(genderPdf(mGenerator));
@@ -71,5 +71,5 @@ Person PersonGenerator::generate(int year)
     int birth = year - age;
     std::uniform_int_distribution<std::size_t> carPdf(0, mCars.size() - 1);
     std::string car = mCars[carPdf(mGenerator)];
-    return Person(firstName, lastName, gender, birth, car);
+    return std::make_unique<Person>(firstName, lastName, gender, birth, car);
 }

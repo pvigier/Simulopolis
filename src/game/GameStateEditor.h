@@ -14,8 +14,8 @@ public:
     GameStateEditor();
     virtual ~GameStateEditor();
 
-    virtual void draw(const float dt) override;
-    virtual void update(const float dt) override;
+    virtual void draw(float dt) override;
+    virtual void update(float dt) override;
     virtual void handleMessages() override;
 
     void newGame();

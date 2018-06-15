@@ -46,6 +46,7 @@ void GuiImage::setSize(sf::Vector2f size)
 void GuiImage::setSprite(sf::Sprite sprite)
 {
     mSprite = sprite;
+    setDirty();
 }
 
 void GuiImage::render(sf::RenderTarget& target, sf::RenderStates states) const

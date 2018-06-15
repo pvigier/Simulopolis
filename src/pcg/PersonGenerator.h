@@ -10,7 +10,7 @@ public:
 
     void setUp();
 
-    Person generate(int year);
+    std::unique_ptr<Person> generate(int year);
 
 private:
     std::default_random_engine mGenerator;

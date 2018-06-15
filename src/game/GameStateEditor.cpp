@@ -53,7 +53,7 @@ GameStateEditor::~GameStateEditor()
     mGui->unsubscribe(mMailbox.getId());
 }
 
-void GameStateEditor::draw(const float dt)
+void GameStateEditor::draw(float dt)
 {
     sRenderEngine->clear();
 
@@ -69,7 +69,7 @@ void GameStateEditor::draw(const float dt)
     sRenderEngine->draw(*mGui);
 }
 
-void GameStateEditor::update(const float dt)
+void GameStateEditor::update(float dt)
 {
     sAudioEngine->update();
     mCity.update(dt);
@@ -123,7 +123,7 @@ void GameStateEditor::handleMessages()
                         else if (mCurrentTile == Tile::Type::ROAD_WATER)
                         {
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, {
-                                mCurrentTile, Tile::Type::GRASS, Tile::Type::FOREST,
+                                mCurrentTile, Tile::Type::GRASS, Tile::Type::FOREST, Tile::Type::DIRT,
                                 Tile::Type::ROAD_GRASS, Tile::Type::ROAD_SIDEWALK, Tile::Type::ROAD_WATER,
                                 Tile::Type::RESIDENTIAL, Tile::Type::COMMERCIAL, Tile::Type::INDUSTRIAL,
                                 Tile::Type::HOSPITAL, Tile::Type::POLICE, Tile::Type::SCHOOL});
