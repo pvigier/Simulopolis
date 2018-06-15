@@ -6,6 +6,8 @@
 #include "ai/SteeringBehaviors.h"
 #include "render/sprite_intersection.h"
 
+class Person;
+
 class Car : public sf::Drawable
 {
 public:
@@ -19,9 +21,12 @@ public:
     bool intersect(const sf::Vector2f& position) const;
 
     Kinematic& getKinematic();
+    const Kinematic& getKinematic() const;
     SteeringBehaviors& getSteering();
-
     sf::FloatRect getBounds() const;
+    Person* getOwner();
+    const Person* getOwner() const;
+    void setOwner(Person* owner);
 
 private:
     static TextureManager* sTextureManager;
@@ -33,4 +38,5 @@ private:
     SteeringBehaviors mSteering;
     sf::Sprite mSprite;
     const sf::Image& mMask;
+    Person* mOwner;
 };

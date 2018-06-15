@@ -1,10 +1,17 @@
 #include "Person.h"
 
-Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth) :
+Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mState(State::RESTING),
-    mMoney(0.0f), mSleep(1.0f), mHygiene(1.0f), mSafety(1.0f), mHunger(1.0f), mHappiness(0.0f)
+    mCar(car), mMoney(0.0f), mSleep(1.0f), mHygiene(1.0f), mSafety(1.0f), mHunger(1.0f),
+    mHappiness(0.0f)
 {
-    //ctor
+    mCar.setOwner(this);
+}
+
+void Person::update(float dt)
+{
+    if (mState == State::MOVING)
+        mCar.update(dt);
 }
 
 const std::string& Person::getFirstName() const
@@ -35,6 +42,21 @@ int Person::getAge(int year) const
 Person::State Person::getState() const
 {
     return mState;
+}
+
+void Person::setState(Person::State state)
+{
+    mState = state;
+}
+
+Car& Person::getCar()
+{
+    return mCar;
+}
+
+const Car& Person::getCar() const
+{
+    return mCar;
 }
 
 float Person::getSleep() const
