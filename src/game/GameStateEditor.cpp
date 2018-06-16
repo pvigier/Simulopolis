@@ -16,6 +16,7 @@
 #include "gui/GuiHBoxLayout.h"
 #include "gui/GuiEvent.h"
 #include "game/PersonWindow.h"
+#include "game/BuildingWindow.h"
 
 GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel(1.0f),
     mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor")), mIWindow(0)
@@ -57,6 +58,8 @@ GameStateEditor::~GameStateEditor()
 
     for (std::unique_ptr<PersonWindow>& personWindow : mPersonWindows)
         personWindow->getWindow()->unsubscribe(mMailbox.getId());
+    for (std::unique_ptr<BuildingWindow>& buildingWindow : mBuildingWindows)
+        buildingWindow->getWindow()->unsubscribe(mMailbox.getId());
 }
 
 void GameStateEditor::draw(float dt)
@@ -206,6 +209,8 @@ void GameStateEditor::handleMessages()
                         City::Intersection intersection = mCity.intersect(gamePos);
                         if (intersection.type == City::Intersection::Type::CAR)
                             createPersonWindow(*intersection.car->getOwner());
+                        else if (intersection.type == City::Intersection::Type::BUILDING)
+                            createBuildingWindow(*intersection.building);
                     }
                     break;
                 case sf::Event::MouseWheelMoved:
@@ -245,6 +250,15 @@ void GameStateEditor::handleMessages()
                         {
                             std::swap(mPersonWindows[i], mPersonWindows.back());
                             mPersonWindows.pop_back();
+                            break;
+                        }
+                    }
+                    for (std::size_t i = 0; i < mBuildingWindows.size(); ++i)
+                    {
+                        if (mBuildingWindows[i]->getWindow() == window)
+                        {
+                            std::swap(mBuildingWindows[i], mBuildingWindows.back());
+                            mBuildingWindows.pop_back();
                             break;
                         }
                     }
@@ -314,22 +328,20 @@ void GameStateEditor::createPersonWindow(const Person& person)
     mPersonWindows.emplace_back(personWindow);
 }
 
-void GameStateEditor::createCompanyWindow(const Company& company)
+void GameStateEditor::createBuildingWindow(const Building& building)
 {
     std::string windowId = "window" + std::to_string(mIWindow++);
-    auto window = mGui->createRoot<GuiWindow>(windowId, sf::Vector2f(200.0f, 120.0f), company.getFullName(), sStylesheetManager->getStylesheet("window"));
-    auto ownerText = mGui->create<GuiText>(windowId + "OwnerText", "Owner: " + company.getOwner()->getFullName(), 10, sStylesheetManager->getStylesheet("text"));
-    auto yearText = mGui->create<GuiText>(windowId + "YearText", "Year: " + std::to_string(0), 10, sStylesheetManager->getStylesheet("text"));
-    window->add(ownerText);
-    window->add(yearText);
-    window->setPosition(sf::Vector2f(200.0f, 50.0f));
-    window->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
+    BuildingWindow* buildingWindow = new BuildingWindow(mGui.get(), sStylesheetManager, windowId, building);
+    buildingWindow->getWindow()->subscribe(mMailbox.getId());
+    mBuildingWindows.emplace_back(buildingWindow);
 }
 
 void GameStateEditor::updateWindows()
 {
     for (std::unique_ptr<PersonWindow>& personWindow : mPersonWindows)
         drawCity(personWindow->getRenderTexture(), personWindow->getView());
+    for (std::unique_ptr<BuildingWindow>& buildingWindow : mBuildingWindows)
+        drawCity(buildingWindow->getRenderTexture(), buildingWindow->getView());
 }
 
 void GameStateEditor::closeMenus()

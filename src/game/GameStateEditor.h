@@ -7,6 +7,7 @@
 #include "pcg/TerrainGenerator.h"
 
 class PersonWindow;
+class BuildingWindow;
 
 enum class ActionState{NONE, PANNING, SELECTING};
 
@@ -42,12 +43,13 @@ private:
     sf::View mGuiView;
     int mIWindow;
     std::vector<std::unique_ptr<PersonWindow>> mPersonWindows;
+    std::vector<std::unique_ptr<BuildingWindow>> mBuildingWindows;
 
     void drawCity(sf::RenderTexture& renderTexture, const sf::View& view);
 
     void createGui();
     void createPersonWindow(const Person& person);
-    void createCompanyWindow(const Company& company);
+    void createBuildingWindow(const Building& building);
     void updateWindows();
     void closeMenus();
 

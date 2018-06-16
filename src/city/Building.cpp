@@ -70,6 +70,11 @@ bool Building::isBuilding() const
     return true;
 }
 
+sf::Vector2f Building::getPosition() const
+{
+    return mSprite.getPosition();
+}
+
 void Building::setPosition(sf::Vector2f position)
 {
     mSprite.setPosition(sf::Vector2f(position.x, position.y - OFFSET_Y));

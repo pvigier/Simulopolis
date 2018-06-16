@@ -20,6 +20,7 @@ public:
     virtual bool updateVariant(Tile* neighbors[3][3]) override;
 
     virtual bool isBuilding() const override;
+    sf::Vector2f getPosition() const;
     virtual void setPosition(sf::Vector2f position) override;
 
 private:
