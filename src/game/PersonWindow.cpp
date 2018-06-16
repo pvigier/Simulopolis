@@ -1,4 +1,5 @@
 #include "PersonWindow.h"
+#include "resource/StylesheetManager.h"
 #include "city/Person.h"
 #include "gui/Gui.h"
 #include "gui/GuiText.h"

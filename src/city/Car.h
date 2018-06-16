@@ -1,11 +1,12 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "resource/ResourceManager.h"
 #include "ai/Kinematic.h"
 #include "ai/SteeringBehaviors.h"
 #include "render/sprite_intersection.h"
 
+class TextureManager;
+class ImageManager;
 class Person;
 
 class Car : public sf::Drawable

@@ -1,4 +1,6 @@
 #include "city/Car.h"
+#include "resource/TextureManager.h"
+#include "resource/ImageManager.h"
 
 TextureManager* Car::sTextureManager = nullptr;
 ImageManager* Car::sImageManager = nullptr;
