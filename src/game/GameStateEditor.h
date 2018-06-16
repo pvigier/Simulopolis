@@ -6,8 +6,7 @@
 #include "gui/Gui.h"
 #include "pcg/TerrainGenerator.h"
 
-class GuiWindow;
-class GuiImage;
+class PersonWindow;
 
 enum class ActionState{NONE, PANNING, SELECTING};
 
@@ -27,14 +26,6 @@ public:
     const sf::Texture& getCityTexture() const;
 
 private:
-    struct PersonWindow
-    {
-        const Person* person;
-        GuiWindow* window;
-        GuiImage* image;
-        sf::RenderTexture renderTexture;
-    };
-
     sf::RenderTexture mRenderTexture;
     sf::View mGameView;
     sf::Sprite mBackground;

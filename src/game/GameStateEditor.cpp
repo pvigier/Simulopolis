@@ -15,6 +15,7 @@
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
 #include "gui/GuiEvent.h"
+#include "game/PersonWindow.h"
 
 GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel(1.0f),
     mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor")), mIWindow(0)
@@ -55,7 +56,7 @@ GameStateEditor::~GameStateEditor()
     mGui->unsubscribe(mMailbox.getId());
 
     for (std::unique_ptr<PersonWindow>& personWindow : mPersonWindows)
-        personWindow->window->unsubscribe(mMailbox.getId());
+        personWindow->getWindow()->unsubscribe(mMailbox.getId());
 }
 
 void GameStateEditor::draw(float dt)
@@ -240,7 +241,7 @@ void GameStateEditor::handleMessages()
                     GuiWindow* window = static_cast<GuiWindow*>(event.widget);
                     for (std::size_t i = 0; i < mPersonWindows.size(); ++i)
                     {
-                        if (mPersonWindows[i]->window == window)
+                        if (mPersonWindows[i]->getWindow() == window)
                         {
                             std::swap(mPersonWindows[i], mPersonWindows.back());
                             mPersonWindows.pop_back();
@@ -308,60 +309,9 @@ void GameStateEditor::createGui()
 void GameStateEditor::createPersonWindow(const Person& person)
 {
     std::string windowId = "window" + std::to_string(mIWindow++);
-    std::unique_ptr<PersonWindow> personWindow(new PersonWindow);
-
-    // Zoom
-    personWindow->renderTexture.create(96, 96);
-    sf::Sprite zoomSprite(personWindow->renderTexture.getTexture());
-    auto zoomImage = mGui->create<GuiImage>(windowId + "ZoomImage", zoomSprite);
-
-    // Personal info
-    auto infoWidget = mGui->create<GuiWidget>(windowId + "InfoWidget");
-    auto firstNameText = mGui->create<GuiText>(windowId + "FirstNameText", "First name: " + person.getFirstName(), 10, sStylesheetManager->getStylesheet("text"));
-    auto lastNameText = mGui->create<GuiText>(windowId + "LastNameText", "Last name: " + person.getLastName(), 10, sStylesheetManager->getStylesheet("text"));
-    auto ageText = mGui->create<GuiText>(windowId + "AgeText", "Age: " + std::to_string(person.getAge(mCity.getYear())), 10, sStylesheetManager->getStylesheet("text"));
-    auto stateText = mGui->create<GuiText>(windowId + "StateText", "State: " + std::to_string(static_cast<int>(person.getState())), 10, sStylesheetManager->getStylesheet("text"));
-    infoWidget->add(firstNameText);
-    infoWidget->add(lastNameText);
-    infoWidget->add(ageText);
-    infoWidget->add(stateText);
-    infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
-    infoWidget->fitSizeToContent();
-
-    // Top widget
-    auto topWidget = mGui->create<GuiWidget>(windowId + "TopWidget");
-    topWidget->add(zoomImage);
-    topWidget->add(infoWidget);
-    topWidget->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
-    topWidget->fitSizeToContent();
-
-    // Bottom widget
-    auto bottomWidget = mGui->create<GuiWidget>(windowId + "BottomWidget");
-    auto sleepText = mGui->create<GuiText>(windowId + "SleepText", "Sleep: " + std::to_string(person.getSleep()), 10, sStylesheetManager->getStylesheet("text"));
-    auto hygieneText = mGui->create<GuiText>(windowId + "HygieneText", "Hygiene: " + std::to_string(person.getHygiene()), 10, sStylesheetManager->getStylesheet("text"));
-    auto safetyText = mGui->create<GuiText>(windowId + "SafetyText", "Safety: " + std::to_string(person.getSafety()), 10, sStylesheetManager->getStylesheet("text"));
-    auto hungerText = mGui->create<GuiText>(windowId + "HungerText", "Hunger: " + std::to_string(person.getHunger()), 10, sStylesheetManager->getStylesheet("text"));
-    auto happinessText = mGui->create<GuiText>(windowId + "HapinessText", "Happiness: " + std::to_string(person.getHappiness()), 10, sStylesheetManager->getStylesheet("text"));
-    bottomWidget->add(sleepText);
-    bottomWidget->add(hygieneText);
-    bottomWidget->add(safetyText);
-    bottomWidget->add(hungerText);
-    bottomWidget->add(happinessText);
-    bottomWidget->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
-    bottomWidget->fitSizeToContent();
-
-    // Window
-    auto window = mGui->createRoot<GuiWindow>(windowId, sf::Vector2f(200.0f, 120.0f), person.getFullName(), sStylesheetManager->getStylesheet("window"));
-    window->add(topWidget);
-    window->add(bottomWidget);
-    window->setPosition(sf::Vector2f(50.0f, 50.0f));
-    window->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
-    window->subscribe(mMailbox.getId());
-
-    personWindow->person = &person;
-    personWindow->window = window;
-    personWindow->image = zoomImage;
-    mPersonWindows.push_back(std::move(personWindow));
+    PersonWindow* personWindow = new PersonWindow(mGui.get(), sStylesheetManager, windowId, person, mCity.getYear());
+    personWindow->getWindow()->subscribe(mMailbox.getId());
+    mPersonWindows.emplace_back(personWindow);
 }
 
 void GameStateEditor::createCompanyWindow(const Company& company)
@@ -379,12 +329,7 @@ void GameStateEditor::createCompanyWindow(const Company& company)
 void GameStateEditor::updateWindows()
 {
     for (std::unique_ptr<PersonWindow>& personWindow : mPersonWindows)
-    {
-        sf::Vector2f zoomSize(96.0f, 96.0f);
-        sf::Vector2f center = personWindow->person->getCar().getKinematic().getPosition();
-        sf::View view(center, zoomSize);
-        drawCity(personWindow->renderTexture, view);
-    }
+        drawCity(personWindow->getRenderTexture(), personWindow->getView());
 }
 
 void GameStateEditor::closeMenus()
