@@ -7,8 +7,10 @@
 #include "gui/GuiButton.h"
 #include "gui/GuiText.h"
 #include "gui/GuiImage.h"
+#include "gui/GuiTabWidget.h"
 #include "gui/GuiHBoxLayout.h"
 #include "gui/GuiVBoxLayout.h"
+#include "gui/GuiOverlapLayout.h"
 
 GuiManager::GuiManager() : mXmlManager(nullptr), mPrefixPath("media/")
 {
@@ -88,13 +90,13 @@ std::unique_ptr<GuiWidget> GuiManager::loadWidgets(Gui* gui, const XmlDocument& 
 bool GuiManager::isWidget(const XmlDocument& node)
 {
     const std::string& type = node.getName();
-    return (type == "widget" || type == "button" || type == "text" || type == "image");
+    return (type == "widget" || type == "button" || type == "text" || type == "image" || type == "tabwidget");
 }
 
 bool GuiManager::isLayout(const XmlDocument& node)
 {
     const std::string& type = node.getName();
-    return (type == "hboxlayout" || type == "vboxlayout");
+    return (type == "hboxlayout" || type == "vboxlayout" || type == "overlaplayout");
 }
 
 std::unique_ptr<GuiWidget> GuiManager::createWidget(const XmlDocument& node)
@@ -102,13 +104,15 @@ std::unique_ptr<GuiWidget> GuiManager::createWidget(const XmlDocument& node)
     std::unique_ptr<GuiWidget> widget;
     const std::string& type = node.getName();
     if (type == "widget")
-        widget = std::unique_ptr<GuiWidget>(new GuiWidget(node.getAttributes()));
+        widget = std::make_unique<GuiWidget>(node.getAttributes());
     else if (type == "button")
-        widget = std::unique_ptr<GuiButton>(new GuiButton(node.getAttributes()));
+        widget = std::make_unique<GuiButton>(node.getAttributes());
     else if (type == "text")
-        widget = std::unique_ptr<GuiText>(new GuiText(node.getAttributes()));
+        widget = std::make_unique<GuiText>(node.getAttributes());
     else if (type == "image")
-        widget = std::unique_ptr<GuiImage>(new GuiImage(node.getAttributes()));
+        widget = std::make_unique<GuiImage>(node.getAttributes());
+    else if (type == "tabwidget")
+        widget = std::make_unique<GuiTabWidget>(node.getAttributes());
     return std::move(widget);
 }
 
@@ -117,8 +121,10 @@ std::unique_ptr<GuiLayout> GuiManager::createLayout(const XmlDocument& node)
     std::unique_ptr<GuiLayout> layout(nullptr);
     const std::string& type = node.getName();
     if (type == "hboxlayout")
-        layout = std::unique_ptr<GuiHBoxLayout>(new GuiHBoxLayout(node.getAttributes()));
+        layout = std::make_unique<GuiHBoxLayout>(node.getAttributes());
     else if (type == "vboxlayout")
-        layout = std::unique_ptr<GuiVBoxLayout>(new GuiVBoxLayout(node.getAttributes()));
+        layout = std::make_unique<GuiVBoxLayout>(node.getAttributes());
+    else if (type == "overlaplayout")
+        layout = std::make_unique<GuiOverlapLayout>(node.getAttributes());
     return std::move(layout);
 }
