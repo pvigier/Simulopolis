@@ -3,14 +3,16 @@
 #include <SFML/Graphics.hpp>
 
 class GuiWidget;
+class PropertyList;
 
 class GuiLayout
 {
 public:
     enum class HAlignment{Left, Center, Right};
-    enum class VAlignment {Top, Center, Bottom};
+    enum class VAlignment{Top, Center, Bottom};
 
     GuiLayout();
+    GuiLayout(const PropertyList& properties);
     virtual ~GuiLayout();
 
     virtual void align() = 0;

@@ -7,7 +7,7 @@ GuiBoxLayout::GuiBoxLayout(HAlignment hAlignment, VAlignment vAlignment, float s
     //ctor
 }
 
-GuiBoxLayout::GuiBoxLayout(const PropertyList& properties)
+GuiBoxLayout::GuiBoxLayout(const PropertyList& properties) : GuiLayout(properties)
 {
     mHAlignment = properties.get("hAlignment", HAlignment::Left);
     mVAlignment = properties.get("vAlignment", VAlignment::Top);
