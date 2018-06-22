@@ -1,8 +1,20 @@
 #include "Building.h"
 #include "render/sprite_intersection.h"
+#include "city/Person.h"
+#include "city/Company.h"
+
+std::string Building::Owner::toString() const
+{
+    if (type == Type::CITY)
+        return "City";
+    else if (type == Type::PERSON)
+        return person->getFullName();
+    else
+        return company->getFullName();
+}
 
 Building::Building(const std::string& name, Type type) :
-    Tile(name, type), mNbStairs(3)
+    Tile(name, type), mNbStairs(3), mOwner{Owner::Type::CITY, nullptr}
 {
     if (type == Type::HOSPITAL || type == Type::POLICE || type == Type::SCHOOL)
         mNbStairs = 2;
@@ -78,4 +90,14 @@ sf::Vector2f Building::getPosition() const
 void Building::setPosition(sf::Vector2f position)
 {
     mSprite.setPosition(sf::Vector2f(position.x, position.y - OFFSET_Y));
+}
+
+const Building::Owner& Building::getOwner() const
+{
+    return mOwner;
+}
+
+void Building::setOwner(Owner owner)
+{
+    mOwner = owner;
 }
