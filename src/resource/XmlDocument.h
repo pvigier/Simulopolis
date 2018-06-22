@@ -14,6 +14,7 @@ public:
     const std::vector<XmlDocument>& getChildren() const;
     const std::vector<std::size_t>& getChildrenByName(const std::string& name) const;
     const XmlDocument& getFirstChildByName(const std::string& name) const;
+    bool hasChildren(const std::string& name) const;
 
 private:
     std::string mName;

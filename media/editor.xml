@@ -23,62 +23,71 @@
 		</button>
 		<hboxlayout vAlignment="bottom" />
 	</widget>
-	<widget name="leftMenu">
-		<button name="grassButton" size="32 32" style="button">
-			<image name="grassImage" texture="grass" size="24 18" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<button name="forestButton" size="32 32" style="button">
-			<image name="forestImage" texture="forest" size="24 18" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<button name="residentialButton" size="32 32" style="button">
-			<image name="residentialImage" texture="residential" rect="0 85 132 132" size="24 24" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<button name="commercialButton" size="32 32" style="button">
-			<image name="commercialImage" texture="commercial" rect="0 85 132 132" size="24 24" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<button name="industrialButton" size="32 32" style="button">
-			<image name="industrialImage" texture="industrial" rect="0 85 132 132" size="24 24" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-        <button name="hospitalButton" size="32 32" style="button">
-			<image name="hospitalImage" texture="hospital" rect="0 85 132 132" size="24 24" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-        <button name="policeButton" size="32 32" style="button">
-			<image name="policeImage" texture="police" rect="0 85 132 132" size="24 24" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-        <button name="schoolButton" size="32 32" style="button">
-			<image name="schoolImage" texture="school" rect="0 85 132 132" size="24 24" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-        <!-- Roads -->
-        <widget name="roadMenu">
+	<widget name="rightMenu">
+        <widget name="tabButtons">
+            <button name="grassButton" size="32 32" style="button">
+                <image name="grassImage" texture="grass" size="24 18" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <button name="forestButton" size="32 32" style="button">
+                <image name="forestImage" texture="forest" size="24 18" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <button name="residentialButton" size="32 32" style="button">
+                <image name="residentialImage" texture="residential" rect="0 85 132 132" size="24 24" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <button name="commercialButton" size="32 32" style="button">
+                <image name="commercialImage" texture="commercial" rect="0 85 132 132" size="24 24" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <button name="industrialButton" size="32 32" style="button">
+                <image name="industrialImage" texture="industrial" rect="0 85 132 132" size="24 24" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <button name="hospitalButton" size="32 32" style="button">
+                <image name="hospitalImage" texture="hospital" rect="0 85 132 132" size="24 24" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <button name="policeButton" size="32 32" style="button">
+                <image name="policeImage" texture="police" rect="0 85 132 132" size="24 24" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <button name="schoolButton" size="32 32" style="button">
+                <image name="schoolImage" texture="school" rect="0 85 132 132" size="24 24" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
             <button name="roadMenuButton" size="32 32" style="button">
                 <image name="roadMenuImage" texture="road" rect="0 0 132 101" size="24 18" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
-            <widget name="roadMenuButtons" visible="false">
-                <button name="roadGrassButton" size="32 32" style="button">
-                    <image name="roadGrassImage" texture="road" rect="0 0 132 101" size="24 18" />
-                    <hboxlayout hAlignment="center" vAlignment="center" />
-                </button>
-                <button name="roadSidewalkButton" size="32 32" style="button">
-                    <image name="roadSidewalkImage" texture="road" rect="132 0 132 101" size="24 18" />
-                    <hboxlayout hAlignment="center" vAlignment="center" />
-                </button>
-                <button name="roadWaterButton" size="32 32" style="button">
-                    <image name="roadWaterImage" texture="road" rect="264 0 132 101" size="24 18" />
-                    <hboxlayout hAlignment="center" vAlignment="center" />
-                </button>
-                <hboxlayout hAlignment="left" vAlignment="top" />
-            </widget>
-            <hboxlayout hAlignment="left" vAlignment="top" />
+            <vboxlayout hAlignment="left" vAlignment="top" />
         </widget>
-		<vboxlayout />
+        <tabwidget name="tabs">
+            <widget name="roadTab" style="tabs">
+                <widget name="roadTitle">
+                    <text name="roadText" text="Roads" characterSize="12" style="button" />
+                    <hboxlayout hAlignment="center" />
+                </widget>
+                <widget name="roadButtons">
+                    <button name="roadGrassButton" size="32 32" style="button">
+                        <image name="roadGrassImage" texture="road" rect="0 0 132 101" size="24 18" />
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="roadSidewalkButton" size="32 32" style="button">
+                        <image name="roadSidewalkImage" texture="road" rect="132 0 132 101" size="24 18" />
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="roadWaterButton" size="32 32" style="button">
+                        <image name="roadWaterImage" texture="road" rect="264 0 132 101" size="24 18" />
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <hboxlayout hAlignment="center" vAlignment="center" />
+                </widget>
+                <vboxlayout hAlignment="center" vAlignment="center" margins="16 16 16 16" spacing="8" />
+            </widget>
+            <overlaplayout />
+        </tabwidget>
+		<hboxlayout hAlignment="right" vAlignment="top" />
 	</widget>
 </gui>

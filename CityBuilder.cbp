@@ -56,6 +56,8 @@
 		<Unit filename="src/city/City.h" />
 		<Unit filename="src/city/Company.cpp" />
 		<Unit filename="src/city/Company.h" />
+		<Unit filename="src/city/Contract.cpp" />
+		<Unit filename="src/city/Contract.h" />
 		<Unit filename="src/city/Map.cpp" />
 		<Unit filename="src/city/Map.h" />
 		<Unit filename="src/city/Network.cpp" />
@@ -66,6 +68,8 @@
 		<Unit filename="src/city/Road.h" />
 		<Unit filename="src/city/Tile.cpp" />
 		<Unit filename="src/city/Tile.h" />
+		<Unit filename="src/game/BuildingWindow.cpp" />
+		<Unit filename="src/game/BuildingWindow.h" />
 		<Unit filename="src/game/Game.cpp" />
 		<Unit filename="src/game/Game.h" />
 		<Unit filename="src/game/GameState.cpp" />
@@ -74,6 +78,8 @@
 		<Unit filename="src/game/GameStateEditor.h" />
 		<Unit filename="src/game/GameStateStart.cpp" />
 		<Unit filename="src/game/GameStateStart.h" />
+		<Unit filename="src/game/PersonWindow.cpp" />
+		<Unit filename="src/game/PersonWindow.h" />
 		<Unit filename="src/gui/Gui.cpp" />
 		<Unit filename="src/gui/Gui.h" />
 		<Unit filename="src/gui/GuiBoxLayout.cpp" />
@@ -88,6 +94,10 @@
 		<Unit filename="src/gui/GuiImage.h" />
 		<Unit filename="src/gui/GuiLayout.cpp" />
 		<Unit filename="src/gui/GuiLayout.h" />
+		<Unit filename="src/gui/GuiOverlapLayout.cpp" />
+		<Unit filename="src/gui/GuiOverlapLayout.h" />
+		<Unit filename="src/gui/GuiTabWidget.cpp" />
+		<Unit filename="src/gui/GuiTabWidget.h" />
 		<Unit filename="src/gui/GuiText.cpp" />
 		<Unit filename="src/gui/GuiText.h" />
 		<Unit filename="src/gui/GuiVBoxLayout.cpp" />

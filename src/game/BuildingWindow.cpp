@@ -19,29 +19,30 @@ BuildingWindow::BuildingWindow(Gui* gui, StylesheetManager* stylesheetManager, c
 
     // Personal info
     auto infoWidget = gui->create<GuiWidget>(windowId + "InfoWidget");
-    auto companyText = gui->create<GuiText>(windowId + "CompanyText", "Company: ", 10, stylesheetManager->getStylesheet("text"));
-    infoWidget->add(companyText);
+    auto typeText = gui->create<GuiText>(windowId + "TypeText", "Type: " + Tile::typeToString(building.getType()), 10, stylesheetManager->getStylesheet("text"));
+    auto ownerText = gui->create<GuiText>(windowId + "OwnerText", "Owner: " + building.getOwner().toString(), 10, stylesheetManager->getStylesheet("text"));
+    infoWidget->add(typeText);
+    infoWidget->add(ownerText);
     infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
-    infoWidget->fitSizeToContent();
 
     // Top widget
     auto topWidget = gui->create<GuiWidget>(windowId + "TopWidget");
     topWidget->add(mImage);
     topWidget->add(infoWidget);
-    topWidget->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
-    topWidget->fitSizeToContent();
+    topWidget->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 8.0f));
 
     // Bottom widget
     auto bottomWidget = gui->create<GuiWidget>(windowId + "BottomWidget");
     bottomWidget->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
-    bottomWidget->fitSizeToContent();
 
     // Window
-    mWindow = gui->createRoot<GuiWindow>(windowId, sf::Vector2f(200.0f, 120.0f), "Building", stylesheetManager->getStylesheet("window"));
+    mWindow = gui->createRoot<GuiWindow>(windowId, "Building", stylesheetManager->getStylesheet("window"));
     mWindow->add(topWidget);
     mWindow->add(bottomWidget);
     mWindow->setPosition(sf::Vector2f(50.0f, 50.0f));
-    mWindow->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
+    std::unique_ptr<GuiVBoxLayout> layout(new GuiVBoxLayout(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 8.0f));
+    layout->setMargins(GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f});
+    mWindow->setLayout(std::move(layout));
 }
 
 BuildingWindow::~BuildingWindow()

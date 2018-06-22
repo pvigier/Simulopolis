@@ -51,7 +51,6 @@ private:
     void createPersonWindow(const Person& person);
     void createBuildingWindow(const Building& building);
     void updateWindows();
-    void closeMenus();
 
     void zoom(float factor);
 

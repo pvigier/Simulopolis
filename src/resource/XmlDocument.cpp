@@ -31,3 +31,8 @@ const XmlDocument& XmlDocument::getFirstChildByName(const std::string& name) con
 {
     return mChildren.at(mChildrenByName.at(name).front());
 }
+
+bool XmlDocument::hasChildren(const std::string& name) const
+{
+    return mChildrenByName.find(name) != mChildrenByName.end();
+}

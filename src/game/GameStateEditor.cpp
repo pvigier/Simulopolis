@@ -51,9 +51,9 @@ GameStateEditor::~GameStateEditor()
     mGui->get<GuiButton>("policeButton")->unsubscribe(mMailbox.getId());
     mGui->get<GuiButton>("schoolButton")->unsubscribe(mMailbox.getId());
     mGui->get<GuiButton>("roadMenuButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadGrassButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadSidewalkButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadWaterButton")->unsubscribe(mMailbox.getId());
+    //mGui->get<GuiButton>("roadGrassButton")->unsubscribe(mMailbox.getId());
+    //mGui->get<GuiButton>("roadSidewalkButton")->unsubscribe(mMailbox.getId());
+    //mGui->get<GuiButton>("roadWaterButton")->unsubscribe(mMailbox.getId());
     mGui->unsubscribe(mMailbox.getId());
 
     for (std::unique_ptr<PersonWindow>& personWindow : mPersonWindows)
@@ -231,7 +231,6 @@ void GameStateEditor::handleMessages()
             {
                 case GuiEvent::Type::BUTTON_RELEASED:
                 {
-                    closeMenus();
                     const std::string& name = event.widget->getName();
                     if (name == "roadMenuButton")
                     {
@@ -304,7 +303,7 @@ void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View&
 void GameStateEditor::createGui()
 {
     mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
-    mGui->get("infoBar")->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
+    mGui->get("infoBar")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
     mGui->get<GuiButton>("grassButton")->subscribe(mMailbox.getId());
     mGui->get<GuiButton>("forestButton")->subscribe(mMailbox.getId());
@@ -315,9 +314,10 @@ void GameStateEditor::createGui()
     mGui->get<GuiButton>("policeButton")->subscribe(mMailbox.getId());
     mGui->get<GuiButton>("schoolButton")->subscribe(mMailbox.getId());
     mGui->get<GuiButton>("roadMenuButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadGrassButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadSidewalkButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadWaterButton")->subscribe(mMailbox.getId());
+    //mGui->get<GuiButton>("roadGrassButton")->subscribe(mMailbox.getId());
+    //mGui->get<GuiButton>("roadSidewalkButton")->subscribe(mMailbox.getId());
+    //mGui->get<GuiButton>("roadWaterButton")->subscribe(mMailbox.getId());
+    mGui->get("rightMenu")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 }
 
 void GameStateEditor::createPersonWindow(const Person& person)
@@ -342,12 +342,6 @@ void GameStateEditor::updateWindows()
         drawCity(personWindow->getRenderTexture(), personWindow->getView());
     for (std::unique_ptr<BuildingWindow>& buildingWindow : mBuildingWindows)
         drawCity(buildingWindow->getRenderTexture(), buildingWindow->getView());
-}
-
-void GameStateEditor::closeMenus()
-{
-    mGui->get("roadMenuButtons")->setVisible(false);
-    mGui->get<GuiButton>("roadMenuButton")->setState(GuiButton::State::NORMAL);
 }
 
 void GameStateEditor::zoom(float factor)

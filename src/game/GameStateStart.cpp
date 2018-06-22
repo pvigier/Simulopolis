@@ -96,7 +96,7 @@ void GameStateStart::setCityTexture(const sf::Texture& texture)
 void GameStateStart::createGui(bool resume)
 {
     mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
-    mGui->get("menu")->setSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
+    mGui->get("menu")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
     // Resume button
     const PropertyList& textProperties = sStylesheetManager->getStylesheet("button")->getFirstChildByName("text").getAttributes();
