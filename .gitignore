@@ -38,3 +38,6 @@ doxygen/
 
 # Gimp
 media/gimp
+
+# Python
+*.py
