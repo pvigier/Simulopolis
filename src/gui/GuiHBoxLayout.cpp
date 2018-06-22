@@ -19,7 +19,7 @@ GuiHBoxLayout::~GuiHBoxLayout()
 
 void GuiHBoxLayout::align()
 {
-    sf::Vector2f offset = mOwner->getPosition();
+    sf::Vector2f offset = mOwner->getPosition() + sf::Vector2f(mMargins.left, mMargins.top);
     sf::Vector2f size = computeSize();
     if (mHAlignment == HAlignment::Center)
         offset.x += mOwner->getSize().x * 0.5f - size.x * 0.5f;
@@ -27,11 +27,11 @@ void GuiHBoxLayout::align()
         offset.x += mOwner->getSize().x - size.x;
     for (GuiWidget* widget : mOwner->getChildren())
     {
-        offset.y = mOwner->getPosition().y;
+        offset.y = mOwner->getPosition().y + mMargins.top;
         if (mVAlignment == VAlignment::Center)
-            offset.y += mOwner->getSize().y * 0.5f - widget->getSize().y * 0.5f;
+            offset.y += (mOwner->getSize().y - mMargins.top - mMargins.bottom) * 0.5f - widget->getSize().y * 0.5f;
         else if (mVAlignment == VAlignment::Bottom)
-            offset.y += mOwner->getSize().y - widget->getSize().y;
+            offset.y += mOwner->getSize().y - mMargins.top - mMargins.bottom - widget->getSize().y;
         widget->setPosition(offset);
         offset.x += widget->getSize().x + mSpacing;
     }
@@ -46,5 +46,5 @@ sf::Vector2f GuiHBoxLayout::computeSize() const
         size.y = std::max(size.y, widget->getSize().y);
     }
     size.x -= mSpacing;
-    return size;
+    return size + sf::Vector2f(mMargins.left + mMargins.right, mMargins.top + mMargins.bottom);
 }

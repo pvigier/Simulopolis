@@ -1,8 +1,8 @@
 #include "gui/GuiBoxLayout.h"
 #include "resource/PropertyList.h"
 
-GuiBoxLayout::GuiBoxLayout(HAlignment hAlignment, VAlignment vAlignment, float spacing) : mSpacing(spacing),
-    mHAlignment(hAlignment), mVAlignment(vAlignment)
+GuiBoxLayout::GuiBoxLayout(HAlignment hAlignment, VAlignment vAlignment, float spacing) :
+    mSpacing(spacing), mHAlignment(hAlignment), mVAlignment(vAlignment)
 {
     //ctor
 }

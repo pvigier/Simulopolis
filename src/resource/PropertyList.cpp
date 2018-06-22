@@ -134,3 +134,12 @@ GuiLayout::VAlignment PropertyList::get(const std::string& name) const
     else
         return GuiLayout::VAlignment::Bottom;
 }
+
+template<>
+GuiLayout::Margins PropertyList::get(const std::string& name) const
+{
+    std::istringstream stream(mProperties.at(name));
+    std::string left, top, right, bottom;
+    stream >> left >> top >> right >> bottom;
+    return GuiLayout::Margins{std::stof(left), std::stof(top), std::stof(right), std::stof(bottom)};
+}

@@ -84,3 +84,6 @@ GuiLayout::HAlignment PropertyList::get(const std::string& name) const;
 
 template<>
 GuiLayout::VAlignment PropertyList::get(const std::string& name) const;
+
+template<>
+GuiLayout::Margins PropertyList::get(const std::string& name) const;

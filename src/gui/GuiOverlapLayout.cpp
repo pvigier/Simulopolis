@@ -18,7 +18,7 @@ GuiOverlapLayout::~GuiOverlapLayout()
 
 void GuiOverlapLayout::align()
 {
-    sf::Vector2f offset = mOwner->getPosition();
+    sf::Vector2f offset = mOwner->getPosition() + sf::Vector2f(mMargins.left, mMargins.top);
     for (GuiWidget* widget : mOwner->getChildren())
         widget->setPosition(offset);
 }
@@ -31,5 +31,5 @@ sf::Vector2f GuiOverlapLayout::computeSize() const
         size.x = std::max(size.x, widget->getSize().x);
         size.y = std::max(size.y, widget->getSize().y);
     }
-    return size;
+    return size + sf::Vector2f(mMargins.left + mMargins.right, mMargins.top + mMargins.bottom);
 }
