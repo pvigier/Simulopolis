@@ -2,16 +2,15 @@
 #include "resource/ResourceManager.h"
 #include "gui/GuiEvent.h"
 
-GuiWindow::GuiWindow(sf::Vector2f size, const std::string& title, const XmlDocument* style) :
-    mStyle(style), mOnMove(false)
+GuiWindow::GuiWindow(const std::string& title, const XmlDocument* style) :
+    GuiWidget(style), mOnMove(false)
 {
     applyStyle();
-    setSize(size);
     setTitle(title);
 }
 
 GuiWindow::GuiWindow(const PropertyList& properties) :
-    GuiWidget(properties), mStyle(properties.get<const XmlDocument*>("style"))
+    GuiWidget(properties)
 {
     applyStyle();
     setSize(mSize);
@@ -22,7 +21,6 @@ GuiWindow::GuiWindow(const PropertyList& properties) :
 void GuiWindow::setPosition(sf::Vector2f position)
 {
     GuiWidget::setPosition(position);
-    mBody.setPosition(position);
     mBar.setPosition(position);
     sf::Vector2f barSize = sf::Vector2f(mBar.getGlobalBounds().width, mBar.getGlobalBounds().height);
     // Close button
@@ -33,16 +31,6 @@ void GuiWindow::setPosition(sf::Vector2f position)
     sf::Vector2f titleSize = sf::Vector2f(mTitle.getGlobalBounds().width, mTitle.getGlobalBounds().height);
     sf::Vector2i titlePosition(position + sf::Vector2f(mSize.x * 0.5f, -barSize.y * 0.5f) - offset - titleSize * 0.5f);
     mTitle.setPosition(sf::Vector2f(titlePosition));
-}
-
-void GuiWindow::setSize(sf::Vector2f size)
-{
-    GuiWidget::setSize(size);
-    mBody.setSize(size);
-    mBar.setSize(sf::Vector2f(size.x, mStyle->getFirstChildByName("bar").getAttributes().get<float>("height")));
-    mCloseButton.setRadius(mStyle->getFirstChildByName("bar").getAttributes().get<float>("height") * 0.25f);
-    // Update position
-    setPosition(mPosition);
 }
 
 void GuiWindow::setTitle(const std::string& title)
@@ -62,7 +50,7 @@ bool GuiWindow::onHover(sf::Vector2f position, bool processed)
         setPosition(mPosition + position - mAnchor);
         mAnchor = position;
     }
-    return mBody.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);
+    return mBackground.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);
 }
 
 bool GuiWindow::onPress(sf::Vector2f position, bool processed)
@@ -74,7 +62,7 @@ bool GuiWindow::onPress(sf::Vector2f position, bool processed)
     }
     else if (!processed && mCloseButton.getGlobalBounds().contains(position))
         mCloseButton.setFillColor(mStyle->getFirstChildByName("close").getAttributes().get<sf::Color>("highlightColor"));
-    return mBody.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);
+    return mBackground.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);
 }
 
 bool GuiWindow::onRelease(sf::Vector2f position, bool processed)
@@ -83,12 +71,21 @@ bool GuiWindow::onRelease(sf::Vector2f position, bool processed)
     if (!processed && mCloseButton.getGlobalBounds().contains(position))
         notify(Message::create(MessageType::GUI, GuiEvent(this, GuiEvent::Type::WINDOW_CLOSED)));
     mCloseButton.setFillColor(mStyle->getFirstChildByName("close").getAttributes().get<sf::Color>("color"));
-    return mBody.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);
+    return mBackground.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);
+}
+
+void GuiWindow::setSize(sf::Vector2f size)
+{
+    GuiWidget::setSize(size);
+    mBar.setSize(sf::Vector2f(size.x, mStyle->getFirstChildByName("bar").getAttributes().get<float>("height")));
+    mCloseButton.setRadius(mStyle->getFirstChildByName("bar").getAttributes().get<float>("height") * 0.25f);
+    // Update position
+    setPosition(mPosition);
 }
 
 void GuiWindow::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mBody);
+    GuiWidget::render(target, states);
     target.draw(mBar);
     target.draw(mCloseButton);
     target.draw(mTitle);
@@ -96,10 +93,6 @@ void GuiWindow::render(sf::RenderTarget& target, sf::RenderStates states) const
 
 void GuiWindow::applyStyle()
 {
-    // Body
-    mBody.setOutlineThickness(mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
-    mBody.setFillColor(mStyle->getFirstChildByName("body").getAttributes().get<sf::Color>("color"));
-    mBody.setOutlineColor(mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("color"));
     // Bar
     mBar.setOrigin(0.0f, mStyle->getFirstChildByName("bar").getAttributes().get<float>("height") +
         mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));

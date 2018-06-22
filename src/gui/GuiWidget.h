@@ -6,12 +6,13 @@
 
 class GuiWidget;
 class GuiLayout;
+class XmlDocument;
 class PropertyList;
 
 class GuiWidget : public sf::Drawable, public Subject
 {
 public:
-    GuiWidget();
+    GuiWidget(const XmlDocument* style = nullptr);
     GuiWidget(const PropertyList& properties);
     virtual ~GuiWidget();
 
@@ -36,8 +37,10 @@ public:
     virtual sf::Vector2f getPosition() const;
     virtual void setPosition(sf::Vector2f position);
     virtual sf::Vector2f getSize() const;
-    virtual void setSize(sf::Vector2f size);
+    void setFixedSize(sf::Vector2f size);
     virtual sf::FloatRect getRect() const;
+    void setBackgroundColor(const sf::Color& color);
+    void setBorderSize(int borderSize);
     bool isVisible() const;
     void setVisible(bool visible);
     bool isDirty() const;
@@ -58,8 +61,14 @@ protected:
     sf::Vector2f mPosition;
     sf::Vector2f mSize;
     bool mVisible;
+    bool mFixedSize;
+    const XmlDocument* mStyle;
+    sf::RectangleShape mBackground;
 
     void setDirty();
+    virtual void setSize(sf::Vector2f size);
+    public: void updateSize();
+    protected: void updateAlignment();
 
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -67,6 +76,8 @@ protected:
     virtual bool onHover(sf::Vector2f position, bool processed);
     virtual bool onPress(sf::Vector2f position, bool processed);
     virtual bool onRelease(sf::Vector2f position, bool processed);
+
+    virtual void applyStyle();
 
 private:
     bool mDirty;

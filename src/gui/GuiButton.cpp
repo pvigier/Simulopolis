@@ -2,32 +2,17 @@
 #include "resource/XmlDocument.h"
 #include "gui/GuiEvent.h"
 
-GuiButton::GuiButton(sf::Vector2f size, Message message, const XmlDocument* style) : mStyle(style)
+GuiButton::GuiButton(sf::Vector2f size)
 {
     setSize(size);
-    mShape.setOutlineThickness(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
     setState(State::NORMAL);
+    mFixedSize = true;
 }
 
 GuiButton::GuiButton(const PropertyList& properties) : GuiWidget(properties)
 {
-    mStyle = properties.get<const XmlDocument*>("style");
-    mShape.setPosition(mPosition);
-    mShape.setSize(mSize);
-    mShape.setOutlineThickness(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
+    setBorderSize(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
     setState(State::NORMAL);
-}
-
-void GuiButton::setPosition(sf::Vector2f position)
-{
-    GuiWidget::setPosition(position);
-    mShape.setPosition(position);
-}
-
-void GuiButton::setSize(sf::Vector2f size)
-{
-    GuiWidget::setSize(size);
-    mShape.setSize(size);
 }
 
 bool GuiButton::onHover(sf::Vector2f position, bool processed)
@@ -69,33 +54,28 @@ bool GuiButton::onRelease(sf::Vector2f position, bool processed)
 void GuiButton::setState(State state)
 {
     mState = state;
-    sf::Color bodyColor = mStyle->getFirstChildByName("body").getAttributes().get<sf::Color>("color");
+    sf::Color backgroundColor = mStyle->getFirstChildByName("background").getAttributes().get<sf::Color>("color");
     sf::Color borderColor = mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("color");
     if (state == State::HOVERED)
     {
-        bodyColor = mStyle->getFirstChildByName("body").getAttributes().get<sf::Color>("hoverColor", bodyColor);
+        backgroundColor = mStyle->getFirstChildByName("background").getAttributes().get<sf::Color>("hoverColor", backgroundColor);
         borderColor = mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("hoverColor", borderColor);
     }
     else if (state == State::PRESSED || state == State::FORCE_PRESSED)
     {
-        bodyColor = mStyle->getFirstChildByName("body").getAttributes().get<sf::Color>("pressColor", bodyColor);
+        backgroundColor = mStyle->getFirstChildByName("background").getAttributes().get<sf::Color>("pressColor", backgroundColor);
         borderColor = mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("pressColor", borderColor);
     }
     else if (state == State::DISABLED)
     {
-        bodyColor = mStyle->getFirstChildByName("body").getAttributes().get<sf::Color>("disableColor", bodyColor);
+        backgroundColor = mStyle->getFirstChildByName("background").getAttributes().get<sf::Color>("disableColor", backgroundColor);
         borderColor = mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("disableColor", borderColor);
     }
-    mShape.setFillColor(bodyColor);
-    mShape.setOutlineColor(borderColor);
+    mBackground.setFillColor(backgroundColor);
+    mBackground.setOutlineColor(borderColor);
 }
 
 bool GuiButton::hitButton(sf::Vector2f position) const
 {
-    return mShape.getGlobalBounds().contains(position);
-}
-
-void GuiButton::render(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    target.draw(mShape);
+    return mBackground.getGlobalBounds().contains(position);
 }

@@ -6,6 +6,7 @@ GuiText::GuiText(const std::string& text, unsigned int characterSize, const XmlD
 {
     mText.setFillColor(style->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
     computeSize();
+    mFixedSize = true;
 }
 
 GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
@@ -16,6 +17,7 @@ GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
     mText.setCharacterSize(properties.get<unsigned int>("characterSize", 0));
     mText.setFillColor(style->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
     computeSize();
+    mFixedSize = true;
 }
 
 GuiText::~GuiText()

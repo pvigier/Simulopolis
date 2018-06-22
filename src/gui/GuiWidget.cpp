@@ -1,10 +1,12 @@
 #include "gui/GuiWidget.h"
 #include "gui/GuiLayout.h"
 #include "resource/PropertyList.h"
+#include "resource/XmlDocument.h"
 
-GuiWidget::GuiWidget() : mRoot(false), mParent(nullptr), mVisible(true), mDirty(true)
+GuiWidget::GuiWidget(const XmlDocument* style) :
+    mRoot(false), mParent(nullptr), mVisible(true), mFixedSize(false), mStyle(style), mDirty(true)
 {
-    //ctor
+    applyStyle();
 }
 
 GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nullptr), mDirty(true)
@@ -12,6 +14,11 @@ GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nul
     mVisible = properties.get<bool>("visible", true);
     mPosition = properties.get<sf::Vector2f>("position", sf::Vector2f());
     mSize = properties.get<sf::Vector2f>("size", sf::Vector2f());
+    mFixedSize = properties.has("size");
+    setPosition(mPosition);
+    setSize(mSize);
+    mStyle = properties.get<const XmlDocument*>("style", nullptr);
+    applyStyle();
 }
 
 GuiWidget::~GuiWidget()
@@ -31,12 +38,8 @@ void GuiWidget::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void GuiWidget::update()
 {
-    if (mLayout != nullptr)
-    {
-        mLayout->align();
-        for (GuiWidget* widget : mChildren)
-            widget->update();
-    }
+    updateSize();
+    updateAlignment();
     mDirty = false;
 }
 
@@ -66,6 +69,7 @@ const std::vector<GuiWidget*>& GuiWidget::getChildren() const
 
 void GuiWidget::fitSizeToContent()
 {
+    mFixedSize = false;
     setSize(mLayout->computeSize());
 }
 
@@ -109,6 +113,7 @@ sf::Vector2f GuiWidget::getPosition() const
 void GuiWidget::setPosition(sf::Vector2f position)
 {
     mPosition = position;
+    mBackground.setPosition(position);
     setDirty();
 }
 
@@ -117,15 +122,25 @@ sf::Vector2f GuiWidget::getSize() const
     return mSize;
 }
 
-void GuiWidget::setSize(sf::Vector2f size)
+void GuiWidget::setFixedSize(sf::Vector2f size)
 {
-    mSize = size;
-    setDirty();
+    setSize(size);
+    mFixedSize = true;
 }
 
 sf::FloatRect GuiWidget::getRect() const
 {
     return sf::FloatRect(mPosition, mSize);
+}
+
+void GuiWidget::setBackgroundColor(const sf::Color& color)
+{
+    mBackground.setFillColor(color);
+}
+
+void GuiWidget::setBorderSize(int borderSize)
+{
+    mBackground.setOutlineThickness(borderSize);
 }
 
 bool GuiWidget::isVisible() const
@@ -188,9 +203,32 @@ void GuiWidget::setDirty()
         mParent->setDirty();
 }
 
+void GuiWidget::setSize(sf::Vector2f size)
+{
+    mSize = size;
+    mBackground.setSize(size);
+    setDirty();
+}
+
+void GuiWidget::updateSize()
+{
+    for (GuiWidget* widget : mChildren)
+        widget->updateSize();
+    if (!mFixedSize)
+        fitSizeToContent();
+}
+
+void GuiWidget::updateAlignment()
+{
+    if (mLayout != nullptr)
+        mLayout->align();
+    for (GuiWidget* widget : mChildren)
+        widget->updateAlignment();
+}
+
 void GuiWidget::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
-
+    target.draw(mBackground);
 }
 
 bool GuiWidget::onHover(sf::Vector2f position, bool processed)
@@ -206,4 +244,24 @@ bool GuiWidget::onPress(sf::Vector2f position, bool processed)
 bool GuiWidget::onRelease(sf::Vector2f position, bool processed)
 {
     return false;
+}
+
+void GuiWidget::applyStyle()
+{
+    sf::Color backgroundColor = sf::Color::Transparent;
+    sf::Color borderColor = sf::Color::Transparent;
+    int borderSize = 0;
+    if (mStyle)
+    {
+        if (mStyle->hasChildren("background"))
+            backgroundColor = mStyle->getFirstChildByName("background").getAttributes().get<sf::Color>("color", backgroundColor);
+        if (mStyle->hasChildren("border"))
+        {
+            borderColor = mStyle->getFirstChildByName("border").getAttributes().get<sf::Color>("color", borderColor);
+            borderSize = mStyle->getFirstChildByName("border").getAttributes().get<int>("size", borderSize);
+        }
+    }
+    mBackground.setFillColor(backgroundColor);
+    mBackground.setOutlineColor(borderColor);
+    mBackground.setOutlineThickness(borderSize);
 }
