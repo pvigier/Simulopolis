@@ -51,6 +51,8 @@ private:
     void createPersonWindow(const Person& person);
     void createBuildingWindow(const Building& building);
     void updateWindows();
+    bool updateTabs(const std::string& name);
+    bool updateTile(const std::string& name);
 
     void zoom(float factor);
 

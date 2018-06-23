@@ -30,9 +30,10 @@ bool GuiButton::onHover(sf::Vector2f position, bool processed)
 
 bool GuiButton::onPress(sf::Vector2f position, bool processed)
 {
-    if (!processed && mState != State::FORCE_PRESSED && mState != State::DISABLED && hitButton(position))
+    if (!processed && hitButton(position))
     {
-        setState(State::PRESSED);
+        if (mState != State::FORCE_PRESSED && mState != State::DISABLED)
+            setState(State::PRESSED);
         return true;
     }
     return false;

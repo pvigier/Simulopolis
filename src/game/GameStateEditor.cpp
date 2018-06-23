@@ -12,6 +12,7 @@
 #include "gui/GuiText.h"
 #include "gui/GuiImage.h"
 #include "gui/GuiWindow.h"
+#include "gui/GuiTabWidget.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
 #include "gui/GuiEvent.h"
@@ -42,15 +43,14 @@ GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel
 
 GameStateEditor::~GameStateEditor()
 {
-    mGui->get<GuiButton>("grassButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("forestButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("residentialButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("commercialButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("industrialButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("hospitalButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("policeButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("schoolButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadMenuButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("landscapeTabButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("housingTabButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("industryTabButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("businessTabButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("healthTabButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("securityTabButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("educationTabButton")->unsubscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadTabButton")->unsubscribe(mMailbox.getId());
     //mGui->get<GuiButton>("roadGrassButton")->unsubscribe(mMailbox.getId());
     //mGui->get<GuiButton>("roadSidewalkButton")->unsubscribe(mMailbox.getId());
     //mGui->get<GuiButton>("roadWaterButton")->unsubscribe(mMailbox.getId());
@@ -232,13 +232,8 @@ void GameStateEditor::handleMessages()
                 case GuiEvent::Type::BUTTON_RELEASED:
                 {
                     const std::string& name = event.widget->getName();
-                    if (name == "roadMenuButton")
-                    {
-                        mGui->get("roadMenuButtons")->setVisible(true);
-                        mGui->get<GuiButton>("roadMenuButton")->setState(GuiButton::State::FORCE_PRESSED);
-                    }
-                    else
-                        mCurrentTile = Tile::stringToType(name.substr(0, name.size() - 6));
+                    if (!updateTabs(name))
+                        updateTile(name);
                 }
                 case GuiEvent::Type::WINDOW_CLOSED:
                 {
@@ -305,15 +300,14 @@ void GameStateEditor::createGui()
     mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     mGui->get("infoBar")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
-    mGui->get<GuiButton>("grassButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("forestButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("residentialButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("commercialButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("industrialButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("hospitalButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("policeButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("schoolButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadMenuButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("landscapeTabButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("housingTabButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("industryTabButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("businessTabButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("healthTabButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("securityTabButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("educationTabButton")->subscribe(mMailbox.getId());
+    mGui->get<GuiButton>("roadTabButton")->subscribe(mMailbox.getId());
     //mGui->get<GuiButton>("roadGrassButton")->subscribe(mMailbox.getId());
     //mGui->get<GuiButton>("roadSidewalkButton")->subscribe(mMailbox.getId());
     //mGui->get<GuiButton>("roadWaterButton")->subscribe(mMailbox.getId());
@@ -342,6 +336,33 @@ void GameStateEditor::updateWindows()
         drawCity(personWindow->getRenderTexture(), personWindow->getView());
     for (std::unique_ptr<BuildingWindow>& buildingWindow : mBuildingWindows)
         drawCity(buildingWindow->getRenderTexture(), buildingWindow->getView());
+}
+
+bool GameStateEditor::updateTabs(const std::string& name)
+{
+    int tab = -1;
+    GuiWidget* buttonsWidget = mGui->get("tabButtons");
+    for (std::size_t i = 0; i < buttonsWidget->getChildren().size(); ++i)
+    {
+        if (buttonsWidget->getChildren()[i]->getName() == name)
+        {
+            tab = i;
+            break;
+        }
+    }
+    if (tab == -1)
+        return false;
+    mGui->get<GuiTabWidget>("tabs")->setCurrentTab(tab);
+    for (GuiWidget* widget : buttonsWidget->getChildren())
+        static_cast<GuiButton*>(widget)->setState(GuiButton::State::NORMAL);
+    mGui->get<GuiButton>(name)->setState(GuiButton::State::FORCE_PRESSED);
+    return true;
+}
+
+bool GameStateEditor::updateTile(const std::string& name)
+{
+    mCurrentTile = Tile::stringToType(name.substr(0, name.size() - 6));
+    return true;
 }
 
 void GameStateEditor::zoom(float factor)
