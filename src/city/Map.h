@@ -20,7 +20,7 @@ public:
     void save(const std::string& filename);
     void fromArray(const Array2<Tile::Type>& tiles);
 
-    void select(sf::Vector2i start, sf::Vector2i end, const std::vector<Tile::Type>& blacklist);
+    void select(sf::Vector2i start, sf::Vector2i end, Tile::Category mask);
     void deselect();
     void bulldoze(Tile::Type type);
 

@@ -66,10 +66,10 @@ void City::load(const std::string& name)
     mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
 
     // Tests
-    mMap.select(sf::Vector2i(0, 0), sf::Vector2i(0, 10), {});
-    mMap.select(sf::Vector2i(1, 10), sf::Vector2i(10, 10), {});
-    mMap.select(sf::Vector2i(10, 9), sf::Vector2i(10, 0), {});
-    mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), {});
+    mMap.select(sf::Vector2i(0, 0), sf::Vector2i(0, 10), Tile::Category::GROUND);
+    mMap.select(sf::Vector2i(1, 10), sf::Vector2i(10, 10), Tile::Category::GROUND);
+    mMap.select(sf::Vector2i(10, 9), sf::Vector2i(10, 0), Tile::Category::GROUND);
+    mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), Tile::Category::GROUND);
     bulldoze(Tile::Type::ROAD_GRASS);
 
     mPersons.push_back(mPersonGenerator.generate(getYear()));
@@ -123,9 +123,9 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
     auto jBounds = std::minmax({iTopLeft.x, iTopRight.x, iBottomLeft.x, iBottomRight.x});
     auto iBounds = std::minmax({iTopLeft.y, iTopRight.y, iBottomLeft.y, iBottomRight.y});
     unsigned int iMin = std::max(iBounds.first - margin, 0);
-    unsigned int iMax = std::min(iBounds.second + margin + 1, static_cast<int>(mMap.getHeight()));
+    unsigned int iMax = std::min(iBounds.second + margin + 1, static_cast<int>(mMap.getHeight()) - 1);
     unsigned int jMin = std::max(jBounds.first - margin, 0);
-    unsigned int jMax = std::min(jBounds.second + margin + 1, static_cast<int>(mMap.getHeight()));
+    unsigned int jMax = std::min(jBounds.second + margin + 1, static_cast<int>(mMap.getWidth()) - 1);
 
     // Draw
     const Array2<std::unique_ptr<Tile>>& tiles = mMap.getTiles();

@@ -1,7 +1,7 @@
 #include "Road.h"
 
 Road::Road(const std::string& name, Type type) :
-    Tile(name, type)
+    Tile(name, type, Category::ROAD)
 {
     sf::IntRect rect(0, 0, 132, 101);
     if (type == Type::ROAD_SIDEWALK)
@@ -54,14 +54,4 @@ bool Road::updateVariant(Tile* neighbors[3][3])
 
     mSprite.setTextureRect(rect);
     return true;
-}
-
-bool Road::isRoad() const
-{
-    return true;
-}
-
-bool Road::hasSidewalk() const
-{
-    return mType == Type::ROAD_SIDEWALK;
 }

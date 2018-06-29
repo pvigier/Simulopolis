@@ -26,7 +26,7 @@ public:
     static constexpr int STAIR_HEIGHT = 33;
     static constexpr int OFFSET_Y = 27;
 
-    Building(const std::string& name, Type type);
+    Building(const std::string& name, Type type, unsigned int nbStairs);
     virtual ~Building();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -36,7 +36,6 @@ public:
 
     virtual bool updateVariant(Tile* neighbors[3][3]) override;
 
-    virtual bool isBuilding() const override;
     sf::Vector2f getPosition() const;
     virtual void setPosition(sf::Vector2f position) override;
     const Owner& getOwner() const;

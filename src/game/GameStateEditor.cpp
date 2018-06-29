@@ -128,22 +128,14 @@ void GameStateEditor::handleMessages()
                         mSelectionEnd = mCity.toTileIndices(gamePos);
                         mCity.getMap().deselect();
                         if (mCurrentTile == Tile::Type::GRASS)
-                            mCity.getMap().select(mSelectionStart, mSelectionEnd, {mCurrentTile, Tile::Type::WATER});
+                            mCity.getMap().select(mSelectionStart, mSelectionEnd, static_cast<Tile::Category>(0));
                         else if (mCurrentTile == Tile::Type::ROAD_WATER)
                         {
-                            mCity.getMap().select(mSelectionStart, mSelectionEnd, {
-                                mCurrentTile, Tile::Type::GRASS, Tile::Type::FOREST, Tile::Type::DIRT,
-                                Tile::Type::ROAD_GRASS, Tile::Type::ROAD_SIDEWALK, Tile::Type::ROAD_WATER,
-                                Tile::Type::RESIDENTIAL, Tile::Type::COMMERCIAL, Tile::Type::INDUSTRIAL,
-                                Tile::Type::HOSPITAL, Tile::Type::POLICE, Tile::Type::SCHOOL});
+                            mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::ROAD | Tile::Category::WATER);
                         }
                         else
                         {
-                            mCity.getMap().select(mSelectionStart, mSelectionEnd, {
-                                mCurrentTile, Tile::Type::FOREST, Tile::Type::WATER,
-                                Tile::Type::ROAD_GRASS, Tile::Type::ROAD_SIDEWALK, Tile::Type::ROAD_WATER,
-                                Tile::Type::RESIDENTIAL, Tile::Type::COMMERCIAL, Tile::Type::INDUSTRIAL,
-                                Tile::Type::HOSPITAL, Tile::Type::POLICE, Tile::Type::SCHOOL});
+                            mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::GROUND);
                         }
                         // Update the GUI
                         unsigned int totalCost = computeCostOfSelection();
@@ -377,10 +369,10 @@ unsigned int GameStateEditor::getCost(Tile::Type type) const
     {
         case Tile::Type::GRASS: return 50;
         case Tile::Type::FOREST: return 100;
-        case Tile::Type::RESIDENTIAL: return 300;
+        /*case Tile::Type::RESIDENTIAL: return 300;
         case Tile::Type::COMMERCIAL: return 300;
         case Tile::Type::INDUSTRIAL: return 300;
-        case Tile::Type::ROAD_GRASS: return 100;
+        case Tile::Type::ROAD_GRASS: return 100;*/
         default: return 0;
     }
 }

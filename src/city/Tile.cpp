@@ -6,9 +6,9 @@
 TextureManager* Tile::sTextureManager = nullptr;
 ImageManager* Tile::sImageManager = nullptr;
 
-Tile::Tile(const std::string& name, Tile::Type type) :
+Tile::Tile(const std::string& name, Tile::Type type, Tile::Category category) :
     mSprite(sTextureManager->getTexture(name)), mMask(sImageManager->getImage(name)),
-    mType(type), mState(Tile::State::DESELECTED)
+    mType(type), mCategory(category), mState(Tile::State::DESELECTED)
 {
 
 }
@@ -31,66 +31,90 @@ void Tile::setImageManager(ImageManager* imageManager)
 Tile::Type Tile::stringToType(const std::string& s)
 {
     if (s == "grass")
-        return Tile::Type::GRASS;
+        return Type::GRASS;
     else if (s == "forest")
-        return Tile::Type::FOREST;
+        return Type::FOREST;
     else if (s == "dirt")
-        return Tile::Type::DIRT;
+        return Type::DIRT;
     else if (s == "water")
-        return Tile::Type::WATER;
-    else if (s == "residential")
-        return Tile::Type::RESIDENTIAL;
-    else if (s == "commercial")
-        return Tile::Type::COMMERCIAL;
-    else if (s == "industrial")
-        return Tile::Type::INDUSTRIAL;
+        return Type::WATER;
+    else if (s == "affordableHousing")
+        return Type::AFFORDABLE_HOUSING;
+    else if (s == "apartmentBuilding")
+        return Type::APARTMENT_BUILDING;
+    else if (s == "villa")
+        return Type::VILLA;
+    else if (s == "farm")
+        return Type::FARM;
+    else if (s == "factory")
+        return Type::FACTORY;
+    else if (s == "workshop")
+        return Type::WORKSHOP;
+    else if (s == "market")
+        return Type::MARKET;
+    else if (s == "mall")
+        return Type::MALL;
+    else if (s == "boutique")
+        return Type::BOUTIQUE;
     else if (s == "hospital")
-        return Tile::Type::HOSPITAL;
+        return Type::HOSPITAL;
     else if (s == "police")
-        return Tile::Type::POLICE;
+        return Type::POLICE;
     else if (s == "school")
-        return Tile::Type::SCHOOL;
+        return Type::SCHOOL;
     else if (s == "roadGrass")
-        return Tile::Type::ROAD_GRASS;
+        return Type::ROAD_GRASS;
     else if (s == "roadSidewalk")
-        return Tile::Type::ROAD_SIDEWALK;
+        return Type::ROAD_SIDEWALK;
     else if (s == "roadWater")
-        return Tile::Type::ROAD_WATER;
+        return Type::ROAD_WATER;
     else
-        return Tile::Type::VOID;
+        return Type::VOID;
 }
 
 std::string Tile::typeToString(Tile::Type type)
 {
     switch (type)
     {
-        case Tile::Type::VOID:
+        case Type::VOID:
             return "Void";
-        case Tile::Type::GRASS:
+        case Type::GRASS:
             return "Grass";
-        case Tile::Type::FOREST:
+        case Type::FOREST:
             return "Forest";
-        case Tile::Type::DIRT:
+        case Type::DIRT:
             return "Dirt";
-        case Tile::Type::WATER:
+        case Type::WATER:
             return "Water";
-        case Tile::Type::RESIDENTIAL:
-            return "Residential Zone";
-        case Tile::Type::COMMERCIAL:
-            return "Commercial Zone";
-        case Tile::Type::INDUSTRIAL:
-            return "Industrial Zone";
-        case Tile::Type::HOSPITAL:
+        case Type::AFFORDABLE_HOUSING:
+            return "Affordable housing";
+        case Type::APARTMENT_BUILDING:
+            return "Appartment building";
+        case Type::VILLA:
+            return "Villa";
+        case Type::FARM:
+            return "Farm";
+        case Type::FACTORY:
+            return "Factory";
+        case Type::WORKSHOP:
+            return "Workshop";
+        case Type::MARKET:
+            return "Market";
+        case Type::MALL:
+            return "Mall";
+        case Type::BOUTIQUE:
+            return "Boutique";
+        case Type::HOSPITAL:
             return "Hospital";
-        case Tile::Type::POLICE:
+        case Type::POLICE:
             return "Police";
-        case Tile::Type::SCHOOL:
+        case Type::SCHOOL:
             return "School";
-        case Tile::Type::ROAD_GRASS:
+        case Type::ROAD_GRASS:
             return "Road";
-        case Tile::Type::ROAD_SIDEWALK:
+        case Type::ROAD_SIDEWALK:
             return "Road with sidewalk";
-        case Tile::Type::ROAD_WATER:
+        case Type::ROAD_WATER:
             return "Road on water";
         default:
             return "";
@@ -120,22 +144,27 @@ bool Tile::updateVariant(Tile* neighbors[3][3])
 
 bool Tile::isBuilding() const
 {
-    return false;
+    return mCategory == Category::BUILDING;
 }
 
 bool Tile::isRoad() const
 {
-    return false;
+    return mCategory == Category::ROAD;
 }
 
 bool Tile::hasSidewalk() const
 {
-    return false;
+    return mType == Type::ROAD_SIDEWALK;
 }
 
 void Tile::setPosition(sf::Vector2f position)
 {
     mSprite.setPosition(position);
+}
+
+Tile::Category Tile::getCategory() const
+{
+    return mCategory;
 }
 
 Tile::Type Tile::getType() const

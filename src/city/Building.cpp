@@ -13,11 +13,10 @@ std::string Building::Owner::toString() const
         return company->getFullName();
 }
 
-Building::Building(const std::string& name, Type type) :
-    Tile(name, type), mNbStairs(3), mOwner{Owner::Type::CITY, nullptr}
+Building::Building(const std::string& name, Type type, unsigned int nbStairs) :
+    Tile(name, type, Category::BUILDING), mNbStairs(nbStairs), mOwner{Owner::Type::CITY, nullptr}
 {
-    if (type == Type::HOSPITAL || type == Type::POLICE || type == Type::SCHOOL)
-        mNbStairs = 2;
+
 }
 
 Building::~Building()
@@ -74,11 +73,6 @@ bool Building::updateVariant(Tile* neighbors[3][3])
         return false;
 
     mSprite.setTextureRect(rect);
-    return true;
-}
-
-bool Building::isBuilding() const
-{
     return true;
 }
 

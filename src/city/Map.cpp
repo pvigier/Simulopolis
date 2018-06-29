@@ -13,17 +13,23 @@ Map::Map() : mWidth(0), mHeight(0), mNbSelected(0), mNetwork(mWidth, mHeight)
 
 void Map::loadTiles(const TextureManager& textureManager)
 {
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("grass", Tile::Type::VOID)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("grass", Tile::Type::GRASS)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("forest", Tile::Type::FOREST)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("dirt", Tile::Type::DIRT)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("water", Tile::Type::WATER)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("residential", Tile::Type::RESIDENTIAL)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("commercial", Tile::Type::COMMERCIAL)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("industrial", Tile::Type::INDUSTRIAL)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("hospital", Tile::Type::HOSPITAL)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("police", Tile::Type::POLICE)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("school", Tile::Type::SCHOOL)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("grass", Tile::Type::VOID, Tile::Category::GROUND)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("grass", Tile::Type::GRASS, Tile::Category::GROUND)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("forest", Tile::Type::FOREST, Tile::Category::GROUND)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("water", Tile::Type::WATER, Tile::Category::WATER)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("dirt", Tile::Type::DIRT, Tile::Category::GROUND)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("residential", Tile::Type::AFFORDABLE_HOUSING, 3)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("residential", Tile::Type::APARTMENT_BUILDING, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("residential", Tile::Type::VILLA, 1)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("industrial", Tile::Type::FARM, 1)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("industrial", Tile::Type::FACTORY, 3)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("industrial", Tile::Type::WORKSHOP, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("commercial", Tile::Type::MARKET, 1)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("commercial", Tile::Type::MALL, 3)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("commercial", Tile::Type::BOUTIQUE, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("hospital", Tile::Type::HOSPITAL, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("police", Tile::Type::POLICE, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("school", Tile::Type::SCHOOL, 2)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_GRASS)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_SIDEWALK)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_WATER)));
@@ -126,14 +132,14 @@ void Map::bulldoze(Tile::Type type)
                 updateNeighborhood(i, j);
                 if (mTiles.get(i, j)->isRoad())
                     mNetwork.addRoad(i, j);
-                else if (type == Tile::Type::VOID)
+                else
                     mNetwork.removeRoad(i, j);
             }
         }
     }
 }
 
-void Map::select(sf::Vector2i start, sf::Vector2i end, const std::vector<Tile::Type>& blacklist)
+void Map::select(sf::Vector2i start, sf::Vector2i end, Tile::Category mask)
 {
     // Swap coordinates if necessary
     if (end.y < start.y)
@@ -154,7 +160,7 @@ void Map::select(sf::Vector2i start, sf::Vector2i end, const std::vector<Tile::T
             // Check if the tile type is in the blacklist. If it is, mark it as
             // invalid, otherwise select it
             const std::unique_ptr<Tile>& tile = mTiles.get(i, j);
-            if (std::find(blacklist.begin(), blacklist.end(), tile->getType()) == blacklist.end())
+            if (any(tile->getCategory() & mask))
             {
                 tile->setState(Tile::State::SELECTED);
                 ++mNbSelected;
