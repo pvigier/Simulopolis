@@ -61,6 +61,18 @@
                     <hboxlayout hAlignment="center" />
                 </widget>
                 <widget name="housingButtons">
+                    <button name="CFBHousingButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="affordableHousingButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="apartmentBuildingButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="villaButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
                     <hboxlayout hAlignment="center" vAlignment="center" spacing="2" />
                 </widget>
                 <vboxlayout hAlignment="center" vAlignment="top" margins="16 16 16 16" spacing="16" />
@@ -71,6 +83,18 @@
                     <hboxlayout hAlignment="center" />
                 </widget>
                 <widget name="industryButtons">
+                    <button name="CFBIndustryButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="farmButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="factoryButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="workshopButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
                     <hboxlayout hAlignment="center" vAlignment="center" spacing="2" />
                 </widget>
                 <vboxlayout hAlignment="center" vAlignment="top" margins="16 16 16 16" spacing="16" />
@@ -81,6 +105,18 @@
                     <hboxlayout hAlignment="center" />
                 </widget>
                 <widget name="businessButtons">
+                    <button name="CFBBusinessButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="marketButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="mallButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="boutiqueButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
                     <hboxlayout hAlignment="center" vAlignment="center" spacing="2" />
                 </widget>
                 <vboxlayout hAlignment="center" vAlignment="top" margins="16 16 16 16" spacing="16" />
@@ -91,6 +127,12 @@
                     <hboxlayout hAlignment="center" />
                 </widget>
                 <widget name="healthButtons">
+                    <button name="CFBHospitalButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="hospitalButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
                     <hboxlayout hAlignment="center" vAlignment="center" spacing="2" />
                 </widget>
                 <vboxlayout hAlignment="center" vAlignment="top" margins="16 16 16 16" spacing="16" />
@@ -101,6 +143,12 @@
                     <hboxlayout hAlignment="center" />
                 </widget>
                 <widget name="securityButtons">
+                    <button name="CFBPoliceStationButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="policeStationButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
                     <hboxlayout hAlignment="center" vAlignment="center" spacing="2" />
                 </widget>
                 <vboxlayout hAlignment="center" vAlignment="top" margins="16 16 16 16" spacing="16" />
@@ -111,6 +159,12 @@
                     <hboxlayout hAlignment="center" />
                 </widget>
                 <widget name="educationButtons">
+                    <button name="CFBSchoolButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
+                    <button name="schoolButton" size="32 32" style="button">
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
                     <hboxlayout hAlignment="center" vAlignment="center" spacing="2" />
                 </widget>
                 <vboxlayout hAlignment="center" vAlignment="top" margins="16 16 16 16" spacing="16" />
