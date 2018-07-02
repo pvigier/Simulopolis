@@ -38,28 +38,40 @@ Tile::Type Tile::stringToType(const std::string& s)
         return Type::DIRT;
     else if (s == "water")
         return Type::WATER;
+    else if (s == "CFBHousing")
+        return Type::CFB_HOUSING;
     else if (s == "affordableHousing")
         return Type::AFFORDABLE_HOUSING;
     else if (s == "apartmentBuilding")
         return Type::APARTMENT_BUILDING;
     else if (s == "villa")
         return Type::VILLA;
+    else if (s == "CFBIndustry")
+        return Type::CFB_INDUSTRY;
     else if (s == "farm")
         return Type::FARM;
     else if (s == "factory")
         return Type::FACTORY;
     else if (s == "workshop")
         return Type::WORKSHOP;
+    else if (s == "CFBBusiness")
+        return Type::CFB_BUSINESS;
     else if (s == "market")
         return Type::MARKET;
     else if (s == "mall")
         return Type::MALL;
     else if (s == "boutique")
         return Type::BOUTIQUE;
+    else if (s == "CFBHospital")
+        return Type::CFB_HOSPITAL;
     else if (s == "hospital")
         return Type::HOSPITAL;
-    else if (s == "police")
-        return Type::POLICE;
+    else if (s == "CFBPoliceStation")
+        return Type::CFB_POLICE_STATION;
+    else if (s == "policeStation")
+        return Type::POLICE_STATION;
+    else if (s == "CFBSchool")
+        return Type::CFB_SCHOOL;
     else if (s == "school")
         return Type::SCHOOL;
     else if (s == "roadGrass")
@@ -86,28 +98,40 @@ std::string Tile::typeToString(Tile::Type type)
             return "Dirt";
         case Type::WATER:
             return "Water";
+        case Type::CFB_HOUSING:
+            return "Call for bids (housing)";
         case Type::AFFORDABLE_HOUSING:
             return "Affordable housing";
         case Type::APARTMENT_BUILDING:
             return "Appartment building";
         case Type::VILLA:
             return "Villa";
+        case Type::CFB_INDUSTRY:
+            return "Call for bids (industry)";
         case Type::FARM:
             return "Farm";
         case Type::FACTORY:
             return "Factory";
         case Type::WORKSHOP:
             return "Workshop";
+        case Type::CFB_BUSINESS:
+            return "Call for bids (business)";
         case Type::MARKET:
             return "Market";
         case Type::MALL:
             return "Mall";
         case Type::BOUTIQUE:
             return "Boutique";
+        case Type::CFB_HOSPITAL:
+            return "Call for bids (hospital)";
         case Type::HOSPITAL:
             return "Hospital";
-        case Type::POLICE:
-            return "Police";
+        case Type::CFB_POLICE_STATION:
+            return "Call for bids (police station)";
+        case Type::POLICE_STATION:
+            return "Police station";
+        case Type::CFB_SCHOOL:
+            return "Call for bids (school)";
         case Type::SCHOOL:
             return "School";
         case Type::ROAD_GRASS:

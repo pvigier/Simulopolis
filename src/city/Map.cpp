@@ -3,6 +3,7 @@
 #include "resource/TextureManager.h"
 #include "city/Road.h"
 #include "city/Building.h"
+#include "city/CallForBids.h"
 
 std::vector<std::unique_ptr<Tile>> Map::sTileAtlas;
 
@@ -18,17 +19,23 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("forest", Tile::Type::FOREST, Tile::Category::GROUND)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("water", Tile::Type::WATER, Tile::Category::WATER)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("dirt", Tile::Type::DIRT, Tile::Category::GROUND)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_HOUSING)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("housing", Tile::Type::AFFORDABLE_HOUSING, 3)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("housing", Tile::Type::APARTMENT_BUILDING, 2)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("housing", Tile::Type::VILLA, 1)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_INDUSTRY)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("industry", Tile::Type::FARM, 1)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("industry", Tile::Type::FACTORY, 3)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("industry", Tile::Type::WORKSHOP, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_BUSINESS)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("business", Tile::Type::MARKET, 1)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("business", Tile::Type::MALL, 3)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("business", Tile::Type::BOUTIQUE, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_HOSPITAL)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("hospital", Tile::Type::HOSPITAL, 2)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("police", Tile::Type::POLICE, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_POLICE_STATION)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("police", Tile::Type::POLICE_STATION, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_SCHOOL)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("school", Tile::Type::SCHOOL, 2)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_GRASS)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_SIDEWALK)));

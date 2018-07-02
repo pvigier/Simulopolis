@@ -11,10 +11,12 @@ class Tile : public sf::Drawable
 public:
     enum class Category : unsigned int {GROUND = 1, WATER = 2, BUILDING = 4, ROAD = 8};
     enum class Type : int {VOID, GRASS, FOREST, WATER, DIRT,
-        AFFORDABLE_HOUSING, APARTMENT_BUILDING, VILLA,
-        FARM, FACTORY, WORKSHOP,
-        MARKET, MALL, BOUTIQUE,
-        HOSPITAL, POLICE, SCHOOL,
+        CFB_HOUSING, AFFORDABLE_HOUSING, APARTMENT_BUILDING, VILLA,
+        CFB_INDUSTRY, FARM, FACTORY, WORKSHOP,
+        CFB_BUSINESS, MARKET, MALL, BOUTIQUE,
+        CFB_HOSPITAL, HOSPITAL,
+        CFB_POLICE_STATION, POLICE_STATION,
+        CFB_SCHOOL, SCHOOL,
         ROAD_GRASS, ROAD_SIDEWALK, ROAD_WATER};
     enum class State{DESELECTED, SELECTED, INVALID};
     static constexpr unsigned int SIZE = 64;
