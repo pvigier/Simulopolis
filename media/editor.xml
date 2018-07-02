@@ -7,15 +7,15 @@
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="housingTabButton" size="32 32" style="button">
-                <image name="housingTabImage" texture="residential" rect="0 85 132 132" size="24 24" />
+                <image name="housingTabImage" texture="housing" rect="0 85 132 132" size="24 24" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="industryTabButton" size="32 32" style="button">
-                <image name="industryTabImage" texture="industrial" rect="0 85 132 132" size="24 24" />
+                <image name="industryTabImage" texture="industry" rect="0 85 132 132" size="24 24" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="businessTabButton" size="32 32" style="button">
-                <image name="businessTabImage" texture="commercial" rect="0 85 132 132" size="24 24" />
+                <image name="businessTabImage" texture="business" rect="0 85 132 132" size="24 24" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="healthTabButton" size="32 32" style="button">

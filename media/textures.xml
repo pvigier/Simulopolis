@@ -1,16 +1,17 @@
 <textures>
 	<texture name="background" path="background.png" />
-	<texture name="commercial" path="commercial.png" />
+	<texture name="business" path="business.png" />
     <texture name="dirt" path="dirt.png" />
 	<texture name="forest" path="forest.png" />
 	<texture name="grass" path="grass.png" />
     <texture name="hospital" path="hospital.png" />
-	<texture name="industrial" path="industrial.png" />
+	<texture name="industry" path="industry.png" />
     <texture name="police" path="police.png" />
-	<texture name="residential" path="residential.png" />
+	<texture name="housing" path="housing.png" />
 	<texture name="road" path="road.png" />
     <texture name="school" path="school.png" />
 	<texture name="water" path="water.png" />
+    <texture name="sign" path="sign.png" />
     <texture name="car_black_pick-up_1" path="vehicles/car_black_pick-up_1.png" />
     <texture name="car_black_sedan_1" path="vehicles/car_black_sedan_1.png" />
 	<texture name="car_black_sedan_2" path="vehicles/car_black_sedan_2.png" />
