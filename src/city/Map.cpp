@@ -16,9 +16,9 @@ void Map::loadTiles(const TextureManager& textureManager)
 {
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("grass", Tile::Type::VOID, Tile::Category::GROUND)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("grass", Tile::Type::GRASS, Tile::Category::GROUND)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("forest", Tile::Type::FOREST, Tile::Category::GROUND)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("forest", Tile::Type::FOREST, Tile::Category::OBSTACLE)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("water", Tile::Type::WATER, Tile::Category::WATER)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("dirt", Tile::Type::DIRT, Tile::Category::GROUND)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("dirt", Tile::Type::DIRT, Tile::Category::OBSTACLE)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_HOUSING)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("housing", Tile::Type::AFFORDABLE_HOUSING, 3)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("housing", Tile::Type::APARTMENT_BUILDING, 2)));

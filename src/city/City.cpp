@@ -66,10 +66,10 @@ void City::load(const std::string& name)
     mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
 
     // Tests
-    mMap.select(sf::Vector2i(0, 0), sf::Vector2i(0, 10), Tile::Category::GROUND);
-    mMap.select(sf::Vector2i(1, 10), sf::Vector2i(10, 10), Tile::Category::GROUND);
-    mMap.select(sf::Vector2i(10, 9), sf::Vector2i(10, 0), Tile::Category::GROUND);
-    mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), Tile::Category::GROUND);
+    mMap.select(sf::Vector2i(0, 0), sf::Vector2i(0, 10), all<Tile::Category>);
+    mMap.select(sf::Vector2i(1, 10), sf::Vector2i(10, 10), all<Tile::Category>);
+    mMap.select(sf::Vector2i(10, 9), sf::Vector2i(10, 0), all<Tile::Category>);
+    mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), all<Tile::Category>);
     bulldoze(Tile::Type::ROAD_GRASS);
 
     mPersons.push_back(mPersonGenerator.generate(getYear()));

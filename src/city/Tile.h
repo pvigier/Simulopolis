@@ -9,7 +9,7 @@ class ImageManager;
 class Tile : public sf::Drawable
 {
 public:
-    enum class Category : unsigned int {GROUND = 1, WATER = 2, BUILDING = 4, ROAD = 8};
+    enum class Category : unsigned int {GROUND = 1, WATER = 2, BUILDING = 4, ROAD = 8, OBSTACLE = 16};
     enum class Type : int {VOID, GRASS, FOREST, WATER, DIRT,
         CFB_HOUSING, AFFORDABLE_HOUSING, APARTMENT_BUILDING, VILLA,
         CFB_INDUSTRY, FARM, FACTORY, WORKSHOP,
