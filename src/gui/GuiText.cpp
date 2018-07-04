@@ -27,10 +27,11 @@ GuiText::~GuiText()
 
 void GuiText::setPosition(sf::Vector2f position)
 {
-    sf::Vector2f offset(sf::Vector2f(mText.getGlobalBounds().left, mText.getGlobalBounds().top) - mText.getPosition());
-    position = sf::Vector2f(sf::Vector2i(position));
     GuiWidget::setPosition(position);
-    mText.setPosition(position - offset);
+    // Correct the text position
+    position.y -= mText.getCharacterSize() / 4;
+    position = sf::Vector2f(sf::Vector2i(position));
+    mText.setPosition(position);
 }
 
 void GuiText::setCharacterSize(unsigned int characterSize)
@@ -58,5 +59,5 @@ void GuiText::render(sf::RenderTarget& target, sf::RenderStates states) const
 
 void GuiText::computeSize()
 {
-    mSize = sf::Vector2f(mText.getGlobalBounds().width, mText.getGlobalBounds().height);
+    mSize = sf::Vector2f(mText.getGlobalBounds().width, mText.getCharacterSize());
 }

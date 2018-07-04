@@ -50,6 +50,8 @@
 		<Unit filename="src/audio/AudioEngine.h" />
 		<Unit filename="src/city/Building.cpp" />
 		<Unit filename="src/city/Building.h" />
+		<Unit filename="src/city/CallForBids.cpp" />
+		<Unit filename="src/city/CallForBids.h" />
 		<Unit filename="src/city/Car.cpp" />
 		<Unit filename="src/city/Car.h" />
 		<Unit filename="src/city/City.cpp" />
@@ -162,6 +164,7 @@
 		<Unit filename="src/util/Vector.h" />
 		<Unit filename="src/util/common.cpp" />
 		<Unit filename="src/util/common.h" />
+		<Unit filename="src/util/enum.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -3,7 +3,7 @@
 template<typename E>
 struct EnableBitMaskOperators
 {
-    static const bool enable = false; // constexpr
+    static constexpr bool enable = false;
 };
 
 template<typename E>

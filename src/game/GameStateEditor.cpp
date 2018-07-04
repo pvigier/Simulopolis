@@ -151,15 +151,11 @@ void GameStateEditor::handleMessages()
                         mSelectionEnd = mCity.toTileIndices(gamePos);
                         mCity.getMap().deselect();
                         if (mCurrentTile == Tile::Type::GRASS)
-                            mCity.getMap().select(mSelectionStart, mSelectionEnd, static_cast<Tile::Category>(0));
+                            mCity.getMap().select(mSelectionStart, mSelectionEnd, ~Tile::Category::WATER);
                         else if (mCurrentTile == Tile::Type::ROAD_WATER)
-                        {
-                            mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::ROAD | Tile::Category::WATER);
-                        }
+                            mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::WATER);
                         else
-                        {
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::GROUND);
-                        }
                         // Update the GUI
                         unsigned int totalCost = computeCostOfSelection();
                         auto selectionCostText = mGui->get<GuiText>("selectionCostText");
@@ -350,6 +346,8 @@ void GameStateEditor::createGui()
     mGui->get<GuiButton>("roadWaterButton")->subscribe(mMailbox.getId());
 
     mGui->get("rightMenu")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
+
+    updateTabs("landscapeTabButton");
 }
 
 void GameStateEditor::createPersonWindow(const Person& person)
