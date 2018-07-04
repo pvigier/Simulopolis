@@ -3,6 +3,7 @@
 // STL
 #include <string>
 #include <unordered_map>
+#include <map>
 // SFML
 #include <SFML/Graphics/Font.hpp>
 
@@ -16,6 +17,12 @@ class XmlManager;
 class FontManager
 {
 public:
+    struct FontInfo
+    {
+        float maxHeight;
+        float maxOffset;
+    };
+
     /**
      * \brief Default constructor
      */
@@ -63,8 +70,15 @@ public:
      */
     const sf::Font& getFont(const std::string& name) const;
 
+    FontInfo getFontInfo(const std::string& name, unsigned int characterSize);
+
 private:
+    using PageId = std::tuple<std::string, unsigned int>;
+
     XmlManager* mXmlManager;
     std::string mPrefixPath; /**< Path of the folder in which is located "fonts.xml" */
     std::unordered_map<std::string, sf::Font> mFonts; /**< Hash map that contains the fonts */
+    std::map<PageId, FontInfo> mInfos; /**< Hash map that contains info about the font */
+
+    FontInfo computeFontInfo(const std::string& name, unsigned int characterSize);
 };
