@@ -44,38 +44,17 @@ GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel
 GameStateEditor::~GameStateEditor()
 {
     // Tab buttons
-    mGui->get<GuiButton>("landscapeTabButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("housingTabButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("industryTabButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("businessTabButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("healthTabButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("securityTabButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("educationTabButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadTabButton")->unsubscribe(mMailbox.getId());
+    GuiWidget* buttonsWidget = mGui->get("tabButtons");
+    for (GuiWidget* widget : buttonsWidget->getChildren())
+        widget->unsubscribe(mMailbox.getId());
     // Tile buttons
-    mGui->get<GuiButton>("grassButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("forestButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBHousingButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("affordableHousingButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("apartmentBuildingButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("villaButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBIndustryButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("farmButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("factoryButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("workshopButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBBusinessButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("marketButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("mallButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("boutiqueButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBHospitalButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("hospitalButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBPoliceStationButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("policeStationButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBSchoolButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("schoolButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadGrassButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadSidewalkButton")->unsubscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadWaterButton")->unsubscribe(mMailbox.getId());
+    GuiWidget* tabWidget = mGui->get<GuiTabWidget>("tabs");
+    for (GuiWidget* widget : tabWidget->getChildren())
+    {
+        buttonsWidget = widget->getChildren()[1];
+        for (GuiWidget* button : buttonsWidget->getChildren())
+            button->unsubscribe(mMailbox.getId());
+    }
 
     mGui->unsubscribe(mMailbox.getId());
 
@@ -312,41 +291,29 @@ void GameStateEditor::createGui()
     mGui->get("infoBar")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
     // Tab buttons
-    mGui->get<GuiButton>("landscapeTabButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("housingTabButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("industryTabButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("businessTabButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("healthTabButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("securityTabButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("educationTabButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadTabButton")->subscribe(mMailbox.getId());
+    GuiWidget* buttonsWidget = mGui->get("tabButtons");
+    for (GuiWidget* widget : buttonsWidget->getChildren())
+        widget->subscribe(mMailbox.getId());
     // Tile buttons
-    mGui->get<GuiButton>("grassButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("forestButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBHousingButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("affordableHousingButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("apartmentBuildingButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("villaButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBIndustryButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("farmButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("factoryButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("workshopButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBBusinessButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("marketButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("mallButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("boutiqueButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBHospitalButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("hospitalButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBPoliceStationButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("policeStationButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("CFBSchoolButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("schoolButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadGrassButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadSidewalkButton")->subscribe(mMailbox.getId());
-    mGui->get<GuiButton>("roadWaterButton")->subscribe(mMailbox.getId());
+    generateMenuTextures();
+    GuiWidget* tabWidget = mGui->get<GuiTabWidget>("tabs");
+    for (GuiWidget* widget : tabWidget->getChildren())
+    {
+        buttonsWidget = widget->getChildren()[1];
+        for (GuiWidget* button : buttonsWidget->getChildren())
+        {
+            // Subscribe
+            button->subscribe(mMailbox.getId());
+            // Set image
+            GuiImage* image = static_cast<GuiImage*>(button->getChildren()[0]);
+            const std::string& name = button->getName();
+            Tile::Type type = Tile::stringToType(name.substr(0, name.size() - 6));
+            sf::Sprite sprite(mMenuTextures[static_cast<int>(type)]->getTexture());
+            image->setSprite(sprite);
+        }
+    }
 
     mGui->get("rightMenu")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
-
     updateTabs("landscapeTabButton");
 }
 
@@ -372,6 +339,7 @@ void GameStateEditor::generateMenuTextures()
         mMenuTextures.push_back(std::move(texture));
     }
 }
+
 void GameStateEditor::createPersonWindow(const Person& person)
 {
     std::string windowId = "window" + std::to_string(mIWindow++);
