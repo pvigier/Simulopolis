@@ -58,7 +58,7 @@ std::unique_ptr<Tile> Building::clone() const
     return std::unique_ptr<Tile>(new Building(*this));
 }
 
-bool Building::updateVariant(Tile* neighbors[3][3])
+bool Building::updateVariant(const Tile* neighbors[3][3])
 {
     sf::IntRect rect(0, 85, 132, 128);
 
@@ -94,4 +94,12 @@ const Building::Owner& Building::getOwner() const
 void Building::setOwner(Owner owner)
 {
     mOwner = owner;
+}
+
+sf::FloatRect Building::getBounds() const
+{
+    sf::FloatRect bounds = mSprite.getGlobalBounds();
+    bounds.top -= (mNbStairs - 1) * STAIR_HEIGHT;
+    bounds.height += (mNbStairs - 1) * STAIR_HEIGHT;
+    return bounds;
 }

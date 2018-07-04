@@ -34,12 +34,13 @@ public:
 
     virtual std::unique_ptr<Tile> clone() const override;
 
-    virtual bool updateVariant(Tile* neighbors[3][3]) override;
+    virtual bool updateVariant(const Tile* neighbors[3][3]) override;
 
     sf::Vector2f getPosition() const;
     virtual void setPosition(sf::Vector2f position) override;
     const Owner& getOwner() const;
     void setOwner(Owner owner);
+    virtual sf::FloatRect getBounds() const override;
 
 private:
     unsigned int mNbStairs;

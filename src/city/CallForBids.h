@@ -13,6 +13,7 @@ public:
     virtual std::unique_ptr<Tile> clone() const override;
 
     virtual void setPosition(sf::Vector2f position) override;
+    virtual sf::FloatRect getBounds() const override;
 
 protected:
     sf::Sprite mSignSprite;

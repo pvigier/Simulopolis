@@ -21,7 +21,7 @@ std::unique_ptr<Tile> Road::clone() const
     return std::unique_ptr<Tile>(new Road(*this));
 }
 
-bool Road::updateVariant(Tile* neighbors[3][3])
+bool Road::updateVariant(const Tile* neighbors[3][3])
 {
     sf::IntRect rect = mSprite.getTextureRect();
 

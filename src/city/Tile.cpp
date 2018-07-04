@@ -160,7 +160,7 @@ std::unique_ptr<Tile> Tile::clone() const
     return std::unique_ptr<Tile>(new Tile(*this));
 }
 
-bool Tile::updateVariant(Tile* neighbors[3][3])
+bool Tile::updateVariant(const Tile* neighbors[3][3])
 {
     mSprite.setOrigin(sf::Vector2f(0.0f, mSprite.getTextureRect().height - TILE_HEIGHT));
     return false;
@@ -209,4 +209,9 @@ void Tile::setState(Tile::State state)
         mSprite.setColor(sf::Color(0x7d, 0x7d, 0x7d));
     else
         mSprite.setColor(sf::Color(0xff, 0xff, 0xff));
+}
+
+sf::FloatRect Tile::getBounds() const
+{
+    return mSprite.getGlobalBounds();
 }

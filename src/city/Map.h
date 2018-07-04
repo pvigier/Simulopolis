@@ -11,10 +11,12 @@ class TextureManager;
 class Map
 {
 public:
+    using TileAtlas = std::vector<std::unique_ptr<Tile>>;
 
     Map();
 
     static void loadTiles(const TextureManager& textureManager);
+    static const TileAtlas& getTileAtlas();
 
     void load(const std::string& filename, unsigned int width, unsigned int height);
     void save(const std::string& filename);
@@ -32,7 +34,7 @@ public:
     unsigned int getNbSelected() const;
 
 private:
-    static std::vector<std::unique_ptr<Tile>> sTileAtlas;
+    static TileAtlas sTileAtlas;
     unsigned int mWidth;
     unsigned int mHeight;
     Array2<std::unique_ptr<Tile>> mTiles;

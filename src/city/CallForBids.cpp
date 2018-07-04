@@ -51,3 +51,11 @@ void CallForBids::setPosition(sf::Vector2f position)
     mSprite.setPosition(position);
     mSignSprite.setPosition(position + sf::Vector2f(53.0f, -8.0f));
 }
+
+sf::FloatRect CallForBids::getBounds() const
+{
+    sf::FloatRect bounds = mSprite.getGlobalBounds();
+    bounds.top -= 8.0f;
+    bounds.height += 8.0f;
+    return bounds;
+}

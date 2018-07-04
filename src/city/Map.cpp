@@ -42,6 +42,11 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_WATER)));
 }
 
+const Map::TileAtlas& Map::getTileAtlas()
+{
+    return sTileAtlas;
+}
+
 void Map::load(const std::string& filename, unsigned int width, unsigned int height)
 {
     std::ifstream inputFile;
@@ -237,7 +242,7 @@ sf::Vector2f Map::computePosition(std::size_t i, std::size_t j) const
 
 void Map::updateTile(int i, int j)
 {
-    Tile* neighbors[3][3];
+    const Tile* neighbors[3][3];
     for (int di = -1; di <= 1; ++di)
     {
         for (int dj = -1; dj <= 1; ++dj)

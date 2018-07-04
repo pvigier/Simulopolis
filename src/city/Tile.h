@@ -36,7 +36,7 @@ public:
 
     virtual std::unique_ptr<Tile> clone() const;
 
-    virtual bool updateVariant(Tile* neighbors[3][3]);
+    virtual bool updateVariant(const Tile* neighbors[3][3]);
 
     bool isBuilding() const;
     bool isRoad() const;
@@ -46,6 +46,7 @@ public:
     Type getType() const;
     State getState() const;
     void setState(State state);
+    virtual sf::FloatRect getBounds() const;
 
 protected:
     static TextureManager* sTextureManager;

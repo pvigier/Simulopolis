@@ -44,10 +44,12 @@ private:
     int mIWindow;
     std::vector<std::unique_ptr<PersonWindow>> mPersonWindows;
     std::vector<std::unique_ptr<BuildingWindow>> mBuildingWindows;
+    std::vector<std::unique_ptr<sf::RenderTexture>> mMenuTextures;
 
     void drawCity(sf::RenderTexture& renderTexture, const sf::View& view);
 
     void createGui();
+    void generateMenuTextures();
     void createPersonWindow(const Person& person);
     void createBuildingWindow(const Building& building);
     void updateWindows();

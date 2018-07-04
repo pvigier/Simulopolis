@@ -350,6 +350,28 @@ void GameStateEditor::createGui()
     updateTabs("landscapeTabButton");
 }
 
+void GameStateEditor::generateMenuTextures()
+{
+    const Tile* neighbors[3][3];
+    for (int i = 0; i < 3; ++i)
+        std::fill(neighbors[i], neighbors[i] + 3, Map::getTileAtlas()[0].get());
+    for (const std::unique_ptr<Tile>& tile : Map::getTileAtlas())
+    {
+        tile->setPosition(sf::Vector2f());
+        tile->updateVariant(neighbors);
+        std::unique_ptr<sf::RenderTexture> texture(new sf::RenderTexture);
+        texture->create(26, 26);
+        sf::FloatRect bounds = tile->getBounds();
+        sf::Vector2f center = sf::Vector2f(bounds.left, bounds.top) + 0.5f * sf::Vector2f(bounds.width, bounds.height);
+        float size = std::max(bounds.width, bounds.height);
+        sf::View view(center, sf::Vector2f(size, size));
+        texture->setView(view);
+        texture->clear(sf::Color::Transparent);
+        texture->draw(*tile);
+        texture->display();
+        mMenuTextures.push_back(std::move(texture));
+    }
+}
 void GameStateEditor::createPersonWindow(const Person& person)
 {
     std::string windowId = "window" + std::to_string(mIWindow++);
