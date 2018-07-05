@@ -39,7 +39,7 @@ public:
      *
      *  \return Id of the added element
      */
-    Id add(const T x)
+    Id add(const T& x)
     {
         // Add object
         std::size_t i = mObjects.size();
@@ -68,7 +68,7 @@ public:
      *
      * \return Reference on the element which is associated to id
      */
-    inline T& get(const Id id)
+    inline T& get(Id id)
     {
         return mObjects[mIdToIndex[id]];
     }
@@ -80,7 +80,7 @@ public:
      *
      * \return Const reference element which is associated to id
      */
-    inline const T& get(const Id id) const
+    inline const T& get(Id id) const
     {
         return mObjects[mIdToIndex[id]];
     }
@@ -90,7 +90,7 @@ public:
      *
      * \param id Id of the element
      */
-    void erase(const Id id)
+    void erase(Id id)
     {
         // Get the index of the object to destroy
         std::size_t i = mIdToIndex[id];
