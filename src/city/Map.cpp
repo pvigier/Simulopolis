@@ -5,6 +5,7 @@
 #include "city/Building.h"
 #include "city/CallForBids.h"
 #include "city/Housing.h"
+#include "city/Industry.h"
 
 std::vector<std::unique_ptr<Tile>> Map::sTileAtlas;
 
@@ -25,9 +26,9 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Housing("housing", Tile::Type::APARTMENT_BUILDING, 2, 3, 10)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Housing("housing", Tile::Type::VILLA, 1, 1, 20)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_INDUSTRY)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("industry", Tile::Type::FARM, 1)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("industry", Tile::Type::FACTORY, 3)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("industry", Tile::Type::WORKSHOP, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::FARM, 1, Good::NECESSARY, 30, 3)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::FACTORY, 3, Good::NORMAL, 10, 3)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::WORKSHOP, 2, Good::LUXURY, 3, 3)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_BUSINESS)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("business", Tile::Type::MARKET, 1)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("business", Tile::Type::MALL, 3)));

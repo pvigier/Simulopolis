@@ -1,6 +1,6 @@
 #include "Housing.h"
 
-Housing::Housing(const std::string& name, Type type, unsigned int nbStairs, unsigned int nbInhabitants, float quality) :
+Housing::Housing(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbInhabitants, float quality) :
     Building(name, type, nbStairs), mNbInhabitants(nbInhabitants), mQuality(quality)
 {
     //ctor

@@ -58,10 +58,15 @@
 		<Unit filename="src/city/City.h" />
 		<Unit filename="src/city/Company.cpp" />
 		<Unit filename="src/city/Company.h" />
-		<Unit filename="src/city/Contract.cpp" />
 		<Unit filename="src/city/Contract.h" />
+		<Unit filename="src/city/Good.h" />
+		<Unit filename="src/city/Housing.cpp" />
+		<Unit filename="src/city/Housing.h" />
+		<Unit filename="src/city/Industry.cpp" />
+		<Unit filename="src/city/Industry.h" />
 		<Unit filename="src/city/Map.cpp" />
 		<Unit filename="src/city/Map.h" />
+		<Unit filename="src/city/Market.h" />
 		<Unit filename="src/city/Network.cpp" />
 		<Unit filename="src/city/Network.h" />
 		<Unit filename="src/city/Person.cpp" />

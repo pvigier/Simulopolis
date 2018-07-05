@@ -25,9 +25,9 @@ public:
     const Kinematic& getKinematic() const;
     SteeringBehaviors& getSteering();
     sf::FloatRect getBounds() const;
-    Person* getOwner();
-    const Person* getOwner() const;
-    void setOwner(Person* owner);
+    Person* getDriver();
+    const Person* getDriver() const;
+    void setDriver(Person* owner);
 
 private:
     static TextureManager* sTextureManager;
@@ -39,5 +39,5 @@ private:
     SteeringBehaviors mSteering;
     sf::Sprite mSprite;
     const sf::Image& mMask;
-    Person* mOwner;
+    Person* mDriver;
 };

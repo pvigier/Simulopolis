@@ -7,7 +7,7 @@ ImageManager* Car::sImageManager = nullptr;
 
 Car::Car(const std::string& model) :
     mKinematic(1.0f, 150.0f, 800.0f), mSteering(mKinematic), mMask(sImageManager->getImage(model)),
-    mOwner(nullptr)
+    mDriver(nullptr)
 {
     const sf::Texture& texture = sTextureManager->getTexture(model);
     mWidth = texture.getSize().x / 8;
@@ -77,17 +77,17 @@ sf::FloatRect Car::getBounds() const
     return mSprite.getGlobalBounds();
 }
 
-Person* Car::getOwner()
+Person* Car::getDriver()
 {
-    return mOwner;
+    return mDriver;
 }
 
-const Person* Car::getOwner() const
+const Person* Car::getDriver() const
 {
-    return mOwner;
+    return mDriver;
 }
 
-void Car::setOwner(Person* owner)
+void Car::setDriver(Person* owner)
 {
-    mOwner = owner;
+    mDriver = owner;
 }
