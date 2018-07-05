@@ -3,6 +3,8 @@
 #include <string>
 #include "city/Car.h"
 
+class Housing;
+
 class Person
 {
 public:
@@ -37,6 +39,9 @@ private:
 
     // State
     State mState;
+
+    // Home
+    Housing* mHome;
 
     // Car
     Car mCar;

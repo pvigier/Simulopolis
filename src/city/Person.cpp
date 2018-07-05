@@ -5,7 +5,7 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mCar(car), mMoney(0.0f), mSleep(1.0f), mHygiene(1.0f), mSafety(1.0f), mHunger(1.0f),
     mHappiness(0.0f)
 {
-    mCar.setOwner(this);
+    mCar.setDriver(this);
 }
 
 void Person::update(float dt)
