@@ -42,7 +42,7 @@ public:
     void setOwner(Owner owner);
     virtual sf::FloatRect getBounds() const override;
 
-private:
+protected:
     unsigned int mNbStairs;
     Owner mOwner;
 };
