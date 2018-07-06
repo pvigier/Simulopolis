@@ -1,32 +1,10 @@
 #include "CallForBids.h"
 #include "resource/TextureManager.h"
 
-CallForBids::CallForBids(const std::string& name, Type type) :
+CallForBids::CallForBids(const std::string& name, Type type, const sf::Color& signColor) :
     Tile(name, type, Category::BUILDING), mSignSprite(sTextureManager->getTexture("sign"))
 {
-    switch (type)
-    {
-        case Type::CFB_HOUSING:
-            mSignSprite.setColor(sf::Color(167, 125, 83));
-            break;
-        case Type::CFB_INDUSTRY:
-            mSignSprite.setColor(sf::Color(192, 188, 170));
-            break;
-        case Type::CFB_BUSINESS:
-            mSignSprite.setColor(sf::Color(178, 83, 83));
-            break;
-        case Type::CFB_HOSPITAL:
-            mSignSprite.setColor(sf::Color(255, 255, 255));
-            break;
-        case Type::CFB_POLICE_STATION:
-            mSignSprite.setColor(sf::Color(49, 122, 187));
-            break;
-        case Type::CFB_SCHOOL:
-            mSignSprite.setColor(sf::Color(207, 156, 104));
-            break;
-        default:
-            break;
-    }
+    mSignSprite.setColor(signColor);
 }
 
 CallForBids::~CallForBids()
