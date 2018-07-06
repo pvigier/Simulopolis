@@ -197,7 +197,7 @@ void GameStateEditor::handleMessages()
                     {
                         City::Intersection intersection = mCity.intersect(gamePos);
                         if (intersection.type == City::Intersection::Type::CAR)
-                            createPersonWindow(*intersection.car->getOwner());
+                            createPersonWindow(*intersection.car->getDriver());
                         else if (intersection.type == City::Intersection::Type::BUILDING)
                             createBuildingWindow(*intersection.building);
                     }

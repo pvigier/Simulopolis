@@ -2,7 +2,6 @@
 #include <fstream>
 #include "resource/TextureManager.h"
 #include "city/Road.h"
-#include "city/Building.h"
 #include "city/CallForBids.h"
 #include "city/Housing.h"
 #include "city/Industry.h"
@@ -25,7 +24,7 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("dirt", Tile::Type::DIRT, Tile::Category::OBSTACLE)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_HOUSING, sf::Color(167, 125, 83))));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Housing("housing", Tile::Type::AFFORDABLE_HOUSING, 3, 9, 5)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Housing("housing", Tile::Type::APARTMENT_BUILDING, 2, 3, 10)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Housing("housing", Tile::Type::APARTMENT_BUILDING, 2, 4, 10)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Housing("housing", Tile::Type::VILLA, 1, 1, 20)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_INDUSTRY, sf::Color(192, 188, 170))));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::FARM, 1, Good::NECESSARY, 30, 2)));
