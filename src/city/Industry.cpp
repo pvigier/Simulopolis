@@ -1,7 +1,7 @@
 #include "Industry.h"
 
-Industry::Industry(const std::string& name, Type type, unsigned int nbStairs, Good good, unsigned int quantity, std::size_t nbEmployees) :
-    Building(name, type, nbStairs), mGood(good), mQuantity(quantity), mNbEmployees(nbEmployees)
+Industry::Industry(const std::string& name, Type type, unsigned int nbStairs, Good good, unsigned int productivity, std::size_t nbEmployees) :
+    Building(name, type, nbStairs), mGood(good), mProductivity(productivity), mNbEmployees(nbEmployees)
 {
     //ctor
 }
