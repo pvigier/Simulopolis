@@ -7,6 +7,7 @@
 #include "city/Housing.h"
 #include "city/Industry.h"
 #include "city/Business.h"
+#include "city/Service.h"
 
 std::vector<std::unique_ptr<Tile>> Map::sTileAtlas;
 
@@ -35,11 +36,11 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::MALL, 3, Good::NECESSARY, 6)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::BOUTIQUE, 2, Good::LUXURY, 4)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_HOSPITAL, sf::Color(255, 255, 255))));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("hospital", Tile::Type::HOSPITAL, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Service("hospital", Tile::Type::HOSPITAL, 2, 1)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_POLICE_STATION, sf::Color(49, 122, 187))));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("police", Tile::Type::POLICE_STATION, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Service("police", Tile::Type::POLICE_STATION, 2, 1)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_SCHOOL, sf::Color(207, 156, 104))));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Building("school", Tile::Type::SCHOOL, 2)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Service("school", Tile::Type::SCHOOL, 2, 1)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_GRASS)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_SIDEWALK)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_WATER)));
