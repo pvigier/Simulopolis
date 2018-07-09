@@ -92,6 +92,7 @@
 		<Unit filename="src/game/GameStateStart.h" />
 		<Unit filename="src/game/PersonWindow.cpp" />
 		<Unit filename="src/game/PersonWindow.h" />
+		<Unit filename="src/game/WindowManager.h" />
 		<Unit filename="src/gui/Gui.cpp" />
 		<Unit filename="src/gui/Gui.h" />
 		<Unit filename="src/gui/GuiBoxLayout.cpp" />

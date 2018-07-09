@@ -20,7 +20,7 @@
 #include "game/BuildingWindow.h"
 
 GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel(1.0f),
-    mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor")), mIWindow(0)
+    mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor"))
 {
     // Views
     sf::Vector2f windowSize = sf::Vector2f(sRenderEngine->getWindow().getSize());
@@ -57,11 +57,6 @@ GameStateEditor::~GameStateEditor()
     }
 
     mGui->unsubscribe(mMailbox.getId());
-
-    for (std::unique_ptr<PersonWindow>& personWindow : mPersonWindows)
-        personWindow->getWindow()->unsubscribe(mMailbox.getId());
-    for (std::unique_ptr<BuildingWindow>& buildingWindow : mBuildingWindows)
-        buildingWindow->getWindow()->unsubscribe(mMailbox.getId());
 }
 
 void GameStateEditor::draw(float dt)
@@ -228,23 +223,10 @@ void GameStateEditor::handleMessages()
                 case GuiEvent::Type::WINDOW_CLOSED:
                 {
                     GuiWindow* window = static_cast<GuiWindow*>(event.widget);
-                    for (std::size_t i = 0; i < mPersonWindows.size(); ++i)
+                    for (std::unique_ptr<VWindowManager>& windowManager : mWindowManagers)
                     {
-                        if (mPersonWindows[i]->getWindow() == window)
-                        {
-                            std::swap(mPersonWindows[i], mPersonWindows.back());
-                            mPersonWindows.pop_back();
+                        if (windowManager->removeWindow(window))
                             break;
-                        }
-                    }
-                    for (std::size_t i = 0; i < mBuildingWindows.size(); ++i)
-                    {
-                        if (mBuildingWindows[i]->getWindow() == window)
-                        {
-                            std::swap(mBuildingWindows[i], mBuildingWindows.back());
-                            mBuildingWindows.pop_back();
-                            break;
-                        }
                     }
                 }
                 default:
@@ -315,6 +297,10 @@ void GameStateEditor::createGui()
 
     mGui->get("rightMenu")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     updateTabs("landscapeTabButton");
+
+    // Window managers
+    mWindowManagers.emplace_back(new WindowManager<PersonWindow>(mMailbox.getId(), "personWindow"));
+    mWindowManagers.emplace_back(new WindowManager<BuildingWindow>(mMailbox.getId(), "buildingWindow"));
 }
 
 void GameStateEditor::generateMenuTextures()
@@ -342,25 +328,21 @@ void GameStateEditor::generateMenuTextures()
 
 void GameStateEditor::createPersonWindow(const Person& person)
 {
-    std::string windowId = "window" + std::to_string(mIWindow++);
-    PersonWindow* personWindow = new PersonWindow(mGui.get(), sStylesheetManager, windowId, person, mCity.getYear());
-    personWindow->getWindow()->subscribe(mMailbox.getId());
-    mPersonWindows.emplace_back(personWindow);
+    PersonWindow* window = new PersonWindow(mGui.get(), sStylesheetManager, mWindowManagers[0]->getNewName(), person, mCity.getYear());
+    static_cast<WindowManager<PersonWindow>*>(mWindowManagers[0].get())->addWindow(window);
 }
 
 void GameStateEditor::createBuildingWindow(const Building& building)
 {
-    std::string windowId = "window" + std::to_string(mIWindow++);
-    BuildingWindow* buildingWindow = new BuildingWindow(mGui.get(), sStylesheetManager, windowId, building);
-    buildingWindow->getWindow()->subscribe(mMailbox.getId());
-    mBuildingWindows.emplace_back(buildingWindow);
+    BuildingWindow* window = new BuildingWindow(mGui.get(), sStylesheetManager, mWindowManagers[1]->getNewName(), building);
+    static_cast<WindowManager<BuildingWindow>*>(mWindowManagers[1].get())->addWindow(window);
 }
 
 void GameStateEditor::updateWindows()
 {
-    for (std::unique_ptr<PersonWindow>& personWindow : mPersonWindows)
+    for (std::unique_ptr<PersonWindow>& personWindow : static_cast<WindowManager<PersonWindow>*>(mWindowManagers[0].get())->getWindows())
         drawCity(personWindow->getRenderTexture(), personWindow->getView());
-    for (std::unique_ptr<BuildingWindow>& buildingWindow : mBuildingWindows)
+    for (std::unique_ptr<BuildingWindow>& buildingWindow : static_cast<WindowManager<BuildingWindow>*>(mWindowManagers[1].get())->getWindows())
         drawCity(buildingWindow->getRenderTexture(), buildingWindow->getView());
 }
 

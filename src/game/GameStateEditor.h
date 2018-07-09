@@ -5,6 +5,7 @@
 #include "city/City.h"
 #include "gui/Gui.h"
 #include "pcg/TerrainGenerator.h"
+#include "game/WindowManager.h"
 
 class PersonWindow;
 class BuildingWindow;
@@ -41,9 +42,7 @@ private:
     // Gui
     std::unique_ptr<Gui> mGui;
     sf::View mGuiView;
-    int mIWindow;
-    std::vector<std::unique_ptr<PersonWindow>> mPersonWindows;
-    std::vector<std::unique_ptr<BuildingWindow>> mBuildingWindows;
+    std::vector<std::unique_ptr<VWindowManager>> mWindowManagers;
     std::vector<std::unique_ptr<sf::RenderTexture>> mMenuTextures;
 
     void drawCity(sf::RenderTexture& renderTexture, const sf::View& view);
