@@ -1,15 +1,17 @@
 #pragma once
 
 #include "util/IdManager.h"
+#include "message/MessageBus.h"
 
-template<typename T>
+template<typename T, int N>
 class Market
 {
 public:
     struct Item
     {
         Id id;
-        const T& good;
+        Id sellerId;
+        const T* good;
         float reservePrice;
     };
 
@@ -21,18 +23,34 @@ public:
 
     struct Auction
     {
+        unsigned int timestamp;
         Item item;
         std::vector<Bid> bids;
     };
 
-    Market()
+    struct Event
+    {
+        enum class Type{PURCHASE, SALE};
+
+        Type type;
+        float value;
+        const T* good;
+        int goodType;
+    };
+
+    Market() : mTime(0)
     {
 
     }
 
-    Id addItem(const T& good, float reservePrice)
+    static void setMessageBus(MessageBus* messageBus)
     {
-        Auction auction{Item{good, reservePrice, UNDEFINED}, {}};
+        sMessageBus = messageBus;
+    }
+
+    Id addItem(Id sellerId, const T* good, float reservePrice)
+    {
+        Auction auction{mTime++, Item{UNDEFINED, sellerId, good, reservePrice}, {}};
         Id id = mAuctions.add(auction);
         mAuctions.get(id).item.id = id;
         mDirty = true;
@@ -51,9 +69,16 @@ public:
         return mItems;
     }
 
+    void setDesiredQuantity(Id bidderId, unsigned int quantity)
+    {
+        mDesiredQuantities[bidderId] = quantity;
+    }
+
     void addBid(Id itemId, Id bidderId, float value)
     {
-        mAuctions.get(itemId).bids.emplace_back(bidderId, value);
+        if (mDesiredQuantities.find((bidderId)) == mDesiredQuantities.end())
+            mDesiredQuantities[bidderId] = 1;
+        mAuctions.get(itemId).bids.push_back(Bid{bidderId, value});
     }
 
     const std::vector<Bid>& getBids(Id itemId) const
@@ -61,8 +86,41 @@ public:
         return mAuctions.get(itemId).bids;
     }
 
+    void update()
+    {
+        // Sort auctions by timestamp
+        std::vector<Auction*> auctions;
+        for (Auction& auction : mAuctions.getObjects())
+            auctions.push_back(&auction);
+        std::sort(auctions.begin(), auctions.end(), [&](Auction* lhs, Auction* rhs) { return lhs->timestamp < rhs->timestamp; });
+        // Sell the goods
+        std::vector<Id> soldItems;
+        for (Auction* auction : auctions)
+        {
+            Bid& bid = *std::max_element(auction->bids.begin(), auction->bids.end(), [&](Bid& lhs, Bid& rhs) { return (mDesiredQuantities[lhs.bidderId] == 0 || (mDesiredQuantities[rhs.bidderId] != 0 && lhs.value < rhs.value)); });
+            Item& item = auction->item;
+            if (bid.value >= item.reservePrice && mDesiredQuantities[bid.bidderId] > 0)
+            {
+                sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, Event{Event::Type::PURCHASE, bid.value, item.good, N}));
+                sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, Event{Event::Type::SALE, bid.value, item.good, N}));
+                mDesiredQuantities[bid.bidderId]--;
+                soldItems.push_back(item.id);
+            }
+        }
+        // Update mActions
+        for (Id id : soldItems)
+            mAuctions.erase(id);
+    }
+
 private:
+    static MessageBus* sMessageBus;
+
+    unsigned int mTime;
     IdManager<Auction> mAuctions;
+    std::unordered_map<Id, unsigned int> mDesiredQuantities;
     mutable std::vector<const Item*> mItems;
     mutable bool mDirty;
 };
+
+template<typename T, int N>
+MessageBus* Market<T, N>::sMessageBus = nullptr;
