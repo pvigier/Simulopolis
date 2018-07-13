@@ -1,6 +1,6 @@
  #pragma once
 
- #include <vector>
+ #include <deque>
  #include "message/Message.h"
 
 class Person;
@@ -19,16 +19,23 @@ public:
 
     virtual void handle(Message message) = 0;
 
+    State getState() const;
     bool isActive() const;
     bool isInactive() const;
     bool isCompleted() const;
     bool hasFailed() const;
 
+    void pushFront(Goal* goal);
+    void pushBack(Goal* goal);
+    void clearSubgoals();
+
 protected:
     Person* mOwner;
     State mState;
-    std::vector<std::unique_ptr<Goal>> mSubgoals;
+    std::deque<std::unique_ptr<Goal>> mSubgoals;
 
     void activateIfInactive();
     void reactivateIfFailed();
+
+    State processSubgoals();
 };
