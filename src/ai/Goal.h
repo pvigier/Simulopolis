@@ -14,7 +14,7 @@ public:
     virtual ~Goal();
 
     virtual void activate() = 0;
-    virtual void process() = 0;
+    virtual State process() = 0;
     virtual void terminate() = 0;
 
     virtual void handle(Message message) = 0;

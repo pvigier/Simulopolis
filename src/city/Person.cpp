@@ -1,9 +1,9 @@
 #include "Person.h"
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
-    mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mState(State::RESTING),
-    mCar(car), mMoney(0.0f), mSleep(1.0f), mHygiene(1.0f), mSafety(1.0f), mHunger(1.0f),
-    mHappiness(0.0f)
+    mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
+    mState(State::RESTING), mCar(car), mMoney(0.0f), mSleep(1.0f), mHygiene(1.0f), mSafety(1.0f),
+    mHunger(1.0f), mHappiness(0.0f)
 {
     mCar.setDriver(this);
 }
@@ -32,6 +32,16 @@ std::string Person::getFullName() const
 Person::Gender Person::getGender() const
 {
     return mGender;
+}
+
+City* Person::getCity()
+{
+    return mCity;
+}
+
+void Person::setCity(City* city)
+{
+    mCity = city;
 }
 
 int Person::getAge(int year) const

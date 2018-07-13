@@ -3,6 +3,7 @@
 #include <string>
 #include "city/Car.h"
 
+class City;
 class Housing;
 
 class Person
@@ -20,6 +21,8 @@ public:
     std::string getFullName() const;
     Gender getGender() const;
     int getAge(int year) const;
+    City* getCity();
+    void setCity(City* city);
     State getState() const;
     void setState(State state);
     Car& getCar();
@@ -36,6 +39,7 @@ private:
     std::string mLastName;
     Gender mGender;
     int mBirth;
+    City* mCity;
 
     // State
     State mState;

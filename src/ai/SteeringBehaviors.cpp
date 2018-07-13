@@ -22,6 +22,11 @@ void SteeringBehaviors::setTarget(const Vector2f& target)
     mTarget = target;
 }
 
+const Path& SteeringBehaviors::getPath() const
+{
+    return mPath;
+}
+
 void SteeringBehaviors::setPath(Path path)
 {
     mPath = std::move(path);

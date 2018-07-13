@@ -12,6 +12,7 @@ public:
     Vector2f compute(float dt);
 
     void setTarget(const Vector2f& target);
+    const Path& getPath() const;
     void setPath(Path path);
     void setPanicDistance(float distance);
     void setArriveDistance(float distance);
