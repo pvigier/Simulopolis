@@ -191,6 +191,18 @@ bool GuiWidget::updateMouseButtonReleased(sf::Vector2f position, bool processed)
     return processed;
 }
 
+bool GuiWidget::updateTextEntered(sf::Uint32 unicode, bool processed)
+{
+    if (mVisible)
+    {
+        for (GuiWidget* widget : mChildren)
+            processed = widget->updateTextEntered(unicode, processed) || processed;
+        processed = onText(unicode, processed) || processed;
+    }
+    return processed;
+}
+
+
 bool GuiWidget::hasGuiEvents() const
 {
     return false;
@@ -242,6 +254,11 @@ bool GuiWidget::onPress(sf::Vector2f position, bool processed)
 }
 
 bool GuiWidget::onRelease(sf::Vector2f position, bool processed)
+{
+    return false;
+}
+
+bool GuiWidget::onText(sf::Uint32 unicode, bool processed)
 {
     return false;
 }
