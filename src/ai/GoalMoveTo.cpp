@@ -2,7 +2,7 @@
 #include "city/City.h"
 #include "city/Person.h"
 
-GoalMoveTo::GoalMoveTo(const sf::Vector2i& target) : mTarget(target)
+GoalMoveTo::GoalMoveTo(Person* owner, const sf::Vector2i& target) : Goal(owner), mTarget(target)
 {
     //ctor
 }

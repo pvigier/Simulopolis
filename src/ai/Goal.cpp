@@ -1,6 +1,6 @@
 #include "ai/Goal.h"
 
-Goal::Goal()
+Goal::Goal(Person* owner) : mOwner(owner)
 {
 
 }
@@ -8,6 +8,11 @@ Goal::Goal()
 Goal::~Goal()
 {
 
+}
+
+bool Goal::handle(Message message)
+{
+    return false;
 }
 
 Goal::State Goal::getState() const
@@ -67,4 +72,11 @@ Goal::State Goal::processSubgoals()
     while (!mSubgoals.empty() && mSubgoals.front()->process() == State::COMPLETED)
         mSubgoals.pop_front();
     return mSubgoals.front()->getState();
+}
+
+bool Goal::forward(Message message)
+{
+    if (!mSubgoals.empty())
+        return mSubgoals.front()->handle(message);
+    return false;
 }

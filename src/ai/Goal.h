@@ -10,14 +10,14 @@ class Goal
 public:
     enum class State{ACTIVE, INACTIVE, COMPLETED, FAILED};
 
-    Goal();
+    Goal(Person* owner);
     virtual ~Goal();
 
     virtual void activate() = 0;
     virtual State process() = 0;
     virtual void terminate() = 0;
 
-    virtual void handle(Message message) = 0;
+    virtual bool handle(Message message);
 
     State getState() const;
     bool isActive() const;
@@ -38,4 +38,5 @@ protected:
     void reactivateIfFailed();
 
     State processSubgoals();
+    bool forward(Message message);
 };

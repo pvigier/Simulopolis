@@ -6,7 +6,7 @@
 class GoalMoveTo : public Goal
 {
 public:
-    GoalMoveTo(const sf::Vector2i& target);
+    GoalMoveTo(Person* owner, const sf::Vector2i& target);
     virtual ~GoalMoveTo();
 
     virtual void activate() override;

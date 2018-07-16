@@ -40,7 +40,10 @@
 			<Add option="-ltinyxml2" />
 			<Add option="-lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system" />
 		</Linker>
+		<Unit filename="src/ai/Goal.cpp" />
 		<Unit filename="src/ai/Goal.h" />
+		<Unit filename="src/ai/GoalMoveTo.cpp" />
+		<Unit filename="src/ai/GoalMoveTo.h" />
 		<Unit filename="src/ai/Kinematic.cpp" />
 		<Unit filename="src/ai/Kinematic.h" />
 		<Unit filename="src/ai/Path.cpp" />
@@ -61,7 +64,6 @@
 		<Unit filename="src/city/City.h" />
 		<Unit filename="src/city/Company.cpp" />
 		<Unit filename="src/city/Company.h" />
-		<Unit filename="src/city/Contract.h" />
 		<Unit filename="src/city/Good.h" />
 		<Unit filename="src/city/Housing.cpp" />
 		<Unit filename="src/city/Housing.h" />
@@ -80,6 +82,8 @@
 		<Unit filename="src/city/Service.h" />
 		<Unit filename="src/city/Tile.cpp" />
 		<Unit filename="src/city/Tile.h" />
+		<Unit filename="src/city/Work.cpp" />
+		<Unit filename="src/city/Work.h" />
 		<Unit filename="src/game/BuildingWindow.cpp" />
 		<Unit filename="src/game/BuildingWindow.h" />
 		<Unit filename="src/game/Game.cpp" />
