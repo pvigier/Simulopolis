@@ -66,6 +66,12 @@ float PropertyList::get(const std::string& name) const
 }
 
 template<>
+sf::String PropertyList::get(const std::string& name) const
+{
+    return mProperties.at(name);
+}
+
+template<>
 sf::Vector2f PropertyList::get(const std::string& name) const
 {
     std::istringstream stream(mProperties.at(name));

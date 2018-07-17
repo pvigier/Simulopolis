@@ -1,7 +1,7 @@
 #include "gui/GuiText.h"
 #include "resource/XmlDocument.h"
 
-GuiText::GuiText(const std::string& text, unsigned int characterSize, const XmlDocument* style) :
+GuiText::GuiText(const sf::String& text, unsigned int characterSize, const XmlDocument* style) :
     mText(text, style->getFirstChildByName("text").getAttributes().get<const sf::Font&>("font"), characterSize)
 {
     mText.setFillColor(style->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
@@ -12,7 +12,7 @@ GuiText::GuiText(const std::string& text, unsigned int characterSize, const XmlD
 GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
 {
     const XmlDocument* style = properties.get<const XmlDocument*>("style");
-    mText.setString(properties.get<std::string>("text", ""));
+    mText.setString(properties.get<sf::String>("text", ""));
     mText.setFont(style->getFirstChildByName("text").getAttributes().get<const sf::Font&>("font"));
     mText.setCharacterSize(properties.get<unsigned int>("characterSize", 0));
     mText.setFillColor(style->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
@@ -40,7 +40,7 @@ void GuiText::setCharacterSize(unsigned int characterSize)
     computeSize();
 }
 
-void GuiText::setText(const std::string& text)
+void GuiText::setText(const sf::String& text)
 {
     mText.setString(text);
     computeSize();

@@ -52,6 +52,8 @@ private:
     std::unordered_map<std::string, std::string> mProperties;
 };
 
+// Basic types
+
 template<>
 std::string PropertyList::get(const std::string& name) const;
 
@@ -60,6 +62,11 @@ int PropertyList::get(const std::string& name) const;
 
 template<>
 float PropertyList::get(const std::string& name) const;
+
+// SFML
+
+template<>
+sf::String PropertyList::get(const std::string& name) const;
 
 template<>
 sf::Vector2f PropertyList::get(const std::string& name) const;
@@ -75,6 +82,8 @@ const sf::Texture& PropertyList::get(const std::string& name) const;
 
 template<>
 const sf::Font& PropertyList::get(const std::string& name) const;
+
+// My types
 
 template<>
 const XmlDocument* PropertyList::get(const std::string& name) const;
