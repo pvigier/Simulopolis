@@ -49,6 +49,7 @@ public:
     bool updateMouseMoved(sf::Vector2f position, bool processed);
     bool updateMouseButtonPressed(sf::Vector2f position, bool processed);
     bool updateMouseButtonReleased(sf::Vector2f position, bool processed);
+    bool updateKeyReleased(sf::Keyboard::Key key, bool processed);
     bool updateTextEntered(sf::Uint32 unicode, bool processed);
 
     virtual bool hasGuiEvents() const;
@@ -77,6 +78,7 @@ protected:
     virtual bool onHover(sf::Vector2f position, bool processed);
     virtual bool onPress(sf::Vector2f position, bool processed);
     virtual bool onRelease(sf::Vector2f position, bool processed);
+    virtual bool onKey(sf::Keyboard::Key key, bool processed);
     virtual bool onText(sf::Uint32 unicode, bool processed);
 
     virtual void applyStyle();

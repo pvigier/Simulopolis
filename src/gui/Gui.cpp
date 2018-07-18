@@ -128,6 +128,10 @@ void Gui::handleMessages()
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
                         processed = mRootWidgets[i]->updateTextEntered(event.text.unicode, processed) || processed;
                     break;
+                case sf::Event::KeyReleased:
+                    for (int i = mRootWidgets.size() - 1; i >= 0; --i)
+                        processed = mRootWidgets[i]->updateKeyReleased(event.key.code, processed) || processed;
+                    break;
                 default:
                     break;
             }
