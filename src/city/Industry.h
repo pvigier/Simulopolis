@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Building.h"
-#include "Contract.h"
+#include "Work.h"
 #include "Good.h"
 
 class Persons;
@@ -18,6 +18,6 @@ protected:
     Good mGood;
     unsigned int mProductivity;
     std::size_t mNbEmployees;
-    Contract mManager;
-    std::vector<Contract> mEmployees;
+    Person* mManager;
+    std::vector<Work> mEmployees;
 };

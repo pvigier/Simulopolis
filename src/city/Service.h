@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Building.h"
-#include "Contract.h"
+#include "Work.h"
 
 class Persons;
 
@@ -15,5 +15,5 @@ public:
 
 protected:
     std::size_t mNbEmployees;
-    std::vector<Contract> mEmployees;
+    std::vector<Work> mEmployees;
 };
