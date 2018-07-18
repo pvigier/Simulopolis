@@ -37,7 +37,7 @@ public:
     virtual bool updateVariant(const Tile* neighbors[3][3]) override;
 
     sf::Vector2f getPosition() const;
-    virtual void setPosition(sf::Vector2f position) override;
+    virtual void setPosition(sf::Vector2i coordinates, sf::Vector2f position) override;
     const Owner& getOwner() const;
     void setOwner(Owner owner);
     virtual sf::FloatRect getBounds() const override;

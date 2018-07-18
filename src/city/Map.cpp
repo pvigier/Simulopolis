@@ -66,7 +66,7 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
             Tile::Type type;
             inputFile.read((char*)&type, sizeof(type));
             mTiles.set(i, j, createTile(type));
-            mTiles.get(i, j)->setPosition(computePosition(i, j));
+            mTiles.get(i, j)->setPosition(sf::Vector2i(i, j), computePosition(i, j));
             char tmp[4];
             inputFile.read(tmp, sizeof(unsigned int));
             inputFile.read(tmp, sizeof(unsigned int));
@@ -114,7 +114,7 @@ void Map::fromArray(const Array2<Tile::Type>& tiles)
         for (unsigned int j = 0; j < mWidth; ++j)
         {
             mTiles.set(i, j, createTile(tiles.get(i, j)));
-            mTiles.get(i, j)->setPosition(computePosition(i, j));
+            mTiles.get(i, j)->setPosition(sf::Vector2i(i, j), computePosition(i, j));
         }
     }
 
@@ -143,7 +143,7 @@ void Map::bulldoze(Tile::Type type)
             if (mTiles.get(i, j)->getState() == Tile::State::SELECTED)
             {
                 mTiles.set(i, j, createTile(type));
-                mTiles.get(i, j)->setPosition(computePosition(i, j));
+                mTiles.get(i, j)->setPosition(sf::Vector2i(i, j), computePosition(i, j));
                 updateNeighborhood(i, j);
                 if (mTiles.get(i, j)->isRoad())
                     mNetwork.addRoad(i, j);

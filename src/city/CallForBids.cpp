@@ -24,8 +24,9 @@ std::unique_ptr<Tile> CallForBids::clone() const
     return std::unique_ptr<Tile>(new CallForBids(*this));
 }
 
-void CallForBids::setPosition(sf::Vector2f position)
+void CallForBids::setPosition(sf::Vector2i coordinates, sf::Vector2f position)
 {
+    mCoordinates = coordinates;
     mSprite.setPosition(position);
     mSignSprite.setPosition(position + sf::Vector2f(53.0f, -8.0f));
 }

@@ -38,12 +38,13 @@ public:
 
     virtual bool updateVariant(const Tile* neighbors[3][3]);
 
+    sf::Vector2i getCoordinates() const;
+    virtual void setPosition(sf::Vector2i coordinates, sf::Vector2f position);
+    Category getCategory() const;
+    Type getType() const;
     bool isBuilding() const;
     bool isRoad() const;
     bool hasSidewalk() const;
-    virtual void setPosition(sf::Vector2f position);
-    Category getCategory() const;
-    Type getType() const;
     State getState() const;
     void setState(State state);
     virtual sf::FloatRect getBounds() const;
@@ -53,6 +54,7 @@ protected:
     static ImageManager* sImageManager;
 
     sf::Sprite mSprite;
+    sf::Vector2i mCoordinates;
     const sf::Image& mMask;
     Type mType;
     Category mCategory;

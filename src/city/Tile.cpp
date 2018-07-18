@@ -166,6 +166,27 @@ bool Tile::updateVariant(const Tile* neighbors[3][3])
     return false;
 }
 
+sf::Vector2i Tile::getCoordinates() const
+{
+    return mCoordinates;
+}
+
+void Tile::setPosition(sf::Vector2i coordinates, sf::Vector2f position)
+{
+    mCoordinates = coordinates;
+    mSprite.setPosition(position);
+}
+
+Tile::Category Tile::getCategory() const
+{
+    return mCategory;
+}
+
+Tile::Type Tile::getType() const
+{
+    return mType;
+}
+
 bool Tile::isBuilding() const
 {
     return mCategory == Category::BUILDING;
@@ -179,21 +200,6 @@ bool Tile::isRoad() const
 bool Tile::hasSidewalk() const
 {
     return mType == Type::ROAD_SIDEWALK;
-}
-
-void Tile::setPosition(sf::Vector2f position)
-{
-    mSprite.setPosition(position);
-}
-
-Tile::Category Tile::getCategory() const
-{
-    return mCategory;
-}
-
-Tile::Type Tile::getType() const
-{
-    return mType;
 }
 
 Tile::State Tile::getState() const

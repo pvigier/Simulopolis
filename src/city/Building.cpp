@@ -81,8 +81,9 @@ sf::Vector2f Building::getPosition() const
     return mSprite.getPosition();
 }
 
-void Building::setPosition(sf::Vector2f position)
+void Building::setPosition(sf::Vector2i coordinates, sf::Vector2f position)
 {
+    mCoordinates = coordinates;
     mSprite.setPosition(sf::Vector2f(position.x, position.y - OFFSET_Y));
 }
 
