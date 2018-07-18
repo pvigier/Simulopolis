@@ -191,12 +191,12 @@ bool GuiWidget::updateMouseButtonReleased(sf::Vector2f position, bool processed)
     return processed;
 }
 
-bool GuiWidget::updateKeyReleased(sf::Keyboard::Key key, bool processed)
+bool GuiWidget::updateKeyPressed(sf::Keyboard::Key key, bool processed)
 {
     if (mVisible)
     {
         for (GuiWidget* widget : mChildren)
-            processed = widget->updateKeyReleased(key, processed) || processed;
+            processed = widget->updateKeyPressed(key, processed) || processed;
         processed = onKey(key, processed) || processed;
     }
     return processed;

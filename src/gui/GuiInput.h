@@ -15,8 +15,12 @@ public:
 protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    virtual bool onKey(sf::Keyboard::Key key, bool processed) override;
     virtual bool onText(sf::Uint32 unicode, bool processed) override;
 
 private:
     std::size_t mCursor;
+    sf::RectangleShape mCursorShape;
+
+    void setCursor(std::size_t cursor);
 };
