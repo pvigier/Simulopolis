@@ -12,6 +12,7 @@ public:
     Vector2f getCurrentPoint() const;
     void setNextPoint();
     bool isFinished() const;
+    bool isEmpty() const;
 
 private:
     std::vector<Vector2f> mPoints;

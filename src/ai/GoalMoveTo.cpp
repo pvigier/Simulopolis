@@ -19,7 +19,11 @@ void GoalMoveTo::activate()
     mOwner->setState(Person::State::MOVING);
     // Update the steering behavior
     sf::Vector2i position = mOwner->getCity()->toTileIndices(mOwner->getCar().getKinematic().getPosition());
-    mOwner->getCar().getSteering().setPath(mOwner->getCity()->getMap().getPath(position, mTarget));
+    Path path = mOwner->getCity()->getMap().getPath(position, mTarget);
+    if (path.isEmpty())
+        mState = State::FAILED;
+    else
+        mOwner->getCar().getSteering().setPath(path);
 }
 
 Goal::State GoalMoveTo::process()

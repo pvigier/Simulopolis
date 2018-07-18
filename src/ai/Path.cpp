@@ -26,3 +26,8 @@ bool Path::isFinished() const
 {
     return !mLoop && mCurPoint == (mPoints.size() - 1);
 }
+
+bool Path::isEmpty() const
+{
+    return mPoints.empty();
+}
