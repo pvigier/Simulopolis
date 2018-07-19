@@ -1,9 +1,8 @@
 #pragma once
 
 #include "Building.h"
-#include "Work.h"
 
-class Persons;
+class Work;
 
 class Service : public Building
 {
@@ -15,5 +14,5 @@ public:
 
 protected:
     std::size_t mNbEmployees;
-    std::vector<Work> mEmployees;
+    std::vector<Work*> mEmployees;
 };

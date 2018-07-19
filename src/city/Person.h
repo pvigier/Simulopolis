@@ -2,6 +2,7 @@
 
 #include <string>
 #include "city/Car.h"
+#include "city/Work.h"
 
 class City;
 class Housing;
@@ -25,6 +26,7 @@ public:
     void setCity(City* city);
     State getState() const;
     void setState(State state);
+    const Work* getWork() const;
     Car& getCar();
     const Car& getCar() const;
     float getSleep() const;
@@ -46,6 +48,9 @@ private:
 
     // Home
     Housing* mHome;
+
+    // Work
+    std::unique_ptr<Work> mWork;
 
     // Car
     Car mCar;

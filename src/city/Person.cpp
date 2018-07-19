@@ -59,6 +59,16 @@ void Person::setState(Person::State state)
     mState = state;
 }
 
+const Housing* Person::getHome() const
+{
+    return mHome;
+}
+
+const Work* Person::getWork() const
+{
+    return mWork.get();
+}
+
 Car& Person::getCar()
 {
     return mCar;
@@ -94,3 +104,7 @@ float Person::getHappiness() const
     return mHappiness;
 }
 
+void Person::increaseHappiness(float difference)
+{
+    mHappiness += difference;
+}
