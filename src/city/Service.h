@@ -15,4 +15,5 @@ public:
 protected:
     std::size_t mNbEmployees;
     std::vector<Work*> mEmployees;
+    std::vector<Person*> mCustomers;
 };

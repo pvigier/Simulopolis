@@ -69,6 +69,11 @@ const Work* Person::getWork() const
     return mWork.get();
 }
 
+const Business* Person::getFavoriteShop() const
+{
+    return mFavoriteShop;
+}
+
 Car& Person::getCar()
 {
     return mCar;

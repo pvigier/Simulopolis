@@ -6,6 +6,7 @@
 
 class City;
 class Housing;
+class Business;
 
 class Person
 {
@@ -28,6 +29,7 @@ public:
     void setState(State state);
     const Housing* getHome() const;
     const Work* getWork() const;
+    const Business* getFavoriteShop() const;
     Car& getCar();
     const Car& getCar() const;
     float getSleep() const;
@@ -53,6 +55,9 @@ private:
 
     // Work
     std::unique_ptr<Work> mWork;
+
+    // Habits
+    const Business* mFavoriteShop;
 
     // Car
     Car mCar;

@@ -46,6 +46,8 @@
 		<Unit filename="src/ai/GoalMoveTo.h" />
 		<Unit filename="src/ai/GoalRest.cpp" />
 		<Unit filename="src/ai/GoalRest.h" />
+		<Unit filename="src/ai/GoalShop.cpp" />
+		<Unit filename="src/ai/GoalShop.h" />
 		<Unit filename="src/ai/GoalWait.cpp" />
 		<Unit filename="src/ai/GoalWait.h" />
 		<Unit filename="src/ai/GoalWork.cpp" />
