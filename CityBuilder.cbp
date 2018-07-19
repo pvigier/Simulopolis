@@ -48,6 +48,8 @@
 		<Unit filename="src/ai/GoalRest.h" />
 		<Unit filename="src/ai/GoalWait.cpp" />
 		<Unit filename="src/ai/GoalWait.h" />
+		<Unit filename="src/ai/GoalWork.cpp" />
+		<Unit filename="src/ai/GoalWork.h" />
 		<Unit filename="src/ai/Kinematic.cpp" />
 		<Unit filename="src/ai/Kinematic.h" />
 		<Unit filename="src/ai/Path.cpp" />

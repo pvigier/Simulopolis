@@ -19,7 +19,7 @@ City::Intersection::Intersection(const Building* building) : type(City::Intersec
 
 }
 
-City::City() : mCurrentTime(0.0), mTimePerDay(1.0), mDay(0), mPopulation(0), mUnemployed(0), mFunds(0)
+City::City() : mCurrentTime(0.0), mTimePerMonth(120.0f), mMonth(0), mPopulation(0), mUnemployed(0), mFunds(0)
 {
     // Generators
     mPersonGenerator.setUp();
@@ -46,8 +46,8 @@ void City::load(const std::string& name)
                     width = std::stoi(value);
                 else if(key == "height")
                     height = std::stoi(value);
-                else if(key == "day")
-                    mDay = std::stoi(value);
+                else if(key == "month")
+                    mMonth = std::stoi(value);
                 else if(key == "unemployed")
                     mUnemployed = std::stod(value);
                 else if(key == "population")
@@ -91,7 +91,7 @@ void City::save(const std::string& name)
 
     outputFile << "width=" << mMap.getWidth() << std::endl;
     outputFile << "height=" << mMap.getHeight() << std::endl;
-    outputFile << "day=" << mDay << std::endl;
+    outputFile << "month=" << mMonth << std::endl;
     outputFile << "population=" << mPopulation << std::endl;
     outputFile << "unemployed=" << mUnemployed << std::endl;
     outputFile << "funds=" << mFunds << std::endl;
@@ -212,14 +212,14 @@ const Map& City::getMap() const
     return mMap;
 }
 
-unsigned int City::getDay() const
+unsigned int City::getMonth() const
 {
-    return mDay;
+    return mMonth;
 }
 
 unsigned int City::getYear() const
 {
-    return mDay / 365;
+    return mMonth / 12;
 }
 
 unsigned int City::getPopulation() const
@@ -247,4 +247,9 @@ sf::Vector2i City::toTileIndices(const sf::Vector2f& position) const
     int x = position.y / Tile::SIZE + 0.5f * (position.x / Tile::SIZE - mMap.getWidth() - 1);
     int y = position.y / Tile::SIZE - 0.5f * (position.x / Tile::SIZE - mMap.getWidth() - 1);
     return sf::Vector2i(x, y);
+}
+
+float City::toHumanTime(float cityTime) const
+{
+    return cityTime / (30.0f * 24.0f) * mTimePerMonth;
 }

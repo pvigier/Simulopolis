@@ -214,8 +214,8 @@
 		<hboxlayout hAlignment="right" vAlignment="top" />
 	</widget>
     <widget name="infoBar">
-		<button name="dayButton" size="160 16" style="button">
-			<text name="dayText" characterSize="12" style="button" />
+		<button name="dateButton" size="160 16" style="button">
+			<text name="dateText" characterSize="12" style="button" />
 			<hboxlayout hAlignment="center" vAlignment="center" />
 		</button>
 		<button name="fundsButton" size="160 16" style="button">

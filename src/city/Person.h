@@ -26,6 +26,7 @@ public:
     void setCity(City* city);
     State getState() const;
     void setState(State state);
+    const Housing* getHome() const;
     const Work* getWork() const;
     Car& getCar();
     const Car& getCar() const;
@@ -34,6 +35,7 @@ public:
     float getSafety() const;
     float getHunger() const;
     float getHappiness() const;
+    void increaseHappiness(float difference);
 
 private:
     // Personal data

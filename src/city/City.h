@@ -42,7 +42,7 @@ public:
 
     Map& getMap();
     const Map& getMap() const;
-    unsigned int getDay() const;
+    unsigned int getMonth() const;
     unsigned int getYear() const;
     unsigned int getPopulation() const;
     unsigned int getUnemployed() const;
@@ -50,6 +50,7 @@ public:
     void decreaseFunds(unsigned int amount);
 
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
+    float toHumanTime(float cityTime) const; // cityTime is expressed in hours
 
 private:
     // Generators
@@ -57,8 +58,8 @@ private:
     CompanyGenerator mCompanyGenerator;
 
     float mCurrentTime;
-    float mTimePerDay;
-    unsigned int mDay;
+    float mTimePerMonth;
+    unsigned int mMonth;
 
     Map mMap;
 
