@@ -12,6 +12,7 @@ GoalWait::~GoalWait()
 
 void GoalWait::activate()
 {
+    mState = State::ACTIVE;
     mClock.restart();
 }
 

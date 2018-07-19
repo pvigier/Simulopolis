@@ -310,7 +310,7 @@ void GameStateEditor::generateMenuTextures()
         std::fill(neighbors[i], neighbors[i] + 3, Map::getTileAtlas()[0].get());
     for (const std::unique_ptr<Tile>& tile : Map::getTileAtlas())
     {
-        tile->setPosition(sf::Vector2f());
+        tile->setPosition(sf::Vector2i(), sf::Vector2f());
         tile->updateVariant(neighbors);
         std::unique_ptr<sf::RenderTexture> texture(new sf::RenderTexture);
         texture->create(26, 26);

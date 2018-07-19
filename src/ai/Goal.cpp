@@ -1,6 +1,6 @@
 #include "ai/Goal.h"
 
-Goal::Goal(Person* owner) : mOwner(owner)
+Goal::Goal(Person* owner) : mOwner(owner), mState(State::INACTIVE)
 {
 
 }
@@ -70,8 +70,11 @@ void  Goal::reactivateIfFailed()
 Goal::State Goal::processSubgoals()
 {
     while (!mSubgoals.empty() && mSubgoals.front()->process() == State::COMPLETED)
+    {
+        mSubgoals.front()->terminate();
         mSubgoals.pop_front();
-    return mSubgoals.front()->getState();
+    }
+    return mSubgoals.empty() ? State::COMPLETED : mSubgoals.front()->getState();
 }
 
 bool Goal::forward(Message message)
