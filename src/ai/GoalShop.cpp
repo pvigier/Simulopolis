@@ -26,6 +26,8 @@ void GoalShop::activate()
 
 Goal::State GoalShop::process()
 {
+    activateIfInactive();
+
     mState = processSubgoals();
     return mState;
 }

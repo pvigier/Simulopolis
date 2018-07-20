@@ -25,6 +25,8 @@ void GoalRest::activate()
 
 Goal::State GoalRest::process()
 {
+    activateIfInactive();
+
     mState = processSubgoals();
     return mState;
 }

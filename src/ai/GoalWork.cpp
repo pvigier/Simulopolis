@@ -28,6 +28,8 @@ void GoalWork::activate()
 
 Goal::State GoalWork::process()
 {
+    activateIfInactive();
+
     mState = processSubgoals();
     return mState;
 }
