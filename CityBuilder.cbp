@@ -42,6 +42,8 @@
 		</Linker>
 		<Unit filename="src/ai/Goal.cpp" />
 		<Unit filename="src/ai/Goal.h" />
+		<Unit filename="src/ai/GoalEvaluator.cpp" />
+		<Unit filename="src/ai/GoalEvaluator.h" />
 		<Unit filename="src/ai/GoalMoveTo.cpp" />
 		<Unit filename="src/ai/GoalMoveTo.h" />
 		<Unit filename="src/ai/GoalRest.cpp" />
