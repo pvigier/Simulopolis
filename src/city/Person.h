@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "ai/GoalThink.h"
 #include "city/Car.h"
 #include "city/Work.h"
 
@@ -18,6 +19,7 @@ public:
 
     void update(float dt);
 
+    // Personal data
     const std::string& getFirstName() const;
     const std::string& getLastName() const;
     std::string getFullName() const;
@@ -25,19 +27,33 @@ public:
     int getAge(int year) const;
     City* getCity();
     void setCity(City* city);
+
+    // State
     State getState() const;
     void setState(State state);
+
+    // Daily life
     const Housing* getHome() const;
     const Work* getWork() const;
     const Business* getFavoriteShop() const;
+
+    // Car
     Car& getCar();
     const Car& getCar() const;
+
+    // Needs
     float getSleep() const;
-    float getHygiene() const;
+    float getHealth() const;
     float getSafety() const;
     float getHunger() const;
+
+    // Happiness
     float getHappiness() const;
     void increaseHappiness(float difference);
+
+    // AI
+    GoalThink& getShortTermBrain();
+    GoalThink& getLongTermBrain();
 
 private:
     // Personal data
@@ -50,13 +66,9 @@ private:
     // State
     State mState;
 
-    // Home
+    // Daily life
     Housing* mHome;
-
-    // Work
     std::unique_ptr<Work> mWork;
-
-    // Habits
     const Business* mFavoriteShop;
 
     // Car
@@ -67,10 +79,14 @@ private:
 
     // Needs
     float mSleep;
-    float mHygiene;
+    float mHealth;
     float mSafety;
     float mHunger;
 
     // Happiness
     float mHappiness;
+
+    // AI
+    GoalThink mShortTermBrain;
+    GoalThink mLongTermBrain;
 };

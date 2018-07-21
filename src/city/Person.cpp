@@ -2,14 +2,19 @@
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
-    mState(State::RESTING), mCar(car), mMoney(0.0f), mSleep(1.0f), mHygiene(1.0f), mSafety(1.0f),
-    mHunger(1.0f), mHappiness(0.0f)
+    mState(State::RESTING), mHome(nullptr), mFavoriteShop(nullptr), mCar(car),
+    mMoney(0.0f), mSleep(1.0f), mHealth(1.0f), mSafety(1.0f), mHunger(1.0f), mHappiness(0.0f),
+    mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
 }
 
 void Person::update(float dt)
 {
+    // AI
+    mShortTermBrain.process();
+
+    // Update the car if necessary
     if (mState == State::MOVING)
         mCar.update(dt);
 }
@@ -89,9 +94,9 @@ float Person::getSleep() const
     return mSleep;
 }
 
-float Person::getHygiene() const
+float Person::getHealth() const
 {
-    return mHygiene;
+    return mHealth;
 }
 
 float Person::getSafety() const
@@ -112,4 +117,14 @@ float Person::getHappiness() const
 void Person::increaseHappiness(float difference)
 {
     mHappiness += difference;
+}
+
+GoalThink& Person::getShortTermBrain()
+{
+    return mShortTermBrain;
+}
+
+GoalThink& Person::getLongTermBrain()
+{
+    return mLongTermBrain;
 }

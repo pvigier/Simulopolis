@@ -38,7 +38,7 @@ PersonWindow::PersonWindow(Gui* gui, StylesheetManager* stylesheetManager, const
     // Bottom widget
     auto bottomWidget = gui->create<GuiWidget>(windowId + "BottomWidget");
     auto sleepText = gui->create<GuiText>(windowId + "SleepText", "Sleep: " + std::to_string(person.getSleep()), 10, stylesheetManager->getStylesheet("text"));
-    auto hygieneText = gui->create<GuiText>(windowId + "HygieneText", "Hygiene: " + std::to_string(person.getHygiene()), 10, stylesheetManager->getStylesheet("text"));
+    auto hygieneText = gui->create<GuiText>(windowId + "HealthText", "Health: " + std::to_string(person.getHealth()), 10, stylesheetManager->getStylesheet("text"));
     auto safetyText = gui->create<GuiText>(windowId + "SafetyText", "Safety: " + std::to_string(person.getSafety()), 10, stylesheetManager->getStylesheet("text"));
     auto hungerText = gui->create<GuiText>(windowId + "HungerText", "Hunger: " + std::to_string(person.getHunger()), 10, stylesheetManager->getStylesheet("text"));
     auto happinessText = gui->create<GuiText>(windowId + "HapinessText", "Happiness: " + std::to_string(person.getHappiness()), 10, stylesheetManager->getStylesheet("text"));
