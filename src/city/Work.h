@@ -17,6 +17,8 @@ public:
     const Building* getWorkplace() const;
     float getSalary() const;
     float getNbHoursPerWeek() const;
+    bool hasAlreadyWorkedThisMonth() const;
+    void setAlreadyWorkedThisMonth(bool alreadyWorkedThisMonth);
 
 private:
     Type mType;
@@ -25,4 +27,5 @@ private:
     const Building* mWorkplace;
     float mSalary;
     float mNbHoursPerWeek;
+    bool mAlreadyWorkedThisMonth;
 };

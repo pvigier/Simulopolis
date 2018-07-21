@@ -35,3 +35,12 @@ float Work::getNbHoursPerWeek() const
 {
     return mNbHoursPerWeek;
 }
+
+bool Work::hasAlreadyWorkedThisMonth() const
+{
+    return mAlreadyWorkedThisMonth;
+}
+void Work::setAlreadyWorkedThisMonth(bool alreadyWorkedThisMonth)
+{
+    mAlreadyWorkedThisMonth = alreadyWorkedThisMonth;
+}
