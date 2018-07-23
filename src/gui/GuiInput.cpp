@@ -1,9 +1,9 @@
 #include "gui/GuiInput.h"
 
 GuiInput::GuiInput(unsigned int characterSize, const XmlDocument* style) :
-    GuiText("", characterSize, style), mCursor(0), mCursorShape(sf::Vector2f(1.0f, characterSize*5/4))
+    GuiText("", characterSize, style), mCursorShape(sf::Vector2f(1.0f, characterSize*5/4))
 {
-
+    setCursor(0);
 }
 
 GuiInput::GuiInput(const PropertyList& properties) : GuiText(properties)
@@ -56,7 +56,7 @@ bool GuiInput::onText(sf::Uint32 unicode, bool processed)
             setCursor(mCursor - 1);
         }
     }
-    else
+    else if (unicode >= 32)
     {
         s.insert(mCursor, unicode);
         setText(s);
@@ -69,7 +69,7 @@ void GuiInput::setCursor(std::size_t cursor)
 {
     mCursor = cursor;
     if (mCursor >= mText.getString().getSize())
-        mCursorShape.setPosition(sf::Vector2f(mText.getGlobalBounds().left + mText.getGlobalBounds().width, mText.getPosition().y));
+        mCursorShape.setPosition(sf::Vector2f(mText.getGlobalBounds().left + mText.getGlobalBounds().width + 2.0f, mText.getPosition().y));
     else
         mCursorShape.setPosition(mText.findCharacterPos(mCursor));
 }
