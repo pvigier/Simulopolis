@@ -67,7 +67,7 @@ private:
     State mState;
 
     // Daily life
-    Housing* mHome;
+    std::unique_ptr<Lease> mHome;
     std::unique_ptr<Work> mWork;
     const Business* mFavoriteShop;
 

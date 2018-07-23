@@ -1,4 +1,5 @@
 #include "Person.h"
+#include "city/Lease.h"
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
@@ -64,7 +65,7 @@ void Person::setState(Person::State state)
     mState = state;
 }
 
-const Housing* Person::getHome() const
+const Lease* Person::getHome() const
 {
     return mHome;
 }
