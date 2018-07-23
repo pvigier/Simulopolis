@@ -2,9 +2,10 @@
 
 #include <vector>
 #include <memory>
-#include "Map.h"
 #include "pcg/PersonGenerator.h"
 #include "pcg/CompanyGenerator.h"
+#include "city/Map.h"
+#include "city/Market.h"
 
 class Building;
 
@@ -48,6 +49,7 @@ public:
     unsigned int getUnemployed() const;
     unsigned int getFunds() const;
     void decreaseFunds(unsigned int amount);
+    VMarket* getMarket(VMarket::Type type);
 
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
     float toHumanTime(float cityTime) const; // cityTime is expressed in hours
@@ -70,6 +72,7 @@ private:
 
     std::vector<std::unique_ptr<Person>> mPersons;
     std::vector<std::unique_ptr<Company>> mCompanies;
+    std::vector<std::unique_ptr<VMarket>> mMarkets;
     Array2<std::vector<const Car*>> mCarsByTile;
 };
 

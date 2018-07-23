@@ -24,6 +24,16 @@ City::City() : mCurrentTime(0.0), mTimePerMonth(120.0f), mMonth(0), mPopulation(
     // Generators
     mPersonGenerator.setUp();
     mCompanyGenerator.setUp();
+
+    // Markets
+    mMarkets.emplace_back(new Market<>(VMarket::Type::NECESSARY_GOOD));
+    mMarkets.emplace_back(new Market<>(VMarket::Type::NORMAL_GOOD));
+    mMarkets.emplace_back(new Market<>(VMarket::Type::LUXURY_GOOD));
+    mMarkets.emplace_back(new Market<Housing>(VMarket::Type::AFFORDABLE_HOUSING_RENT));
+    mMarkets.emplace_back(new Market<Housing>(VMarket::Type::APARTMENT_BUILDING_RENT));
+    mMarkets.emplace_back(new Market<Housing>(VMarket::Type::VILLA_RENT));
+    mMarkets.emplace_back(new Market<Work>(VMarket::Type::NON_QUALIFIED_JOB));
+    mMarkets.emplace_back(new Market<Work>(VMarket::Type::QUALIFIED_JOB));
 }
 
 void City::load(const std::string& name)
@@ -240,6 +250,11 @@ unsigned int City::getFunds() const
 void City::decreaseFunds(unsigned int amount)
 {
     mFunds -= amount;
+}
+
+VMarket* City::getMarket(VMarket::Type type)
+{
+    return mMarkets[static_cast<int>(type)].get();
 }
 
 sf::Vector2i City::toTileIndices(const sf::Vector2f& position) const

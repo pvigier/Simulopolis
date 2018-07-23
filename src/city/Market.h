@@ -1,10 +1,43 @@
 #pragma once
 
+#include <unordered_map>
+#include <algorithm>
 #include "util/IdManager.h"
 #include "message/MessageBus.h"
 
-template<typename T, int N>
-class Market
+class VMarket
+{
+public:
+    enum class Type : int {
+        // Goods
+        NECESSARY_GOOD = 0,
+        NORMAL_GOOD,
+        LUXURY_GOOD,
+        // Housing
+        AFFORDABLE_HOUSING_RENT,
+        APARTMENT_BUILDING_RENT,
+        VILLA_RENT,
+        // Jobs
+        NON_QUALIFIED_JOB,
+        QUALIFIED_JOB,
+        // Count
+        COUNT
+    };
+
+    VMarket(Type type);
+
+    static void setMessageBus(MessageBus* messageBus);
+
+    virtual void update() = 0;
+
+protected:
+    static MessageBus* sMessageBus;
+    unsigned int mTime;
+    Type mType;
+};
+
+template<typename T = int>
+class Market : public VMarket
 {
 public:
     struct Item
@@ -33,20 +66,12 @@ public:
         enum class Type{PURCHASE, SALE};
 
         Type type;
-        float value;
+        VMarket::Type marketType;
         const T* good;
-        int goodType;
+        float value;
     };
 
-    Market() : mTime(0)
-    {
-
-    }
-
-    static void setMessageBus(MessageBus* messageBus)
-    {
-        sMessageBus = messageBus;
-    }
+    using VMarket::VMarket;
 
     Id addItem(Id sellerId, const T* good, float reservePrice)
     {
@@ -86,7 +111,7 @@ public:
         return mAuctions.get(itemId).bids;
     }
 
-    void update()
+    virtual void update() override
     {
         // Sort auctions by timestamp
         std::vector<Auction*> auctions;
@@ -101,8 +126,8 @@ public:
             Item& item = auction->item;
             if (bid.value >= item.reservePrice && mDesiredQuantities[bid.bidderId] > 0)
             {
-                sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, Event{Event::Type::PURCHASE, bid.value, item.good, N}));
-                sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, Event{Event::Type::SALE, bid.value, item.good, N}));
+                sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, Event{Event::Type::PURCHASE, mType, item.good, bid.value}));
+                sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, Event{Event::Type::SALE, mType, item.good, bid.value}));
                 mDesiredQuantities[bid.bidderId]--;
                 soldItems.push_back(item.id);
             }
@@ -113,14 +138,8 @@ public:
     }
 
 private:
-    static MessageBus* sMessageBus;
-
-    unsigned int mTime;
     IdManager<Auction> mAuctions;
     std::unordered_map<Id, unsigned int> mDesiredQuantities;
     mutable std::vector<const Item*> mItems;
     mutable bool mDirty;
 };
-
-template<typename T, int N>
-MessageBus* Market<T, N>::sMessageBus = nullptr;
