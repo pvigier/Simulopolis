@@ -87,8 +87,11 @@
 		<Unit filename="src/city/Housing.h" />
 		<Unit filename="src/city/Industry.cpp" />
 		<Unit filename="src/city/Industry.h" />
+		<Unit filename="src/city/Lease.cpp" />
+		<Unit filename="src/city/Lease.h" />
 		<Unit filename="src/city/Map.cpp" />
 		<Unit filename="src/city/Map.h" />
+		<Unit filename="src/city/Market.cpp" />
 		<Unit filename="src/city/Market.h" />
 		<Unit filename="src/city/Network.cpp" />
 		<Unit filename="src/city/Network.h" />

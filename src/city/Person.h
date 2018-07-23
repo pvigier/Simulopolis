@@ -4,6 +4,7 @@
 #include "ai/GoalThink.h"
 #include "city/Car.h"
 #include "city/Work.h"
+#include "city/Lease.h"
 
 class City;
 class Housing;
@@ -33,13 +34,17 @@ public:
     void setState(State state);
 
     // Daily life
-    const Housing* getHome() const;
+    const Lease* getHome() const;
     const Work* getWork() const;
     const Business* getFavoriteShop() const;
 
     // Car
     Car& getCar();
     const Car& getCar() const;
+
+    // Finance
+    float getMoney() const;
+    float getOutcome() const;
 
     // Needs
     float getSleep() const;
@@ -74,7 +79,7 @@ private:
     // Car
     Car mCar;
 
-    // Economic data
+    // Finance
     float mMoney;
 
     // Needs

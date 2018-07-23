@@ -1,5 +1,5 @@
-#include "Person.h"
-#include "city/Lease.h"
+#include "city/Person.h"
+#include "city/Business.h"
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
@@ -67,7 +67,7 @@ void Person::setState(Person::State state)
 
 const Lease* Person::getHome() const
 {
-    return mHome;
+    return mHome.get();
 }
 
 const Work* Person::getWork() const
@@ -88,6 +88,23 @@ Car& Person::getCar()
 const Car& Person::getCar() const
 {
     return mCar;
+}
+
+float Person::getMoney() const
+{
+    return mMoney;
+}
+
+float Person::getOutcome() const
+{
+    float outcome = 0.0f;
+    if (mHome)
+        outcome -= mHome->getRent();
+    if (mWork)
+        outcome += mWork->getSalary();
+    if (mFavoriteShop)
+        outcome -= mFavoriteShop->getPrice();
+    return outcome;
 }
 
 float Person::getSleep() const

@@ -13,9 +13,12 @@ public:
 
     virtual std::unique_ptr<Tile> clone() const override;
 
+    float getPrice() const;
+
 protected:
     Good mGood;
     unsigned int mQuantity;
+    float mPrice;
     std::size_t mNbEmployees;
     Work* mManager;
     std::vector<Work*> mEmployees;

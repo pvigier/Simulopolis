@@ -19,7 +19,7 @@ void GoalRest::activate()
     mState = State::ACTIVE;
     // Add subgoals
     clearSubgoals();
-    pushBack(new GoalMoveTo(mOwner, mOwner->getHome()->getCoordinates()));
+    pushBack(new GoalMoveTo(mOwner, mOwner->getHome()->getHousing()->getCoordinates()));
     pushBack(new GoalWait(mOwner, mDuration));
 }
 
@@ -33,5 +33,5 @@ Goal::State GoalRest::process()
 
 void GoalRest::terminate()
 {
-    mOwner->increaseHappiness(mOwner->getHome()->getComfort());
+    mOwner->increaseHappiness(mOwner->getHome()->getHousing()->getComfort());
 }

@@ -12,6 +12,6 @@ public:
 
     virtual void setGoal(Person* person) const = 0;
 
-private:
+protected:
     float mBias;
 };
