@@ -28,6 +28,8 @@ Game::Game()
     Car::setImageManager(&mResourceManager.getImageManager());
     Tile::setTextureManager(&mResourceManager.getTextureManager());
     Tile::setImageManager(&mResourceManager.getImageManager());
+    Person::setMessageBus(&mMessageBus);
+    VMarket::setMessageBus(&mMessageBus);
 
     // Load resources
     mResourceManager.setUp();

@@ -34,6 +34,7 @@ City::City() : mCurrentTime(0.0), mTimePerMonth(120.0f), mMonth(0), mPopulation(
     mMarkets.emplace_back(new Market<Housing>(VMarket::Type::VILLA_RENT));
     mMarkets.emplace_back(new Market<Work>(VMarket::Type::NON_QUALIFIED_JOB));
     mMarkets.emplace_back(new Market<Work>(VMarket::Type::QUALIFIED_JOB));
+    mMarkets.emplace_back(new Market<Work>(VMarket::Type::HIGHLY_QUALIFIED_JOB));
 }
 
 void City::load(const std::string& name)

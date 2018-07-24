@@ -1,11 +1,12 @@
 #pragma once
 
-#include <string>
+#include "message/Mailbox.h"
 #include "ai/GoalThink.h"
 #include "city/Car.h"
 #include "city/Work.h"
 #include "city/Lease.h"
 
+class MessageBus;
 class City;
 class Housing;
 class Business;
@@ -18,6 +19,8 @@ public:
 
     Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car);
 
+    static void setMessageBus(MessageBus* messageBus);
+
     void update(float dt);
 
     // Personal data
@@ -28,6 +31,7 @@ public:
     int getAge(int year) const;
     City* getCity();
     void setCity(City* city);
+    Id getMailboxId() const;
 
     // State
     State getState() const;
@@ -56,17 +60,23 @@ public:
     float getHappiness() const;
     void increaseHappiness(float difference);
 
+    // Abilities
+    Work::Qualification getQualification() const;
+
     // AI
     GoalThink& getShortTermBrain();
     GoalThink& getLongTermBrain();
 
 private:
+    static MessageBus* sMessageBus;
+
     // Personal data
     std::string mFirstName;
     std::string mLastName;
     Gender mGender;
     int mBirth;
     City* mCity;
+    Mailbox mMailbox;
 
     // State
     State mState;
@@ -90,6 +100,9 @@ private:
 
     // Happiness
     float mHappiness;
+
+    // Abilities
+    Work::Qualification mQualification;
 
     // AI
     GoalThink mShortTermBrain;

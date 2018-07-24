@@ -1,13 +1,21 @@
 #include "city/Person.h"
 #include "city/Business.h"
+#include "message/MessageBus.h"
+
+MessageBus* Person::sMessageBus = nullptr;
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
     mState(State::RESTING), mHome(nullptr), mFavoriteShop(nullptr), mCar(car),
     mMoney(0.0f), mSleep(1.0f), mHealth(1.0f), mSafety(1.0f), mHunger(1.0f), mHappiness(0.0f),
-    mShortTermBrain(this), mLongTermBrain(this)
+    mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
+}
+
+void Person::setMessageBus(MessageBus* messageBus)
+{
+    sMessageBus = messageBus;
 }
 
 void Person::update(float dt)
@@ -48,6 +56,11 @@ City* Person::getCity()
 void Person::setCity(City* city)
 {
     mCity = city;
+}
+
+Id Person::getMailboxId() const
+{
+    return mMailbox.getId();
 }
 
 int Person::getAge(int year) const
@@ -135,6 +148,11 @@ float Person::getHappiness() const
 void Person::increaseHappiness(float difference)
 {
     mHappiness += difference;
+}
+
+Work::Qualification Person::getQualification() const
+{
+    return mQualification;
 }
 
 GoalThink& Person::getShortTermBrain()
