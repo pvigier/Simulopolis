@@ -1,6 +1,9 @@
 #include "GoalWait.h"
+#include "city/City.h"
+#include "city/Person.h"
 
-GoalWait::GoalWait(Person* owner, float duration) : Goal(owner), mDuration(duration)
+GoalWait::GoalWait(Person* owner, float nbHours) :
+    Goal(owner), mDuration(mOwner->getCity()->toHumanTime(nbHours))
 {
     //ctor
 }
@@ -22,6 +25,8 @@ Goal::State GoalWait::process()
 
     if (mClock.getElapsedTime().asSeconds() >= mDuration)
         mState = State::COMPLETED;
+
+    return mState;
 }
 
 void GoalWait::terminate()

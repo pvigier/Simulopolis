@@ -6,7 +6,7 @@
 class GoalWait : public Goal
 {
 public:
-    GoalWait(Person* owner, float duration);
+    GoalWait(Person* owner, float nbHours);
     virtual ~GoalWait();
 
     virtual void activate() override;

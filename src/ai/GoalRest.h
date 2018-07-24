@@ -5,7 +5,7 @@
 class GoalRest : public Goal
 {
 public:
-    GoalRest(Person* owner, float duration);
+    GoalRest(Person* owner);
     virtual ~GoalRest();
 
     virtual void activate() override;
@@ -13,5 +13,4 @@ public:
     virtual void terminate() override;
 
 private:
-    float mDuration;
 };

@@ -1,6 +1,6 @@
 #include "ai/GoalShopEvaluator.h"
 #include "city/Person.h"
-#include "ai/GoalWork.h"
+#include "ai/GoalShop.h"
 
 GoalShopEvaluator::GoalShopEvaluator(float bias) : GoalEvaluator(bias)
 {
@@ -16,5 +16,5 @@ float GoalShopEvaluator::computeDesirability(Person* person) const
 
 void GoalShopEvaluator::setGoal(Person* person) const
 {
-    person->getShortTermBrain().pushFront(new GoalWork(person));
+    person->getShortTermBrain().pushFront(new GoalShop(person));
 }

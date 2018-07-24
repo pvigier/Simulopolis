@@ -1,6 +1,6 @@
 #include "ai/GoalRestEvaluator.h"
 #include "city/Person.h"
-#include "ai/GoalWork.h"
+#include "ai/GoalRest.h"
 
 GoalRestEvaluator::GoalRestEvaluator(float bias) : GoalEvaluator(bias)
 {
@@ -16,5 +16,5 @@ float GoalRestEvaluator::computeDesirability(Person* person) const
 
 void GoalRestEvaluator::setGoal(Person* person) const
 {
-    person->getShortTermBrain().pushFront(new GoalWork(person));
+    person->getShortTermBrain().pushFront(new GoalRest(person));
 }

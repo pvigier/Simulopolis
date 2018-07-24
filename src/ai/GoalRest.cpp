@@ -4,7 +4,7 @@
 #include "GoalMoveTo.h"
 #include "GoalWait.h"
 
-GoalRest::GoalRest(Person* owner, float duration) : Goal(owner), mDuration(duration)
+GoalRest::GoalRest(Person* owner) : Goal(owner)
 {
     //ctor
 }
@@ -17,10 +17,12 @@ GoalRest::~GoalRest()
 void GoalRest::activate()
 {
     mState = State::ACTIVE;
+    // Compute the number of hours needed to be rested
+    float nbHours = (1.0f - mOwner->getSleep()) * 100.0f; // Temporary
     // Add subgoals
     clearSubgoals();
     pushBack(new GoalMoveTo(mOwner, mOwner->getHome()->getHousing()->getCoordinates()));
-    pushBack(new GoalWait(mOwner, mDuration));
+    pushBack(new GoalWait(mOwner, nbHours));
 }
 
 Goal::State GoalRest::process()
