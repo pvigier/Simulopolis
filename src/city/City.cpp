@@ -83,17 +83,17 @@ void City::load(const std::string& name)
     mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), all<Tile::Category>);
     bulldoze(Tile::Type::ROAD_GRASS);
 
-    mPersons.push_back(mPersonGenerator.generate(getYear()));
+    mCitizens.push_back(mPersonGenerator.generate(getYear()));
     Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(2, 0));
-    mPersons.back()->getCar().getKinematic().setPosition(path.getCurrentPoint());
-    mPersons.back()->getCar().getSteering().setPath(path);
-    mPersons.back()->setState(Person::State::MOVING);
+    mCitizens.back()->getCar().getKinematic().setPosition(path.getCurrentPoint());
+    mCitizens.back()->getCar().getSteering().setPath(path);
+    mCitizens.back()->setState(Person::State::MOVING);
 
-    mPersons.push_back(mPersonGenerator.generate(getYear()));
+    mCitizens.push_back(mPersonGenerator.generate(getYear()));
     Path otherPath = mMap.getPath(sf::Vector2i(2, 0), sf::Vector2i(0, 0));
-    mPersons.back()->getCar().getKinematic().setPosition(otherPath.getCurrentPoint());
-    mPersons.back()->getCar().getSteering().setPath(otherPath);
-    mPersons.back()->setState(Person::State::MOVING);
+    mCitizens.back()->getCar().getKinematic().setPosition(otherPath.getCurrentPoint());
+    mCitizens.back()->getCar().getSteering().setPath(otherPath);
+    mCitizens.back()->setState(Person::State::MOVING);
 }
 
 void City::save(const std::string& name)
@@ -153,7 +153,7 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void City::update(float dt)
 {
-    for (std::unique_ptr<Person>& person : mPersons)
+    for (std::unique_ptr<Person>& person : mCitizens)
         person->update(dt);
 
     for (unsigned int i = 0; i < mMap.getHeight(); ++i)
@@ -161,7 +161,7 @@ void City::update(float dt)
         for (unsigned int j = 0; j < mMap.getWidth(); ++j)
             mCarsByTile.get(i, j).clear();
     }
-    for (const std::unique_ptr<Person>& person : mPersons)
+    for (const std::unique_ptr<Person>& person : mCitizens)
     {
         if (person->getState() == Person::State::MOVING)
         {
@@ -213,6 +213,12 @@ City::Intersection City::intersect(const sf::Vector2f& position)
     return intersection;
 }
 
+void City::createCitizen(std::size_t iImmigrant)
+{
+    mCitizens.push_back(std::move(mImmigrants[iImmigrant]));
+    mImmigrants.erase(mImmigrants.begin() + iImmigrant);
+}
+
 Map& City::getMap()
 {
     return mMap;
@@ -235,7 +241,7 @@ unsigned int City::getYear() const
 
 unsigned int City::getPopulation() const
 {
-    return mPopulation;
+    return mCitizens.size();
 }
 
 unsigned int City::getUnemployed() const
@@ -253,6 +259,16 @@ void City::decreaseFunds(unsigned int amount)
     mFunds -= amount;
 }
 
+const std::vector<std::unique_ptr<Person>>& City::getCitizens()
+{
+    return mCitizens;
+}
+
+const std::vector<std::unique_ptr<Person>>& City::getImmigrants()
+{
+    return mImmigrants;
+}
+
 VMarket* City::getMarket(VMarket::Type type)
 {
     return mMarkets[static_cast<int>(type)].get();
@@ -268,4 +284,10 @@ sf::Vector2i City::toTileIndices(const sf::Vector2f& position) const
 float City::toHumanTime(float cityTime) const
 {
     return cityTime / (30.0f * 24.0f) * mTimePerMonth;
+}
+
+void City::generateImmigrant()
+{
+    mImmigrants.push_back(mPersonGenerator.generate(getYear()));
+    mGameStateEditor->onNewImmigrant(mImmigrants.back().get());
 }

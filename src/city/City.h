@@ -41,6 +41,8 @@ public:
 
     Intersection intersect(const sf::Vector2f& position);
 
+    void createCitizen(std::size_t iImmigrant);
+
     Map& getMap();
     const Map& getMap() const;
     unsigned int getMonth() const;
@@ -49,12 +51,16 @@ public:
     unsigned int getUnemployed() const;
     unsigned int getFunds() const;
     void decreaseFunds(unsigned int amount);
+    const std::vector<std::unique_ptr<Person>>& getCitizens();
+    const std::vector<std::unique_ptr<Person>>& getImmigrants();
     VMarket* getMarket(VMarket::Type type);
 
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
     float toHumanTime(float cityTime) const; // cityTime is expressed in hours
 
 private:
+    GameStateEditor* mGameStateEditor;
+
     // Generators
     PersonGenerator mPersonGenerator;
     CompanyGenerator mCompanyGenerator;
