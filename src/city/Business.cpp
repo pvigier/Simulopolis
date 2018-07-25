@@ -16,6 +16,11 @@ std::unique_ptr<Tile> Business::clone() const
     return std::unique_ptr<Tile>(new Business(*this));
 }
 
+Good Business::getGood() const
+{
+    return mGood;
+}
+
 float Business::getPrice() const
 {
     return mPrice;

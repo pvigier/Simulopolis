@@ -23,6 +23,13 @@ void Person::update(float dt)
     // AI
     mShortTermBrain.process();
 
+    while (!mMailbox.isEmpty())
+    {
+        Message message = mMailbox.get();
+        mShortTermBrain.handle(message);
+        mLongTermBrain.handle(message);
+    }
+
     // Update the car if necessary
     if (mState == State::MOVING)
         mCar.update(dt);

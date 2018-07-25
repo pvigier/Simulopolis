@@ -13,6 +13,7 @@ public:
 
     virtual std::unique_ptr<Tile> clone() const override;
 
+    Good getGood() const;
     float getPrice() const;
 
 protected:

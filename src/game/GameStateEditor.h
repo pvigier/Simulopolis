@@ -7,9 +7,6 @@
 #include "pcg/TerrainGenerator.h"
 #include "game/WindowManager.h"
 
-class PersonWindow;
-class BuildingWindow;
-
 enum class ActionState{NONE, PANNING, SELECTING};
 
 class GameStateEditor : public GameState

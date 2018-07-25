@@ -71,14 +71,16 @@ private:
 
     Map mMap;
 
-    unsigned int mPopulation;
     unsigned int mUnemployed;
 
     unsigned int mFunds;
 
-    std::vector<std::unique_ptr<Person>> mPersons;
+    std::vector<std::unique_ptr<Person>> mCitizens;
+    std::vector<std::unique_ptr<Person>> mImmigrants;
     std::vector<std::unique_ptr<Company>> mCompanies;
     std::vector<std::unique_ptr<VMarket>> mMarkets;
     Array2<std::vector<const Car*>> mCarsByTile;
+
+    void generateImmigrant();
 };
 

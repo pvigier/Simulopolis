@@ -78,7 +78,7 @@ void GameStateEditor::update(float dt)
     mCity.update(dt);
 
     // Update the info bar at the bottom of the screen
-    mGui->get<GuiText>("dayText")->setText("Day: " + std::to_string(mCity.getDay()));
+    mGui->get<GuiText>("dateText")->setText("Date: " + std::to_string(mCity.getMonth()) + "/" + std::to_string(mCity.getYear()));
     mGui->get<GuiText>("fundsText")->setText("$" + std::to_string(mCity.getFunds()));
     mGui->get<GuiText>("populationText")->setText("Population: " + std::to_string(mCity.getPopulation()));
     mGui->get<GuiText>("employmentText")->setText("Unemployment: " + std::to_string(mCity.getUnemployed()));
@@ -209,7 +209,7 @@ void GameStateEditor::handleMessages()
                     break;
             }
         }
-        if (message.type == MessageType::GUI)
+        else if (message.type == MessageType::GUI)
         {
             GuiEvent event = message.getInfo<GuiEvent>();
             switch (event.type)
