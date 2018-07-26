@@ -65,7 +65,12 @@ void GuiManager::loadGui(const XmlDocument& node)
 void GuiManager::loadRootWidgets(Gui* gui, const XmlDocument& node)
 {
     for (const XmlDocument& child : node.getChildren())
-        gui->addRoot(child.getAttributes().get("name"), loadWidgets(gui, child));
+    {
+        if (child.getAttributes().has("name"))
+            gui->addRoot(child.getAttributes().get("name"), loadWidgets(gui, child));
+        else
+            gui->addRootWithDefaultName(loadWidgets(gui, child));
+    }
 }
 
 std::unique_ptr<GuiWidget> GuiManager::loadWidgets(Gui* gui, const XmlDocument& node)
@@ -79,7 +84,10 @@ std::unique_ptr<GuiWidget> GuiManager::loadWidgets(Gui* gui, const XmlDocument& 
         {
             std::unique_ptr<GuiWidget> childWidget = loadWidgets(gui, child);
             widget->add(childWidget.get());
-            gui->add(child.getAttributes().get("name"), std::move(childWidget));
+            if (child.getAttributes().has("name"))
+                gui->add(child.getAttributes().get("name"), std::move(childWidget));
+            else
+                gui->addWithDefaultName(std::move(childWidget));
         }
         else if (isLayout(child))
             widget->setLayout(createLayout(child));

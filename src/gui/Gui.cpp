@@ -8,7 +8,7 @@
 MessageBus* Gui::sMessageBus = nullptr;
 InputEngine* Gui::sInputEngine = nullptr;
 
-Gui::Gui() : mVisible(true)
+Gui::Gui() : mVisible(true), mCounter(0)
 {
     // Register the mailbox
     sMessageBus->addMailbox(mMailbox);
@@ -48,8 +48,10 @@ void Gui::add(const std::string& name, std::unique_ptr<GuiWidget> widget)
 {
     if (widget->hasGuiEvents())
         widget->subscribe(mMailbox.getId());
+    widget->setGui(this);
     widget->setName(name);
     widget->setRoot(false);
+    widget->setUp();
     mWidgets[name] = std::move(widget);
 }
 
@@ -57,10 +59,22 @@ void Gui::addRoot(const std::string& name, std::unique_ptr<GuiWidget> widget)
 {
     if (widget->hasGuiEvents())
         widget->subscribe(mMailbox.getId());
+    widget->setGui(this);
     widget->setName(name);
     widget->setRoot(true);
+    widget->setUp();
     mRootWidgets.push_back(widget.get());
     mWidgets[name] = std::move(widget);
+}
+
+void Gui::addWithDefaultName(std::unique_ptr<GuiWidget> widget)
+{
+    add(generateName(), std::move(widget));
+}
+
+void Gui::addRootWithDefaultName(std::unique_ptr<GuiWidget> widget)
+{
+    addRoot(generateName(), std::move(widget));
 }
 
 GuiWidget* Gui::get(const std::string& name)
@@ -167,4 +181,12 @@ void Gui::setVisible(bool visible)
 bool Gui::isVisible() const
 {
     return mVisible;
+}
+
+std::string Gui::generateName()
+{
+    std::string name = std::to_string(mCounter);
+    while (mWidgets.find(name) != mWidgets.end())
+        name = std::to_string(++mCounter);
+    return name;
 }

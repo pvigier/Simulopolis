@@ -24,6 +24,8 @@ public:
 
     void add(const std::string& name, std::unique_ptr<GuiWidget> widget);
     void addRoot(const std::string& name, std::unique_ptr<GuiWidget> widget);
+    void addWithDefaultName(std::unique_ptr<GuiWidget> widget);
+    void addRootWithDefaultName(std::unique_ptr<GuiWidget> widget);
 
     template<typename T, typename... Args>
     T* create(const std::string& name, Args&&... args)
@@ -37,6 +39,18 @@ public:
     {
         addRoot(name, std::make_unique<T>(args...));
         return get<T>(name);
+    }
+
+    template<typename T, typename... Args>
+    T* createWithDefaultName(Args&&... args)
+    {
+        return create<T>(generateName(), args...);
+    }
+
+    template<typename T, typename... Args>
+    T* createRootWithDefaultName(Args&&... args)
+    {
+        return createRoot<T>(generateName(), args...);
     }
 
     GuiWidget* get(const std::string& name);
@@ -72,4 +86,7 @@ private:
     bool mVisible;
     std::unordered_map<std::string, std::unique_ptr<GuiWidget>> mWidgets;
     std::vector<GuiWidget*> mRootWidgets;
+    unsigned int mCounter; // To generate a name
+
+    std::string generateName();
 };
