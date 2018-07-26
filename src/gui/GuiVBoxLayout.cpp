@@ -1,22 +1,6 @@
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiWidget.h"
 
-GuiVBoxLayout::GuiVBoxLayout(HAlignment hAlignment, VAlignment vAlignment, float spacing) :
-    GuiBoxLayout(hAlignment, vAlignment, spacing)
-{
-    //ctor
-}
-
-GuiVBoxLayout::GuiVBoxLayout(const PropertyList& properties) : GuiBoxLayout(properties)
-{
-
-}
-
-GuiVBoxLayout::~GuiVBoxLayout()
-{
-    //dtor
-}
-
 void GuiVBoxLayout::align()
 {
     sf::Vector2f offset = mOwner->getPosition() + sf::Vector2f(mMargins.left, mMargins.top);

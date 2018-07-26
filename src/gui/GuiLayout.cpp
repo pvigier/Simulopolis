@@ -1,7 +1,7 @@
 #include "gui/GuiLayout.h"
 #include "resource/PropertyList.h"
 
-GuiLayout::GuiLayout() : mOwner(nullptr), mMargins{0.0f, 0.0f, 0.0f, 0.0f}
+GuiLayout::GuiLayout(Margins margins) : mOwner(nullptr), mMargins(margins)
 {
     //ctor
 }

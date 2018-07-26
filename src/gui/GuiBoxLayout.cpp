@@ -1,10 +1,17 @@
 #include "gui/GuiBoxLayout.h"
 #include "resource/PropertyList.h"
 
-GuiBoxLayout::GuiBoxLayout(HAlignment hAlignment, VAlignment vAlignment, float spacing) :
-    mSpacing(spacing), mHAlignment(hAlignment), mVAlignment(vAlignment)
+GuiBoxLayout::GuiBoxLayout(HAlignment hAlignment, VAlignment vAlignment, float spacing, Margins margins) :
+    GuiLayout(margins), mSpacing(spacing), mHAlignment(hAlignment), mVAlignment(vAlignment)
 {
     //ctor
+}
+
+GuiBoxLayout::GuiBoxLayout(float spacing, Margins margins) :
+    GuiLayout(margins), mSpacing(spacing),
+    mHAlignment(GuiLayout::HAlignment::Left), mVAlignment(GuiLayout::VAlignment::Top)
+{
+
 }
 
 GuiBoxLayout::GuiBoxLayout(const PropertyList& properties) : GuiLayout(properties)

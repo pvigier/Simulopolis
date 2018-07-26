@@ -19,7 +19,7 @@ public:
         float bottom;
     };
 
-    GuiLayout();
+    GuiLayout(Margins margins = Margins{0.0f, 0.0f, 0.0f, 0.0f});
     GuiLayout(const PropertyList& properties);
     virtual ~GuiLayout();
 
