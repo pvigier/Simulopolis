@@ -115,6 +115,8 @@
 		<Unit filename="src/game/GameStateEditor.h" />
 		<Unit filename="src/game/GameStateStart.cpp" />
 		<Unit filename="src/game/GameStateStart.h" />
+		<Unit filename="src/game/ImmigrantsWindow.cpp" />
+		<Unit filename="src/game/ImmigrantsWindow.h" />
 		<Unit filename="src/game/PersonWindow.cpp" />
 		<Unit filename="src/game/PersonWindow.h" />
 		<Unit filename="src/game/WindowManager.h" />
@@ -138,6 +140,8 @@
 		<Unit filename="src/gui/GuiOverlapLayout.h" />
 		<Unit filename="src/gui/GuiTabWidget.cpp" />
 		<Unit filename="src/gui/GuiTabWidget.h" />
+		<Unit filename="src/gui/GuiTable.cpp" />
+		<Unit filename="src/gui/GuiTable.h" />
 		<Unit filename="src/gui/GuiText.cpp" />
 		<Unit filename="src/gui/GuiText.h" />
 		<Unit filename="src/gui/GuiVBoxLayout.cpp" />

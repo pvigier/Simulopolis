@@ -33,6 +33,11 @@ void GoalThink::terminate()
 
 }
 
+bool GoalThink::handle(Message message)
+{
+    forward(message);
+}
+
 void GoalThink::arbitrate()
 {
     float maxDesirability = std::numeric_limits<float>::min();

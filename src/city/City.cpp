@@ -2,7 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include "Building.h"
+#include "game/GameStateEditor.h"
+#include "city/Building.h"
 
 City::Intersection::Intersection() : type(City::Intersection::Type::NONE), car(nullptr)
 {
@@ -19,7 +20,9 @@ City::Intersection::Intersection(const Building* building) : type(City::Intersec
 
 }
 
-City::City() : mCurrentTime(0.0), mTimePerMonth(120.0f), mMonth(0), mPopulation(0), mUnemployed(0), mFunds(0)
+City::City(GameStateEditor* gameStateEditor) :
+    mGameStateEditor(gameStateEditor), mCurrentTime(0.0), mTimePerMonth(120.0f), mMonth(0),
+    mUnemployed(0), mFunds(0)
 {
     // Generators
     mPersonGenerator.setUp();
@@ -61,8 +64,6 @@ void City::load(const std::string& name)
                     mMonth = std::stoi(value);
                 else if(key == "unemployed")
                     mUnemployed = std::stod(value);
-                else if(key == "population")
-                    mPopulation = std::stod(value);
                 else if(key == "funds")
                     mFunds = std::stod(value);
             }
@@ -103,7 +104,7 @@ void City::save(const std::string& name)
     outputFile << "width=" << mMap.getWidth() << std::endl;
     outputFile << "height=" << mMap.getHeight() << std::endl;
     outputFile << "month=" << mMonth << std::endl;
-    outputFile << "population=" << mPopulation << std::endl;
+    outputFile << "population=" << 0 << std::endl;
     outputFile << "unemployed=" << mUnemployed << std::endl;
     outputFile << "funds=" << mFunds << std::endl;
 

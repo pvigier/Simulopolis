@@ -7,6 +7,7 @@
 #include "city/Map.h"
 #include "city/Market.h"
 
+class GameStateEditor;
 class Building;
 
 class City : public sf::Drawable
