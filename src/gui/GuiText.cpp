@@ -2,9 +2,10 @@
 #include "resource/XmlDocument.h"
 
 GuiText::GuiText(const sf::String& text, unsigned int characterSize, const XmlDocument* style) :
-    mText(text, style->getFirstChildByName("text").getAttributes().get<const sf::Font&>("font"), characterSize)
+    GuiWidget(style),
+    mText(text, mStyle->getFirstChildByName("text").getAttributes().get<const sf::Font&>("font"), characterSize)
 {
-    mText.setFillColor(style->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
+    mText.setFillColor(mStyle->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
     computeSize();
     mFixedSize = true;
 }

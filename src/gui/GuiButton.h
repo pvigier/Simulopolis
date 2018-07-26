@@ -10,7 +10,7 @@ class GuiButton : public GuiWidget
 public:
     enum class State{NORMAL, HOVERED, PRESSED, FORCE_PRESSED, DISABLED};
 
-    GuiButton(sf::Vector2f size);
+    GuiButton(const XmlDocument* style);
     GuiButton(const PropertyList& properties);
 
     void setState(State state);

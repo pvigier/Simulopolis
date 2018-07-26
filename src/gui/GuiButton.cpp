@@ -2,11 +2,10 @@
 #include "resource/XmlDocument.h"
 #include "gui/GuiEvent.h"
 
-GuiButton::GuiButton(sf::Vector2f size)
+GuiButton::GuiButton(const XmlDocument* style) : GuiWidget(style)
 {
-    setSize(size);
+    setBorderSize(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
     setState(State::NORMAL);
-    mFixedSize = true;
 }
 
 GuiButton::GuiButton(const PropertyList& properties) : GuiWidget(properties)

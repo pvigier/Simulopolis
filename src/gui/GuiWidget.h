@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "message/Subject.h"
 
+class Gui;
 class GuiWidget;
 class GuiLayout;
 class XmlDocument;
@@ -18,6 +19,7 @@ public:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const final override;
 
+    virtual void setUp();
     void update();
 
     void add(GuiWidget* widget);
@@ -28,6 +30,7 @@ public:
     void fitSizeToContent();
 
     // Parameters
+    void setGui(Gui* gui);
     const std::string& getName() const;
     void setName(const std::string& name);
     bool isRoot() const;
@@ -55,6 +58,7 @@ public:
     virtual bool hasGuiEvents() const;
 
 protected:
+    Gui* mGui;
     std::string mName;
     bool mRoot;
     GuiWidget* mParent;

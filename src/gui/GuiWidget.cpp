@@ -36,6 +36,11 @@ void GuiWidget::draw(sf::RenderTarget& target, sf::RenderStates states) const
     }
 }
 
+void GuiWidget::setUp()
+{
+
+}
+
 void GuiWidget::update()
 {
     updateSize();
@@ -71,6 +76,11 @@ void GuiWidget::fitSizeToContent()
 {
     mFixedSize = false;
     setSize(mLayout->computeSize());
+}
+
+void GuiWidget::setGui(Gui* gui)
+{
+    mGui = gui;
 }
 
 const std::string& GuiWidget::getName() const
