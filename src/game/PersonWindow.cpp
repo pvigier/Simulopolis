@@ -27,13 +27,13 @@ PersonWindow::PersonWindow(Gui* gui, StylesheetManager* stylesheetManager, const
     infoWidget->add(lastNameText);
     infoWidget->add(ageText);
     infoWidget->add(stateText);
-    infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
+    infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
     // Top widget
     auto topWidget = gui->create<GuiWidget>(windowId + "TopWidget");
     topWidget->add(mImage);
     topWidget->add(infoWidget);
-    topWidget->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 8.0f));
+    topWidget->setLayout(std::make_unique<GuiHBoxLayout>(8.0f));
 
     // Bottom widget
     auto bottomWidget = gui->create<GuiWidget>(windowId + "BottomWidget");
@@ -47,16 +47,14 @@ PersonWindow::PersonWindow(Gui* gui, StylesheetManager* stylesheetManager, const
     bottomWidget->add(safetyText);
     bottomWidget->add(hungerText);
     bottomWidget->add(happinessText);
-    bottomWidget->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 3.0f));
+    bottomWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
     // Window
     mWindow = gui->createRoot<GuiWindow>(windowId, person.getFullName(), stylesheetManager->getStylesheet("window"));
     mWindow->add(topWidget);
     mWindow->add(bottomWidget);
     mWindow->setPosition(sf::Vector2f(50.0f, 50.0f));
-    std::unique_ptr<GuiVBoxLayout> layout(new GuiVBoxLayout(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 8.0f));
-    layout->setMargins(GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f});
-    mWindow->setLayout(std::move(layout));
+    mWindow->setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 }
 
 PersonWindow::~PersonWindow()
