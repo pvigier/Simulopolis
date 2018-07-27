@@ -107,6 +107,8 @@
 		<Unit filename="src/city/Work.h" />
 		<Unit filename="src/game/BuildingWindow.cpp" />
 		<Unit filename="src/game/BuildingWindow.h" />
+		<Unit filename="src/game/CitizensWindow.cpp" />
+		<Unit filename="src/game/CitizensWindow.h" />
 		<Unit filename="src/game/Game.cpp" />
 		<Unit filename="src/game/Game.h" />
 		<Unit filename="src/game/GameState.cpp" />

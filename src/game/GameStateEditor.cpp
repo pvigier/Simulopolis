@@ -19,8 +19,10 @@
 #include "game/PersonWindow.h"
 #include "game/BuildingWindow.h"
 
-GameStateEditor::GameStateEditor() : mActionState(ActionState::NONE), mZoomLevel(1.0f),
-    mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor"))
+GameStateEditor::GameStateEditor() :
+    mCity(this), mActionState(ActionState::NONE), mZoomLevel(1.0f),
+    mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor")),
+    mImmigrantsWindow(nullptr), mCitizensWindow(nullptr)
 {
     // Views
     sf::Vector2f windowSize = sf::Vector2f(sRenderEngine->getWindow().getSize());
@@ -217,12 +219,22 @@ void GameStateEditor::handleMessages()
                 case GuiEvent::Type::BUTTON_RELEASED:
                 {
                     const std::string& name = event.widget->getName();
-                    if (!updateTabs(name))
+                    if (name == "openImmigrantsWindowButton")
+                        openImmigrantsWindow();
+                    else if (name == "openCitizensWindowButton")
+                        openCitizensWindow();
+                    else if (!updateTabs(name))
                         updateTile(name);
+                    break;
                 }
                 case GuiEvent::Type::WINDOW_CLOSED:
                 {
                     GuiWindow* window = static_cast<GuiWindow*>(event.widget);
+                    if (mImmigrantsWindow == window)
+                        mImmigrantsWindow = nullptr;
+                    else if (mCitizensWindow == window)
+                        mCitizensWindow = nullptr;
+                    else
                     {
                         for (std::unique_ptr<WindowManager>& windowManager : mWindowManagers)
                         {
@@ -230,6 +242,7 @@ void GameStateEditor::handleMessages()
                                 break;
                         }
                     }
+                    break;
                 }
                 default:
                     break;
@@ -257,6 +270,12 @@ void GameStateEditor::loadGame(const std::string& path)
 const sf::Texture& GameStateEditor::getCityTexture() const
 {
     return mRenderTexture.getTexture();
+}
+
+void GameStateEditor::onNewImmigrant(Person* person)
+{
+    if (mImmigrantsWindow)
+        mImmigrantsWindow->addImmigrant(person, mCity.getYear());
 }
 
 void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View& view)
@@ -300,6 +319,12 @@ void GameStateEditor::createGui()
     mGui->get("rightMenu")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     updateTabs("landscapeTabButton");
 
+    //mGui->createRoot<GuiInput>("input", 32, sStylesheetManager->getStylesheet("text"));
+
+    // Subscribe
+    mGui->get("openImmigrantsWindowButton")->subscribe(mMailbox.getId());
+    mGui->get("openCitizensWindowButton")->subscribe(mMailbox.getId());
+
     // Window managers
     mWindowManagers.emplace_back(new WindowManager(mMailbox.getId()));
     mWindowManagers.emplace_back(new WindowManager(mMailbox.getId()));
@@ -336,6 +361,24 @@ void GameStateEditor::openPersonWindow(const Person& person)
 void GameStateEditor::openBuildingWindow(const Building& building)
 {
     mWindowManagers[1]->addWindow(mGui->createRootWithDefaultName<BuildingWindow>(sStylesheetManager, building));
+}
+
+void GameStateEditor::openImmigrantsWindow()
+{
+    if (!mImmigrantsWindow)
+    {
+        mImmigrantsWindow = mGui->createRootWithDefaultName<ImmigrantsWindow>(sStylesheetManager);
+        mImmigrantsWindow->subscribe(mMailbox.getId());
+    }
+}
+
+void GameStateEditor::openCitizensWindow()
+{
+    if (!mCitizensWindow)
+    {
+        mCitizensWindow = mGui->createRootWithDefaultName<CitizensWindow>(sStylesheetManager);
+        mCitizensWindow->subscribe(mMailbox.getId());
+    }
 }
 
 void GameStateEditor::updateWindows()

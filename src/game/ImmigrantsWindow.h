@@ -3,8 +3,6 @@
 #include "gui/GuiWindow.h"
 
 class StylesheetManager;
-class Gui;
-class GuiWidget;
 class GuiTable;
 class Person;
 
@@ -20,8 +18,6 @@ public:
     void removeImmigrant(const std::string& fullName);
 
 private:
-    enum Column : int {NAME, AGE};
-
     StylesheetManager* mStylesheetManager;
     GuiTable* mTable;
 };

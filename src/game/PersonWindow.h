@@ -4,7 +4,6 @@
 #include "gui/GuiWindow.h"
 
 class StylesheetManager;
-class Gui;
 class Person;
 class GuiImage;
 
