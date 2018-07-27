@@ -1,19 +1,20 @@
 #pragma once
 
-#include <SFML/Graphics/RenderTexture.hpp>
+#include "gui/GuiWindow.h"
 
 class StylesheetManager;
 class Gui;
 class GuiWidget;
-class GuiWindow;
 class GuiTable;
 class Person;
 
-class ImmigrantsWindow
+class ImmigrantsWindow : public GuiWindow
 {
 public:
-    ImmigrantsWindow(Gui* gui, StylesheetManager* stylesheetManager);
+    ImmigrantsWindow(StylesheetManager* stylesheetManager);
     ~ImmigrantsWindow();
+
+    virtual void setUp() override;
 
     void addImmigrant(Person* person, int year);
     void removeImmigrant(const std::string& fullName);
@@ -21,8 +22,6 @@ public:
 private:
     enum Column : int {NAME, AGE};
 
-    Gui* mGui;
     StylesheetManager* mStylesheetManager;
-    GuiWindow* mWindow;
     GuiTable* mTable;
 };

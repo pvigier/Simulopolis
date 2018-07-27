@@ -8,21 +8,31 @@
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
 
-PersonWindow::PersonWindow(Gui* gui, StylesheetManager* stylesheetManager, const std::string& windowId,
-    const Person& person, int year) :
-    mPerson(person), mWindow(nullptr), mImage(nullptr)
+PersonWindow::PersonWindow(StylesheetManager* stylesheetManager, const Person& person, int year) :
+    GuiWindow(person.getFullName(), stylesheetManager->getStylesheet("window")),
+    mStylesheetManager(stylesheetManager), mPerson(person), mYear(year), mImage(nullptr)
+{
+
+}
+
+PersonWindow::~PersonWindow()
+{
+    //dtor
+}
+
+void PersonWindow::setUp()
 {
     // Zoom
     mRenderTexture.create(96, 96);
     sf::Sprite sprite(mRenderTexture.getTexture());
-    mImage = gui->create<GuiImage>(windowId + "ZoomImage", sprite);
+    mImage = mGui->createWithDefaultName<GuiImage>(sprite);
 
     // Personal info
-    auto infoWidget = gui->create<GuiWidget>(windowId + "InfoWidget");
-    auto firstNameText = gui->create<GuiText>(windowId + "FirstNameText", "First name: " + person.getFirstName(), 10, stylesheetManager->getStylesheet("text"));
-    auto lastNameText = gui->create<GuiText>(windowId + "LastNameText", "Last name: " + person.getLastName(), 10, stylesheetManager->getStylesheet("text"));
-    auto ageText = gui->create<GuiText>(windowId + "AgeText", "Age: " + std::to_string(person.getAge(year)), 10, stylesheetManager->getStylesheet("text"));
-    auto stateText = gui->create<GuiText>(windowId + "StateText", "State: " + std::to_string(static_cast<int>(person.getState())), 10, stylesheetManager->getStylesheet("text"));
+    auto infoWidget = mGui->createWithDefaultName<GuiWidget>();
+    auto firstNameText = mGui->createWithDefaultName<GuiText>("First name: " + mPerson.getFirstName(), 10, mStylesheetManager->getStylesheet("text"));
+    auto lastNameText = mGui->createWithDefaultName<GuiText>("Last name: " + mPerson.getLastName(), 10, mStylesheetManager->getStylesheet("text"));
+    auto ageText = mGui->createWithDefaultName<GuiText>("Age: " + std::to_string(mPerson.getAge(mYear)), 10, mStylesheetManager->getStylesheet("text"));
+    auto stateText = mGui->createWithDefaultName<GuiText>("State: " + std::to_string(static_cast<int>(mPerson.getState())), 10, mStylesheetManager->getStylesheet("text"));
     infoWidget->add(firstNameText);
     infoWidget->add(lastNameText);
     infoWidget->add(ageText);
@@ -30,18 +40,18 @@ PersonWindow::PersonWindow(Gui* gui, StylesheetManager* stylesheetManager, const
     infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
     // Top widget
-    auto topWidget = gui->create<GuiWidget>(windowId + "TopWidget");
+    auto topWidget = mGui->createWithDefaultName<GuiWidget>();
     topWidget->add(mImage);
     topWidget->add(infoWidget);
     topWidget->setLayout(std::make_unique<GuiHBoxLayout>(8.0f));
 
     // Bottom widget
-    auto bottomWidget = gui->create<GuiWidget>(windowId + "BottomWidget");
-    auto sleepText = gui->create<GuiText>(windowId + "SleepText", "Sleep: " + std::to_string(person.getSleep()), 10, stylesheetManager->getStylesheet("text"));
-    auto hygieneText = gui->create<GuiText>(windowId + "HealthText", "Health: " + std::to_string(person.getHealth()), 10, stylesheetManager->getStylesheet("text"));
-    auto safetyText = gui->create<GuiText>(windowId + "SafetyText", "Safety: " + std::to_string(person.getSafety()), 10, stylesheetManager->getStylesheet("text"));
-    auto hungerText = gui->create<GuiText>(windowId + "HungerText", "Hunger: " + std::to_string(person.getHunger()), 10, stylesheetManager->getStylesheet("text"));
-    auto happinessText = gui->create<GuiText>(windowId + "HapinessText", "Happiness: " + std::to_string(person.getHappiness()), 10, stylesheetManager->getStylesheet("text"));
+    auto bottomWidget = mGui->createWithDefaultName<GuiWidget>();
+    auto sleepText = mGui->createWithDefaultName<GuiText>("Sleep: " + std::to_string(mPerson.getSleep()), 10, mStylesheetManager->getStylesheet("text"));
+    auto hygieneText = mGui->createWithDefaultName<GuiText>("Health: " + std::to_string(mPerson.getHealth()), 10, mStylesheetManager->getStylesheet("text"));
+    auto safetyText = mGui->createWithDefaultName<GuiText>("Safety: " + std::to_string(mPerson.getSafety()), 10, mStylesheetManager->getStylesheet("text"));
+    auto hungerText = mGui->createWithDefaultName<GuiText>("Hunger: " + std::to_string(mPerson.getHunger()), 10, mStylesheetManager->getStylesheet("text"));
+    auto happinessText = mGui->createWithDefaultName<GuiText>("Happiness: " + std::to_string(mPerson.getHappiness()), 10, mStylesheetManager->getStylesheet("text"));
     bottomWidget->add(sleepText);
     bottomWidget->add(hygieneText);
     bottomWidget->add(safetyText);
@@ -50,21 +60,10 @@ PersonWindow::PersonWindow(Gui* gui, StylesheetManager* stylesheetManager, const
     bottomWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
     // Window
-    mWindow = gui->createRoot<GuiWindow>(windowId, person.getFullName(), stylesheetManager->getStylesheet("window"));
-    mWindow->add(topWidget);
-    mWindow->add(bottomWidget);
-    mWindow->setPosition(sf::Vector2f(50.0f, 50.0f));
-    mWindow->setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
-}
-
-PersonWindow::~PersonWindow()
-{
-    //dtor
-}
-
-GuiWindow* PersonWindow::getWindow()
-{
-    return mWindow;
+    add(topWidget);
+    add(bottomWidget);
+    setPosition(sf::Vector2f(50.0f, 50.0f));
+    setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 }
 
 sf::RenderTexture& PersonWindow::getRenderTexture()

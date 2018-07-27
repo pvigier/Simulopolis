@@ -9,28 +9,28 @@
 #include "gui/GuiHBoxLayout.h"
 #include "city/Person.h"
 
-#define WINDOW_ID "immigrantsWindow"
-#define WIDGET_ID(suffix) WINDOW_ID suffix
-
-ImmigrantsWindow::ImmigrantsWindow(Gui* gui, StylesheetManager* stylesheetManager) :
-    mGui(gui), mStylesheetManager(stylesheetManager), mWindow(nullptr), mTable(nullptr)
+ImmigrantsWindow::ImmigrantsWindow(StylesheetManager* stylesheetManager) :
+    GuiWindow("Immigrants", stylesheetManager->getStylesheet("window")),
+    mStylesheetManager(stylesheetManager), mTable(nullptr)
 {
-    // Create table
-    std::vector<std::string> names{"Name", "Age", "Visa"};
-    mTable = mGui->create<GuiTable>(WIDGET_ID("Table"), names, mStylesheetManager->getStylesheet("table"));
 
-    // Window
-    mWindow = mGui->createRoot<GuiWindow>(WINDOW_ID, "Immigrants", mStylesheetManager->getStylesheet("window"));
-    mWindow->add(mTable);
-    mWindow->setPosition(sf::Vector2f(50.0f, 50.0f));
-    std::unique_ptr<GuiVBoxLayout> layout(new GuiVBoxLayout(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Top, 8.0f));
-    layout->setMargins(GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f});
-    mWindow->setLayout(std::move(layout));
 }
 
 ImmigrantsWindow::~ImmigrantsWindow()
 {
     //dtor
+}
+
+void ImmigrantsWindow::setUp()
+{
+    // Create table
+    std::vector<std::string> names{"Name", "Age", "Visa"};
+    mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
+
+    // Window
+    add(mTable);
+    setPosition(sf::Vector2f(50.0f, 50.0f));
+    setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 }
 
 void ImmigrantsWindow::addImmigrant(Person* person, int year)
@@ -51,8 +51,8 @@ void ImmigrantsWindow::addImmigrant(Person* person, int year)
 
     // Add row
     mTable->addRow({
-        mGui->create<GuiText>(WIDGET_ID("Name") + fullName, fullName, 12, mStylesheetManager->getStylesheet("button")),
-        mGui->create<GuiText>(WIDGET_ID("Age") + fullName, std::to_string(person->getAge(year)), 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>(std::to_string(person->getAge(year)), 12, mStylesheetManager->getStylesheet("button")),
         visaButtons
     });
 }

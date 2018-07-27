@@ -1,27 +1,28 @@
 #pragma once
 
 #include <SFML/Graphics/RenderTexture.hpp>
+#include "gui/GuiWindow.h"
 
 class StylesheetManager;
 class Gui;
 class Person;
-class GuiWindow;
 class GuiImage;
 
-class PersonWindow
+class PersonWindow : public GuiWindow
 {
 public:
-    PersonWindow(Gui* gui, StylesheetManager* stylesheetManager, const std::string& windowId,
-        const Person& person, int year);
+    PersonWindow(StylesheetManager* stylesheetManager, const Person& person, int year);
     ~PersonWindow();
 
-    GuiWindow* getWindow();
+    virtual void setUp() override;
+
     sf::RenderTexture& getRenderTexture();
     sf::View getView();
 
 private:
+    StylesheetManager* mStylesheetManager;
     const Person& mPerson;
-    GuiWindow* mWindow;
+    int mYear;
     GuiImage* mImage;
     sf::RenderTexture mRenderTexture;
 };

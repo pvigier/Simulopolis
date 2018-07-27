@@ -192,9 +192,9 @@ void GameStateEditor::handleMessages()
                     {
                         City::Intersection intersection = mCity.intersect(gamePos);
                         if (intersection.type == City::Intersection::Type::CAR)
-                            createPersonWindow(*intersection.car->getDriver());
+                            openPersonWindow(*intersection.car->getDriver());
                         else if (intersection.type == City::Intersection::Type::BUILDING)
-                            createBuildingWindow(*intersection.building);
+                            openBuildingWindow(*intersection.building);
                     }
                     mGui->get("selectionCostText")->setVisible(false);
                     break;
@@ -223,10 +223,12 @@ void GameStateEditor::handleMessages()
                 case GuiEvent::Type::WINDOW_CLOSED:
                 {
                     GuiWindow* window = static_cast<GuiWindow*>(event.widget);
-                    for (std::unique_ptr<VWindowManager>& windowManager : mWindowManagers)
                     {
-                        if (windowManager->removeWindow(window))
-                            break;
+                        for (std::unique_ptr<WindowManager>& windowManager : mWindowManagers)
+                        {
+                            if (windowManager->removeWindow(window))
+                                break;
+                        }
                     }
                 }
                 default:
@@ -299,8 +301,8 @@ void GameStateEditor::createGui()
     updateTabs("landscapeTabButton");
 
     // Window managers
-    mWindowManagers.emplace_back(new WindowManager<PersonWindow>(mMailbox.getId(), "personWindow"));
-    mWindowManagers.emplace_back(new WindowManager<BuildingWindow>(mMailbox.getId(), "buildingWindow"));
+    mWindowManagers.emplace_back(new WindowManager(mMailbox.getId()));
+    mWindowManagers.emplace_back(new WindowManager(mMailbox.getId()));
 }
 
 void GameStateEditor::generateMenuTextures()
@@ -326,24 +328,28 @@ void GameStateEditor::generateMenuTextures()
     }
 }
 
-void GameStateEditor::createPersonWindow(const Person& person)
+void GameStateEditor::openPersonWindow(const Person& person)
 {
-    PersonWindow* window = new PersonWindow(mGui.get(), sStylesheetManager, mWindowManagers[0]->getNewName(), person, mCity.getYear());
-    static_cast<WindowManager<PersonWindow>*>(mWindowManagers[0].get())->addWindow(window);
+    mWindowManagers[0]->addWindow(mGui->createRootWithDefaultName<PersonWindow>(sStylesheetManager, person, mCity.getYear()));
 }
 
-void GameStateEditor::createBuildingWindow(const Building& building)
+void GameStateEditor::openBuildingWindow(const Building& building)
 {
-    BuildingWindow* window = new BuildingWindow(mGui.get(), sStylesheetManager, mWindowManagers[1]->getNewName(), building);
-    static_cast<WindowManager<BuildingWindow>*>(mWindowManagers[1].get())->addWindow(window);
+    mWindowManagers[1]->addWindow(mGui->createRootWithDefaultName<BuildingWindow>(sStylesheetManager, building));
 }
 
 void GameStateEditor::updateWindows()
 {
-    for (std::unique_ptr<PersonWindow>& personWindow : static_cast<WindowManager<PersonWindow>*>(mWindowManagers[0].get())->getWindows())
+    for (GuiWindow* window : mWindowManagers[0]->getWindows())
+    {
+        PersonWindow* personWindow = static_cast<PersonWindow*>(window);
         drawCity(personWindow->getRenderTexture(), personWindow->getView());
-    for (std::unique_ptr<BuildingWindow>& buildingWindow : static_cast<WindowManager<BuildingWindow>*>(mWindowManagers[1].get())->getWindows())
+    }
+    for (GuiWindow* window : mWindowManagers[1]->getWindows())
+    {
+        BuildingWindow* buildingWindow = static_cast<BuildingWindow*>(window);
         drawCity(buildingWindow->getRenderTexture(), buildingWindow->getView());
+    }
 }
 
 bool GameStateEditor::updateTabs(const std::string& name)

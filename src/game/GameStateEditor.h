@@ -39,15 +39,15 @@ private:
     // Gui
     std::unique_ptr<Gui> mGui;
     sf::View mGuiView;
-    std::vector<std::unique_ptr<VWindowManager>> mWindowManagers;
+    std::vector<std::unique_ptr<WindowManager>> mWindowManagers;
     std::vector<std::unique_ptr<sf::RenderTexture>> mMenuTextures;
 
     void drawCity(sf::RenderTexture& renderTexture, const sf::View& view);
 
     void createGui();
     void generateMenuTextures();
-    void createPersonWindow(const Person& person);
-    void createBuildingWindow(const Building& building);
+    void openPersonWindow(const Person& person);
+    void openBuildingWindow(const Building& building);
     void updateWindows();
     bool updateTabs(const std::string& name);
     bool updateTile(const std::string& name);
