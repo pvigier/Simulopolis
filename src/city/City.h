@@ -29,7 +29,7 @@ public:
         Intersection(const Building* building);
     };
 
-    City();
+    City(GameStateEditor* gameStateEditor);
 
     void load(const std::string& name);
     void save(const std::string& name);

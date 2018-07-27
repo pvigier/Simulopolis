@@ -51,8 +51,8 @@ void Gui::add(const std::string& name, std::unique_ptr<GuiWidget> widget)
     widget->setGui(this);
     widget->setName(name);
     widget->setRoot(false);
-    widget->setUp();
     mWidgets[name] = std::move(widget);
+    mWidgets[name]->setUp();
 }
 
 void Gui::addRoot(const std::string& name, std::unique_ptr<GuiWidget> widget)
@@ -62,9 +62,9 @@ void Gui::addRoot(const std::string& name, std::unique_ptr<GuiWidget> widget)
     widget->setGui(this);
     widget->setName(name);
     widget->setRoot(true);
-    widget->setUp();
     mRootWidgets.push_back(widget.get());
     mWidgets[name] = std::move(widget);
+    mWidgets[name]->setUp();
 }
 
 void Gui::addWithDefaultName(std::unique_ptr<GuiWidget> widget)

@@ -20,7 +20,7 @@ GuiTable::GuiTable(const PropertyList& properties) : GuiWidget(properties)
 void GuiTable::setUp()
 {
     // Create columns
-    for (const std::string& columnName : mColumnNames)
+    for (std::size_t i = 0; i < mColumnNames.size(); ++i)
     {
         GuiWidget* column = mGui->createWithDefaultName<GuiWidget>();
         column->setLayout(std::make_unique<GuiVBoxLayout>());
