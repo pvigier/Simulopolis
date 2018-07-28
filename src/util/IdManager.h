@@ -39,11 +39,11 @@ public:
      *
      *  \return Id of the added element
      */
-    Id add(const T& x)
+    Id add(T x)
     {
         // Add object
         std::size_t i = mObjects.size();
-        mObjects.push_back(x);
+        mObjects.push_back(std::move(x));
         // Get the correct id and set the links
         Id id;
         if (mFreeIds.empty())
@@ -95,7 +95,7 @@ public:
         // Get the index of the object to destroy
         std::size_t i = mIdToIndex[id];
         // Swap with the last object and update its index
-        mObjects[i] = mObjects.back();
+        mObjects[i] = std::move(mObjects.back());
         Id lastObjectId = mIndexToId.back();
         mIdToIndex[lastObjectId] = i;
         mIndexToId[i] = lastObjectId;
