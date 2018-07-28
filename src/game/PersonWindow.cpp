@@ -7,6 +7,7 @@
 #include "gui/GuiWindow.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
+#include "util/format.h"
 
 PersonWindow::PersonWindow(StylesheetManager* stylesheetManager, const Person& person, int year) :
     GuiWindow(person.getFullName(), stylesheetManager->getStylesheet("window")),
@@ -29,10 +30,10 @@ void PersonWindow::setUp()
 
     // Personal info
     auto infoWidget = mGui->createWithDefaultName<GuiWidget>();
-    auto firstNameText = mGui->createWithDefaultName<GuiText>("First name: " + mPerson.getFirstName(), 10, mStylesheetManager->getStylesheet("text"));
-    auto lastNameText = mGui->createWithDefaultName<GuiText>("Last name: " + mPerson.getLastName(), 10, mStylesheetManager->getStylesheet("text"));
-    auto ageText = mGui->createWithDefaultName<GuiText>("Age: " + std::to_string(mPerson.getAge(mYear)), 10, mStylesheetManager->getStylesheet("text"));
-    auto stateText = mGui->createWithDefaultName<GuiText>("State: " + std::to_string(static_cast<int>(mPerson.getState())), 10, mStylesheetManager->getStylesheet("text"));
+    auto firstNameText = mGui->createWithDefaultName<GuiText>("First name: " + mPerson.getFirstName(), 12, mStylesheetManager->getStylesheet("button"));
+    auto lastNameText = mGui->createWithDefaultName<GuiText>("Last name: " + mPerson.getLastName(), 12, mStylesheetManager->getStylesheet("button"));
+    auto ageText = mGui->createWithDefaultName<GuiText>("Age: " + format("%d", mPerson.getAge(mYear)), 12, mStylesheetManager->getStylesheet("button"));
+    auto stateText = mGui->createWithDefaultName<GuiText>("State: " + format("%d", static_cast<int>(mPerson.getState())), 12, mStylesheetManager->getStylesheet("button"));
     infoWidget->add(firstNameText);
     infoWidget->add(lastNameText);
     infoWidget->add(ageText);
@@ -47,11 +48,11 @@ void PersonWindow::setUp()
 
     // Bottom widget
     auto bottomWidget = mGui->createWithDefaultName<GuiWidget>();
-    auto sleepText = mGui->createWithDefaultName<GuiText>("Sleep: " + std::to_string(mPerson.getSleep()), 10, mStylesheetManager->getStylesheet("text"));
-    auto hygieneText = mGui->createWithDefaultName<GuiText>("Health: " + std::to_string(mPerson.getHealth()), 10, mStylesheetManager->getStylesheet("text"));
-    auto safetyText = mGui->createWithDefaultName<GuiText>("Safety: " + std::to_string(mPerson.getSafety()), 10, mStylesheetManager->getStylesheet("text"));
-    auto hungerText = mGui->createWithDefaultName<GuiText>("Hunger: " + std::to_string(mPerson.getHunger()), 10, mStylesheetManager->getStylesheet("text"));
-    auto happinessText = mGui->createWithDefaultName<GuiText>("Happiness: " + std::to_string(mPerson.getHappiness()), 10, mStylesheetManager->getStylesheet("text"));
+    auto sleepText = mGui->createWithDefaultName<GuiText>("Sleep: " + format("%.2f", mPerson.getSleep()), 12, mStylesheetManager->getStylesheet("button"));
+    auto hygieneText = mGui->createWithDefaultName<GuiText>("Health: " + format("%.2f", mPerson.getHealth()), 12, mStylesheetManager->getStylesheet("button"));
+    auto safetyText = mGui->createWithDefaultName<GuiText>("Safety: " + format("%.2f", mPerson.getSafety()), 12, mStylesheetManager->getStylesheet("button"));
+    auto hungerText = mGui->createWithDefaultName<GuiText>("Hunger: " + format("%.2f", mPerson.getHunger()), 12, mStylesheetManager->getStylesheet("button"));
+    auto happinessText = mGui->createWithDefaultName<GuiText>("Happiness: " + format("%.2f", mPerson.getHappiness()), 12, mStylesheetManager->getStylesheet("button"));
     bottomWidget->add(sleepText);
     bottomWidget->add(hygieneText);
     bottomWidget->add(safetyText);

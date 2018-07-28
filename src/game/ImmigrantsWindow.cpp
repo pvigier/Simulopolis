@@ -8,6 +8,7 @@
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
 #include "city/Person.h"
+#include "util/format.h"
 
 ImmigrantsWindow::ImmigrantsWindow(StylesheetManager* stylesheetManager,
     const std::vector<std::unique_ptr<Person>>& immigrants, int year) :
@@ -25,11 +26,15 @@ ImmigrantsWindow::~ImmigrantsWindow()
 void ImmigrantsWindow::setUp()
 {
     // Create table
-    std::vector<std::string> names{"Name", "Age", "Visa"};
+    std::vector<std::string> names{"Name", "Age", "Money", "Visa"};
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
+
+    // Text
+    GuiWidget* text = mGui->createWithDefaultName<GuiText>("Affordable housing available: ", 12, mStylesheetManager->getStylesheet("button"));
 
     // Window
     add(mTable);
+    add(text);
     setPosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
@@ -57,7 +62,8 @@ void ImmigrantsWindow::addImmigrant(Person* person)
     // Add row
     mTable->addRow({
         mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>(std::to_string(person->getAge(mYear)), 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>(format("%d", person->getAge(mYear)), 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>(format("%.2f", person->getMoney()), 12, mStylesheetManager->getStylesheet("button")),
         visaButtons
     });
 }

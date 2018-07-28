@@ -8,6 +8,7 @@
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
 #include "city/Person.h"
+#include "util/format.h"
 
 CitizensWindow::CitizensWindow(StylesheetManager* stylesheetManager,
     const std::vector<std::unique_ptr<Person>>& citizens, int year) :
@@ -42,10 +43,15 @@ void CitizensWindow::addCitizen(Person* person)
 {
     std::string fullName = person->getFullName();
 
+    // Person button
+    GuiWidget* personButton = mGui->create<GuiButton>("openWindow" + fullName + mName, mStylesheetManager->getStylesheet("button"));
+    personButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
+    personButton->add(mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("button")));
+
     // Add row
     mTable->addRow({
-        mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>(std::to_string(person->getAge(mYear)), 12, mStylesheetManager->getStylesheet("button")),
+        personButton,
+        mGui->createWithDefaultName<GuiText>(format("%d", person->getAge(mYear)), 12, mStylesheetManager->getStylesheet("button")),
     });
 }
 
