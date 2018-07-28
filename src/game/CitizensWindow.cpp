@@ -10,9 +10,9 @@
 #include "city/Person.h"
 #include "util/format.h"
 
-CitizensWindow::CitizensWindow(StylesheetManager* stylesheetManager,
-    const std::vector<std::unique_ptr<Person>>& citizens, int year) :
-    GuiWindow("Citizens", stylesheetManager->getStylesheet("window")),
+CitizensWindow::CitizensWindow(Id listenerId, StylesheetManager* stylesheetManager,
+    const std::vector<Person*>& citizens, int year) :
+    GuiWindow("Citizens", stylesheetManager->getStylesheet("window")), mListenerId(listenerId),
     mStylesheetManager(stylesheetManager), mCitizens(citizens), mYear(year), mTable(nullptr)
 {
 
@@ -26,7 +26,7 @@ CitizensWindow::~CitizensWindow()
 void CitizensWindow::setUp()
 {
     // Create table
-    std::vector<std::string> names{"Name", "Age"};
+    std::vector<std::string> names{"Name", "Age", "Work"};
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
     // Window
@@ -35,24 +35,29 @@ void CitizensWindow::setUp()
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
     // Add rows
-    for (const std::unique_ptr<Person>& citizen : mCitizens)
-        addCitizen(citizen.get());
+    for (const Person* citizen : mCitizens)
+        addCitizen(citizen);
 }
 
-void CitizensWindow::addCitizen(Person* person)
+void CitizensWindow::addCitizen(const Person* person)
 {
     std::string fullName = person->getFullName();
 
     // Person button
-    GuiWidget* personButton = mGui->create<GuiButton>("openWindow" + fullName + mName, mStylesheetManager->getStylesheet("button"));
+    std::cout << person->getId() << std::endl;
+    GuiWidget* personButton = mGui->create<GuiButton>("openPersonWindow" + mTable->getName() + std::to_string(person->getId()), mStylesheetManager->getStylesheet("button"));
     personButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
     personButton->add(mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("button")));
+    personButton->subscribe(mListenerId);
 
     // Add row
     mTable->addRow({
         personButton,
         mGui->createWithDefaultName<GuiText>(format("%d", person->getAge(mYear)), 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>(person->getWorkStatus(), 12, mStylesheetManager->getStylesheet("button")),
     });
+
+    subscribe(mListenerId);
 }
 
 void CitizensWindow::removeCitizen(const std::string& fullName)

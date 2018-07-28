@@ -10,9 +10,9 @@
 #include "city/Person.h"
 #include "util/format.h"
 
-ImmigrantsWindow::ImmigrantsWindow(StylesheetManager* stylesheetManager,
-    const std::vector<std::unique_ptr<Person>>& immigrants, int year) :
-    GuiWindow("Immigrants", stylesheetManager->getStylesheet("window")),
+ImmigrantsWindow::ImmigrantsWindow(Id listenerId, StylesheetManager* stylesheetManager,
+    const std::vector<Person*>& immigrants, int year) :
+    GuiWindow("Immigrants", stylesheetManager->getStylesheet("window")), mListenerId(listenerId),
     mStylesheetManager(stylesheetManager), mImmigrants(immigrants), mYear(year), mTable(nullptr)
 {
 
@@ -39,23 +39,27 @@ void ImmigrantsWindow::setUp()
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
     // Add rows
-    for (const std::unique_ptr<Person>& immigrant : mImmigrants)
-        addImmigrant(immigrant.get());
+    for (const Person* immigrant : mImmigrants)
+        addImmigrant(immigrant);
+
+    subscribe(mListenerId);
 }
 
-void ImmigrantsWindow::addImmigrant(Person* person)
+void ImmigrantsWindow::addImmigrant(const Person* person)
 {
     std::string fullName = person->getFullName();
 
     // Visa
     GuiWidget* visaButtons = mGui->createWithDefaultName<GuiWidget>();
     visaButtons->setLayout(std::make_unique<GuiHBoxLayout>(2.0f));
-    GuiButton* acceptedButton = mGui->create<GuiButton>(fullName + "Accepted" + "Button", mStylesheetManager->getStylesheet("button"));
+    GuiButton* acceptedButton = mGui->create<GuiButton>("Accepted" + visaButtons->getName() + std::to_string(person->getId()), mStylesheetManager->getStylesheet("button"));
     acceptedButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
     acceptedButton->add(mGui->createWithDefaultName<GuiText>("Yes", 12, mStylesheetManager->getStylesheet("button")));
-    GuiButton* rejectedButton = mGui->create<GuiButton>(fullName + "Rejected" + "Button", mStylesheetManager->getStylesheet("button"));
+    acceptedButton->subscribe(mListenerId);
+    GuiButton* rejectedButton = mGui->create<GuiButton>("Rejected" + visaButtons->getName() + std::to_string(person->getId()), mStylesheetManager->getStylesheet("button"));
     rejectedButton->add(mGui->createWithDefaultName<GuiText>("No", 12, mStylesheetManager->getStylesheet("button")));
     rejectedButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
+    rejectedButton->subscribe(mListenerId);
     visaButtons->add(acceptedButton);
     visaButtons->add(rejectedButton);
 

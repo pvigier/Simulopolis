@@ -9,18 +9,19 @@ class Person;
 class ImmigrantsWindow : public GuiWindow
 {
 public:
-    ImmigrantsWindow(StylesheetManager* stylesheetManager,
-        const std::vector<std::unique_ptr<Person>>& immigrants, int year);
+    ImmigrantsWindow(Id listenerId, StylesheetManager* stylesheetManager,
+        const std::vector<Person*>& immigrants, int year);
     ~ImmigrantsWindow();
 
     virtual void setUp() override;
 
-    void addImmigrant(Person* person);
+    void addImmigrant(const Person* person);
     void removeImmigrant(const std::string& fullName);
 
 private:
+    Id mListenerId;
     StylesheetManager* mStylesheetManager;
-    const std::vector<std::unique_ptr<Person>>& mImmigrants;
+    const std::vector<Person*>& mImmigrants;
     int mYear;
     GuiTable* mTable;
 };

@@ -223,6 +223,12 @@ void GameStateEditor::handleMessages()
                         openImmigrantsWindow();
                     else if (name == "openCitizensWindowButton")
                         openCitizensWindow();
+                    else if (name.substr(0, 16) == "openPersonWindow")
+                        openPersonWindow(*mCity.getPerson(extractPersonId("openPersonWindow", event.widget)));
+                    else if (name.substr(0, 8) == "Accepted")
+                        std::cout << "Accepted " << extractPersonId("Accepted", event.widget) << std::endl;
+                    else if (name.substr(0, 8) == "Rejected")
+                        std::cout << "Rejected " << extractPersonId("Rejected", event.widget) << std::endl;
                     else if (!updateTabs(name))
                         updateTile(name);
                     break;
@@ -366,19 +372,13 @@ void GameStateEditor::openBuildingWindow(const Building& building)
 void GameStateEditor::openImmigrantsWindow()
 {
     if (!mImmigrantsWindow)
-    {
-        mImmigrantsWindow = mGui->createRootWithDefaultName<ImmigrantsWindow>(sStylesheetManager, mCity.getImmigrants(), mCity.getYear());
-        mImmigrantsWindow->subscribe(mMailbox.getId());
-    }
+        mImmigrantsWindow = mGui->createRootWithDefaultName<ImmigrantsWindow>(mMailbox.getId(), sStylesheetManager, mCity.getImmigrants(), mCity.getYear());
 }
 
 void GameStateEditor::openCitizensWindow()
 {
     if (!mCitizensWindow)
-    {
-        mCitizensWindow = mGui->createRootWithDefaultName<CitizensWindow>(sStylesheetManager, mCity.getCitizens(), mCity.getYear());
-        mCitizensWindow->subscribe(mMailbox.getId());
-    }
+        mCitizensWindow = mGui->createRootWithDefaultName<CitizensWindow>(mMailbox.getId(), sStylesheetManager, mCity.getCitizens(), mCity.getYear());
 }
 
 void GameStateEditor::updateWindows()
@@ -445,4 +445,10 @@ unsigned int GameStateEditor::getCost(Tile::Type type) const
 unsigned int GameStateEditor::computeCostOfSelection() const
 {
     return getCost(mCurrentTile) * mCity.getMap().getNbSelected();
+}
+
+Id GameStateEditor::extractPersonId(const std::string& prefix, GuiWidget* widget) const
+{
+    const std::string& name = widget->getName();
+    return std::atoi(name.substr(prefix.size() + widget->getParent()->getName().size()).c_str());
 }

@@ -66,4 +66,6 @@ private:
 
     unsigned int getCost(Tile::Type type) const;
     unsigned int computeCostOfSelection() const;
+
+    Id extractPersonId(const std::string& prefix, GuiWidget* widget) const;
 };
