@@ -275,7 +275,7 @@ const sf::Texture& GameStateEditor::getCityTexture() const
 void GameStateEditor::onNewImmigrant(Person* person)
 {
     if (mImmigrantsWindow)
-        mImmigrantsWindow->addImmigrant(person, mCity.getYear());
+        mImmigrantsWindow->addImmigrant(person);
 }
 
 void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View& view)
@@ -367,7 +367,7 @@ void GameStateEditor::openImmigrantsWindow()
 {
     if (!mImmigrantsWindow)
     {
-        mImmigrantsWindow = mGui->createRootWithDefaultName<ImmigrantsWindow>(sStylesheetManager);
+        mImmigrantsWindow = mGui->createRootWithDefaultName<ImmigrantsWindow>(sStylesheetManager, mCity.getImmigrants(), mCity.getYear());
         mImmigrantsWindow->subscribe(mMailbox.getId());
     }
 }
@@ -376,7 +376,7 @@ void GameStateEditor::openCitizensWindow()
 {
     if (!mCitizensWindow)
     {
-        mCitizensWindow = mGui->createRootWithDefaultName<CitizensWindow>(sStylesheetManager);
+        mCitizensWindow = mGui->createRootWithDefaultName<CitizensWindow>(sStylesheetManager, mCity.getCitizens(), mCity.getYear());
         mCitizensWindow->subscribe(mMailbox.getId());
     }
 }
