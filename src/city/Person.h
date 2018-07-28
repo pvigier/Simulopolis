@@ -24,6 +24,8 @@ public:
     void update(float dt);
 
     // Personal data
+    Id getId() const;
+    void setId(Id id);
     const std::string& getFirstName() const;
     const std::string& getLastName() const;
     std::string getFullName() const;
@@ -40,6 +42,7 @@ public:
     // Daily life
     const Lease* getHome() const;
     const Work* getWork() const;
+    std::string getWorkStatus() const;
     const Business* getFavoriteShop() const;
 
     // Car
@@ -71,6 +74,7 @@ private:
     static MessageBus* sMessageBus;
 
     // Personal data
+    Id mId;
     std::string mFirstName;
     std::string mLastName;
     Gender mGender;

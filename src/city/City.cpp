@@ -84,17 +84,23 @@ void City::load(const std::string& name)
     mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), all<Tile::Category>);
     bulldoze(Tile::Type::ROAD_GRASS);
 
-    mCitizens.push_back(mPersonGenerator.generate(getYear()));
+    generateImmigrant();
+    createCitizen(mImmigrants.back());
     Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(2, 0));
     mCitizens.back()->getCar().getKinematic().setPosition(path.getCurrentPoint());
     mCitizens.back()->getCar().getSteering().setPath(path);
     mCitizens.back()->setState(Person::State::MOVING);
 
-    mCitizens.push_back(mPersonGenerator.generate(getYear()));
+    generateImmigrant();
+    createCitizen(mImmigrants.back());
     Path otherPath = mMap.getPath(sf::Vector2i(2, 0), sf::Vector2i(0, 0));
     mCitizens.back()->getCar().getKinematic().setPosition(otherPath.getCurrentPoint());
     mCitizens.back()->getCar().getSteering().setPath(otherPath);
     mCitizens.back()->setState(Person::State::MOVING);
+
+    // tmp
+    for (int i = 0; i < 3; ++i)
+        generateImmigrant();
 }
 
 void City::save(const std::string& name)
@@ -154,7 +160,7 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void City::update(float dt)
 {
-    for (std::unique_ptr<Person>& person : mCitizens)
+    for (std::unique_ptr<Person>& person : mPersons.getObjects())
         person->update(dt);
 
     for (unsigned int i = 0; i < mMap.getHeight(); ++i)
@@ -162,7 +168,7 @@ void City::update(float dt)
         for (unsigned int j = 0; j < mMap.getWidth(); ++j)
             mCarsByTile.get(i, j).clear();
     }
-    for (const std::unique_ptr<Person>& person : mCitizens)
+    for (const std::unique_ptr<Person>& person : mPersons.getObjects())
     {
         if (person->getState() == Person::State::MOVING)
         {
@@ -214,10 +220,16 @@ City::Intersection City::intersect(const sf::Vector2f& position)
     return intersection;
 }
 
-void City::createCitizen(std::size_t iImmigrant)
+void City::removeImmigrant(Person* person)
 {
-    mCitizens.push_back(std::move(mImmigrants[iImmigrant]));
-    mImmigrants.erase(mImmigrants.begin() + iImmigrant);
+    mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
+    mPersons.erase(person->getId());
+}
+
+void City::createCitizen(Person* person)
+{
+    mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
+    mCitizens.push_back(person);
 }
 
 Map& City::getMap()
@@ -260,14 +272,19 @@ void City::decreaseFunds(unsigned int amount)
     mFunds -= amount;
 }
 
-const std::vector<std::unique_ptr<Person>>& City::getCitizens()
+const std::vector<Person*>& City::getCitizens() const
 {
     return mCitizens;
 }
 
-const std::vector<std::unique_ptr<Person>>& City::getImmigrants()
+const std::vector<Person*>& City::getImmigrants() const
 {
     return mImmigrants;
+}
+
+const Person* City::getPerson(Id id) const
+{
+    return mPersons.get(id).get();
 }
 
 VMarket* City::getMarket(VMarket::Type type)
@@ -289,6 +306,15 @@ float City::toHumanTime(float cityTime) const
 
 void City::generateImmigrant()
 {
-    mImmigrants.push_back(mPersonGenerator.generate(getYear()));
-    mGameStateEditor->onNewImmigrant(mImmigrants.back().get());
+    std::unique_ptr<Person> person = mPersonGenerator.generate(getYear());
+    mImmigrants.push_back(person.get());
+    Id id = mPersons.add(std::move(person));
+    mImmigrants.back()->setId(id);
+    mGameStateEditor->onNewImmigrant(mImmigrants.back());
+}
+
+void City::removeCitizen(Person* person)
+{
+    mCitizens.erase(std::find(mCitizens.begin(), mCitizens.end(), person));
+    mPersons.erase(person->getId());
 }

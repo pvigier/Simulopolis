@@ -42,7 +42,8 @@ public:
 
     Intersection intersect(const sf::Vector2f& position);
 
-    void createCitizen(std::size_t iImmigrant);
+    void removeImmigrant(Person* person);
+    void createCitizen(Person* person);
 
     Map& getMap();
     const Map& getMap() const;
@@ -52,8 +53,9 @@ public:
     unsigned int getUnemployed() const;
     unsigned int getFunds() const;
     void decreaseFunds(unsigned int amount);
-    const std::vector<std::unique_ptr<Person>>& getCitizens();
-    const std::vector<std::unique_ptr<Person>>& getImmigrants();
+    const Person* getPerson(Id id) const;
+    const std::vector<Person*>& getCitizens() const;
+    const std::vector<Person*>& getImmigrants() const;
     VMarket* getMarket(VMarket::Type type);
 
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
@@ -76,12 +78,14 @@ private:
 
     unsigned int mFunds;
 
-    std::vector<std::unique_ptr<Person>> mCitizens;
-    std::vector<std::unique_ptr<Person>> mImmigrants;
+    IdManager<std::unique_ptr<Person>> mPersons;
+    std::vector<Person*> mCitizens;
+    std::vector<Person*> mImmigrants;
     std::vector<std::unique_ptr<Company>> mCompanies;
     std::vector<std::unique_ptr<VMarket>> mMarkets;
     Array2<std::vector<const Car*>> mCarsByTile;
 
     void generateImmigrant();
+    void removeCitizen(Person* person);
 };
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class Person;
 class Company;
 class Building;
@@ -9,6 +11,8 @@ class Work
 public:
     enum class Type{FARMER, WORKER, CRAFTSMAN, GROCER, CASHIER, SELLER, MANAGER, DOCTOR, TEACHER, POLICEMAN};
     enum class Qualification{NON_QUALIFIED, QUALIFIED, HIGHLY_QUALIFIED};
+
+    static std::string typeToString(Type type);
 
     Work(Type type, const Person* employee, const Company* employer, const Building* workplace, float salary);
 

@@ -5,7 +5,7 @@
 MessageBus* Person::sMessageBus = nullptr;
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
-    mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
+    mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
     mState(State::RESTING), mHome(nullptr), mFavoriteShop(nullptr), mCar(car),
     mMoney(0.0f), mSleep(1.0f), mHealth(1.0f), mSafety(1.0f), mHunger(1.0f), mHappiness(0.0f),
     mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
@@ -33,6 +33,16 @@ void Person::update(float dt)
     // Update the car if necessary
     if (mState == State::MOVING)
         mCar.update(dt);
+}
+
+Id Person::getId() const
+{
+    return mId;
+}
+
+void Person::setId(Id id)
+{
+    mId = id;
 }
 
 const std::string& Person::getFirstName() const
@@ -93,6 +103,14 @@ const Lease* Person::getHome() const
 const Work* Person::getWork() const
 {
     return mWork.get();
+}
+
+std::string Person::getWorkStatus() const
+{
+    if (mWork)
+        return Work::typeToString(mWork->getType());
+    else
+        return "Unemployed";
 }
 
 const Business* Person::getFavoriteShop() const

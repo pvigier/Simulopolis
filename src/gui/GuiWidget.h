@@ -35,6 +35,7 @@ public:
     void setName(const std::string& name);
     bool isRoot() const;
     void setRoot(bool root);
+    const GuiWidget* getParent() const;
     void setParent(GuiWidget* parent);
     void setLayout(std::unique_ptr<GuiLayout> layout);
     virtual sf::Vector2f getPosition() const;

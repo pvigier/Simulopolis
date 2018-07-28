@@ -103,6 +103,11 @@ void GuiWidget::setRoot(bool root)
     mRoot = root;
 }
 
+const GuiWidget* GuiWidget::getParent() const
+{
+    return mParent;
+}
+
 void GuiWidget::setParent(GuiWidget* parent)
 {
     mParent = parent;
