@@ -32,8 +32,8 @@ void PersonWindow::setUp()
     auto infoWidget = mGui->createWithDefaultName<GuiWidget>();
     auto firstNameText = mGui->createWithDefaultName<GuiText>("First name: " + mPerson.getFirstName(), 12, mStylesheetManager->getStylesheet("button"));
     auto lastNameText = mGui->createWithDefaultName<GuiText>("Last name: " + mPerson.getLastName(), 12, mStylesheetManager->getStylesheet("button"));
-    auto ageText = mGui->createWithDefaultName<GuiText>("Age: " + format("%d", mPerson.getAge(mYear)), 12, mStylesheetManager->getStylesheet("button"));
-    auto stateText = mGui->createWithDefaultName<GuiText>("State: " + format("%d", static_cast<int>(mPerson.getState())), 12, mStylesheetManager->getStylesheet("button"));
+    auto ageText = mGui->createWithDefaultName<GuiText>(format("Age: %d", mPerson.getAge(mYear)), 12, mStylesheetManager->getStylesheet("button"));
+    auto stateText = mGui->createWithDefaultName<GuiText>(format("State: %d", static_cast<int>(mPerson.getState())), 12, mStylesheetManager->getStylesheet("button"));
     infoWidget->add(firstNameText);
     infoWidget->add(lastNameText);
     infoWidget->add(ageText);
@@ -48,11 +48,11 @@ void PersonWindow::setUp()
 
     // Bottom widget
     auto bottomWidget = mGui->createWithDefaultName<GuiWidget>();
-    auto sleepText = mGui->createWithDefaultName<GuiText>("Sleep: " + format("%.2f", mPerson.getSleep()), 12, mStylesheetManager->getStylesheet("button"));
-    auto hygieneText = mGui->createWithDefaultName<GuiText>("Health: " + format("%.2f", mPerson.getHealth()), 12, mStylesheetManager->getStylesheet("button"));
-    auto safetyText = mGui->createWithDefaultName<GuiText>("Safety: " + format("%.2f", mPerson.getSafety()), 12, mStylesheetManager->getStylesheet("button"));
-    auto hungerText = mGui->createWithDefaultName<GuiText>("Hunger: " + format("%.2f", mPerson.getHunger()), 12, mStylesheetManager->getStylesheet("button"));
-    auto happinessText = mGui->createWithDefaultName<GuiText>("Happiness: " + format("%.2f", mPerson.getHappiness()), 12, mStylesheetManager->getStylesheet("button"));
+    auto sleepText = mGui->createWithDefaultName<GuiText>(format("Sleep: %.2f", mPerson.getSleep()), 12, mStylesheetManager->getStylesheet("button"));
+    auto hygieneText = mGui->createWithDefaultName<GuiText>(format("Health: %.2f", mPerson.getHealth()), 12, mStylesheetManager->getStylesheet("button"));
+    auto safetyText = mGui->createWithDefaultName<GuiText>(format("Safety: %.2f", mPerson.getSafety()), 12, mStylesheetManager->getStylesheet("button"));
+    auto hungerText = mGui->createWithDefaultName<GuiText>(format("Hunger: %.2f", mPerson.getHunger()), 12, mStylesheetManager->getStylesheet("button"));
+    auto happinessText = mGui->createWithDefaultName<GuiText>(format("Happiness: %.2f", mPerson.getHappiness()), 12, mStylesheetManager->getStylesheet("button"));
     bottomWidget->add(sleepText);
     bottomWidget->add(hygieneText);
     bottomWidget->add(safetyText);

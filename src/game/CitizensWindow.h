@@ -10,18 +10,20 @@ class CitizensWindow : public GuiWindow
 {
 public:
     CitizensWindow(Id listenerId, StylesheetManager* stylesheetManager,
-        const std::vector<Person*>& citizens, int year);
+        std::vector<Person*> citizens, int year);
     ~CitizensWindow();
 
     virtual void setUp() override;
 
-    void addCitizen(const Person* person);
-    void removeCitizen(const std::string& fullName);
+    void addCitizen(Person* person, bool alreadyAdded = false);
+    void removeCitizen(Person* person);
+
+    // void onNewYear();
 
 private:
     Id mListenerId;
     StylesheetManager* mStylesheetManager;
-    const std::vector<Person*>& mCitizens;
+    std::vector<Person*> mCitizens;
     int mYear;
     GuiTable* mTable;
 };
