@@ -42,8 +42,8 @@ public:
 
     Intersection intersect(const sf::Vector2f& position);
 
-    void removeImmigrant(Person* person);
-    void createCitizen(Person* person);
+    void eject(Person* person);
+    void welcome(Person* person);
 
     Map& getMap();
     const Map& getMap() const;
@@ -53,7 +53,7 @@ public:
     unsigned int getUnemployed() const;
     unsigned int getFunds() const;
     void decreaseFunds(unsigned int amount);
-    const Person* getPerson(Id id) const;
+    Person* getPerson(Id id);
     const std::vector<Person*>& getCitizens() const;
     const std::vector<Person*>& getImmigrants() const;
     VMarket* getMarket(VMarket::Type type);

@@ -224,11 +224,23 @@ void GameStateEditor::handleMessages()
                     else if (name == "openCitizensWindowButton")
                         openCitizensWindow();
                     else if (name.substr(0, 16) == "openPersonWindow")
-                        openPersonWindow(*mCity.getPerson(extractPersonId("openPersonWindow", event.widget)));
+                        openPersonWindow(*mCity.getPerson(extractPersonId(name, "openPersonWindow")));
                     else if (name.substr(0, 8) == "Accepted")
-                        std::cout << "Accepted " << extractPersonId("Accepted", event.widget) << std::endl;
+                    {
+                        Person* person = mCity.getPerson(extractPersonId(name, "Accepted"));
+                        mCity.welcome(person);
+                        if (mImmigrantsWindow)
+                            mImmigrantsWindow->removeImmigrant(person);
+                        if (mCitizensWindow)
+                            mCitizensWindow->addCitizen(person);
+                    }
                     else if (name.substr(0, 8) == "Rejected")
-                        std::cout << "Rejected " << extractPersonId("Rejected", event.widget) << std::endl;
+                    {
+                        Person* person = mCity.getPerson(extractPersonId(name, "Rejected"));
+                        mCity.eject(person);
+                        if (mImmigrantsWindow)
+                            mImmigrantsWindow->removeImmigrant(person);
+                    }
                     else if (!updateTabs(name))
                         updateTile(name);
                     break;
@@ -372,7 +384,7 @@ void GameStateEditor::openBuildingWindow(const Building& building)
 void GameStateEditor::openImmigrantsWindow()
 {
     if (!mImmigrantsWindow)
-        mImmigrantsWindow = mGui->createRootWithDefaultName<ImmigrantsWindow>(mMailbox.getId(), sStylesheetManager, mCity.getImmigrants(), mCity.getYear());
+        mImmigrantsWindow = mGui->createRootWithDefaultName<ImmigrantsWindow>(mMailbox.getId(), sStylesheetManager, mCity.getImmigrants(), mCity.getYear(), static_cast<Market<Housing>*>(mCity.getMarket(VMarket::Type::AFFORDABLE_HOUSING_RENT)));
 }
 
 void GameStateEditor::openCitizensWindow()
@@ -447,8 +459,7 @@ unsigned int GameStateEditor::computeCostOfSelection() const
     return getCost(mCurrentTile) * mCity.getMap().getNbSelected();
 }
 
-Id GameStateEditor::extractPersonId(const std::string& prefix, GuiWidget* widget) const
+Id GameStateEditor::extractPersonId(const std::string& name, const std::string& prefix) const
 {
-    const std::string& name = widget->getName();
-    return std::atoi(name.substr(prefix.size() + widget->getParent()->getName().size()).c_str());
+    return std::atoi(name.substr(prefix.size(), name.find("|", prefix.size()) - prefix.size()).c_str());
 }

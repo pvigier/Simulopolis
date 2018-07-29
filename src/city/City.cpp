@@ -85,14 +85,14 @@ void City::load(const std::string& name)
     bulldoze(Tile::Type::ROAD_GRASS);
 
     generateImmigrant();
-    createCitizen(mImmigrants.back());
+    welcome(mImmigrants.back());
     Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(2, 0));
     mCitizens.back()->getCar().getKinematic().setPosition(path.getCurrentPoint());
     mCitizens.back()->getCar().getSteering().setPath(path);
     mCitizens.back()->setState(Person::State::MOVING);
 
     generateImmigrant();
-    createCitizen(mImmigrants.back());
+    welcome(mImmigrants.back());
     Path otherPath = mMap.getPath(sf::Vector2i(2, 0), sf::Vector2i(0, 0));
     mCitizens.back()->getCar().getKinematic().setPosition(otherPath.getCurrentPoint());
     mCitizens.back()->getCar().getSteering().setPath(otherPath);
@@ -141,9 +141,9 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
     auto jBounds = std::minmax({iTopLeft.x, iTopRight.x, iBottomLeft.x, iBottomRight.x});
     auto iBounds = std::minmax({iTopLeft.y, iTopRight.y, iBottomLeft.y, iBottomRight.y});
     unsigned int iMin = std::max(iBounds.first - margin, 0);
-    unsigned int iMax = std::min(iBounds.second + margin + 1, static_cast<int>(mMap.getHeight()) - 1);
+    unsigned int iMax = std::min(std::max(iBounds.second + margin + 1, 0), static_cast<int>(mMap.getHeight()) - 1);
     unsigned int jMin = std::max(jBounds.first - margin, 0);
-    unsigned int jMax = std::min(jBounds.second + margin + 1, static_cast<int>(mMap.getWidth()) - 1);
+    unsigned int jMax = std::min(std::max(jBounds.second + margin + 1, 0), static_cast<int>(mMap.getWidth()) - 1);
 
     // Draw
     const Array2<std::unique_ptr<Tile>>& tiles = mMap.getTiles();
@@ -220,13 +220,13 @@ City::Intersection City::intersect(const sf::Vector2f& position)
     return intersection;
 }
 
-void City::removeImmigrant(Person* person)
+void City::eject(Person* person)
 {
     mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
     mPersons.erase(person->getId());
 }
 
-void City::createCitizen(Person* person)
+void City::welcome(Person* person)
 {
     mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
     mCitizens.push_back(person);
@@ -282,7 +282,7 @@ const std::vector<Person*>& City::getImmigrants() const
     return mImmigrants;
 }
 
-const Person* City::getPerson(Id id) const
+Person* City::getPerson(Id id)
 {
     return mPersons.get(id).get();
 }

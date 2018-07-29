@@ -47,7 +47,6 @@ private:
     std::vector<std::unique_ptr<WindowManager>> mWindowManagers;
     ImmigrantsWindow* mImmigrantsWindow;
     CitizensWindow* mCitizensWindow;
-
     std::vector<std::unique_ptr<sf::RenderTexture>> mMenuTextures;
 
     void drawCity(sf::RenderTexture& renderTexture, const sf::View& view);
@@ -67,5 +66,5 @@ private:
     unsigned int getCost(Tile::Type type) const;
     unsigned int computeCostOfSelection() const;
 
-    Id extractPersonId(const std::string& prefix, GuiWidget* widget) const;
+    Id extractPersonId(const std::string& name, const std::string& prefix) const;
 };
