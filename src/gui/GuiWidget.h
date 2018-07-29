@@ -24,6 +24,7 @@ public:
 
     void add(GuiWidget* widget);
     void insert(std::size_t i, GuiWidget* widget);
+    GuiWidget* remove(std::size_t i);
     std::vector<GuiWidget*>& getChildren();
     const std::vector<GuiWidget*>& getChildren() const;
 

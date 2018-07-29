@@ -62,6 +62,13 @@ void GuiWidget::insert(std::size_t i, GuiWidget* widget)
     setDirty();
 }
 
+GuiWidget* GuiWidget::remove(std::size_t i)
+{
+    GuiWidget* widget = *mChildren.erase(mChildren.begin() + i);
+    setDirty();
+    return widget;
+}
+
 std::vector<GuiWidget*>& GuiWidget::getChildren()
 {
     return mChildren;

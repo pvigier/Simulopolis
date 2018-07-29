@@ -67,6 +67,12 @@ void GuiTable::addRow(const std::vector<GuiWidget*>& row, bool isTitle)
     setDirty();
 }
 
+void GuiTable::removeRow(std::size_t i)
+{
+    for (std::size_t j = 0; j < mChildren.size(); ++j)
+        mChildren[j]->remove(i + 1);
+}
+
 void GuiTable::updateRow(std::size_t i)
 {
     for (std::size_t j = 0; j < mChildren.size(); ++j)

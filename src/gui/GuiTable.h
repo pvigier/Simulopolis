@@ -11,6 +11,7 @@ public:
     virtual void setUp() override;
 
     void addRow(const std::vector<GuiWidget*>& row, bool isTitle = false);
+    void removeRow(std::size_t i);
 
 private:
     std::vector<std::string> mColumnNames;
