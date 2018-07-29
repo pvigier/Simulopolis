@@ -29,6 +29,8 @@ public:
     void pushBack(Goal* goal);
     void clearSubgoals();
 
+    virtual std::string toString() const;
+
 protected:
     Person* mOwner;
     State mState;

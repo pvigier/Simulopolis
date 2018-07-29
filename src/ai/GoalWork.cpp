@@ -38,3 +38,8 @@ void GoalWork::terminate()
 {
 
 }
+
+std::string GoalWork::toString() const
+{
+    return "Work";
+}

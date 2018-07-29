@@ -16,6 +16,8 @@ public:
 
     virtual bool handle(Message message) override;
 
+    virtual std::string toString() const override;
+
 private:
     unsigned int mNbMonthsBeforeFailing;
     Market<Work>* mMarket;

@@ -33,3 +33,8 @@ void GoalWait::terminate()
 {
 
 }
+
+std::string GoalWait::toString() const
+{
+    return "Wait";
+}

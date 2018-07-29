@@ -83,3 +83,8 @@ bool Goal::forward(Message message)
         return mSubgoals.front()->handle(message);
     return false;
 }
+
+std::string Goal::toString() const
+{
+    return "";
+}

@@ -36,3 +36,8 @@ void GoalShop::terminate()
 {
 
 }
+
+std::string GoalShop::toString() const
+{
+    return "Shop";
+}

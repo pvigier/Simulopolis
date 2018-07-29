@@ -16,6 +16,8 @@ public:
 
     virtual bool handle(Message message) override;
 
+    virtual std::string toString() const override;
+
 private:
     std::vector<std::unique_ptr<GoalEvaluator>> mEvaluators;
 

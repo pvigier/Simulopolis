@@ -37,3 +37,8 @@ void GoalRest::terminate()
 {
     mOwner->increaseHappiness(mOwner->getHome()->getHousing()->getComfort());
 }
+
+std::string GoalRest::toString() const
+{
+    return "Rest";
+}

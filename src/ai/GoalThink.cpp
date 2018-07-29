@@ -55,3 +55,11 @@ void GoalThink::arbitrate()
     if (bestEvaluator)
         bestEvaluator->setGoal(mOwner);
 }
+
+std::string GoalThink::toString() const
+{
+    if (mSubgoals.empty())
+        return "Nothing";
+    else
+        return mSubgoals.front()->toString();
+}

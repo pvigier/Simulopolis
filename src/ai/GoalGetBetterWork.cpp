@@ -55,3 +55,8 @@ bool GoalGetBetterWork::handle(Message message)
 {
     // To do
 }
+
+std::string GoalGetBetterWork::toString() const
+{
+    return "Get a better work";
+}

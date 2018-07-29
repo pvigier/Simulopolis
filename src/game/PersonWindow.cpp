@@ -34,10 +34,14 @@ void PersonWindow::setUp()
     auto lastNameText = mGui->createWithDefaultName<GuiText>("Last name: " + mPerson.getLastName(), 12, mStylesheetManager->getStylesheet("button"));
     auto ageText = mGui->createWithDefaultName<GuiText>(format("Age: %d", mPerson.getAge(mYear)), 12, mStylesheetManager->getStylesheet("button"));
     auto stateText = mGui->createWithDefaultName<GuiText>(format("State: %d", static_cast<int>(mPerson.getState())), 12, mStylesheetManager->getStylesheet("button"));
+    auto shortTermGoalText = mGui->createWithDefaultName<GuiText>("Short term goal: " + mPerson.getShortTermBrain().toString(), 12, mStylesheetManager->getStylesheet("button"));
+    auto longTermGoalText = mGui->createWithDefaultName<GuiText>("Long term goal: " + mPerson.getLongTermBrain().toString(), 12, mStylesheetManager->getStylesheet("button"));
     infoWidget->add(firstNameText);
     infoWidget->add(lastNameText);
     infoWidget->add(ageText);
     infoWidget->add(stateText);
+    infoWidget->add(shortTermGoalText);
+    infoWidget->add(longTermGoalText);
     infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
     // Top widget

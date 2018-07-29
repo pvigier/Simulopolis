@@ -68,7 +68,9 @@ public:
 
     // AI
     GoalThink& getShortTermBrain();
+    const GoalThink& getShortTermBrain() const;
     GoalThink& getLongTermBrain();
+    const GoalThink& getLongTermBrain() const;
 
 private:
     static MessageBus* sMessageBus;

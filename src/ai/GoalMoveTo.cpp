@@ -40,3 +40,8 @@ void GoalMoveTo::terminate()
 {
 
 }
+
+std::string GoalMoveTo::toString() const
+{
+    return "Move to";
+}

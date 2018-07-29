@@ -13,6 +13,8 @@ public:
     virtual State process() override;
     virtual void terminate() override;
 
+    virtual std::string toString() const override;
+
 private:
     sf::Vector2i mTarget;
 };

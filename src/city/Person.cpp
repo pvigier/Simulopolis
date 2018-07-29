@@ -185,7 +185,17 @@ GoalThink& Person::getShortTermBrain()
     return mShortTermBrain;
 }
 
+const GoalThink& Person::getShortTermBrain() const
+{
+    return mShortTermBrain;
+}
+
 GoalThink& Person::getLongTermBrain()
+{
+    return mLongTermBrain;
+}
+
+const GoalThink& Person::getLongTermBrain() const
 {
     return mLongTermBrain;
 }
