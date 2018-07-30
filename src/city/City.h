@@ -71,13 +71,12 @@ private:
     float mCurrentTime;
     float mTimePerMonth;
     unsigned int mMonth;
-
     Map mMap;
-
     unsigned int mUnemployed;
-
     unsigned int mFunds;
+    Company mCityCompany;
 
+    // Agents
     IdManager<std::unique_ptr<Person>> mPersons;
     std::vector<Person*> mCitizens;
     std::vector<Person*> mImmigrants;

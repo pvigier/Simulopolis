@@ -4,11 +4,10 @@
 #include "ai/GoalThink.h"
 #include "city/Car.h"
 #include "city/Work.h"
-#include "city/Lease.h"
 
 class MessageBus;
 class City;
-class Housing;
+class Lease;
 class Business;
 
 class Person
@@ -88,8 +87,8 @@ private:
     State mState;
 
     // Daily life
-    std::unique_ptr<Lease> mHome;
-    std::unique_ptr<Work> mWork;
+    Lease* mHome;
+    Work* mWork;
     const Business* mFavoriteShop;
 
     // Car

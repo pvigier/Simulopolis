@@ -1,19 +1,19 @@
 #pragma once
 
-#include "Building.h"
-
-class Work;
+#include "city/Building.h"
+#include "city/Work.h"
 
 class Service : public Building
 {
 public:
-    Service(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbEmployees);
+    Service(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbEmployees,
+        Work::Type employeeType);
     virtual ~Service();
 
     virtual std::unique_ptr<Tile> clone() const override;
 
+    virtual void setOwner(Company* owner) override;
+
 protected:
-    std::size_t mNbEmployees;
-    std::vector<Work*> mEmployees;
-    std::vector<Person*> mCustomers;
+    std::vector<Work> mEmployees;
 };

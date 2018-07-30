@@ -1,6 +1,7 @@
 #include "BuildingWindow.h"
 #include "resource/StylesheetManager.h"
 #include "city/Building.h"
+#include "city/Company.h"
 #include "gui/Gui.h"
 #include "gui/GuiText.h"
 #include "gui/GuiImage.h"
@@ -30,7 +31,7 @@ void BuildingWindow::setUp()
     // Personal info
     auto infoWidget = mGui->createWithDefaultName<GuiWidget>();
     auto typeText = mGui->createWithDefaultName<GuiText>("Type: " + Tile::typeToString(mBuilding.getType()), 12, mStylesheetManager->getStylesheet("button"));
-    auto ownerText = mGui->createWithDefaultName<GuiText>("Owner: " + mBuilding.getOwner().toString(), 12, mStylesheetManager->getStylesheet("button"));
+    auto ownerText = mGui->createWithDefaultName<GuiText>("Owner: " + mBuilding.getOwner()->getFullName(), 12, mStylesheetManager->getStylesheet("button"));
     infoWidget->add(typeText);
     infoWidget->add(ownerText);
     infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));

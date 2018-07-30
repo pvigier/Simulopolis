@@ -2,18 +2,24 @@
 
 class Person;
 class Housing;
+class Company;
 
 class Lease
 {
 public:
-    Lease(const Person* tenant, const Housing* housing, float rent);
+    Lease(Housing* housing);
 
     const Person* getTenant() const;
+    void setTenant(Person* tenant);
     const Housing* getHousing() const;
+    void setHousing(Housing* housing);
+    const Company* getOwner() const;
     float getRent() const;
+    void setRent(float rent);
 
 private:
-    const Person* mTenant;
-    const Housing* mHousing;
+    Person* mTenant;
+    Housing* mHousing;
+    Company* mOwner;
     float mRent;
 };

@@ -8,29 +8,29 @@ std::string Work::typeToString(Type type)
             return "Farmer";
         case Type::WORKER:
             return "Worker";
-        case Type::CRAFTSMAN:
-            return "Craftsman";
+        case Type::CRAFTSPERSON:
+            return "Craftsperson";
         case Type::GROCER:
             return "Grocer";
         case Type::CASHIER:
             return "Cashier";
-        case Type::SELLER:
-            return "Seller";
+        case Type::SALESPERSON:
+            return "Salesperson";
         case Type::MANAGER:
             return "Manager";
         case Type::DOCTOR:
             return "Doctor";
         case Type::TEACHER:
             return "Teacher";
-        case Type::POLICEMAN:
-            return "Policeman";
+        case Type::POLICE_OFFICER:
+            return "Police officer";
         default:
             return "";
     }
 }
 
-Work::Work(Type type, const Person* employee, const Company* employer, const Building* workplace, float salary) :
-    mType(type), mEmployee(employee), mEmployer(employer), mWorkplace(workplace), mSalary(salary)
+Work::Work(Type type, Building* workplace) :
+    mType(type), mEmployee(nullptr), mEmployer(nullptr), mWorkplace(workplace), mSalary(0.0f)
 {
 
 }
@@ -45,14 +45,29 @@ const Person* Work::getEmployee() const
     return mEmployee;
 }
 
+void Work::setEmployee(Person* employee)
+{
+    mEmployee = employee;
+}
+
 const Company* Work::getEmployer() const
 {
     return mEmployer;
 }
 
+void Work::setEmployer(Company* employer)
+{
+    mEmployer = employer;
+}
+
 const Building* Work::getWorkplace() const
 {
     return mWorkplace;
+}
+
+void Work::setSalary(float salary)
+{
+    mSalary = salary;
 }
 
 float Work::getSalary() const

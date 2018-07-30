@@ -1,8 +1,7 @@
 #pragma once
 
 #include "city/Building.h"
-
-class Lease;
+#include "city/Lease.h"
 
 class Housing : public Building
 {
@@ -16,6 +15,6 @@ public:
 
 protected:
     std::size_t mNbInhabitants;
-    std::vector<Lease*> mInhabitants;
+    std::vector<Lease> mInhabitants;
     float mComfort; // Happiness per month
 };

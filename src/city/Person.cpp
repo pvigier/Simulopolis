@@ -1,12 +1,13 @@
 #include "city/Person.h"
 #include "city/Business.h"
+#include "city/Lease.h"
 #include "message/MessageBus.h"
 
 MessageBus* Person::sMessageBus = nullptr;
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
-    mState(State::RESTING), mHome(nullptr), mFavoriteShop(nullptr), mCar(car),
+    mState(State::RESTING), mHome(nullptr), mWork(nullptr), mFavoriteShop(nullptr), mCar(car),
     mMoney(0.0f), mSleep(1.0f), mHealth(1.0f), mSafety(1.0f), mHunger(1.0f), mHappiness(0.0f),
     mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
 {
@@ -97,12 +98,12 @@ void Person::setState(Person::State state)
 
 const Lease* Person::getHome() const
 {
-    return mHome.get();
+    return mHome;
 }
 
 const Work* Person::getWork() const
 {
-    return mWork.get();
+    return mWork;
 }
 
 std::string Person::getWorkStatus() const

@@ -3,18 +3,8 @@
 #include "city/Person.h"
 #include "city/Company.h"
 
-std::string Building::Owner::toString() const
-{
-    if (type == Type::CITY)
-        return "City";
-    else if (type == Type::PERSON)
-        return person->getFullName();
-    else
-        return company->getFullName();
-}
-
 Building::Building(const std::string& name, Type type, unsigned int nbStairs) :
-    Tile(name, type, Category::BUILDING), mNbStairs(nbStairs), mOwner{Owner::Type::CITY, nullptr}
+    Tile(name, type, Category::BUILDING), mNbStairs(nbStairs), mOwner(nullptr)
 {
 
 }
@@ -87,12 +77,12 @@ void Building::setPosition(sf::Vector2i coordinates, sf::Vector2f position)
     mSprite.setPosition(sf::Vector2f(position.x, position.y - OFFSET_Y));
 }
 
-const Building::Owner& Building::getOwner() const
+const Company* Building::getOwner() const
 {
     return mOwner;
 }
 
-void Building::setOwner(Owner owner)
+void Building::setOwner(Company* owner)
 {
     mOwner = owner;
 }

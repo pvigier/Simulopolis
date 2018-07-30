@@ -103,7 +103,7 @@ void GameStateEditor::handleMessages()
         Message message = mMailbox.get();
         if (message.type == MessageType::INPUT)
         {
-            sf::Event event = message.getInfo<sf::Event>();
+            const sf::Event& event = message.getInfo<sf::Event>();
             switch (event.type)
             {
                 case sf::Event::Closed:
@@ -213,7 +213,7 @@ void GameStateEditor::handleMessages()
         }
         else if (message.type == MessageType::GUI)
         {
-            GuiEvent event = message.getInfo<GuiEvent>();
+            const GuiEvent& event = message.getInfo<GuiEvent>();
             switch (event.type)
             {
                 case GuiEvent::Type::BUTTON_RELEASED:

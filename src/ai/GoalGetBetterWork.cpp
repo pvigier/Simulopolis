@@ -1,9 +1,10 @@
 #include "ai/GoalGetBetterWork.h"
 #include "city/City.h"
 #include "city/Person.h"
+#include "city/Market.h"
 
 GoalGetBetterWork::GoalGetBetterWork(Person* owner, unsigned int nbMonthsBeforeFailing) :
-    Goal(owner), mNbMonthsBeforeFailing(nbMonthsBeforeFailing)
+    Goal(owner), mNbMonthsBeforeFailing(nbMonthsBeforeFailing), mMarket(nullptr)
 {
     //ctor
 }

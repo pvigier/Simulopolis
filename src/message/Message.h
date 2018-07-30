@@ -188,7 +188,16 @@ public:
      * \brief Cast the extra info to the specified type
      */
     template<typename T>
-    inline T getInfo()
+    inline T& getInfo()
+    {
+        return *std::static_pointer_cast<T>(info);
+    }
+
+    /**
+     * \brief Cast the extra info to the specified type
+     */
+    template<typename T>
+    inline const T& getInfo() const
     {
         return *std::static_pointer_cast<T>(info);
     }

@@ -1,7 +1,8 @@
 #include "Service.h"
 
-Service::Service(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbEmployees) :
-    Building(name, type, nbStairs), mNbEmployees(nbEmployees)
+Service::Service(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbEmployees,
+        Work::Type employeeType) :
+    Building(name, type, nbStairs), mEmployees(nbEmployees, Work(employeeType, this))
 {
     //ctor
 }
@@ -14,4 +15,11 @@ Service::~Service()
 std::unique_ptr<Tile> Service::clone() const
 {
     return std::unique_ptr<Tile>(new Service(*this));
+}
+
+void Service::setOwner(Company* owner)
+{
+    Building::setOwner(owner);
+    for (Work& employee : mEmployees)
+        employee.setEmployer(mOwner);
 }

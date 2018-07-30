@@ -9,17 +9,20 @@ class Building;
 class Work
 {
 public:
-    enum class Type{FARMER, WORKER, CRAFTSMAN, GROCER, CASHIER, SELLER, MANAGER, DOCTOR, TEACHER, POLICEMAN};
+    enum class Type{FARMER, WORKER, CRAFTSPERSON, GROCER, CASHIER, SALESPERSON, MANAGER, DOCTOR, TEACHER, POLICE_OFFICER};
     enum class Qualification{NON_QUALIFIED, QUALIFIED, HIGHLY_QUALIFIED};
 
     static std::string typeToString(Type type);
 
-    Work(Type type, const Person* employee, const Company* employer, const Building* workplace, float salary);
+    Work(Type type, Building* workplace);
 
     Type getType() const;
     const Person* getEmployee() const;
+    void setEmployee(Person* employee);
     const Company* getEmployer() const;
+    void setEmployer(Company* employer);
     const Building* getWorkplace() const;
+    void setSalary(float salary);
     float getSalary() const;
     float getNbHoursPerWeek() const;
     bool hasAlreadyWorkedThisMonth() const;
@@ -27,9 +30,9 @@ public:
 
 private:
     Type mType;
-    const Person* mEmployee;
-    const Company* mEmployer;
-    const Building* mWorkplace;
+    Person* mEmployee;
+    Company* mEmployer;
+    Building* mWorkplace;
     float mSalary;
     float mNbHoursPerWeek;
     bool mAlreadyWorkedThisMonth;

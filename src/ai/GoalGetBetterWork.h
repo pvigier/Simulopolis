@@ -1,8 +1,9 @@
 #pragma once
 
-#include "city/Market.h"
 #include "city/Work.h"
 #include "ai/Goal.h"
+
+template <typename T> class Market;
 
 class GoalGetBetterWork : public Goal
 {

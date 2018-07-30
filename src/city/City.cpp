@@ -4,6 +4,7 @@
 #include <iostream>
 #include "game/GameStateEditor.h"
 #include "city/Building.h"
+#include "ai/GoalEnterCity.h"
 
 City::Intersection::Intersection() : type(City::Intersection::Type::NONE), car(nullptr)
 {
@@ -22,7 +23,7 @@ City::Intersection::Intersection(const Building* building) : type(City::Intersec
 
 City::City(GameStateEditor* gameStateEditor) :
     mGameStateEditor(gameStateEditor), mCurrentTime(0.0), mTimePerMonth(120.0f), mMonth(0),
-    mUnemployed(0), mFunds(0)
+    mUnemployed(0), mFunds(0), mCityCompany("City", "", 0, nullptr)
 {
     // Generators
     mPersonGenerator.setUp();
@@ -230,6 +231,7 @@ void City::welcome(Person* person)
 {
     mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
     mCitizens.push_back(person);
+    person->getLongTermBrain().pushFront(new GoalEnterCity(person));
 }
 
 Map& City::getMap()
