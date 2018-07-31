@@ -18,25 +18,19 @@ void GoalGetBetterWork::activate()
 {
     mState = State::ACTIVE;
     // Choose the right market
-    Work::Qualification qualification = mOwner->getQualification();
-    VMarket::Type marketType;
-    if (qualification == Work::Qualification::NON_QUALIFIED)
-        marketType = VMarket::Type::NON_QUALIFIED_JOB;
-    else if (qualification == Work::Qualification::QUALIFIED)
-        marketType = VMarket::Type::QUALIFIED_JOB;
-    else
-        marketType = VMarket::Type::HIGHLY_QUALIFIED_JOB;
-    mMarket = static_cast<Market<Work>*>(mOwner->getCity()->getMarket(marketType));
+    mMarket = static_cast<Market<Work>*>(mOwner->getCity()->getMarket(VMarket::Type::WORK));
 }
 
 Goal::State GoalGetBetterWork::process()
 {
     activateIfInactive();
 
+    Work::Qualification qualification = mOwner->getQualification();
     const Work* work = mOwner->getWork();
     for (const Market<Work>::Item* item : mMarket->getItems())
     {
-        if (item->good->getSalary() > work->getSalary())
+        if (static_cast<int>(qualification) >= static_cast<int>(item->good->getQualification()) &&
+            item->good->getSalary() > work->getSalary())
             mMarket->addBid(item->id, mOwner->getMailboxId(), item->reservePrice);
     }
 
