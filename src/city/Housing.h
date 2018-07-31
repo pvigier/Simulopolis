@@ -11,10 +11,10 @@ public:
 
     virtual std::unique_ptr<Tile> clone() const override;
 
+    std::vector<Lease>& getLeases();
     float getComfort() const;
 
 protected:
-    std::size_t mNbInhabitants;
-    std::vector<Lease> mInhabitants;
+    std::vector<Lease> mLeases;
     float mComfort; // Happiness per month
 };

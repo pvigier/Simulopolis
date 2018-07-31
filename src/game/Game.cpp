@@ -29,6 +29,7 @@ Game::Game()
     Tile::setTextureManager(&mResourceManager.getTextureManager());
     Tile::setImageManager(&mResourceManager.getImageManager());
     Person::setMessageBus(&mMessageBus);
+    Company::setMessageBus(&mMessageBus);
     VMarket::setMessageBus(&mMessageBus);
 
     // Load resources

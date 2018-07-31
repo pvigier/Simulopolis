@@ -2,25 +2,42 @@
 
  #include <vector>
  #include <string>
+ #include "message/Mailbox.h"
 
+class MessageBus;
 class Person;
+class City;
+class Building;
+class Lease;
+class Work;
 
 class Company
 {
 public:
-    Company(std::string name, std::string suffix, int creationYear, Person* owner);
+    static void setMessageBus(MessageBus* messageBus);
+
+    Company(std::string name, int creationYear, Person* owner = nullptr);
 
     const std::string& getName() const;
-    std::string getFullName() const;
+    void setCity(City* city);
     Person* getOwner() const;
     void setOwner(Person* owner);
-    const std::vector<Person*>& getEmployees() const;
-    void addEmployee(Person* employee);
+    const std::vector<Building*>& getBuildings() const;
+    void addBuilding(Building* building);
 
 private:
+    static MessageBus* sMessageBus;
+
+    // Data
     std::string mName;
-    std::string mSuffix;
     int mCreationYear;
+    City* mCity;
     Person* mOwner;
-    std::vector<Person*> mEmployees;
+    Mailbox mMailbox;
+
+    // Buildings
+    std::vector<Building*> mBuildings;
+
+    void addToMarket(Lease& lease);
+    void addToMarket(Work& work);
 };

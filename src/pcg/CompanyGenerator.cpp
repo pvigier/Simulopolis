@@ -88,5 +88,5 @@ Company CompanyGenerator::generate(int year, Person* owner)
     std::uniform_int_distribution<int> suffixPdf(0, mSuffixes.size() - 1);
     std::string suffix = mSuffixes[suffixPdf(mGenerator)];
 
-    return Company(name, suffix, year, owner);
+    return Company(name + " " + suffix, year, owner);
 }

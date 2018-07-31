@@ -1,9 +1,18 @@
-#include "Company.h"
+#include "city/Company.h"
+#include "city/Building.h"
+#include "city/Housing.h"
 
-Company::Company(std::string name, std::string suffix, int creationYear, Person* owner) :
-    mName(std::move(name)), mSuffix(std::move(suffix)), mCreationYear(creationYear), mOwner(owner)
+Company::Company(std::string name, int creationYear, Person* owner) :
+    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner)
 {
     //ctor
+}
+
+MessageBus* Company::sMessageBus = nullptr;
+
+void Company::setMessageBus(MessageBus* messageBus)
+{
+    sMessageBus = messageBus;
 }
 
 const std::string& Company::getName() const
@@ -11,9 +20,9 @@ const std::string& Company::getName() const
     return mName;
 }
 
-std::string Company::getFullName() const
+void Company::setCity(City* city)
 {
-    return mName + " " + mSuffix;
+    mCity = city;
 }
 
 Person* Company::getOwner() const
@@ -26,12 +35,29 @@ void Company::setOwner(Person* owner)
     mOwner = owner;
 }
 
-const std::vector<Person*>& Company::getEmployees() const
+const std::vector<Building*>& Company::getBuildings() const
 {
-    return mEmployees;
+    return mBuildings;
 }
 
-void Company::addEmployee(Person* employee)
+void Company::addBuilding(Building* building)
 {
-    mEmployees.push_back(employee);
+    building->setOwner(this);
+    mBuildings.push_back(building);
+
+    // Add things to markets if necessary
+    if (building->isHousing())
+    {
+        Housing* housing = static_cast<Housing*>(building);
+        for (Lease& lease : housing->getLeases())
+        {
+            if (lease.getTenant() == nullptr)
+                addToMarket(lease);
+        }
+    }
+}
+
+void Company::addToMarket(Lease& lease)
+{
+
 }
