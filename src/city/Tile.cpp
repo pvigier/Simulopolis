@@ -192,6 +192,50 @@ bool Tile::isBuilding() const
     return mCategory == Category::BUILDING;
 }
 
+bool Tile::isHousing() const
+{
+    switch (mType)
+    {
+        case Type::AFFORDABLE_HOUSING:
+        case Type::APARTMENT_BUILDING:
+        case Type::VILLA:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool Tile::isIndustry() const
+{
+    switch (mType)
+    {
+        case Type::FARM:
+        case Type::FACTORY:
+        case Type::WORKSHOP:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool Tile::isBusiness() const
+{
+    switch (mType)
+    {
+        case Type::MARKET:
+        case Type::MALL:
+        case Type::BOUTIQUE:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool Tile::isCallForBids() const
+{
+    return mCategory == Category::CALL_FOR_BIDS;
+}
+
 bool Tile::isRoad() const
 {
     return mCategory == Category::ROAD;

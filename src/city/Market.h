@@ -13,14 +13,10 @@ public:
         NECESSARY_GOOD = 0,
         NORMAL_GOOD,
         LUXURY_GOOD,
-        // Rent
-        AFFORDABLE_HOUSING_RENT,
-        APARTMENT_BUILDING_RENT,
-        VILLA_RENT,
-        // Jobs
-        NON_QUALIFIED_JOB,
-        QUALIFIED_JOB,
-        HIGHLY_QUALIFIED_JOB,
+        // Rents
+        RENT,
+        // Works
+        WORK,
         // Count
         COUNT
     };

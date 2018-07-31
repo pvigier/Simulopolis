@@ -16,9 +16,9 @@ public:
     enum class Gender{MALE = 0, FEMALE = 1};
     enum class State{RESTING, WORKING, MOVING, SHOPPING};
 
-    Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car);
-
     static void setMessageBus(MessageBus* messageBus);
+
+    Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car);
 
     void update(float dt);
 

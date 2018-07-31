@@ -32,12 +32,8 @@ City::City() :
     mMarkets.emplace_back(new Market<>(VMarket::Type::NECESSARY_GOOD));
     mMarkets.emplace_back(new Market<>(VMarket::Type::NORMAL_GOOD));
     mMarkets.emplace_back(new Market<>(VMarket::Type::LUXURY_GOOD));
-    mMarkets.emplace_back(new Market<Housing>(VMarket::Type::AFFORDABLE_HOUSING_RENT));
-    mMarkets.emplace_back(new Market<Housing>(VMarket::Type::APARTMENT_BUILDING_RENT));
-    mMarkets.emplace_back(new Market<Housing>(VMarket::Type::VILLA_RENT));
-    mMarkets.emplace_back(new Market<Work>(VMarket::Type::NON_QUALIFIED_JOB));
-    mMarkets.emplace_back(new Market<Work>(VMarket::Type::QUALIFIED_JOB));
-    mMarkets.emplace_back(new Market<Work>(VMarket::Type::HIGHLY_QUALIFIED_JOB));
+    mMarkets.emplace_back(new Market<Lease>(VMarket::Type::RENT));
+    mMarkets.emplace_back(new Market<Work>(VMarket::Type::WORK));
 }
 
 void City::load(const std::string& name)
@@ -84,7 +80,7 @@ void City::load(const std::string& name)
     mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), all<Tile::Category>);
     bulldoze(Tile::Type::ROAD_GRASS);
 
-    generateImmigrant();
+    /*generateImmigrant();
     welcome(mImmigrants.back());
     Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(2, 0));
     mCitizens.back()->getCar().getKinematic().setPosition(path.getCurrentPoint());
@@ -96,7 +92,7 @@ void City::load(const std::string& name)
     Path otherPath = mMap.getPath(sf::Vector2i(2, 0), sf::Vector2i(0, 0));
     mCitizens.back()->getCar().getKinematic().setPosition(otherPath.getCurrentPoint());
     mCitizens.back()->getCar().getSteering().setPath(otherPath);
-    mCitizens.back()->setState(Person::State::MOVING);
+    mCitizens.back()->setState(Person::State::MOVING);*/
 
     // tmp
     for (int i = 0; i < 3; ++i)
@@ -201,7 +197,7 @@ void City::update(float dt)
 
 void City::bulldoze(Tile::Type type)
 {
-    mMap.bulldoze(type);
+    mMap.bulldoze(type, mCityCompany);
 }
 
 City::Intersection City::intersect(const sf::Vector2f& position)
@@ -241,7 +237,11 @@ void City::welcome(Person* person)
 {
     mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
     mCitizens.push_back(person);
+    person->setCity(this);
+    person->getLongTermBrain().activate();
+    person->getLongTermBrain().clearSubgoals();
     person->getLongTermBrain().pushFront(new GoalEnterCity(person));
+    person->getLongTermBrain().process();
 }
 
 Map& City::getMap()

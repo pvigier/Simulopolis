@@ -47,7 +47,6 @@ void CitizensWindow::addCitizen(Person* person, bool alreadyAdded)
     std::string fullName = person->getFullName();
 
     // Person button
-    std::cout << person->getId() << std::endl;
     GuiWidget* personButton = mGui->create<GuiButton>("openPersonWindow" + std::to_string(person->getId()) + "|" + mTable->getName(), mStylesheetManager->getStylesheet("button"));
     personButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
     personButton->add(mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("button")));

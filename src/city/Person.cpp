@@ -1,9 +1,15 @@
 #include "city/Person.h"
 #include "city/Business.h"
 #include "city/Lease.h"
+#include "city/City.h"
 #include "message/MessageBus.h"
 
 MessageBus* Person::sMessageBus = nullptr;
+
+void Person::setMessageBus(MessageBus* messageBus)
+{
+    sMessageBus = messageBus;
+}
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
@@ -12,23 +18,33 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
-}
 
-void Person::setMessageBus(MessageBus* messageBus)
-{
-    sMessageBus = messageBus;
+    sMessageBus->addMailbox(mMailbox);
 }
 
 void Person::update(float dt)
 {
     // AI
-    mShortTermBrain.process();
+    //mShortTermBrain.process();
 
+    // Messages
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();
         mShortTermBrain.handle(message);
         mLongTermBrain.handle(message);
+        if (message.type == MessageType::CITY)
+        {
+            const City::Event& event = message.getInfo<City::Event>();
+            switch (event.type)
+            {
+                case City::Event::Type::NEW_MONTH:
+                    mLongTermBrain.process();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     // Update the car if necessary

@@ -9,7 +9,8 @@ class ImageManager;
 class Tile : public sf::Drawable
 {
 public:
-    enum class Category : unsigned int {GROUND = 1, WATER = 2, BUILDING = 4, ROAD = 8, OBSTACLE = 16};
+    enum class Category : unsigned int {GROUND = 1, WATER = 2, BUILDING = 4, ROAD = 8, OBSTACLE = 16,
+        CALL_FOR_BIDS = 32};
     enum class Type : int {VOID, GRASS, FOREST, WATER, DIRT,
         CFB_HOUSING, AFFORDABLE_HOUSING, APARTMENT_BUILDING, VILLA,
         CFB_INDUSTRY, FARM, FACTORY, WORKSHOP,
@@ -43,6 +44,10 @@ public:
     Category getCategory() const;
     Type getType() const;
     bool isBuilding() const;
+    bool isHousing() const;
+    bool isIndustry() const;
+    bool isBusiness() const;
+    bool isCallForBids() const;
     bool isRoad() const;
     bool hasSidewalk() const;
     State getState() const;

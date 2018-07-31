@@ -7,6 +7,7 @@
 #include "city/Industry.h"
 #include "city/Business.h"
 #include "city/Service.h"
+#include "city/Company.h"
 
 std::vector<std::unique_ptr<Tile>> Map::sTileAtlas;
 
@@ -134,7 +135,7 @@ void Map::deselect()
     mNbSelected = 0;
 }
 
-void Map::bulldoze(Tile::Type type)
+void Map::bulldoze(Tile::Type type, Company& owner)
 {
     for (unsigned int i = 0; i < mHeight; ++i)
     {
@@ -148,7 +149,11 @@ void Map::bulldoze(Tile::Type type)
                 if (mTiles.get(i, j)->isRoad())
                     mNetwork.addRoad(i, j);
                 else
+                {
                     mNetwork.removeRoad(i, j);
+                    if (mTiles.get(i, j)->isBuilding())
+                        owner.addBuilding(static_cast<Building*>(mTiles.get(i, j).get()));
+                }
             }
         }
     }

@@ -7,6 +7,7 @@
 #include "Network.h"
 
 class TextureManager;
+class Company;
 
 class Map
 {
@@ -24,7 +25,7 @@ public:
 
     void select(sf::Vector2i start, sf::Vector2i end, Tile::Category mask);
     void deselect();
-    void bulldoze(Tile::Type type);
+    void bulldoze(Tile::Type type, Company& owner);
 
     Path getPath(sf::Vector2i start, sf::Vector2i end) const;
 

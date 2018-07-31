@@ -32,12 +32,37 @@ std::string Work::typeToString(Type type)
 Work::Work(Type type, Building* workplace) :
     mType(type), mEmployee(nullptr), mEmployer(nullptr), mWorkplace(workplace), mSalary(0.0f)
 {
-
+    switch (mType)
+    {
+        case Type::FARMER:
+        case Type::GROCER:
+        case Type::CASHIER:
+        case Type::WORKER:
+            mQualification = Qualification::NON_QUALIFIED;
+            break;
+        case Type::CRAFTSPERSON:
+        case Type::SALESPERSON:
+        case Type::TEACHER:
+        case Type::POLICE_OFFICER:
+            mQualification = Qualification::QUALIFIED;
+            break;
+        case Type::MANAGER:
+        case Type::DOCTOR:
+            mQualification = Qualification::HIGHLY_QUALIFIED;
+            break;
+        default:
+            break;
+    }
 }
 
 Work::Type Work::getType() const
 {
     return mType;
+}
+
+Qualification Work::getQualification() const
+{
+    return mQualification;
 }
 
 const Person* Work::getEmployee() const

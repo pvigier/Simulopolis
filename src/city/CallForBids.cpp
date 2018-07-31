@@ -2,7 +2,7 @@
 #include "resource/TextureManager.h"
 
 CallForBids::CallForBids(const std::string& name, Type type, const sf::Color& signColor) :
-    Tile(name, type, Category::BUILDING), mSignSprite(sTextureManager->getTexture("sign"))
+    Tile(name, type, Category::CALL_FOR_BIDS), mSignSprite(sTextureManager->getTexture("sign"))
 {
     mSignSprite.setColor(signColor);
 }
