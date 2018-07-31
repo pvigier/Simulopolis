@@ -21,8 +21,8 @@ public:
     void addImmigrant(Person* person, bool alreadyAdded = false);
     void removeImmigrant(Person* person);
 
-    // void onNewMonth();
-    // void onNewYear();
+    void onNewMonth();
+    void onNewYear();
 
 private:
     Id mListenerId;
@@ -32,6 +32,4 @@ private:
     Market<Housing>* mMarket;
     GuiTable* mTable;
     GuiText* mText;
-
-    void updateText();
 };

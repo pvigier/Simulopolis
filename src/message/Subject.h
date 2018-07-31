@@ -52,7 +52,7 @@ public:
      */
     void notify(Message message);
 
-private:
+protected:
     static MessageBus* sMessageBus; /**< Message bus */
     std::vector<Id> mSubscribers; /**< Ids of the subscribed mailboxes */
 };

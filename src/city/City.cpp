@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include "game/GameStateEditor.h"
 #include "city/Building.h"
 #include "ai/GoalEnterCity.h"
 
@@ -21,9 +20,9 @@ City::Intersection::Intersection(const Building* building) : type(City::Intersec
 
 }
 
-City::City(GameStateEditor* gameStateEditor) :
-    mGameStateEditor(gameStateEditor), mCurrentTime(0.0), mTimePerMonth(120.0f), mMonth(0),
-    mUnemployed(0), mFunds(0), mCityCompany("City", "", 0, nullptr)
+City::City() :
+    mCurrentTime(0.0), mTimePerMonth(10.0f), mMonth(0), mYear(0),
+    mUnemployed(0), mFunds(0), mCityCompany("City", 0)
 {
     // Generators
     mPersonGenerator.setUp();
@@ -161,19 +160,30 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void City::update(float dt)
 {
-    for (std::unique_ptr<Person>& person : mPersons.getObjects())
-        person->update(dt);
+    // Update the date
+    mCurrentTime += dt;
+    while (mCurrentTime >= mTimePerMonth)
+    {
+        mCurrentTime -= mTimePerMonth;
+        ++mMonth;
+        onNewMonth();
+    }
 
+    // Update the citizens
+    for (Person* citizen : mCitizens)
+        citizen->update(dt);
+
+    // Update the map
     for (unsigned int i = 0; i < mMap.getHeight(); ++i)
     {
         for (unsigned int j = 0; j < mMap.getWidth(); ++j)
             mCarsByTile.get(i, j).clear();
     }
-    for (const std::unique_ptr<Person>& person : mPersons.getObjects())
+    for (Person* citizen : mCitizens)
     {
-        if (person->getState() == Person::State::MOVING)
+        if (citizen->getState() == Person::State::MOVING)
         {
-            const Car& car = person->getCar();
+            const Car& car = citizen->getCar();
             sf::Vector2f bottomLeft(car.getBounds().left, car.getBounds().top + car.getBounds().height);
             sf::Vector2f bottomRight(bottomLeft.x + car.getBounds().width, bottomLeft.y);
             sf::Vector2i iBottomLeft = toTileIndices(bottomLeft);
@@ -312,11 +322,31 @@ void City::generateImmigrant()
     mImmigrants.push_back(person.get());
     Id id = mPersons.add(std::move(person));
     mImmigrants.back()->setId(id);
-    mGameStateEditor->onNewImmigrant(mImmigrants.back());
 }
 
 void City::removeCitizen(Person* person)
 {
     mCitizens.erase(std::find(mCitizens.begin(), mCitizens.end(), person));
     mPersons.erase(person->getId());
+}
+
+void City::onNewMonth()
+{
+    // Update year
+    if (mMonth >= 12)
+    {
+        mMonth = 0;
+        ++mYear;
+        onNewYear();
+    }
+    // Send messages
+    notify(Message::create(MessageType::CITY, Event{Event::Type::NEW_MONTH, mMonth}));
+    for (Person* citizen : mCitizens)
+        sMessageBus->send(Message::create(citizen->getMailboxId(), MessageType::CITY, Event{Event::Type::NEW_MONTH, mMonth}));
+}
+
+void City::onNewYear()
+{
+    // Send messages
+    notify(Message::create(MessageType::CITY, Event{Event::Type::NEW_YEAR, mYear}));
 }

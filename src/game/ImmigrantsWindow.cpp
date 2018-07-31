@@ -33,7 +33,7 @@ void ImmigrantsWindow::setUp()
 
     // Text
     mText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
-    updateText();
+    onNewMonth();
 
     // Window
     add(mTable);
@@ -85,7 +85,18 @@ void ImmigrantsWindow::removeImmigrant(Person* person)
     mImmigrants.erase(mImmigrants.begin() + i);
 }
 
-void ImmigrantsWindow::updateText()
+void ImmigrantsWindow::onNewMonth()
 {
     mText->setText(format("Affordable housing available: %d", mMarket->getItems().size()));
+}
+
+void ImmigrantsWindow::onNewYear()
+{
+    ++mYear;
+    GuiWidget* column =  mTable->getChildren()[1];
+    for (std::size_t i = 0; i < column->getChildren().size(); ++i)
+    {
+        GuiText* text = static_cast<GuiText*>(column->getChildren()[i]->getChildren()[0]);
+        text->setText(format("%d", mImmigrants[i]->getAge(mYear)));
+    }
 }

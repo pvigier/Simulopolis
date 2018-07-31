@@ -2,15 +2,15 @@
 
 #include <vector>
 #include <memory>
+#include "message/Subject.h"
 #include "pcg/PersonGenerator.h"
 #include "pcg/CompanyGenerator.h"
 #include "city/Map.h"
 #include "city/Market.h"
 
-class GameStateEditor;
 class Building;
 
-class City : public sf::Drawable
+class City : public sf::Drawable, public Subject
 {
 public:
     struct Intersection
@@ -29,7 +29,20 @@ public:
         Intersection(const Building* building);
     };
 
-    City(GameStateEditor* gameStateEditor);
+    struct Event
+    {
+        enum class Type{NEW_MONTH, NEW_YEAR, NEW_IMMIGRANT};
+
+        Type type;
+        union
+        {
+            unsigned int month;
+            unsigned int year;
+            Person* person;
+        };
+    };
+
+    City();
 
     void load(const std::string& name);
     void save(const std::string& name);
@@ -62,8 +75,6 @@ public:
     float toHumanTime(float cityTime) const; // cityTime is expressed in hours
 
 private:
-    GameStateEditor* mGameStateEditor;
-
     // Generators
     PersonGenerator mPersonGenerator;
     CompanyGenerator mCompanyGenerator;
@@ -71,6 +82,7 @@ private:
     float mCurrentTime;
     float mTimePerMonth;
     unsigned int mMonth;
+    unsigned int mYear;
     Map mMap;
     unsigned int mUnemployed;
     unsigned int mFunds;
@@ -86,5 +98,8 @@ private:
 
     void generateImmigrant();
     void removeCitizen(Person* person);
+
+    void onNewMonth();
+    void onNewYear();
 };
 

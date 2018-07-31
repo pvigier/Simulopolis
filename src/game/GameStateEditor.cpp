@@ -20,7 +20,7 @@
 #include "game/BuildingWindow.h"
 
 GameStateEditor::GameStateEditor() :
-    mCity(this), mActionState(ActionState::NONE), mZoomLevel(1.0f),
+    mActionState(ActionState::NONE), mZoomLevel(1.0f),
     mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor")),
     mImmigrantsWindow(nullptr), mCitizensWindow(nullptr)
 {
@@ -266,6 +266,22 @@ void GameStateEditor::handleMessages()
                     break;
             }
         }
+        else if (message.type == MessageType::CITY)
+        {
+            const City::Event& event = message.getInfo<City::Event>();
+            switch (event.type)
+            {
+                case City::Event::Type::NEW_IMMIGRANT:
+                    onNewImmigrant(event.person);
+                    break;
+                case City::Event::Type::NEW_MONTH:
+                    break;
+                case City::Event::Type::NEW_YEAR:
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
 
@@ -288,12 +304,6 @@ void GameStateEditor::loadGame(const std::string& path)
 const sf::Texture& GameStateEditor::getCityTexture() const
 {
     return mRenderTexture.getTexture();
-}
-
-void GameStateEditor::onNewImmigrant(Person* person)
-{
-    if (mImmigrantsWindow)
-        mImmigrantsWindow->addImmigrant(person);
 }
 
 void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View& view)
@@ -462,4 +472,22 @@ unsigned int GameStateEditor::computeCostOfSelection() const
 Id GameStateEditor::extractPersonId(const std::string& name, const std::string& prefix) const
 {
     return std::atoi(name.substr(prefix.size(), name.find("|", prefix.size()) - prefix.size()).c_str());
+}
+
+void GameStateEditor::onNewImmigrant(Person* person)
+{
+    if (mImmigrantsWindow)
+        mImmigrantsWindow->addImmigrant(person);
+}
+
+void GameStateEditor::onNewMonth()
+{
+    if (mImmigrantsWindow)
+        mImmigrantsWindow->onNewMonth();
+}
+
+void GameStateEditor::onNewYear()
+{
+    if (mImmigrantsWindow)
+        mImmigrantsWindow->onNewYear();
 }

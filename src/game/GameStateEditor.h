@@ -26,9 +26,6 @@ public:
 
     const sf::Texture& getCityTexture() const;
 
-    // Events
-    void onNewImmigrant(Person* person);
-
 private:
     sf::RenderTexture mRenderTexture;
     sf::View mGameView;
@@ -67,4 +64,9 @@ private:
     unsigned int computeCostOfSelection() const;
 
     Id extractPersonId(const std::string& name, const std::string& prefix) const;
+
+    // Events
+    void onNewImmigrant(Person* person);
+    void onNewMonth();
+    void onNewYear();
 };
