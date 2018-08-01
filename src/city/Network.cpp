@@ -1,4 +1,6 @@
 #include "Network.h"
+#include <queue>
+#include <algorithm>
 
 const sf::Vector2i Network::sDirections[4] = {sf::Vector2i(-1, 0), sf::Vector2i(1, 0), sf::Vector2i(0, -1), sf::Vector2i(0, 1)};
 
@@ -15,11 +17,55 @@ void Network::reshape(unsigned int width, unsigned int height)
 void Network::addRoad(int i, int j)
 {
     mRoads.set(i, j, true);
+    mEntryPoints.insert(std::make_pair(i, j));
 }
 
 void Network::removeRoad(int i, int j)
 {
     mRoads.set(i, j, false);
+    mEntryPoints.erase(std::make_pair(i, j));
+}
+
+bool Network::getAdjacentRoad(int i, int j, sf::Vector2i& coords) const
+{
+    if (i < 0 || j < 0 || i >= static_cast<int>(mRoads.getHeight()) || j >= static_cast<int>(mRoads.getWidth()))
+        return false;
+    else if (i > 0 && mRoads.get(i - 1, j))
+    {
+        coords = sf::Vector2i(i - 1, j);
+        return true;
+    }
+    else if (j + 1 < static_cast<int>(mRoads.getWidth()) && mRoads.get(i, j + 1))
+    {
+        coords = sf::Vector2i(i, j + 1);
+        return true;
+    }
+    else if (j > 0 && mRoads.get(i, j - 1))
+    {
+        coords = sf::Vector2i(i, j - 1);
+        return true;
+    }
+    else if (i + 1 < static_cast<int>(mRoads.getHeight()) && mRoads.get(i + 1, j))
+    {
+        coords = sf::Vector2i(i + 1, j);
+        return true;
+    }
+    else
+        return false;
+}
+
+bool Network::getRandomEntryPoint(sf::Vector2i& coords) const
+{
+    if (mEntryPoints.empty())
+        return false;
+    else
+    {
+        std::uniform_int_distribution<int> entryPointPdf(0, mEntryPoints.size() - 1);
+        auto it(mEntryPoints.begin());
+        std::advance(it, entryPointPdf(mGenerator));
+        coords = sf::Vector2i(it->first, it->second);
+        return true;
+    }
 }
 
 std::vector<sf::Vector2i> Network::getPath(sf::Vector2i start, sf::Vector2i end) const

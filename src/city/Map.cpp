@@ -215,6 +215,11 @@ Path Map::getPath(sf::Vector2i start, sf::Vector2i end) const
     return Path(points);
 }
 
+const Network& Map::getNetwork() const
+{
+    return mNetwork;
+}
+
 unsigned int Map::getWidth() const
 {
     return mWidth;
@@ -235,17 +240,17 @@ unsigned int Map::getNbSelected() const
     return mNbSelected;
 }
 
-std::unique_ptr<Tile> Map::createTile(Tile::Type type)
-{
-    return sTileAtlas[static_cast<int>(type)]->clone();
-}
-
 sf::Vector2f Map::computePosition(std::size_t i, std::size_t j) const
 {
     sf::Vector2f position;
     position.x = (j - i) * Tile::SIZE + mWidth * Tile::SIZE;
     position.y = (j + i) * Tile::SIZE * 0.5f;
     return position;
+}
+
+std::unique_ptr<Tile> Map::createTile(Tile::Type type)
+{
+    return sTileAtlas[static_cast<int>(type)]->clone();
 }
 
 void Map::updateTile(int i, int j)

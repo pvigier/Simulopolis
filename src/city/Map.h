@@ -28,11 +28,14 @@ public:
     void bulldoze(Tile::Type type, Company& owner);
 
     Path getPath(sf::Vector2i start, sf::Vector2i end) const;
+    const Network& getNetwork() const;
 
     unsigned int getWidth() const;
     unsigned int getHeight() const;
     const Array2<std::unique_ptr<Tile>>& getTiles() const;
     unsigned int getNbSelected() const;
+
+    sf::Vector2f computePosition(std::size_t i, std::size_t j) const;
 
 private:
     static TileAtlas sTileAtlas;
@@ -43,7 +46,6 @@ private:
     Network mNetwork;
 
     static std::unique_ptr<Tile> createTile(Tile::Type type);
-    sf::Vector2f computePosition(std::size_t i, std::size_t j) const;
 
     void updateTile(int i, int j);
     void updateNeighborhood(int i, int j);
