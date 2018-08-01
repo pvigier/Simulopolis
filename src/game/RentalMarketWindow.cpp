@@ -42,10 +42,7 @@ void RentalMarketWindow::onNewMonth()
     mTable->clear();
     std::map<std::tuple<const Housing*, float>, int> mCounts;
     for (const Market<Lease>::Item* item : mMarket->getItems())
-    {
-        std::cout << item->good->getOwner() << " " << item->good->getHousing()->getOwner() << std::endl;
         ++mCounts[std::make_tuple(item->good->getHousing(), item->good->getRent())];
-    }
     for (auto it = mCounts.begin(); it != mCounts.end(); ++it)
         addItem(std::get<0>(it->first), std::get<1>(it->first), it->second);
 }

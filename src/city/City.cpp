@@ -342,6 +342,11 @@ void City::onNewMonth()
         ++mYear;
         onNewYear();
     }
+
+    // Update markets
+    for (std::unique_ptr<VMarket>& market : mMarkets)
+        market->update();
+
     // Send messages
     notify(Message::create(MessageType::CITY, Event{Event::Type::NEW_MONTH, mMonth}));
     for (Person* citizen : mCitizens)

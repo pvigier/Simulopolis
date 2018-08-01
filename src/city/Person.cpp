@@ -24,7 +24,7 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
 void Person::update(float dt)
 {
     // AI
-    //mShortTermBrain.process();
+    mShortTermBrain.process();
 
     // Messages
     while (!mMailbox.isEmpty())
@@ -109,6 +109,11 @@ Person::State Person::getState() const
 void Person::setState(Person::State state)
 {
     mState = state;
+}
+
+void Person::setHome(const Lease* home)
+{
+    mHome = home;
 }
 
 const Lease* Person::getHome() const

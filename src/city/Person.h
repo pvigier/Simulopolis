@@ -39,6 +39,7 @@ public:
     void setState(State state);
 
     // Daily life
+    void setHome(const Lease* home);
     const Lease* getHome() const;
     const Work* getWork() const;
     std::string getWorkStatus() const;
@@ -87,8 +88,8 @@ private:
     State mState;
 
     // Daily life
-    Lease* mHome;
-    Work* mWork;
+    const Lease* mHome;
+    const Work* mWork;
     const Business* mFavoriteShop;
 
     // Car
