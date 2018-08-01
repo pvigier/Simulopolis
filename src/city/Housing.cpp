@@ -11,14 +11,21 @@ Housing::~Housing()
     //dtor
 }
 
-std::vector<Lease>& Housing::getLeases()
-{
-    return mLeases;
-}
-
 std::unique_ptr<Tile> Housing::clone() const
 {
     return std::unique_ptr<Tile>(new Housing(*this));
+}
+
+void Housing::setOwner(Company* owner)
+{
+    Building::setOwner(owner);
+    for (Lease& lease : mLeases)
+        lease.setOwner(mOwner);
+}
+
+std::vector<Lease>& Housing::getLeases()
+{
+    return mLeases;
 }
 
 float Housing::getComfort() const

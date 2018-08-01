@@ -26,6 +26,16 @@ void Lease::setHousing(Housing* housing)
     mHousing = housing;
 }
 
+const Company* Lease::getOwner() const
+{
+    return mOwner;
+}
+
+void Lease::setOwner(Company* owner)
+{
+    mOwner = owner;
+}
+
 float Lease::getRent() const
 {
     return mRent;

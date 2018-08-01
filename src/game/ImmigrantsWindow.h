@@ -6,14 +6,14 @@ class StylesheetManager;
 class GuiTable;
 class GuiText;
 class Person;
-class Housing;
+class Lease;
 template<typename T> class Market;
 
 class ImmigrantsWindow : public GuiWindow
 {
 public:
     ImmigrantsWindow(Id listenerId, StylesheetManager* stylesheetManager,
-        std::vector<Person*> immigrants, int year, Market<Housing>* market);
+        std::vector<Person*> immigrants, int year, Market<Lease>* market);
     ~ImmigrantsWindow();
 
     virtual void setUp() override;
@@ -29,7 +29,7 @@ private:
     StylesheetManager* mStylesheetManager;
     std::vector<Person*> mImmigrants;
     int mYear;
-    Market<Housing>* mMarket;
+    Market<Lease>* mMarket;
     GuiTable* mTable;
     GuiText* mText;
 };

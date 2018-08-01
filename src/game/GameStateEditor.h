@@ -6,8 +6,10 @@
 #include "gui/Gui.h"
 #include "pcg/TerrainGenerator.h"
 #include "game/WindowManager.h"
-#include "game/ImmigrantsWindow.h"
-#include "game/CitizensWindow.h"
+
+class ImmigrantsWindow;
+class CitizensWindow;
+class RentalMarketWindow;
 
 enum class ActionState{NONE, PANNING, SELECTING};
 
@@ -44,6 +46,7 @@ private:
     std::vector<std::unique_ptr<WindowManager>> mWindowManagers;
     ImmigrantsWindow* mImmigrantsWindow;
     CitizensWindow* mCitizensWindow;
+    RentalMarketWindow* mRentalMarketWindow;
     std::vector<std::unique_ptr<sf::RenderTexture>> mMenuTextures;
 
     void drawCity(sf::RenderTexture& renderTexture, const sf::View& view);
@@ -54,6 +57,7 @@ private:
     void openBuildingWindow(const Building& building);
     void openImmigrantsWindow();
     void openCitizensWindow();
+    void openRentalMarketWindow();
     void updateWindows();
     bool updateTabs(const std::string& name);
     bool updateTile(const std::string& name);

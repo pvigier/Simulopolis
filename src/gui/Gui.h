@@ -62,7 +62,7 @@ public:
         return static_cast<T*>(mWidgets[name].get());
     }
 
-    template <typename T>
+    template<typename T>
     T* get(const std::string& name) const
     {
         return static_cast<T*>(mWidgets.at(name).get());

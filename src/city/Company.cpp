@@ -1,11 +1,12 @@
 #include "city/Company.h"
+#include "city/City.h"
 #include "city/Building.h"
 #include "city/Housing.h"
 
 Company::Company(std::string name, int creationYear, Person* owner) :
     mName(std::move(name)), mCreationYear(creationYear), mOwner(owner)
 {
-    //ctor
+    sMessageBus->addMailbox(mMailbox);
 }
 
 MessageBus* Company::sMessageBus = nullptr;
@@ -59,5 +60,6 @@ void Company::addBuilding(Building* building)
 
 void Company::addToMarket(Lease& lease)
 {
-
+    Market<Lease>* market = static_cast<Market<Lease>*>(mCity->getMarket(VMarket::Type::RENT));
+    market->addItem(mMailbox.getId(), &lease, 0.0f);
 }

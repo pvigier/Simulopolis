@@ -14,6 +14,7 @@ public:
     const Housing* getHousing() const;
     void setHousing(Housing* housing);
     const Company* getOwner() const;
+    void setOwner(Company* owner);
     float getRent() const;
     void setRent(float rent);
 

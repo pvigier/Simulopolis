@@ -11,6 +11,8 @@ public:
 
     virtual std::unique_ptr<Tile> clone() const override;
 
+    virtual void setOwner(Company* owner) override;
+
     std::vector<Lease>& getLeases();
     float getComfort() const;
 

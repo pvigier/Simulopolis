@@ -88,6 +88,10 @@
                         <text text="Show citizens" characterSize="12" style="button" />
                         <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
                     </button>
+                    <button name="openRentalMarketWindowButton" style="button">
+                        <text text="Show rental market" characterSize="12" style="button" />
+                        <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+                    </button>
                     <vboxlayout spacing="2"/>
                 </widget>
                 <vboxlayout margins="13 13 13 13" spacing="16" />

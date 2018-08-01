@@ -60,7 +60,7 @@ Work::Type Work::getType() const
     return mType;
 }
 
-Qualification Work::getQualification() const
+Work::Qualification Work::getQualification() const
 {
     return mQualification;
 }

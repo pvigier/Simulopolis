@@ -3,7 +3,6 @@
 #include "gui/Gui.h"
 #include "gui/GuiText.h"
 #include "gui/GuiButton.h"
-#include "gui/GuiWindow.h"
 #include "gui/GuiTable.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"

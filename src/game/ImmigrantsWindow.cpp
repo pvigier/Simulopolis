@@ -3,7 +3,6 @@
 #include "gui/Gui.h"
 #include "gui/GuiText.h"
 #include "gui/GuiButton.h"
-#include "gui/GuiWindow.h"
 #include "gui/GuiTable.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
@@ -12,10 +11,10 @@
 #include "util/format.h"
 
 ImmigrantsWindow::ImmigrantsWindow(Id listenerId, StylesheetManager* stylesheetManager,
-    std::vector<Person*> immigrants, int year, Market<Housing>* market) :
+    std::vector<Person*> immigrants, int year, Market<Lease>* market) :
     GuiWindow("Immigrants", stylesheetManager->getStylesheet("window")), mListenerId(listenerId),
     mStylesheetManager(stylesheetManager), mImmigrants(std::move(immigrants)), mYear(year), mMarket(market),
-    mTable(nullptr)
+    mTable(nullptr), mText(nullptr)
 {
 
 }
@@ -87,7 +86,7 @@ void ImmigrantsWindow::removeImmigrant(Person* person)
 
 void ImmigrantsWindow::onNewMonth()
 {
-    mText->setText(format("Affordable housing available: %d", mMarket->getItems().size()));
+    mText->setText(format("Housing available: %d", mMarket->getItems().size()));
 }
 
 void ImmigrantsWindow::onNewYear()

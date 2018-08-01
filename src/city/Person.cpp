@@ -18,7 +18,6 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
-
     sMessageBus->addMailbox(mMailbox);
 }
 

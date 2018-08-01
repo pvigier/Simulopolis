@@ -34,6 +34,9 @@ City::City() :
     mMarkets.emplace_back(new Market<>(VMarket::Type::LUXURY_GOOD));
     mMarkets.emplace_back(new Market<Lease>(VMarket::Type::RENT));
     mMarkets.emplace_back(new Market<Work>(VMarket::Type::WORK));
+
+    // Company
+    mCityCompany.setCity(this);
 }
 
 void City::load(const std::string& name)

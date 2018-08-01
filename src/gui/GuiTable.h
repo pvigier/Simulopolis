@@ -12,6 +12,7 @@ public:
 
     void addRow(const std::vector<GuiWidget*>& row, bool isTitle = false);
     void removeRow(std::size_t i);
+    void clear();
 
 private:
     std::vector<std::string> mColumnNames;

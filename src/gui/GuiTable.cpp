@@ -73,6 +73,12 @@ void GuiTable::removeRow(std::size_t i)
         mChildren[j]->remove(i + 1);
 }
 
+void GuiTable::clear()
+{
+    for (std::size_t i = mRowHeights.size() - 1; i >= 1; --i)
+        removeRow(i);
+}
+
 void GuiTable::updateRow(std::size_t i)
 {
     for (std::size_t j = 0; j < mChildren.size(); ++j)

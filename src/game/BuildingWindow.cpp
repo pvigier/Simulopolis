@@ -5,7 +5,6 @@
 #include "gui/Gui.h"
 #include "gui/GuiText.h"
 #include "gui/GuiImage.h"
-#include "gui/GuiWindow.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
 
