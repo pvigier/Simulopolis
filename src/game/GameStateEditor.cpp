@@ -44,6 +44,9 @@ GameStateEditor::GameStateEditor() :
 
     // Subscribe to inputs
     mGui->subscribe(mMailbox.getId());
+
+    // Subscribe to the city
+    mCity.subscribe(mMailbox.getId());
 }
 
 GameStateEditor::~GameStateEditor()
@@ -157,12 +160,10 @@ void GameStateEditor::handleMessages()
                     }
                     else if (event.mouseButton.button == sf::Mouse::Right)
                     {
-                        // Stop selecting
+                        // Stop selecting and panning
+                        mActionState = ActionState::NONE;
                         if (mActionState == ActionState::SELECTING)
-                        {
-                            mActionState = ActionState::NONE;
                             mCity.getMap().deselect();
-                        }
                     }
                     else if (event.mouseButton.button == sf::Mouse::Left)
                     {
@@ -175,11 +176,8 @@ void GameStateEditor::handleMessages()
                     }
                     break;
                 case sf::Event::MouseButtonReleased:
-                    // Stop panning
-                    if (event.mouseButton.button == sf::Mouse::Middle)
-                        mActionState = ActionState::NONE;
                     // Stop selecting
-                    else if (event.mouseButton.button == sf::Mouse::Left)
+                    if (event.mouseButton.button == sf::Mouse::Left)
                     {
                         if (mActionState == ActionState::SELECTING)
                         {
@@ -189,7 +187,6 @@ void GameStateEditor::handleMessages()
                                 mCity.bulldoze(mCurrentTile);
                                 mCity.decreaseFunds(totalCost);
                             }
-                            mActionState = ActionState::NONE;
                             mCity.getMap().deselect();
                         }
                     }
@@ -201,6 +198,8 @@ void GameStateEditor::handleMessages()
                         else if (intersection.type == City::Intersection::Type::BUILDING)
                             openBuildingWindow(*intersection.building);
                     }
+                    // Stop panning
+                    mActionState = ActionState::NONE;
                     mGui->get("selectionCostText")->setVisible(false);
                     break;
                 case sf::Event::MouseWheelMoved:
@@ -282,6 +281,7 @@ void GameStateEditor::handleMessages()
                     onNewImmigrant(event.person);
                     break;
                 case City::Event::Type::NEW_MONTH:
+                    onNewMonth();
                     break;
                 case City::Event::Type::NEW_YEAR:
                     break;
@@ -501,6 +501,8 @@ void GameStateEditor::onNewMonth()
 {
     if (mImmigrantsWindow)
         mImmigrantsWindow->onNewMonth();
+    if (mRentalMarketWindow)
+        mRentalMarketWindow->onNewMonth();
 }
 
 void GameStateEditor::onNewYear()

@@ -6,6 +6,7 @@
 class StylesheetManager;
 class GuiTable;
 class Lease;
+class Housing;
 
 class RentalMarketWindow : public GuiWindow
 {
@@ -23,5 +24,5 @@ private:
     Market<Lease>* mMarket;
     GuiTable* mTable;
 
-    void addItem(const Market<Lease>::Item* item);
+    void addItem(const Housing* housing, float rent, int count);
 };

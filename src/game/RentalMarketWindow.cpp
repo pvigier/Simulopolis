@@ -25,7 +25,7 @@ RentalMarketWindow::~RentalMarketWindow()
 void RentalMarketWindow::setUp()
 {
     // Create table
-    std::vector<std::string> names{"Owner", "Type", "Rent"};
+    std::vector<std::string> names{"Owner", "Type", "Rent", "Count"};
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
     // Window
@@ -40,16 +40,23 @@ void RentalMarketWindow::setUp()
 void RentalMarketWindow::onNewMonth()
 {
     mTable->clear();
+    std::map<std::tuple<const Housing*, float>, int> mCounts;
     for (const Market<Lease>::Item* item : mMarket->getItems())
-        addItem(item);
+    {
+        std::cout << item->good->getOwner() << " " << item->good->getHousing()->getOwner() << std::endl;
+        ++mCounts[std::make_tuple(item->good->getHousing(), item->good->getRent())];
+    }
+    for (auto it = mCounts.begin(); it != mCounts.end(); ++it)
+        addItem(std::get<0>(it->first), std::get<1>(it->first), it->second);
 }
 
-void RentalMarketWindow::addItem(const Market<Lease>::Item* item)
+void RentalMarketWindow::addItem(const Housing* housing, float rent, int count)
 {
     // Add row
     mTable->addRow({
-        mGui->createWithDefaultName<GuiText>(item->good->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>(Housing::typeToString(item->good->getHousing()->getType()), 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>(format("%.2f", item->good->getRent()), 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>(housing->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>(Housing::typeToString(housing->getType()), 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>(format("%.2f", rent), 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>(format("%d", count), 12, mStylesheetManager->getStylesheet("button")),
     });
 }
