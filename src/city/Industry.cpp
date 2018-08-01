@@ -15,7 +15,7 @@ Industry::~Industry()
 
 std::unique_ptr<Tile> Industry::clone() const
 {
-    return std::unique_ptr<Tile>(new Industry(*this));
+    return std::unique_ptr<Tile>(new Industry(mTextureName, mType, mNbStairs, mGood, mProductivity, mEmployees.size(), mEmployees.front().getType()));
 }
 
 void Industry::setOwner(Company* owner)

@@ -14,7 +14,7 @@ Service::~Service()
 
 std::unique_ptr<Tile> Service::clone() const
 {
-    return std::unique_ptr<Tile>(new Service(*this));
+    return std::unique_ptr<Tile>(new Service(mTextureName, mType, mNbStairs, mEmployees.size(), mEmployees.front().getType()));
 }
 
 void Service::setOwner(Company* owner)

@@ -58,6 +58,7 @@ protected:
     static TextureManager* sTextureManager;
     static ImageManager* sImageManager;
 
+    std::string mTextureName;
     sf::Sprite mSprite;
     sf::Vector2i mCoordinates;
     const sf::Image& mMask;

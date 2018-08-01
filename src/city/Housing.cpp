@@ -13,7 +13,7 @@ Housing::~Housing()
 
 std::unique_ptr<Tile> Housing::clone() const
 {
-    return std::unique_ptr<Tile>(new Housing(*this));
+    return std::unique_ptr<Tile>(new Housing(mTextureName, mType, mNbStairs, mLeases.size(), mComfort));
 }
 
 void Housing::setOwner(Company* owner)

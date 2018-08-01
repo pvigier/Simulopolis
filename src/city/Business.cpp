@@ -15,7 +15,7 @@ Business::~Business()
 
 std::unique_ptr<Tile> Business::clone() const
 {
-    return std::unique_ptr<Tile>(new Business(*this));
+    return std::unique_ptr<Tile>(new Business(mTextureName, mType, mNbStairs, mGood, mEmployees.size(), mEmployees.front().getType()));
 }
 
 void Business::setOwner(Company* owner)

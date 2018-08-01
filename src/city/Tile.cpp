@@ -7,7 +7,7 @@ TextureManager* Tile::sTextureManager = nullptr;
 ImageManager* Tile::sImageManager = nullptr;
 
 Tile::Tile(const std::string& name, Tile::Type type, Tile::Category category) :
-    mSprite(sTextureManager->getTexture(name)), mMask(sImageManager->getImage(name)),
+    mTextureName(name), mSprite(sTextureManager->getTexture(name)), mMask(sImageManager->getImage(name)),
     mType(type), mCategory(category), mState(Tile::State::DESELECTED)
 {
 
