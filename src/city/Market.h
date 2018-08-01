@@ -115,23 +115,35 @@ public:
         for (Auction& auction : mAuctions.getObjects())
             auctions.push_back(&auction);
         std::sort(auctions.begin(), auctions.end(), [&](Auction* lhs, Auction* rhs) { return lhs->timestamp < rhs->timestamp; });
+
         // Sell the goods
         std::vector<Id> soldItems;
         for (Auction* auction : auctions)
         {
-            Bid& bid = *std::max_element(auction->bids.begin(), auction->bids.end(), [&](Bid& lhs, Bid& rhs) { return (mDesiredQuantities[lhs.bidderId] == 0 || (mDesiredQuantities[rhs.bidderId] != 0 && lhs.value < rhs.value)); });
-            Item& item = auction->item;
-            if (bid.value >= item.reservePrice && mDesiredQuantities[bid.bidderId] > 0)
+            if (!auction->bids.empty())
             {
-                sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, Event{Event::Type::PURCHASE, mType, item.good, bid.value}));
-                sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, Event{Event::Type::SALE, mType, item.good, bid.value}));
-                mDesiredQuantities[bid.bidderId]--;
-                soldItems.push_back(item.id);
+                Bid& bid = *std::max_element(auction->bids.begin(), auction->bids.end(), [&](Bid& lhs, Bid& rhs) { return (mDesiredQuantities[lhs.bidderId] == 0 || (mDesiredQuantities[rhs.bidderId] != 0 && lhs.value < rhs.value)); });
+                Item& item = auction->item;
+                if (bid.value >= item.reservePrice && mDesiredQuantities[bid.bidderId] > 0)
+                {
+                    sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, Event{Event::Type::PURCHASE, mType, item.good, bid.value}));
+                    sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, Event{Event::Type::SALE, mType, item.good, bid.value}));
+                    mDesiredQuantities[bid.bidderId]--;
+                    soldItems.push_back(item.id);
+                }
             }
         }
+
         // Update mActions
         for (Id id : soldItems)
             mAuctions.erase(id);
+        if (!soldItems.empty())
+            mDirty = true;
+
+        // Reset bids and desired quantities
+        for (Auction& auction : mAuctions.getObjects())
+            auction.bids.clear();
+        mDesiredQuantities.clear();
     }
 
 private:
