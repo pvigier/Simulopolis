@@ -21,7 +21,7 @@ void GoalRest::activate()
     float nbHours = (1.0f - mOwner->getSleep()) * 100.0f; // Temporary
     // Add subgoals
     clearSubgoals();
-    pushBack(new GoalMoveTo(mOwner, mOwner->getHome()->getHousing()->getCoordinates()));
+    pushBack(new GoalMoveTo(mOwner, mOwner->getHome()->getHousing()));
     pushBack(new GoalWait(mOwner, nbHours));
 }
 

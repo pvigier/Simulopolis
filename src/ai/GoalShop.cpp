@@ -20,7 +20,7 @@ void GoalShop::activate()
     mState = State::ACTIVE;
     // Add subgoals
     clearSubgoals();
-    pushBack(new GoalMoveTo(mOwner, mOwner->getFavoriteShop()->getCoordinates()));
+    pushBack(new GoalMoveTo(mOwner, mOwner->getFavoriteShop()));
     pushBack(new GoalWait(mOwner, mOwner->getCity()->toHumanTime(4.0f * 1.0f)));
 }
 

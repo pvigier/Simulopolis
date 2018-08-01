@@ -22,7 +22,7 @@ void GoalWork::activate()
     // Add subgoals
     clearSubgoals();
     const Work* work = mOwner->getWork();
-    pushBack(new GoalMoveTo(mOwner, work->getWorkplace()->getCoordinates()));
+    pushBack(new GoalMoveTo(mOwner, work->getWorkplace()));
     pushBack(new GoalWait(mOwner, 4.0f * work->getNbHoursPerWeek()));
 }
 

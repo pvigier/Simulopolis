@@ -3,10 +3,12 @@
 #include "ai/Goal.h"
 #include "ai/Path.h"
 
+class Building;
+
 class GoalMoveTo : public Goal
 {
 public:
-    GoalMoveTo(Person* owner, const sf::Vector2i& target);
+    GoalMoveTo(Person* owner, const Building* target);
     virtual ~GoalMoveTo();
 
     virtual void activate() override;
@@ -16,5 +18,5 @@ public:
     virtual std::string toString() const override;
 
 private:
-    sf::Vector2i mTarget;
+    const Building* mTarget;
 };
