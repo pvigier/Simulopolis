@@ -23,7 +23,6 @@ void GoalMoveTo::activate()
     // Update the steering behavior
     sf::Vector2i start = mOwner->getCity()->toTileIndices(mOwner->getCar().getKinematic().getPosition());
     sf::Vector2i targetCoords = mTarget->getCoordinates();
-    std::cout << "Target: " << targetCoords.x << " " << targetCoords.y << std::endl;
     sf::Vector2i end;
     if (!mOwner->getCity()->getMap().getNetwork().getAdjacentRoad(targetCoords.y, targetCoords.x, end))
         mState = State::FAILED;

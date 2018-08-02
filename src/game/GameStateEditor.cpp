@@ -11,21 +11,20 @@
 #include "gui/GuiButton.h"
 #include "gui/GuiText.h"
 #include "gui/GuiImage.h"
-#include "gui/GuiWindow.h"
 #include "gui/GuiTabWidget.h"
-#include "gui/GuiVBoxLayout.h"
-#include "gui/GuiHBoxLayout.h"
 #include "gui/GuiEvent.h"
 #include "game/PersonWindow.h"
 #include "game/BuildingWindow.h"
 #include "game/ImmigrantsWindow.h"
 #include "game/CitizensWindow.h"
 #include "game/RentalMarketWindow.h"
+#include "game/LaborMarketWindow.h"
 
 GameStateEditor::GameStateEditor() :
     mActionState(ActionState::NONE), mZoomLevel(1.0f),
     mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor")),
-    mImmigrantsWindow(nullptr), mCitizensWindow(nullptr), mRentalMarketWindow(nullptr)
+    mImmigrantsWindow(nullptr), mCitizensWindow(nullptr),
+    mRentalMarketWindow(nullptr), mLaborMarketWindow(nullptr)
 {
     // Views
     sf::Vector2f windowSize = sf::Vector2f(sRenderEngine->getWindow().getSize());
@@ -225,6 +224,8 @@ void GameStateEditor::handleMessages()
                         openCitizensWindow();
                     else if (name == "openRentalMarketWindowButton")
                         openRentalMarketWindow();
+                    else if (name == "openLaborMarketWindowButton")
+                        openLaborMarketWindow();
                     else if (name.substr(0, 16) == "openPersonWindow")
                         openPersonWindow(*mCity.getPerson(extractPersonId(name, "openPersonWindow")));
                     else if (name.substr(0, 8) == "Accepted")
@@ -256,6 +257,8 @@ void GameStateEditor::handleMessages()
                         mCitizensWindow = nullptr;
                     else if (mRentalMarketWindow == window)
                         mRentalMarketWindow = nullptr;
+                    else if (mLaborMarketWindow == window)
+                        mLaborMarketWindow = nullptr;
                     else
                     {
                         for (std::unique_ptr<WindowManager>& windowManager : mWindowManagers)
@@ -358,6 +361,7 @@ void GameStateEditor::createGui()
     mGui->get("openImmigrantsWindowButton")->subscribe(mMailbox.getId());
     mGui->get("openCitizensWindowButton")->subscribe(mMailbox.getId());
     mGui->get("openRentalMarketWindowButton")->subscribe(mMailbox.getId());
+    mGui->get("openLaborMarketWindowButton")->subscribe(mMailbox.getId());
 
     // Window managers
     mWindowManagers.emplace_back(new WindowManager(mMailbox.getId()));
@@ -421,6 +425,15 @@ void GameStateEditor::openRentalMarketWindow()
     {
         mRentalMarketWindow = mGui->createRootWithDefaultName<RentalMarketWindow>(sStylesheetManager, static_cast<Market<Lease>*>(mCity.getMarket(VMarket::Type::RENT)));
         mRentalMarketWindow->subscribe(mMailbox.getId());
+    }
+}
+
+void GameStateEditor::openLaborMarketWindow()
+{
+    if (!mLaborMarketWindow)
+    {
+        mLaborMarketWindow = mGui->createRootWithDefaultName<LaborMarketWindow>(sStylesheetManager, static_cast<Market<Work>*>(mCity.getMarket(VMarket::Type::WORK)));
+        mLaborMarketWindow->subscribe(mMailbox.getId());
     }
 }
 
@@ -507,6 +520,8 @@ void GameStateEditor::onNewMonth()
         mImmigrantsWindow->onNewMonth();
     if (mRentalMarketWindow)
         mRentalMarketWindow->onNewMonth();
+    if (mLaborMarketWindow)
+        mLaborMarketWindow->onNewMonth();
 }
 
 void GameStateEditor::onNewYear()

@@ -79,7 +79,7 @@
                     </button>
                     <hboxlayout spacing="2" />
                 </widget>
-                <widget name="housingInfo">
+                <widget>
                     <button name="openImmigrantsWindowButton" style="button">
                         <text text="Show immigrants" characterSize="12" style="button" />
                         <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
@@ -90,6 +90,10 @@
                     </button>
                     <button name="openRentalMarketWindowButton" style="button">
                         <text text="Show rental market" characterSize="12" style="button" />
+                        <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+                    </button>
+                    <button name="openLaborMarketWindowButton" style="button">
+                        <text text="Show labor market" characterSize="12" style="button" />
                         <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
                     </button>
                     <vboxlayout spacing="2"/>

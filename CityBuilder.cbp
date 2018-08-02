@@ -121,6 +121,8 @@
 		<Unit filename="src/game/GameStateStart.h" />
 		<Unit filename="src/game/ImmigrantsWindow.cpp" />
 		<Unit filename="src/game/ImmigrantsWindow.h" />
+		<Unit filename="src/game/LaborMarketWindow.cpp" />
+		<Unit filename="src/game/LaborMarketWindow.h" />
 		<Unit filename="src/game/PersonWindow.cpp" />
 		<Unit filename="src/game/PersonWindow.h" />
 		<Unit filename="src/game/RentalMarketWindow.cpp" />
