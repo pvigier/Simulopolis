@@ -25,7 +25,7 @@ RentalMarketWindow::~RentalMarketWindow()
 void RentalMarketWindow::setUp()
 {
     // Create table
-    std::vector<std::string> names{"Owner", "Type", "Rent", "Count"};
+    std::vector<std::string> names{"Building", "Owner", "Type", "Rent", "Count"};
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
     // Window
@@ -51,6 +51,7 @@ void RentalMarketWindow::addItem(const Housing* housing, float rent, int count)
 {
     // Add row
     mTable->addRow({
+        mGui->createWithDefaultName<GuiText>(format("%d", housing->getId()), 12, mStylesheetManager->getStylesheet("button")),
         mGui->createWithDefaultName<GuiText>(housing->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("button")),
         mGui->createWithDefaultName<GuiText>(Housing::typeToString(housing->getType()), 12, mStylesheetManager->getStylesheet("button")),
         mGui->createWithDefaultName<GuiText>(format("%.2f", rent), 12, mStylesheetManager->getStylesheet("button")),

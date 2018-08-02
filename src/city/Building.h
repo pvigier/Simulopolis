@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include "util/Id.h"
 #include "city/Tile.h"
 
 class Company;
@@ -21,6 +22,8 @@ public:
 
     virtual bool updateVariant(const Tile* neighbors[3][3]) override;
 
+    Id getId() const;
+    void setId(Id id);
     sf::Vector2f getPosition() const;
     virtual void setPosition(sf::Vector2i coordinates, sf::Vector2f position) override;
     virtual void setOwner(Company* owner);
@@ -28,6 +31,7 @@ public:
     virtual sf::FloatRect getBounds() const override;
 
 protected:
+    Id mId;
     unsigned int mNbStairs;
     Company* mOwner;
 };

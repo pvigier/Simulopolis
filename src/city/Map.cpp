@@ -1,5 +1,6 @@
 #include "Map.h"
 #include <fstream>
+#include "util/IdManager.h"
 #include "resource/TextureManager.h"
 #include "city/Road.h"
 #include "city/CallForBids.h"
@@ -135,7 +136,7 @@ void Map::deselect()
     mNbSelected = 0;
 }
 
-void Map::bulldoze(Tile::Type type, Company& owner)
+void Map::bulldoze(Tile::Type type, Company& owner, IdManager<Building*>& buildings)
 {
     for (unsigned int i = 0; i < mHeight; ++i)
     {
@@ -152,14 +153,18 @@ void Map::bulldoze(Tile::Type type, Company& owner)
                 {
                     mNetwork.removeRoad(i, j);
                     if (mTiles.get(i, j)->isBuilding())
-                        owner.addBuilding(static_cast<Building*>(mTiles.get(i, j).get()));
+                    {
+                        Building* building = static_cast<Building*>(mTiles.get(i, j).get());
+                        owner.addBuilding(building);
+                        Id id = buildings.add(building);
+                        building->setId(id);
+                    }
                 }
             }
         }
     }
     // Update network
-    if (sTileAtlas[static_cast<int>(type)]->isRoad())
-        mNetwork.updateComponents();
+    mNetwork.updateComponents();
 }
 
 void Map::select(sf::Vector2i start, sf::Vector2i end, Tile::Category mask)

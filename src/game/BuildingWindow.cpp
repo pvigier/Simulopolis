@@ -7,9 +7,10 @@
 #include "gui/GuiImage.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
+#include "util/format.h"
 
 BuildingWindow::BuildingWindow(StylesheetManager* stylesheetManager, const Building& building) :
-    GuiWindow("Building", stylesheetManager->getStylesheet("window")),
+    GuiWindow(format("%s %d", Tile::typeToString(building.getType()).c_str(), building.getId()), stylesheetManager->getStylesheet("window")),
     mStylesheetManager(stylesheetManager), mBuilding(building), mImage(nullptr)
 {
 

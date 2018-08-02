@@ -69,6 +69,7 @@ public:
     Person* getPerson(Id id);
     const std::vector<Person*>& getCitizens() const;
     const std::vector<Person*>& getImmigrants() const;
+    Building* getBuilding(Id id);
     VMarket* getMarket(VMarket::Type type);
 
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
@@ -93,6 +94,7 @@ private:
     std::vector<Person*> mCitizens;
     std::vector<Person*> mImmigrants;
     std::vector<std::unique_ptr<Company>> mCompanies;
+    IdManager<Building*> mBuildings;
     std::vector<std::unique_ptr<VMarket>> mMarkets;
     Array2<std::vector<const Car*>> mCarsByTile;
 

@@ -4,7 +4,7 @@
 #include "city/Company.h"
 
 Building::Building(const std::string& name, Type type, unsigned int nbStairs) :
-    Tile(name, type, Category::BUILDING), mNbStairs(nbStairs), mOwner(nullptr)
+    Tile(name, type, Category::BUILDING), mId(UNDEFINED), mNbStairs(nbStairs), mOwner(nullptr)
 {
 
 }
@@ -64,6 +64,16 @@ bool Building::updateVariant(const Tile* neighbors[3][3])
 
     mSprite.setTextureRect(rect);
     return true;
+}
+
+Id Building::getId() const
+{
+    return mId;
+}
+
+void Building::setId(Id id)
+{
+    mId = id;
 }
 
 sf::Vector2f Building::getPosition() const

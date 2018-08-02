@@ -3,11 +3,13 @@
 #include <string>
 #include <vector>
 #include "ai/Path.h"
-#include "Tile.h"
-#include "Network.h"
+#include "city/Tile.h"
+#include "city/Network.h"
 
 class TextureManager;
 class Company;
+class Building;
+template<typename T> class IdManager;
 
 class Map
 {
@@ -25,7 +27,7 @@ public:
 
     void select(sf::Vector2i start, sf::Vector2i end, Tile::Category mask);
     void deselect();
-    void bulldoze(Tile::Type type, Company& owner);
+    void bulldoze(Tile::Type type, Company& owner, IdManager<Building*>& buildings);
 
     Path getPath(sf::Vector2i start, sf::Vector2i end) const;
     const Network& getNetwork() const;

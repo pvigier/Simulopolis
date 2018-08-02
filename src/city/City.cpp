@@ -200,7 +200,7 @@ void City::update(float dt)
 
 void City::bulldoze(Tile::Type type)
 {
-    mMap.bulldoze(type, mCityCompany);
+    mMap.bulldoze(type, mCityCompany, mBuildings);
 }
 
 City::Intersection City::intersect(const sf::Vector2f& position)
