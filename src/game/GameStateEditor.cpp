@@ -151,19 +151,18 @@ void GameStateEditor::handleMessages()
                     // Start panning
                     if (event.mouseButton.button == sf::Mouse::Middle)
                     {
-                        mGui->get("selectionCostText")->setVisible(false);
                         if (mActionState != ActionState::PANNING)
                         {
                             mActionState = ActionState::PANNING;
                             mPanningAnchor = sf::Mouse::getPosition(sRenderEngine->getWindow());
                         }
+                        stopSelecting();
                     }
                     else if (event.mouseButton.button == sf::Mouse::Right)
                     {
                         // Stop selecting and panning
                         mActionState = ActionState::NONE;
-                        if (mActionState == ActionState::SELECTING)
-                            mCity.getMap().deselect();
+                        stopSelecting();
                     }
                     else if (event.mouseButton.button == sf::Mouse::Left)
                     {
@@ -187,7 +186,6 @@ void GameStateEditor::handleMessages()
                                 mCity.bulldoze(mCurrentTile);
                                 mCity.decreaseFunds(totalCost);
                             }
-                            mCity.getMap().deselect();
                         }
                     }
                     else if (event.mouseButton.button == sf::Mouse::Right)
@@ -200,7 +198,7 @@ void GameStateEditor::handleMessages()
                     }
                     // Stop panning
                     mActionState = ActionState::NONE;
-                    mGui->get("selectionCostText")->setVisible(false);
+                    stopSelecting();
                     break;
                 case sf::Event::MouseWheelMoved:
                     // Zoom the view
@@ -364,6 +362,12 @@ void GameStateEditor::createGui()
     // Window managers
     mWindowManagers.emplace_back(new WindowManager(mMailbox.getId()));
     mWindowManagers.emplace_back(new WindowManager(mMailbox.getId()));
+}
+
+void GameStateEditor::stopSelecting()
+{
+    mCity.getMap().deselect();
+    mGui->get("selectionCostText")->setVisible(false);
 }
 
 void GameStateEditor::generateMenuTextures()

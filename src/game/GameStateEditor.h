@@ -52,6 +52,7 @@ private:
     void drawCity(sf::RenderTexture& renderTexture, const sf::View& view);
 
     void createGui();
+    void stopSelecting();
     void generateMenuTextures();
     void openPersonWindow(const Person& person);
     void openBuildingWindow(const Building& building);
