@@ -471,9 +471,9 @@ unsigned int GameStateEditor::getCost(Tile::Type type) const
 {
     switch (type)
     {
-        case Tile::Type::GRASS: return 50;
+        /*case Tile::Type::GRASS: return 50;
         case Tile::Type::FOREST: return 100;
-        /*case Tile::Type::RESIDENTIAL: return 300;
+        case Tile::Type::RESIDENTIAL: return 300;
         case Tile::Type::COMMERCIAL: return 300;
         case Tile::Type::INDUSTRIAL: return 300;
         case Tile::Type::ROAD_GRASS: return 100;*/

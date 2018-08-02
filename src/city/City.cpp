@@ -140,9 +140,9 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
     auto jBounds = std::minmax({iTopLeft.x, iTopRight.x, iBottomLeft.x, iBottomRight.x});
     auto iBounds = std::minmax({iTopLeft.y, iTopRight.y, iBottomLeft.y, iBottomRight.y});
     unsigned int iMin = std::max(iBounds.first - margin, 0);
-    unsigned int iMax = std::min(std::max(iBounds.second + margin + 1, 0), static_cast<int>(mMap.getHeight()) - 1);
+    unsigned int iMax = std::min(std::max(iBounds.second + margin + 1, 0), static_cast<int>(mMap.getHeight()));
     unsigned int jMin = std::max(jBounds.first - margin, 0);
-    unsigned int jMax = std::min(std::max(jBounds.second + margin + 1, 0), static_cast<int>(mMap.getWidth()) - 1);
+    unsigned int jMax = std::min(std::max(jBounds.second + margin + 1, 0), static_cast<int>(mMap.getWidth()));
 
     // Draw
     const Array2<std::unique_ptr<Tile>>& tiles = mMap.getTiles();

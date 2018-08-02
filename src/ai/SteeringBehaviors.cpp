@@ -85,6 +85,8 @@ Vector2f SteeringBehaviors::arrive(Vector2f target) const
 
 Vector2f SteeringBehaviors::followPath()
 {
+    if (mPath.isEmpty())
+        return sf::Vector2f();
     if (!mPath.isFinished())
     {
         if (mOwner.getPosition().squaredDistanceTo(mPath.getCurrentPoint()) < mSeekDistance * mSeekDistance)
