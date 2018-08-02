@@ -30,6 +30,22 @@ Goal::State GoalEnterCity::process()
         for (const Market<Lease>::Item* item : mMarket->getItems())
             mMarket->addBid(item->id, mOwner->getMailboxId(), 0.0f);
     }
+    else
+    {
+        sf::Vector2i entryPoint;
+        sf::Vector2i housingCoords = mOwner->getHome()->getHousing()->getCoordinates();
+        sf::Vector2i roadCoords;
+        if (mOwner->getCity()->getMap().getNetwork().getAdjacentRoad(housingCoords.y, housingCoords.x, roadCoords) &&
+            mOwner->getCity()->getMap().getNetwork().getRandomEntryPoint(roadCoords.y, roadCoords.x, entryPoint))
+        {
+                // Add GoalMoveTo
+                mOwner->getCar().getKinematic().setPosition(mOwner->getCity()->getMap().computePosition(entryPoint.y, entryPoint.x) + sf::Vector2f(Tile::SIZE, Tile::SIZE * 0.5f));
+                mOwner->getShortTermBrain().activate();
+                mOwner->getShortTermBrain().clearSubgoals();
+                mOwner->getShortTermBrain().pushFront(new GoalMoveTo(mOwner, mOwner->getHome()->getHousing()));
+                mState = State::COMPLETED;
+        }
+    }
 
     return mState;
 }
@@ -48,16 +64,6 @@ bool GoalEnterCity::handle(Message message)
         {
             mHomeFound = true;
             mOwner->setHome(event.good);
-            sf::Vector2i entryPoint;
-            if (mOwner->getCity()->getMap().getNetwork().getRandomEntryPoint(entryPoint))
-            {
-                mOwner->getCar().getKinematic().setPosition(mOwner->getCity()->getMap().computePosition(entryPoint.x, entryPoint.y));
-                mOwner->getShortTermBrain().activate();
-                mOwner->getShortTermBrain().clearSubgoals();
-                mOwner->getShortTermBrain().pushFront(new GoalMoveTo(mOwner, mOwner->getHome()->getHousing()));
-            }
-            else
-                mState = State::FAILED;
             return true;
         }
     }
