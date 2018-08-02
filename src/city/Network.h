@@ -1,8 +1,8 @@
 #pragma once
 
+#include <array>
 #include <vector>
-#include <set>
-#include <utility>
+#include <map>
 #include <random>
 #include <SFML/System/Vector2.hpp>
 #include "util/Array2.h"
@@ -16,13 +16,20 @@ public:
 
     void addRoad(int i, int j);
     void removeRoad(int i, int j);
+    void updateComponents();
     bool getAdjacentRoad(int i, int j, sf::Vector2i& coords) const;
-    bool getRandomEntryPoint(sf::Vector2i& coords) const;
+    bool getRandomEntryPoint(int i, int j, sf::Vector2i& coords) const;
     std::vector<sf::Vector2i> getPath(sf::Vector2i start, sf::Vector2i end) const;
 
 private:
+    static const std::array<sf::Vector2i, 4> sDirections;
+
     mutable std::default_random_engine mGenerator;
-    static const sf::Vector2i sDirections[4];
     Array2<bool> mRoads;
-    std::set<std::pair<int, int>> mEntryPoints;
+    Array2<int> mComponents;
+    std::map<int, std::vector<sf::Vector2i>> mEntryPoints;
+
+    void floodFill(int i, int j, int c);
+    bool isValid(int i, int j) const;
+    bool isEntryPoint(int i, int j) const;
 };

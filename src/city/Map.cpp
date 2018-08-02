@@ -144,7 +144,7 @@ void Map::bulldoze(Tile::Type type, Company& owner)
             if (mTiles.get(i, j)->getState() == Tile::State::SELECTED)
             {
                 mTiles.set(i, j, createTile(type));
-                mTiles.get(i, j)->setPosition(sf::Vector2i(i, j), computePosition(i, j));
+                mTiles.get(i, j)->setPosition(sf::Vector2i(j, i), computePosition(i, j));
                 updateNeighborhood(i, j);
                 if (mTiles.get(i, j)->isRoad())
                     mNetwork.addRoad(i, j);
@@ -157,6 +157,9 @@ void Map::bulldoze(Tile::Type type, Company& owner)
             }
         }
     }
+    // Update network
+    if (sTileAtlas[static_cast<int>(type)]->isRoad())
+        mNetwork.updateComponents();
 }
 
 void Map::select(sf::Vector2i start, sf::Vector2i end, Tile::Category mask)
@@ -198,7 +201,7 @@ Path Map::getPath(sf::Vector2i start, sf::Vector2i end) const
     for (std::size_t i = 0; i < coordinates.size(); ++i)
     {
         const sf::Vector2i& coords = coordinates[i];
-        // offset
+        // Offset
         constexpr float t = 0.15f;
         const sf::Vector2f xOffset = sf::Vector2f(-0.5f, 0.25f) * Tile::SIZE;
         const sf::Vector2f yOffset = sf::Vector2f(-0.5f, -0.25f) * Tile::SIZE;
@@ -207,9 +210,17 @@ Path Map::getPath(sf::Vector2i start, sf::Vector2i end) const
             iOffset += coords - coordinates[i-1];
         if (i < coordinates.size() - 1)
             iOffset += coordinates[i+1] - coords;
-        float denom = std::abs(iOffset.x) == 0 || std::abs(iOffset.y) == 0 ? std::max(std::abs(iOffset.x), std::abs(iOffset.y)) : 0.5f;
+        // No move
+        float denom;
+        if (std::abs(iOffset.x) + std::abs(iOffset.y) == 0)
+            denom = 1.0f;
+        // Straight line
+        else if (std::abs(iOffset.x) == 0 || std::abs(iOffset.y) == 0)
+            denom = std::abs(iOffset.x) + std::abs(iOffset.y);
+        // Corner
+        else
+            denom = 0.5f;
         sf::Vector2f offset = t * (xOffset * iOffset.x + yOffset * iOffset.y) / denom;
-        //std::cout << iOffset.x << " " << iOffset.y << " " << denom << " " << offset << std::endl;
         points.push_back(computePosition(coords.y, coords.x) + sf::Vector2f(Tile::SIZE, Tile::SIZE * 0.5f) + offset);
     }
     return Path(points);
