@@ -25,3 +25,13 @@ void Industry::setOwner(Company* owner)
     for (Work& employee : mEmployees)
         employee.setEmployer(mOwner);
 }
+
+const Work& Industry::getManager() const
+{
+    return mManager;
+}
+
+const std::vector<Work>& Industry::getEmployees() const
+{
+    return mEmployees;
+}

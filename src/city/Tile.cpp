@@ -231,6 +231,19 @@ bool Tile::isBusiness() const
     }
 }
 
+bool Tile::isService() const
+{
+    switch (mType)
+    {
+        case Type::HOSPITAL:
+        case Type::POLICE_STATION:
+        case Type::SCHOOL:
+            return true;
+        default:
+            return false;
+    }
+}
+
 bool Tile::isCallForBids() const
 {
     return mCategory == Category::CALL_FOR_BIDS;

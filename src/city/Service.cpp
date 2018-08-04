@@ -23,3 +23,8 @@ void Service::setOwner(Company* owner)
     for (Work& employee : mEmployees)
         employee.setEmployer(mOwner);
 }
+
+const std::vector<Work>& Service::getEmployees() const
+{
+    return mEmployees;
+}

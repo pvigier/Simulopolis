@@ -23,7 +23,7 @@ void Housing::setOwner(Company* owner)
         lease.setOwner(mOwner);
 }
 
-std::vector<Lease>& Housing::getLeases()
+const std::vector<Lease>& Housing::getLeases() const
 {
     return mLeases;
 }

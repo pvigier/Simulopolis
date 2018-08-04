@@ -3,13 +3,14 @@
  #include <vector>
  #include <string>
  #include "message/Mailbox.h"
+ #include "city/Tile.h"
+ #include "city/Work.h"
 
 class MessageBus;
 class Person;
 class City;
 class Building;
 class Lease;
-class Work;
 
 class Company
 {
@@ -25,6 +26,11 @@ public:
     const std::vector<Building*>& getBuildings() const;
     void addBuilding(Building* building);
 
+    float getRent(Tile::Type housingType);
+    void setRent(Tile::Type housingType, float rent);
+    float getSalary(Work::Qualification qualification);
+    void setSalary(Work::Qualification qualification, float salary);
+
 private:
     static MessageBus* sMessageBus;
 
@@ -38,6 +44,10 @@ private:
     // Buildings
     std::vector<Building*> mBuildings;
 
-    void addToMarket(Lease& lease);
-    void addToMarket(Work& work);
+    // Rent and salaries
+    std::array<float, 3> mRents;
+    std::array<float, 3> mSalaries;
+
+    void addToMarket(const Lease& lease);
+    void addToMarket(const Work& work);
 };

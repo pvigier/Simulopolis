@@ -47,6 +47,7 @@ public:
     bool isHousing() const;
     bool isIndustry() const;
     bool isBusiness() const;
+    bool isService() const;
     bool isCallForBids() const;
     bool isRoad() const;
     bool hasSidewalk() const;

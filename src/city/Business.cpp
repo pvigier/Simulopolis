@@ -35,3 +35,13 @@ float Business::getPrice() const
 {
     return mPrice;
 }
+
+const Work& Business::getManager() const
+{
+    return mManager;
+}
+
+const std::vector<Work>& Business::getEmployees() const
+{
+    return mEmployees;
+}
