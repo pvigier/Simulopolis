@@ -1,7 +1,7 @@
 <stylesheets>
 	<stylesheet name="button">
 		<background color="0xc6 0xc6 0xc6" hoverColor="0x94 0x94 0x94" pressColor="0x61 0x61 0x61" disableColor="0xd4 0xd4 0xd4" />
-		<border size="1" color="0x94 0x94 0x94" />
+		<border size="-1" color="0x94 0x94 0x94" />
 		<text font="font" color="0x00 0x00 0x00" disableColor="0x77 0x77 0x77" />
 	</stylesheet>
 	<stylesheet name="text">
@@ -25,5 +25,9 @@
         <cell>
             <background color="0xab 0xab 0xab" />
         </cell>
+    </stylesheet>
+    <stylesheet name="bar">
+        <background color="0xc6 0xc6 0xc6" />
+        <border size="-1" color="0x94 0x94 0x94" />
     </stylesheet>
 </stylesheets>

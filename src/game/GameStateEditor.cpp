@@ -327,7 +327,6 @@ void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View&
 void GameStateEditor::createGui()
 {
     mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
-    mGui->get("infoBar")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
     // Tab buttons
     GuiWidget* buttonsWidget = mGui->get("tabButtons");
@@ -352,7 +351,6 @@ void GameStateEditor::createGui()
         }
     }
 
-    mGui->get("rightMenu")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
     updateTabs("landscapeTabButton");
 
     //mGui->createRoot<GuiInput>("input", 32, sStylesheetManager->getStylesheet("text"));

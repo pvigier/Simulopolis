@@ -4,13 +4,13 @@
 
 GuiButton::GuiButton(const XmlDocument* style) : GuiWidget(style)
 {
-    setBorderSize(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
+    //setBorderSize(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
     setState(State::NORMAL);
 }
 
 GuiButton::GuiButton(const PropertyList& properties) : GuiWidget(properties)
 {
-    setBorderSize(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
+    //setBorderSize(-mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));
     setState(State::NORMAL);
 }
 

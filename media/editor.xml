@@ -1,6 +1,25 @@
 <gui>
 	<text name="selectionCostText" characterSize="12" style="text" />
-	<widget name="rightMenu">
+    <widget size="800 28" style="bar">
+        <button name="openImmigrantsWindowButton" style="button">
+            <text text="Immigrants" characterSize="12" style="button" />
+            <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+        </button>
+        <button name="openCitizensWindowButton" style="button">
+            <text text="Citizens" characterSize="12" style="button" />
+            <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+        </button>
+        <button name="openRentalMarketWindowButton" style="button">
+            <text text="Rental market" characterSize="12" style="button" />
+            <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+        </button>
+        <button name="openLaborMarketWindowButton" style="button">
+            <text text="Labor market" characterSize="12" style="button" />
+            <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+        </button>
+        <hboxlayout vAlignment="center" spacing="2" margins="4 0 4 0" />
+    </widget>
+    <widget name="rightMenu" position="608 28">
         <widget name="tabButtons">
             <button name="landscapeTabButton" size="32 32" style="button">
                 <image texture="grass" size="24 18" />
@@ -37,7 +56,7 @@
             <vboxlayout hAlignment="left" vAlignment="top" />
         </widget>
         <tabwidget name="tabs">
-            <widget name="landscapeTab" size="160 600" style="tabs">
+            <widget name="landscapeTab" size="160 556" style="tabs">
                 <widget size="128 12" name="landscapeTitle">
                     <text text="Landscape" characterSize="12" style="button" />
                     <hboxlayout hAlignment="center" />
@@ -55,7 +74,7 @@
                 </widget>
                 <vboxlayout margins="13 13 13 13" spacing="16" />
             </widget>
-            <widget name="housingTab" size="160 600" style="tabs">
+            <widget name="housingTab" size="160 556" style="tabs">
                 <widget size="128 12" name="housingTitle">
                     <text text="Housing" characterSize="12" style="button" />
                     <hboxlayout hAlignment="center" />
@@ -79,28 +98,9 @@
                     </button>
                     <hboxlayout spacing="2" />
                 </widget>
-                <widget>
-                    <button name="openImmigrantsWindowButton" style="button">
-                        <text text="Show immigrants" characterSize="12" style="button" />
-                        <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
-                    </button>
-                    <button name="openCitizensWindowButton" style="button">
-                        <text text="Show citizens" characterSize="12" style="button" />
-                        <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
-                    </button>
-                    <button name="openRentalMarketWindowButton" style="button">
-                        <text text="Show rental market" characterSize="12" style="button" />
-                        <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
-                    </button>
-                    <button name="openLaborMarketWindowButton" style="button">
-                        <text text="Show labor market" characterSize="12" style="button" />
-                        <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
-                    </button>
-                    <vboxlayout spacing="2"/>
-                </widget>
                 <vboxlayout margins="13 13 13 13" spacing="16" />
             </widget>
-            <widget name="industryTab" size="160 600" style="tabs">
+            <widget name="industryTab" size="160 556" style="tabs">
                 <widget size="128 12" name="industryTitle">
                     <text text="Industry" characterSize="12" style="button" />
                     <hboxlayout hAlignment="center" />
@@ -126,7 +126,7 @@
                 </widget>
                 <vboxlayout margins="13 13 13 13" spacing="16" />
             </widget>
-            <widget name="businessTab" size="160 600" style="tabs">
+            <widget name="businessTab" size="160 556" style="tabs">
                 <widget size="128 12" name="businessTitle">
                     <text text="Business" characterSize="12" style="button" />
                     <hboxlayout hAlignment="center" />
@@ -152,7 +152,7 @@
                 </widget>
                 <vboxlayout margins="13 13 13 13" spacing="16" />
             </widget>
-            <widget name="healthTab" size="160 600" style="tabs">
+            <widget name="healthTab" size="160 556" style="tabs">
                 <widget size="128 12" name="healthTitle">
                     <text text="Health" characterSize="12" style="button" />
                     <hboxlayout hAlignment="center" />
@@ -170,7 +170,7 @@
                 </widget>
                 <vboxlayout margins="13 13 13 13" spacing="16" />
             </widget>
-            <widget name="securityTab" size="160 600" style="tabs">
+            <widget name="securityTab" size="160 556" style="tabs">
                 <widget size="128 12" name="securityTitle">
                     <text text="Security" characterSize="12" style="button" />
                     <hboxlayout hAlignment="center" />
@@ -188,7 +188,7 @@
                 </widget>
                 <vboxlayout margins="13 13 13 13" spacing="16" />
             </widget>
-            <widget name="educationTab" size="160 600" style="tabs">
+            <widget name="educationTab" size="160 556" style="tabs">
                 <widget size="128 12" name="educationTitle">
                     <text text="Education" characterSize="12" style="button" />
                     <hboxlayout hAlignment="center" />
@@ -206,7 +206,7 @@
                 </widget>
                 <vboxlayout margins="13 13 13 13" spacing="16" />
             </widget>
-            <widget name="roadTab" size="160 600" style="tabs">
+            <widget name="roadTab" size="160 556" style="tabs">
                 <widget size="128 12" name="roadTitle">
                     <text text="Roads" characterSize="12" style="button" />
                     <hboxlayout hAlignment="center" />
@@ -230,29 +230,29 @@
             </widget>
             <overlaplayout />
         </tabwidget>
-		<hboxlayout hAlignment="right" vAlignment="top" />
-	</widget>
-    <widget name="infoBar">
-		<button name="dateButton" size="160 16" style="button">
-			<text name="dateText" characterSize="12" style="button" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<button name="fundsButton" size="160 16" style="button">
-			<text name="fundsText" characterSize="12" style="button" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<button name="populationButton" size="160 16" style="button">
-			<text name="populationText" characterSize="12" style="button" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<button name="employmentButton" size="160 16" style="button">
-			<text name="employmentText" characterSize="12" style="button" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<button name="currentTileButton" size="160 16" style="button">
-			<text name="currentTileText" characterSize="12" style="button" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<hboxlayout vAlignment="bottom" />
-	</widget>
+        <hboxlayout hAlignment="right" vAlignment="top" />
+    </widget>
+    <widget name="infoBar" position="0 584" size="800 16">
+        <button name="dateButton" size="160 16" style="button">
+            <text name="dateText" characterSize="12" style="button" />
+            <hboxlayout hAlignment="center" vAlignment="center" />
+        </button>
+        <button name="fundsButton" size="160 16" style="button">
+            <text name="fundsText" characterSize="12" style="button" />
+            <hboxlayout hAlignment="center" vAlignment="center" />
+        </button>
+        <button name="populationButton" size="160 16" style="button">
+            <text name="populationText" characterSize="12" style="button" />
+            <hboxlayout hAlignment="center" vAlignment="center" />
+        </button>
+        <button name="employmentButton" size="160 16" style="button">
+            <text name="employmentText" characterSize="12" style="button" />
+            <hboxlayout hAlignment="center" vAlignment="center" />
+        </button>
+        <button name="currentTileButton" size="160 16" style="button">
+            <text name="currentTileText" characterSize="12" style="button" />
+            <hboxlayout hAlignment="center" vAlignment="center" />
+        </button>
+        <hboxlayout vAlignment="bottom" />
+    </widget>
 </gui>
