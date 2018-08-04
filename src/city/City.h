@@ -62,6 +62,7 @@ public:
     const Map& getMap() const;
     unsigned int getMonth() const;
     unsigned int getYear() const;
+    std::string getFormattedMonth() const;
     unsigned int getPopulation() const;
     unsigned int getUnemployed() const;
     unsigned int getFunds() const;

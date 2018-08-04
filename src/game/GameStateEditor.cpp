@@ -1,6 +1,7 @@
 #include "game/GameStateEditor.h"
 #include <utility>
 #include <chrono>
+#include "util/format.h"
 #include "render/RenderEngine.h"
 #include "input/InputEngine.h"
 #include "audio/AudioEngine.h"
@@ -85,7 +86,7 @@ void GameStateEditor::update(float dt)
     mCity.update(dt);
 
     // Update the info bar at the bottom of the screen
-    mGui->get<GuiText>("dateText")->setText("Date: " + std::to_string(mCity.getMonth()) + "/" + std::to_string(mCity.getYear()));
+    mGui->get<GuiText>("dateText")->setText(format("%s %d", mCity.getFormattedMonth().c_str(), 2000 + mCity.getYear()));
     mGui->get<GuiText>("fundsText")->setText("$" + std::to_string(mCity.getFunds()));
     mGui->get<GuiText>("populationText")->setText("Population: " + std::to_string(mCity.getPopulation()));
     mGui->get<GuiText>("employmentText")->setText("Unemployment: " + std::to_string(mCity.getUnemployed()));
