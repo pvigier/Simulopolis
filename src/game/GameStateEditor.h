@@ -71,7 +71,7 @@ private:
     unsigned int getCost(Tile::Type type) const;
     unsigned int computeCostOfSelection() const;
 
-    Id extractPersonId(const std::string& name, const std::string& prefix) const;
+    Id extractId(const std::string& name, const std::string& prefix) const;
 
     // Events
     void onNewImmigrant(Person* person);

@@ -228,10 +228,12 @@ void GameStateEditor::handleMessages()
                     else if (name == "openLaborMarketWindowButton")
                         openLaborMarketWindow();
                     else if (name.substr(0, 16) == "openPersonWindow")
-                        openPersonWindow(*mCity.getPerson(extractPersonId(name, "openPersonWindow")));
+                        openPersonWindow(*mCity.getPerson(extractId(name, "openPersonWindow")));
+                    else if (name.substr(0, 16) == "openBuildingWindow")
+                        openBuildingWindow(*mCity.getBuilding(extractId(name, "openBuildingWindow")));
                     else if (name.substr(0, 8) == "Accepted")
                     {
-                        Person* person = mCity.getPerson(extractPersonId(name, "Accepted"));
+                        Person* person = mCity.getPerson(extractId(name, "Accepted"));
                         mCity.welcome(person);
                         if (mImmigrantsWindow)
                             mImmigrantsWindow->removeImmigrant(person);
@@ -240,7 +242,7 @@ void GameStateEditor::handleMessages()
                     }
                     else if (name.substr(0, 8) == "Rejected")
                     {
-                        Person* person = mCity.getPerson(extractPersonId(name, "Rejected"));
+                        Person* person = mCity.getPerson(extractId(name, "Rejected"));
                         mCity.eject(person);
                         if (mImmigrantsWindow)
                             mImmigrantsWindow->removeImmigrant(person);
@@ -503,7 +505,7 @@ unsigned int GameStateEditor::computeCostOfSelection() const
     return getCost(mCurrentTile) * mCity.getMap().getNbSelected();
 }
 
-Id GameStateEditor::extractPersonId(const std::string& name, const std::string& prefix) const
+Id GameStateEditor::extractId(const std::string& name, const std::string& prefix) const
 {
     return std::atoi(name.substr(prefix.size(), name.find("|", prefix.size()) - prefix.size()).c_str());
 }

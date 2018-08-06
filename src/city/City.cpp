@@ -318,6 +318,11 @@ void City::decreaseFunds(unsigned int amount)
     mFunds -= amount;
 }
 
+Person* City::getPerson(Id id)
+{
+    return mPersons.get(id).get();
+}
+
 const std::vector<Person*>& City::getCitizens() const
 {
     return mCitizens;
@@ -328,9 +333,9 @@ const std::vector<Person*>& City::getImmigrants() const
     return mImmigrants;
 }
 
-Person* City::getPerson(Id id)
+Building* City::getBuilding(Id id)
 {
-    return mPersons.get(id).get();
+    return mBuildings.get(id);
 }
 
 VMarket* City::getMarket(VMarket::Type type)
@@ -347,7 +352,12 @@ sf::Vector2i City::toTileIndices(const sf::Vector2f& position) const
 
 float City::toHumanTime(float cityTime) const
 {
-    return cityTime / (30.0f * 24.0f) * mTimePerMonth;
+    return cityTime / NB_HOURS_PER_MONTH * mTimePerMonth;
+}
+
+float City::toCityTime(float humanTime) const
+{
+    return humanTime / mTimePerMonth * NB_HOURS_PER_MONTH;
 }
 
 void City::generateImmigrant()

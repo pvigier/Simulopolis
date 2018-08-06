@@ -13,6 +13,8 @@ class Building;
 class City : public sf::Drawable, public Subject
 {
 public:
+    static constexpr float NB_HOURS_PER_MONTH = 30.0f * 24.0f;
+
     struct Intersection
     {
         enum class Type{NONE, CAR, BUILDING};
@@ -75,6 +77,7 @@ public:
 
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
     float toHumanTime(float cityTime) const; // cityTime is expressed in hours
+    float toCityTime(float humanTime) const;
 
 private:
     // Generators
