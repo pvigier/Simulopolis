@@ -19,3 +19,9 @@ bool isSquareRootAlmostZero(float x);
 bool almostEquals(float x, float y);
 float toDegrees(float theta);
 float toRadians(float theta);
+
+template<typename T>
+const T& clamp(const T& v, const T& lo, const T& hi)
+{
+    return std::max(lo, std::min(v, hi));
+}
