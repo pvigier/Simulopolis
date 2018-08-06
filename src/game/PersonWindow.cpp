@@ -10,7 +10,9 @@
 
 PersonWindow::PersonWindow(StylesheetManager* stylesheetManager, const Person& person, int year) :
     GuiWindow(person.getFullName(), stylesheetManager->getStylesheet("window")),
-    mStylesheetManager(stylesheetManager), mPerson(person), mYear(year), mImage(nullptr)
+    mStylesheetManager(stylesheetManager), mPerson(person), mYear(year), mImage(nullptr),
+    mShortTermGoalText(nullptr), mLongTermGoalText(nullptr), mSleepText(nullptr), mHealthText(nullptr),
+    mSafetyText(nullptr), mHungerText(nullptr), mHappinessText(nullptr)
 {
 
 }
@@ -32,15 +34,13 @@ void PersonWindow::setUp()
     auto firstNameText = mGui->createWithDefaultName<GuiText>("First name: " + mPerson.getFirstName(), 12, mStylesheetManager->getStylesheet("button"));
     auto lastNameText = mGui->createWithDefaultName<GuiText>("Last name: " + mPerson.getLastName(), 12, mStylesheetManager->getStylesheet("button"));
     auto ageText = mGui->createWithDefaultName<GuiText>(format("Age: %d", mPerson.getAge(mYear)), 12, mStylesheetManager->getStylesheet("button"));
-    auto stateText = mGui->createWithDefaultName<GuiText>(format("State: %d", static_cast<int>(mPerson.getState())), 12, mStylesheetManager->getStylesheet("button"));
-    auto shortTermGoalText = mGui->createWithDefaultName<GuiText>("Short term goal: " + mPerson.getShortTermBrain().toString(), 12, mStylesheetManager->getStylesheet("button"));
-    auto longTermGoalText = mGui->createWithDefaultName<GuiText>("Long term goal: " + mPerson.getLongTermBrain().toString(), 12, mStylesheetManager->getStylesheet("button"));
+    mShortTermGoalText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
+    mLongTermGoalText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
     infoWidget->add(firstNameText);
     infoWidget->add(lastNameText);
     infoWidget->add(ageText);
-    infoWidget->add(stateText);
-    infoWidget->add(shortTermGoalText);
-    infoWidget->add(longTermGoalText);
+    infoWidget->add(mShortTermGoalText);
+    infoWidget->add(mLongTermGoalText);
     infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
     // Top widget
@@ -51,16 +51,16 @@ void PersonWindow::setUp()
 
     // Bottom widget
     auto bottomWidget = mGui->createWithDefaultName<GuiWidget>();
-    auto sleepText = mGui->createWithDefaultName<GuiText>(format("Sleep: %.2f", mPerson.getSleep()), 12, mStylesheetManager->getStylesheet("button"));
-    auto hygieneText = mGui->createWithDefaultName<GuiText>(format("Health: %.2f", mPerson.getHealth()), 12, mStylesheetManager->getStylesheet("button"));
-    auto safetyText = mGui->createWithDefaultName<GuiText>(format("Safety: %.2f", mPerson.getSafety()), 12, mStylesheetManager->getStylesheet("button"));
-    auto hungerText = mGui->createWithDefaultName<GuiText>(format("Hunger: %.2f", mPerson.getHunger()), 12, mStylesheetManager->getStylesheet("button"));
-    auto happinessText = mGui->createWithDefaultName<GuiText>(format("Happiness: %.2f", mPerson.getHappiness()), 12, mStylesheetManager->getStylesheet("button"));
-    bottomWidget->add(sleepText);
-    bottomWidget->add(hygieneText);
-    bottomWidget->add(safetyText);
-    bottomWidget->add(hungerText);
-    bottomWidget->add(happinessText);
+    mSleepText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
+    mHealthText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
+    mSafetyText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
+    mHungerText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
+    mHappinessText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
+    bottomWidget->add(mSleepText);
+    bottomWidget->add(mHealthText);
+    bottomWidget->add(mSafetyText);
+    bottomWidget->add(mHungerText);
+    bottomWidget->add(mHappinessText);
     bottomWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
     // Window
@@ -68,6 +68,19 @@ void PersonWindow::setUp()
     add(bottomWidget);
     setPosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
+
+    update();
+}
+
+void PersonWindow::update()
+{
+    mShortTermGoalText->setText("Short term goal: " + mPerson.getShortTermBrain().toString());
+    mLongTermGoalText->setText("Long term goal: " + mPerson.getLongTermBrain().toString());
+    mSleepText->setText(format("Sleep: %.2f", mPerson.getSleep()));
+    mHealthText->setText(format("Health: %.2f", mPerson.getHealth()));
+    mSafetyText->setText(format("Safety: %.2f", mPerson.getSafety()));
+    mHungerText->setText(format("Hunger: %.2f", mPerson.getHunger()));
+    mHappinessText->setText(format("Happiness: %.2f", mPerson.getHappiness()));
 }
 
 sf::RenderTexture& PersonWindow::getRenderTexture()

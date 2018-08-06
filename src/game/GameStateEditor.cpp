@@ -442,6 +442,7 @@ void GameStateEditor::updateWindows()
     {
         PersonWindow* personWindow = static_cast<PersonWindow*>(window);
         drawCity(personWindow->getRenderTexture(), personWindow->getView());
+        personWindow->update();
     }
     for (GuiWindow* window : mWindowManagers[1]->getWindows())
     {

@@ -6,6 +6,7 @@
 class StylesheetManager;
 class Person;
 class GuiImage;
+class GuiText;
 
 class PersonWindow : public GuiWindow
 {
@@ -15,6 +16,8 @@ public:
 
     virtual void setUp() override;
 
+    void update();
+
     sf::RenderTexture& getRenderTexture();
     sf::View getView();
 
@@ -23,5 +26,12 @@ private:
     const Person& mPerson;
     int mYear;
     GuiImage* mImage;
+    GuiText* mShortTermGoalText;
+    GuiText* mLongTermGoalText;
+    GuiText* mSleepText;
+    GuiText* mHealthText;
+    GuiText* mSafetyText;
+    GuiText* mHungerText;
+    GuiText* mHappinessText;
     sf::RenderTexture mRenderTexture;
 };
