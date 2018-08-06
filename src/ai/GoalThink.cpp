@@ -33,6 +33,11 @@ void GoalThink::terminate()
 
 }
 
+void GoalThink::addEvaluator(GoalEvaluator* evaluator)
+{
+    mEvaluators.emplace_back(evaluator);
+}
+
 bool GoalThink::handle(Message message)
 {
     forward(message);
@@ -40,7 +45,7 @@ bool GoalThink::handle(Message message)
 
 void GoalThink::arbitrate()
 {
-    float maxDesirability = std::numeric_limits<float>::min();
+    float maxDesirability = std::numeric_limits<float>::lowest();
     const GoalEvaluator* bestEvaluator = nullptr;
     for (const std::unique_ptr<GoalEvaluator>& evaluator : mEvaluators)
     {
@@ -52,7 +57,7 @@ void GoalThink::arbitrate()
         }
     }
 
-    if (bestEvaluator)
+    if (maxDesirability > 0.0f && bestEvaluator)
         bestEvaluator->setGoal(mOwner);
 }
 

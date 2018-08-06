@@ -16,6 +16,11 @@ GoalWait::~GoalWait()
 void GoalWait::activate()
 {
     mState = State::ACTIVE;
+
+    // Update the state of the Owner
+    mOwner->setState(Person::State::WAITING);
+
+    // Start the clock
     mClock.restart();
 }
 

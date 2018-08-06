@@ -18,7 +18,7 @@ void GoalRest::activate()
 {
     mState = State::ACTIVE;
     // Compute the number of hours needed to be rested
-    float nbHours = (1.0f - mOwner->getSleep()) * 100.0f; // Temporary
+    float nbHours = (1.0f - mOwner->getSleep()) * 1000.0f; // Temporary
     // Add subgoals
     clearSubgoals();
     pushBack(new GoalMoveTo(mOwner, mOwner->getHome()->getHousing()));

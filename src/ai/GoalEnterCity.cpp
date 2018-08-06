@@ -38,11 +38,9 @@ Goal::State GoalEnterCity::process()
         if (mOwner->getCity()->getMap().getNetwork().getAdjacentRoad(housingCoords.y, housingCoords.x, roadCoords) &&
             mOwner->getCity()->getMap().getNetwork().getRandomEntryPoint(roadCoords.y, roadCoords.x, entryPoint))
         {
-                // Add GoalMoveTo
+                // Set position
                 mOwner->getCar().getKinematic().setPosition(mOwner->getCity()->getMap().computePosition(entryPoint.y, entryPoint.x) + sf::Vector2f(Tile::SIZE, Tile::SIZE * 0.5f));
-                mOwner->getShortTermBrain().activate();
-                mOwner->getShortTermBrain().clearSubgoals();
-                mOwner->getShortTermBrain().pushFront(new GoalMoveTo(mOwner, mOwner->getHome()->getHousing()));
+                // Terminate
                 mState = State::COMPLETED;
         }
     }

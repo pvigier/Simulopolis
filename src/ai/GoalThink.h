@@ -14,6 +14,8 @@ public:
     virtual State process() override;
     virtual void terminate() override;
 
+    void addEvaluator(GoalEvaluator* evaluator);
+
     virtual bool handle(Message message) override;
 
     virtual std::string toString() const override;

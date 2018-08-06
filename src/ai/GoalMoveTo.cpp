@@ -2,6 +2,7 @@
 #include "city/City.h"
 #include "city/Person.h"
 #include "city/Building.h"
+#include "util/format.h"
 
 GoalMoveTo::GoalMoveTo(Person* owner, const Building* target) : Goal(owner), mTarget(target)
 {
@@ -40,7 +41,9 @@ Goal::State GoalMoveTo::process()
 {
     activateIfInactive();
 
-    if (mState != State::FAILED && mOwner->getCar().getSteering().getPath().isFinished())
+    Car& car = mOwner->getCar();
+    if (mState != State::FAILED && car.getSteering().getPath().isFinished() &&
+        car.getKinematic().getPosition().squaredDistanceTo(car.getSteering().getPath().getCurrentPoint()) < ARRIVE_DISTANCE)
         mState = State::COMPLETED;
 
     return mState;
@@ -53,5 +56,5 @@ void GoalMoveTo::terminate()
 
 std::string GoalMoveTo::toString() const
 {
-    return "Move to";
+    return format("Move to building %d", mTarget->getId());
 }
