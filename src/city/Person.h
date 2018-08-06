@@ -14,7 +14,7 @@ class Person
 {
 public:
     enum class Gender{MALE = 0, FEMALE = 1};
-    enum class State{RESTING, WORKING, MOVING, SHOPPING};
+    enum class State{WAITING, MOVING};
 
     static void setMessageBus(MessageBus* messageBus);
 
@@ -55,13 +55,17 @@ public:
 
     // Needs
     float getSleep() const;
+    void increaseSleep(float delta);
     float getHealth() const;
+    void increaseHealth(float delta);
     float getSafety() const;
+    void increaseSafety(float delta);
     float getHunger() const;
+    void increaseHunger(float delta);
 
     // Happiness
     float getHappiness() const;
-    void increaseHappiness(float difference);
+    void increaseHappiness(float delta);
 
     // Abilities
     Work::Qualification getQualification() const;
@@ -98,7 +102,7 @@ private:
     // Finance
     float mMoney;
 
-    // Needs
+    // Needs (Physiological and security)
     float mSleep;
     float mHealth;
     float mSafety;
@@ -113,4 +117,6 @@ private:
     // AI
     GoalThink mShortTermBrain;
     GoalThink mLongTermBrain;
+
+    void updateNeeds(float dt);
 };

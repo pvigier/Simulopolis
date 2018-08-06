@@ -3,6 +3,9 @@
 #include "city/Lease.h"
 #include "city/City.h"
 #include "message/MessageBus.h"
+#include "ai/GoalRestEvaluator.h"
+#include "ai/GoalWorkEvaluator.h"
+#include "ai/GoalShopEvaluator.h"
 
 MessageBus* Person::sMessageBus = nullptr;
 
@@ -13,12 +16,17 @@ void Person::setMessageBus(MessageBus* messageBus)
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
-    mState(State::RESTING), mHome(nullptr), mWork(nullptr), mFavoriteShop(nullptr), mCar(car),
+    mState(State::WAITING), mHome(nullptr), mWork(nullptr), mFavoriteShop(nullptr), mCar(car),
     mMoney(0.0f), mSleep(1.0f), mHealth(1.0f), mSafety(1.0f), mHunger(1.0f), mHappiness(0.0f),
     mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
     sMessageBus->addMailbox(mMailbox);
+
+    // Add evaluators to the brains
+    mShortTermBrain.addEvaluator(new GoalRestEvaluator(1.0f));
+    mShortTermBrain.addEvaluator(new GoalWorkEvaluator(1.0f));
+    mShortTermBrain.addEvaluator(new GoalShopEvaluator(1.0f));
 }
 
 void Person::update(float dt)
@@ -49,6 +57,9 @@ void Person::update(float dt)
     // Update the car if necessary
     if (mState == State::MOVING)
         mCar.update(dt);
+
+    // Update needs
+    updateNeeds(dt);
 }
 
 Id Person::getId() const
@@ -171,9 +182,19 @@ float Person::getSleep() const
     return mSleep;
 }
 
+void Person::increaseSleep(float delta)
+{
+    mSleep = clamp(mSleep + delta, 0.0f, 1.0f);
+}
+
 float Person::getHealth() const
 {
     return mHealth;
+}
+
+void Person::increaseHealth(float delta)
+{
+    mHealth = clamp(mHealth + delta, 0.0f, 1.0f);
 }
 
 float Person::getSafety() const
@@ -181,9 +202,19 @@ float Person::getSafety() const
     return mSafety;
 }
 
+void Person::increaseSafety(float delta)
+{
+    mSafety = clamp(mSafety + delta, 0.0f, 1.0f);
+}
+
 float Person::getHunger() const
 {
     return mHunger;
+}
+
+void Person::increaseHunger(float delta)
+{
+    mHunger = clamp(mHunger + delta, 0.0f, 1.0f);
 }
 
 float Person::getHappiness() const
@@ -191,9 +222,9 @@ float Person::getHappiness() const
     return mHappiness;
 }
 
-void Person::increaseHappiness(float difference)
+void Person::increaseHappiness(float delta)
 {
-    mHappiness += difference;
+    mHappiness = std::min(0.0f, mHappiness + delta);
 }
 
 Work::Qualification Person::getQualification() const
@@ -219,4 +250,15 @@ GoalThink& Person::getLongTermBrain()
 const GoalThink& Person::getLongTermBrain() const
 {
     return mLongTermBrain;
+}
+
+void Person::updateNeeds(float dt)
+{
+    static float sum = 0.0f;
+    sum += dt;
+    float dmonth = dt / 10.0f;
+    increaseSleep(-dmonth * 0.1f);
+    increaseHealth(-dmonth * 0.01f);
+    increaseSafety(-dmonth * 0.01f);
+    increaseHunger(-dmonth * 0.1f);
 }
