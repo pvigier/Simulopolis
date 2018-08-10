@@ -41,7 +41,7 @@ public:
     {
         Id id;
         Id sellerId;
-        const T* good;
+        T* good;
         float reservePrice;
     };
 
@@ -64,13 +64,13 @@ public:
 
         Type type;
         VMarket::Type marketType;
-        const T* good;
+        T* good;
         float value;
     };
 
     using VMarket::VMarket;
 
-    Id addItem(Id sellerId, const T* good, float reservePrice)
+    Id addItem(Id sellerId, T* good, float reservePrice)
     {
         Auction auction{mTime++, Item{UNDEFINED, sellerId, good, reservePrice}, {}};
         Id id = mAuctions.add(auction);

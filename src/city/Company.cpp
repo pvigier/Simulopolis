@@ -57,7 +57,7 @@ void Company::addBuilding(Building* building)
     if (building->isHousing())
     {
         Housing* housing = static_cast<Housing*>(building);
-        for (const Lease& lease : housing->getLeases())
+        for (Lease& lease : housing->getLeases())
         {
             if (!lease.getTenant())
                 addToMarket(lease);
@@ -68,7 +68,7 @@ void Company::addBuilding(Building* building)
         Industry* industry = static_cast<Industry*>(building);
         if (!industry->getManager().getEmployee())
             addToMarket(industry->getManager());
-        for (const Work& work : industry->getEmployees())
+        for (Work& work : industry->getEmployees())
         {
             if (!work.getEmployee())
                 addToMarket(work);
@@ -79,7 +79,7 @@ void Company::addBuilding(Building* building)
         Business* business = static_cast<Business*>(building);
         if (!business->getManager().getEmployee())
             addToMarket(business->getManager());
-        for (const Work& work : business->getEmployees())
+        for (Work& work : business->getEmployees())
         {
             if (!work.getEmployee())
                 addToMarket(work);
@@ -88,7 +88,7 @@ void Company::addBuilding(Building* building)
     else if (building->isService())
     {
         Service* service = static_cast<Service*>(building);
-        for (const Work& work : service->getEmployees())
+        for (Work& work : service->getEmployees())
         {
             if (!work.getEmployee())
                 addToMarket(work);
@@ -116,13 +116,13 @@ void Company::setSalary(Work::Qualification qualification, float salary)
     mSalaries[static_cast<int>(qualification)] = salary;
 }
 
-void Company::addToMarket(const Lease& lease)
+void Company::addToMarket(Lease& lease)
 {
     Market<Lease>* market = static_cast<Market<Lease>*>(mCity->getMarket(VMarket::Type::RENT));
     market->addItem(mMailbox.getId(), &lease, 0.0f);
 }
 
-void Company::addToMarket(const Work& work)
+void Company::addToMarket(Work& work)
 {
     Market<Work>* market = static_cast<Market<Work>*>(mCity->getMarket(VMarket::Type::WORK));
     market->addItem(mMailbox.getId(), &work, 0.0f);

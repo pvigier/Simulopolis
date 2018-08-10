@@ -13,7 +13,8 @@ public:
     virtual std::unique_ptr<Tile> clone() const override;
 
     virtual void setOwner(Company* owner) override;
-    const std::vector<Work>& getEmployees() const;
+
+    std::vector<Work>& getEmployees();
 
 protected:
     std::vector<Work> mEmployees;

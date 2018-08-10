@@ -26,12 +26,12 @@ void Industry::setOwner(Company* owner)
         employee.setEmployer(mOwner);
 }
 
-const Work& Industry::getManager() const
+Work& Industry::getManager()
 {
     return mManager;
 }
 
-const std::vector<Work>& Industry::getEmployees() const
+std::vector<Work>& Industry::getEmployees()
 {
     return mEmployees;
 }

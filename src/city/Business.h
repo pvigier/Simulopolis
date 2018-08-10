@@ -17,8 +17,8 @@ public:
 
     Good getGood() const;
     float getPrice() const;
-    const Work& getManager() const;
-    const std::vector<Work>& getEmployees() const;
+    Work& getManager();
+    std::vector<Work>& getEmployees();
 
 protected:
     Good mGood;

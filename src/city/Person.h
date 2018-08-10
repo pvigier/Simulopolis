@@ -23,12 +23,12 @@ public:
         Type type;
         union
         {
-            const Lease* lease;
-            const Work* work;
+            Lease& lease;
+            Work& work;
         };
 
-        Event(Type type, const Lease* lease);
-        Event(Type type, const Work* work);
+        Event(Type type, Lease& lease);
+        Event(Type type, Work& work);
     };
 
     static void setMessageBus(MessageBus* messageBus);
@@ -55,10 +55,10 @@ public:
 
     // Daily life
     const Lease* getHome() const;
-    void setHome(const Lease* home);
+    void setHome(Lease* home);
     void leaveHome();
     const Work* getWork() const;
-    void setWork(const Work* work);
+    void setWork(Work* work);
     void quitWork();
     std::string getWorkStatus() const;
     const Business* getFavoriteShop() const;
@@ -110,9 +110,9 @@ private:
     State mState;
 
     // Daily life
-    const Lease* mHome;
-    const Work* mWork;
-    const Business* mFavoriteShop;
+    Lease* mHome;
+    Work* mWork;
+    Business* mFavoriteShop;
 
     // Car
     Car mCar;

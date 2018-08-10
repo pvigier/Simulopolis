@@ -49,6 +49,6 @@ private:
     std::array<float, 3> mRents;
     std::array<float, 3> mSalaries;
 
-    void addToMarket(const Lease& lease);
-    void addToMarket(const Work& work);
+    void addToMarket(Lease& lease);
+    void addToMarket(Work& work);
 };
