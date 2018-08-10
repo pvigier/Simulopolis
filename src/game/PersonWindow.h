@@ -17,6 +17,7 @@ public:
     virtual void setUp() override;
 
     void update();
+    void onNewYear();
 
     sf::RenderTexture& getRenderTexture();
     sf::View getView();
@@ -26,6 +27,8 @@ private:
     const Person& mPerson;
     int mYear;
     GuiImage* mImage;
+    GuiText* mAgeText;
+    GuiText* mWorkText;
     GuiText* mShortTermGoalText;
     GuiText* mLongTermGoalText;
     GuiText* mSleepText;

@@ -530,4 +530,6 @@ void GameStateEditor::onNewYear()
 {
     if (mImmigrantsWindow)
         mImmigrantsWindow->onNewYear();
+    for (GuiWindow* window : mWindowManagers[0]->getWindows())
+        static_cast<PersonWindow*>(window)->onNewYear();
 }

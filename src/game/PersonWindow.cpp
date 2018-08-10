@@ -11,8 +11,8 @@
 PersonWindow::PersonWindow(StylesheetManager* stylesheetManager, const Person& person, int year) :
     GuiWindow(person.getFullName(), stylesheetManager->getStylesheet("window")),
     mStylesheetManager(stylesheetManager), mPerson(person), mYear(year), mImage(nullptr),
-    mShortTermGoalText(nullptr), mLongTermGoalText(nullptr), mSleepText(nullptr), mHealthText(nullptr),
-    mSafetyText(nullptr), mHungerText(nullptr), mHappinessText(nullptr)
+    mAgeText(nullptr), mWorkText(nullptr), mShortTermGoalText(nullptr), mLongTermGoalText(nullptr),
+    mSleepText(nullptr), mHealthText(nullptr), mSafetyText(nullptr), mHungerText(nullptr), mHappinessText(nullptr)
 {
 
 }
@@ -33,12 +33,14 @@ void PersonWindow::setUp()
     auto infoWidget = mGui->createWithDefaultName<GuiWidget>();
     auto firstNameText = mGui->createWithDefaultName<GuiText>("First name: " + mPerson.getFirstName(), 12, mStylesheetManager->getStylesheet("button"));
     auto lastNameText = mGui->createWithDefaultName<GuiText>("Last name: " + mPerson.getLastName(), 12, mStylesheetManager->getStylesheet("button"));
-    auto ageText = mGui->createWithDefaultName<GuiText>(format("Age: %d", mPerson.getAge(mYear)), 12, mStylesheetManager->getStylesheet("button"));
+    mAgeText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
+    mWorkText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
     mShortTermGoalText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
     mLongTermGoalText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
     infoWidget->add(firstNameText);
     infoWidget->add(lastNameText);
-    infoWidget->add(ageText);
+    infoWidget->add(mAgeText);
+    infoWidget->add(mWorkText);
     infoWidget->add(mShortTermGoalText);
     infoWidget->add(mLongTermGoalText);
     infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
@@ -74,6 +76,8 @@ void PersonWindow::setUp()
 
 void PersonWindow::update()
 {
+    mAgeText->setText(format("Age: %d", mPerson.getAge(mYear)));
+    mWorkText->setText("Work: " + mPerson.getWorkStatus());
     mShortTermGoalText->setText("Short term goal: " + mPerson.getShortTermBrain().toString());
     mLongTermGoalText->setText("Long term goal: " + mPerson.getLongTermBrain().toString());
     mSleepText->setText(format("Sleep: %.2f", mPerson.getSleep()));
@@ -81,6 +85,11 @@ void PersonWindow::update()
     mSafetyText->setText(format("Safety: %.2f", mPerson.getSafety()));
     mHungerText->setText(format("Hunger: %.2f", mPerson.getHunger()));
     mHappinessText->setText(format("Happiness: %.2f", mPerson.getHappiness()));
+}
+
+void PersonWindow::onNewYear()
+{
+    ++mYear;
 }
 
 sf::RenderTexture& PersonWindow::getRenderTexture()
