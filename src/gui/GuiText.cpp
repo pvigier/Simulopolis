@@ -43,14 +43,17 @@ void GuiText::setCharacterSize(unsigned int characterSize)
 
 void GuiText::setText(const sf::String& text)
 {
-    mText.setString(text);
-    computeSize();
-    setDirty();
+    if (text != mText.getString())
+    {
+        mText.setString(text);
+        computeSize();
+        setDirty();
+    }
 }
 
 void GuiText::setColor(sf::Color color)
 {
-    mText.setColor(color);
+    mText.setFillColor(color);
 }
 
 void GuiText::render(sf::RenderTarget& target, sf::RenderStates states) const
