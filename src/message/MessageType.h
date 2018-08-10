@@ -10,6 +10,7 @@ enum class MessageType
     DISPLAY_MENU,
     MARKET,
     CITY,
+    PERSON,
 };
 
 inline std::ostream& operator<<(std::ostream& os, const MessageType& type)
@@ -33,6 +34,9 @@ inline std::ostream& operator<<(std::ostream& os, const MessageType& type)
             break;
         case MessageType::CITY:
             os << "city";
+            break;
+        case MessageType::PERSON:
+            os << "person";
             break;
         default:
             os << "unknown";

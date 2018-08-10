@@ -16,6 +16,21 @@ public:
     enum class Gender{MALE = 0, FEMALE = 1};
     enum class State{WAITING, MOVING};
 
+    struct Event
+    {
+        enum class Type{LEAVE_HOUSING, QUIT_WORK};
+
+        Type type;
+        union
+        {
+            const Lease* lease;
+            const Work* work;
+        };
+
+        Event(Type type, const Lease* lease);
+        Event(Type type, const Work* work);
+    };
+
     static void setMessageBus(MessageBus* messageBus);
 
     Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car);
@@ -39,9 +54,12 @@ public:
     void setState(State state);
 
     // Daily life
-    void setHome(const Lease* home);
     const Lease* getHome() const;
+    void setHome(const Lease* home);
+    void leaveHome();
     const Work* getWork() const;
+    void setWork(const Work* work);
+    void quitWork();
     std::string getWorkStatus() const;
     const Business* getFavoriteShop() const;
 

@@ -23,6 +23,7 @@ public:
     void setCity(City* city);
     Person* getOwner() const;
     void setOwner(Person* owner);
+    Id getMailboxId() const;
     const std::vector<Building*>& getBuildings() const;
     void addBuilding(Building* building);
 

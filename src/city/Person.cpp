@@ -6,6 +6,17 @@
 #include "ai/GoalRestEvaluator.h"
 #include "ai/GoalWorkEvaluator.h"
 #include "ai/GoalShopEvaluator.h"
+#include "ai/GoalGetBetterWorkEvaluator.h"
+
+Person::Event::Event(Type type, const Lease* lease) : type(type), lease(lease)
+{
+
+}
+
+Person::Event::Event(Type type, const Work* work) : type(type), work(work)
+{
+
+}
 
 MessageBus* Person::sMessageBus = nullptr;
 
@@ -27,6 +38,7 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mShortTermBrain.addEvaluator(new GoalRestEvaluator(1.0f));
     mShortTermBrain.addEvaluator(new GoalWorkEvaluator(1.0f));
     mShortTermBrain.addEvaluator(new GoalShopEvaluator(1.0f));
+    mLongTermBrain.addEvaluator(new GoalGetBetterWorkEvaluator(1.0f));
 }
 
 void Person::update(float dt)
@@ -122,19 +134,42 @@ void Person::setState(Person::State state)
     mState = state;
 }
 
-void Person::setHome(const Lease* home)
-{
-    mHome = home;
-}
-
 const Lease* Person::getHome() const
 {
     return mHome;
 }
 
+void Person::setHome(const Lease* home)
+{
+    mHome = home;
+}
+
+void Person::leaveHome()
+{
+    if (mHome)
+    {
+        sMessageBus->send(Message::create(mHome->getOwner()->getMailboxId(), MessageType::PERSON, Event(Event::Type::LEAVE_HOUSING, mHome)));
+        mHome = nullptr;
+    }
+}
+
 const Work* Person::getWork() const
 {
     return mWork;
+}
+
+void Person::setWork(const Work* work)
+{
+    mWork = work;
+}
+
+void Person::quitWork()
+{
+    if (mWork)
+    {
+        sMessageBus->send(Message::create(mWork->getEmployer()->getMailboxId(), MessageType::PERSON, Event(Event::Type::QUIT_WORK, mWork)));
+        mWork = nullptr;
+    }
 }
 
 std::string Person::getWorkStatus() const

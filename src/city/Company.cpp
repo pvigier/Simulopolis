@@ -38,6 +38,11 @@ void Company::setOwner(Person* owner)
     mOwner = owner;
 }
 
+Id Company::getMailboxId() const
+{
+    return mMailbox.getId();
+}
+
 const std::vector<Building*>& Company::getBuildings() const
 {
     return mBuildings;
