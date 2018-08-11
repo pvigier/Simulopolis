@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class Person;
 class Housing;
 class Company;
@@ -10,6 +12,7 @@ public:
     Lease(Housing* housing);
 
     const Person* getTenant() const;
+    std::string getTenantName() const;
     void setTenant(Person* tenant);
     const Housing* getHousing() const;
     void setHousing(Housing* housing);

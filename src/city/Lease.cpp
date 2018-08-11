@@ -1,4 +1,5 @@
 #include "city/Lease.h"
+#include "city/Person.h"
 
 Lease::Lease(Housing* housing) :
     mTenant(nullptr), mHousing(housing), mOwner(nullptr), mRent(0.0f)
@@ -9,6 +10,14 @@ Lease::Lease(Housing* housing) :
 const Person* Lease::getTenant() const
 {
     return mTenant;
+}
+
+std::string Lease::getTenantName() const
+{
+    if (mTenant)
+        return mTenant->getFullName();
+    else
+        return "Vacant";
 }
 
 void Lease::setTenant(Person* tenant)

@@ -19,6 +19,7 @@ public:
     Type getType() const;
     Qualification getQualification() const;
     const Person* getEmployee() const;
+    std::string getEmployeeName() const;
     void setEmployee(Person* employee);
     const Company* getEmployer() const;
     void setEmployer(Company* employer);

@@ -18,12 +18,13 @@ public:
     Good getGood() const;
     float getPrice() const;
     Work& getManager();
+    const Work& getManager() const;
     std::vector<Work>& getEmployees();
+    const std::vector<Work>& getEmployees() const;
 
 protected:
     Good mGood;
     unsigned int mQuantity;
     float mPrice;
-    Work mManager;
     std::vector<Work> mEmployees;
 };

@@ -18,11 +18,12 @@ public:
     virtual void setOwner(Company* owner) override;
 
     Work& getManager();
+    const Work& getManager() const;
     std::vector<Work>& getEmployees();
+    const std::vector<Work>& getEmployees() const;
 
 protected:
     Good mGood;
     unsigned int mProductivity;
-    Work mManager;
     std::vector<Work> mEmployees;
 };

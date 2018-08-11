@@ -2,8 +2,7 @@
 
 Business::Business(const std::string& name, Type type, unsigned int nbStairs, Good good, std::size_t nbEmployees,
     Work::Type employeeType) :
-    Building(name, type, nbStairs), mGood(good), mQuantity(0), mPrice(0.0f),
-    mManager(Work::Type::MANAGER, this), mEmployees(nbEmployees, Work(employeeType, this))
+    Building(name, type, nbStairs), mGood(good), mQuantity(0), mPrice(0.0f)
 {
     //ctor
 }
@@ -15,13 +14,12 @@ Business::~Business()
 
 std::unique_ptr<Tile> Business::clone() const
 {
-    return std::unique_ptr<Tile>(new Business(mTextureName, mType, mNbStairs, mGood, mEmployees.size(), mEmployees.front().getType()));
+    return std::unique_ptr<Tile>(new Business(mTextureName, mType, mNbStairs, mGood, mEmployees.size() - 1, mEmployees.back().getType()));
 }
 
 void Business::setOwner(Company* owner)
 {
     Building::setOwner(owner);
-    mManager.setEmployer(mOwner);
     for (Work& employee : mEmployees)
         employee.setEmployer(mOwner);
 }
@@ -38,10 +36,20 @@ float Business::getPrice() const
 
 Work& Business::getManager()
 {
-    return mManager;
+    return mEmployees[0];
+}
+
+const Work& Business::getManager() const
+{
+    return mEmployees[0];
 }
 
 std::vector<Work>& Business::getEmployees()
+{
+    return mEmployees;
+}
+
+const std::vector<Work>& Business::getEmployees() const
 {
     return mEmployees;
 }

@@ -1,4 +1,5 @@
 #include "city/Work.h"
+#include "city/Person.h"
 
 std::string Work::typeToString(Type type)
 {
@@ -68,6 +69,14 @@ Work::Qualification Work::getQualification() const
 const Person* Work::getEmployee() const
 {
     return mEmployee;
+}
+
+std::string Work::getEmployeeName() const
+{
+    if (mEmployee)
+        return mEmployee->getFullName();
+    else
+        return "Vacant";
 }
 
 void Work::setEmployee(Person* employee)

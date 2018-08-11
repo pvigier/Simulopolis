@@ -15,6 +15,7 @@ public:
     virtual void setOwner(Company* owner) override;
 
     std::vector<Work>& getEmployees();
+    const std::vector<Work>& getEmployees() const;
 
 protected:
     std::vector<Work> mEmployees;

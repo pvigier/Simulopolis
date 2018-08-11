@@ -28,6 +28,11 @@ std::vector<Lease>& Housing::getLeases()
     return mLeases;
 }
 
+const std::vector<Lease>& Housing::getLeases() const
+{
+    return mLeases;
+}
+
 float Housing::getComfort() const
 {
     return mComfort;

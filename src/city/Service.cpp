@@ -14,7 +14,7 @@ Service::~Service()
 
 std::unique_ptr<Tile> Service::clone() const
 {
-    return std::unique_ptr<Tile>(new Service(mTextureName, mType, mNbStairs, mEmployees.size(), mEmployees.front().getType()));
+    return std::unique_ptr<Tile>(new Service(mTextureName, mType, mNbStairs, mEmployees.size(), mEmployees.back().getType()));
 }
 
 void Service::setOwner(Company* owner)
@@ -25,6 +25,11 @@ void Service::setOwner(Company* owner)
 }
 
 std::vector<Work>& Service::getEmployees()
+{
+    return mEmployees;
+}
+
+const std::vector<Work>& Service::getEmployees() const
 {
     return mEmployees;
 }

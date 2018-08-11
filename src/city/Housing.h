@@ -14,6 +14,7 @@ public:
     virtual void setOwner(Company* owner) override;
 
     std::vector<Lease>& getLeases();
+    const std::vector<Lease>& getLeases() const;
     float getComfort() const;
 
 protected:
