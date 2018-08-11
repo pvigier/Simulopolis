@@ -18,7 +18,8 @@ public:
     void addCitizen(Person* person, bool alreadyAdded = false);
     void removeCitizen(Person* person);
 
-    // void onNewYear();
+    void update();
+    void onNewYear();
 
 private:
     Id mListenerId;

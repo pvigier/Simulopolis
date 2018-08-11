@@ -440,6 +440,8 @@ void GameStateEditor::openLaborMarketWindow()
 
 void GameStateEditor::updateWindows()
 {
+    if (mCitizensWindow)
+        mCitizensWindow->update();
     for (GuiWindow* window : mWindowManagers[0]->getWindows())
     {
         PersonWindow* personWindow = static_cast<PersonWindow*>(window);
@@ -450,6 +452,7 @@ void GameStateEditor::updateWindows()
     {
         BuildingWindow* buildingWindow = static_cast<BuildingWindow*>(window);
         drawCity(buildingWindow->getRenderTexture(), buildingWindow->getView());
+        buildingWindow->update();
     }
 }
 
@@ -530,6 +533,8 @@ void GameStateEditor::onNewYear()
 {
     if (mImmigrantsWindow)
         mImmigrantsWindow->onNewYear();
+    if (mCitizensWindow)
+        mCitizensWindow->onNewYear();
     for (GuiWindow* window : mWindowManagers[0]->getWindows())
         static_cast<PersonWindow*>(window)->onNewYear();
 }

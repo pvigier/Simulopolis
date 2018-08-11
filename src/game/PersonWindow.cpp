@@ -70,8 +70,6 @@ void PersonWindow::setUp()
     add(bottomWidget);
     setPosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
-
-    update();
 }
 
 void PersonWindow::update()

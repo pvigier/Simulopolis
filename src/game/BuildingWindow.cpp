@@ -2,9 +2,14 @@
 #include "resource/StylesheetManager.h"
 #include "city/Building.h"
 #include "city/Company.h"
+#include "city/Housing.h"
+#include "city/Industry.h"
+#include "city/Business.h"
+#include "city/Service.h"
 #include "gui/Gui.h"
 #include "gui/GuiText.h"
 #include "gui/GuiImage.h"
+#include "gui/GuiTable.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
 #include "util/format.h"
@@ -46,11 +51,75 @@ void BuildingWindow::setUp()
     auto bottomWidget = mGui->createWithDefaultName<GuiWidget>();
     bottomWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
+    // Cases
+    if (mBuilding.isHousing())
+    {
+        std::vector<std::string> names = {"Tenant", "Rent"};
+        mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
+        for (std::size_t i = 0; i < static_cast<const Housing&>(mBuilding).getLeases().size(); ++i)
+        {
+            mTable->addRow({
+                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
+                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
+            });
+        }
+    }
+    else
+    {
+        std::vector<std::string> names = {"Employee", "Work", "Salary"};
+        mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
+        const std::vector<Work>* employees;
+        if (mBuilding.isIndustry())
+            employees = &static_cast<const Industry&>(mBuilding).getEmployees();
+        else if (mBuilding.isBusiness())
+            employees = &static_cast<const Business&>(mBuilding).getEmployees();
+        else
+            employees = &static_cast<const Service&>(mBuilding).getEmployees();
+        for (std::size_t i = 0; i < employees->size(); ++i)
+        {
+            mTable->addRow({
+                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
+                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
+                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
+            });
+        }
+    }
+    bottomWidget->add(mTable);
+
     // Window
     add(topWidget);
     add(bottomWidget);
     setPosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
+}
+
+void BuildingWindow::update()
+{
+    if (mBuilding.isHousing())
+    {
+        const std::vector<Lease>& leases = static_cast<const Housing&>(mBuilding).getLeases();
+        for (std::size_t i = 0; i < leases.size(); ++i)
+        {
+            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setText(leases[i].getTenantName());
+            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setText(format("$%.2f", leases[i].getRent()));
+        }
+    }
+    else
+    {
+        const std::vector<Work>* employees;
+        if (mBuilding.isIndustry())
+            employees = &static_cast<const Industry&>(mBuilding).getEmployees();
+        else if (mBuilding.isBusiness())
+            employees = &static_cast<const Business&>(mBuilding).getEmployees();
+        else
+            employees = &static_cast<const Service&>(mBuilding).getEmployees();
+        for (std::size_t i = 0; i < employees->size(); ++i)
+        {
+            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setText((*employees)[i].getEmployeeName());
+            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setText(Work::typeToString((*employees)[i].getType()));
+            static_cast<GuiText*>(mTable->getCellContent(i, 2))->setText(format("$%.2f", (*employees)[i].getSalary()));
+        }
+    }
 }
 
 sf::RenderTexture& BuildingWindow::getRenderTexture()

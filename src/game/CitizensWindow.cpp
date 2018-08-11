@@ -54,8 +54,8 @@ void CitizensWindow::addCitizen(Person* person, bool alreadyAdded)
     // Add row
     mTable->addRow({
         personButton,
-        mGui->createWithDefaultName<GuiText>(format("%d", person->getAge(mYear)), 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>(person->getWorkStatus(), 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
     });
 
     subscribe(mListenerId);
@@ -68,3 +68,16 @@ void CitizensWindow::removeCitizen(Person* person)
     mCitizens.erase(mCitizens.begin() + i);
 }
 
+void CitizensWindow::update()
+{
+    for (std::size_t i = 0; i < mCitizens.size(); ++i)
+    {
+        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setText(format("%d", mCitizens[i]->getAge(mYear)));
+        static_cast<GuiText*>(mTable->getCellContent(i, 2))->setText(mCitizens[i]->getWorkStatus());
+    }
+}
+
+void CitizensWindow::onNewYear()
+{
+    ++mYear;
+}

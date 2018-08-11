@@ -92,10 +92,6 @@ void ImmigrantsWindow::onNewMonth()
 void ImmigrantsWindow::onNewYear()
 {
     ++mYear;
-    GuiWidget* column =  mTable->getChildren()[1];
-    for (std::size_t i = 0; i < column->getChildren().size(); ++i)
-    {
-        GuiText* text = static_cast<GuiText*>(column->getChildren()[i]->getChildren()[0]);
-        text->setText(format("%d", mImmigrants[i]->getAge(mYear)));
-    }
+    for (std::size_t i = 0; i < mImmigrants.size(); ++i)
+        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setText(format("%d", mImmigrants[i]->getAge(mYear)));
 }
