@@ -37,6 +37,24 @@ void GuiTable::setUp()
     setLayout(std::make_unique<GuiHBoxLayout>());
 }
 
+void GuiTable::updateSize()
+{
+    for (GuiWidget* widget : mChildren)
+        widget->updateSize();
+    updateTable();
+    if (!mFixedSize)
+        fitSizeToContent();
+}
+
+GuiWidget* GuiTable::getCell(std::size_t i, std::size_t j)
+{
+    return mChildren[j]->getChildren()[i + 1];
+}
+
+GuiWidget* GuiTable::getCellContent(std::size_t i, std::size_t j)
+{
+    return mChildren[j]->getChildren()[i + 1]->getChildren()[0];
+}
 
 void GuiTable::addRow(const std::vector<GuiWidget*>& row, bool isTitle)
 {
@@ -51,19 +69,8 @@ void GuiTable::addRow(const std::vector<GuiWidget*>& row, bool isTitle)
             cell = mGui->createWithDefaultName<GuiWidget>(&mStyle->getFirstChildByName("cell"));
         cell->add(row[j]);
         cell->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Center, GuiLayout::VAlignment::Center, 0.0f, GuiLayout::Margins{3.0f, 3.0f, 3.0f, 3.0f}));
-
-        // Update column's size
-        cell->updateSize();
-        sf::Vector2f size = cell->getSize();
-        if (size.x > mColumnWidths[j])
-        {
-            mColumnWidths[j] = size.x;
-            updateColumn(j);
-        }
-        mRowHeights.back() = std::max(mRowHeights.back(), size.y);
         mChildren[j]->add(cell);
     }
-    updateRow(mRowHeights.size() - 1);
     setDirty();
 }
 
@@ -72,6 +79,7 @@ void GuiTable::removeRow(std::size_t i)
     for (std::size_t j = 0; j < mChildren.size(); ++j)
         mChildren[j]->remove(i + 1);
     mRowHeights.erase(mRowHeights.begin() + i + 1);
+    setDirty();
 }
 
 void GuiTable::clear()
@@ -80,14 +88,29 @@ void GuiTable::clear()
         removeRow(i);
 }
 
-void GuiTable::updateRow(std::size_t i)
+void GuiTable::updateTable()
 {
-    for (std::size_t j = 0; j < mChildren.size(); ++j)
-        mChildren[j]->getChildren()[i]->setFixedSize(sf::Vector2f(mColumnWidths[j], mRowHeights[i]));
-}
+    // Compute sizes
+    std::fill(mColumnWidths.begin(), mColumnWidths.end(), 0.0f);
+    std::fill(mRowHeights.begin(), mRowHeights.end(), 0.0f);
+    for (std::size_t j = 0; j < mColumnWidths.size(); ++j)
+    {
+        for (std::size_t i = 0; i < mRowHeights.size(); ++i)
+        {
+            GuiWidget* cell = mChildren[j]->getChildren()[i];
+            sf::Vector2f size = cell->getSize();
+            mColumnWidths[j] = std::max(mColumnWidths[j], size.x);
+            mRowHeights[i] = std::max(mRowHeights[i], size.y);
+        }
+    }
 
-void GuiTable::updateColumn(std::size_t j)
-{
-    for (std::size_t i = 0; i < mChildren[j]->getChildren().size(); ++i)
-        mChildren[j]->getChildren()[i]->setFixedSize(sf::Vector2f(mColumnWidths[j], mRowHeights[i]));
+    // Set sizes
+    for (std::size_t j = 0; j < mColumnWidths.size(); ++j)
+    {
+        for (std::size_t i = 0; i < mRowHeights.size(); ++i)
+        {
+            GuiWidget* cell = mChildren[j]->getChildren()[i];
+            cell->setFixedSize(sf::Vector2f(mColumnWidths[j], mRowHeights[i]));
+        }
+    }
 }

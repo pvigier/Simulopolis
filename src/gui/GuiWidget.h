@@ -28,6 +28,7 @@ public:
     std::vector<GuiWidget*>& getChildren();
     const std::vector<GuiWidget*>& getChildren() const;
 
+    virtual void updateSize();
     void fitSizeToContent();
 
     // Parameters
@@ -75,8 +76,8 @@ protected:
 
     void setDirty();
     virtual void setSize(sf::Vector2f size);
-    public: void updateSize();
-    protected: void updateAlignment();
+    void updateAlignment();
+    void resetDirty();
 
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const;
 

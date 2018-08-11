@@ -45,7 +45,7 @@ void GuiWidget::update()
 {
     updateSize();
     updateAlignment();
-    mDirty = false;
+    resetDirty();
 }
 
 void GuiWidget::add(GuiWidget* widget)
@@ -77,6 +77,14 @@ std::vector<GuiWidget*>& GuiWidget::getChildren()
 const std::vector<GuiWidget*>& GuiWidget::getChildren() const
 {
     return mChildren;
+}
+
+void GuiWidget::updateSize()
+{
+    for (GuiWidget* widget : mChildren)
+        widget->updateSize();
+    if (!mFixedSize)
+        fitSizeToContent();
 }
 
 void GuiWidget::fitSizeToContent()
@@ -244,7 +252,7 @@ bool GuiWidget::hasGuiEvents() const
 void GuiWidget::setDirty()
 {
     mDirty = true;
-    if (mParent != nullptr)
+    if (mParent && !mParent->isDirty())
         mParent->setDirty();
 }
 
@@ -255,20 +263,19 @@ void GuiWidget::setSize(sf::Vector2f size)
     setDirty();
 }
 
-void GuiWidget::updateSize()
-{
-    for (GuiWidget* widget : mChildren)
-        widget->updateSize();
-    if (!mFixedSize)
-        fitSizeToContent();
-}
-
 void GuiWidget::updateAlignment()
 {
-    if (mLayout != nullptr)
+    if (mLayout)
         mLayout->align();
     for (GuiWidget* widget : mChildren)
         widget->updateAlignment();
+}
+
+void GuiWidget::resetDirty()
+{
+    mDirty = false;
+    for (GuiWidget* widget : mChildren)
+        widget->resetDirty();
 }
 
 void GuiWidget::render(sf::RenderTarget& target, sf::RenderStates states) const
