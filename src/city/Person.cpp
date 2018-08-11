@@ -142,6 +142,7 @@ const Lease* Person::getHome() const
 void Person::setHome(Lease* home)
 {
     mHome = home;
+    home->setTenant(this);
 }
 
 void Person::leaveHome()
@@ -161,6 +162,7 @@ const Work* Person::getWork() const
 void Person::setWork(Work* work)
 {
     mWork = work;
+    work->setEmployee(this);
 }
 
 void Person::quitWork()

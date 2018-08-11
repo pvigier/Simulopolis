@@ -295,6 +295,8 @@ std::string City::getFormattedMonth() const
             return "November";
         case 11:
             return "December";
+        default:
+            return "";
     }
 }
 

@@ -92,7 +92,7 @@ void Game::run()
         float dt = elapsed.asSeconds();
 
         GameState* curState = peekState();
-        if (curState != nullptr)
+        if (curState)
         {
             mInputEngine.pollEvents();
             curState->handleMessages();
