@@ -25,18 +25,21 @@ Goal::State GoalGetBetterWork::process()
 {
     activateIfInactive();
 
-    Work::Qualification qualification = mOwner->getQualification();
-    const Work* work = mOwner->getWork();
-    for (const Market<Work>::Item* item : mMarket->getItems())
+    // Try to obtain a better work
+    if (!isCompleted())
     {
-        if (static_cast<int>(qualification) >= static_cast<int>(item->good->getQualification()) &&
-            item->good->getSalary() > work->getSalary())
-            mMarket->addBid(item->id, mOwner->getMailboxId(), item->reservePrice);
+        Work::Qualification qualification = mOwner->getQualification();
+        const Work* work = mOwner->getWork();
+        for (const Market<Work>::Item* item : mMarket->getItems())
+        {
+            if (static_cast<int>(qualification) >= static_cast<int>(item->good->getQualification()) &&
+                (!work || item->good->getSalary() > work->getSalary()))
+                mMarket->addBid(item->id, mOwner->getMailboxId(), item->reservePrice);
+        }
     }
-
-    --mNbMonthsBeforeFailing;
-    if (mNbMonthsBeforeFailing == 0)
+    else if (mNbMonthsBeforeFailing == 0)
         mState = State::FAILED;
+    --mNbMonthsBeforeFailing;
 
     return mState;
 }
@@ -48,7 +51,18 @@ void GoalGetBetterWork::terminate()
 
 bool GoalGetBetterWork::handle(Message message)
 {
-    // To do
+    if (message.type == MessageType::MARKET)
+    {
+        const Market<Work>::Event& event = message.getInfo<Market<Work>::Event>();
+        if (event.type == Market<Work>::Event::Type::PURCHASE)
+        {
+            mOwner->quitWork();
+            mOwner->setWork(event.good);
+            mState == State::COMPLETED;
+            return true;
+        }
+    }
+    return false;
 }
 
 std::string GoalGetBetterWork::toString() const
