@@ -36,6 +36,8 @@ void CitizensWindow::setUp()
     // Add rows
     for (Person* citizen : mCitizens)
         addCitizen(citizen, true);
+
+    subscribe(mListenerId);
 }
 
 void CitizensWindow::addCitizen(Person* person, bool alreadyAdded)
@@ -57,8 +59,6 @@ void CitizensWindow::addCitizen(Person* person, bool alreadyAdded)
         mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
         mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
     });
-
-    subscribe(mListenerId);
 }
 
 void CitizensWindow::removeCitizen(Person* person)
