@@ -5,17 +5,43 @@
 #include "city/Business.h"
 #include "city/Service.h"
 
-Company::Company(std::string name, int creationYear, Person* owner) :
-    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner)
-{
-    sMessageBus->addMailbox(mMailbox);
-}
-
 MessageBus* Company::sMessageBus = nullptr;
 
 void Company::setMessageBus(MessageBus* messageBus)
 {
     sMessageBus = messageBus;
+}
+
+void Company::update(float dt)
+{
+     // Messages
+    while (!mMailbox.isEmpty())
+    {
+        Message message = mMailbox.get();
+        if (message.type == MessageType::PERSON)
+        {
+            const Person::Event& event = message.getInfo<Person::Event>();
+            switch (event.type)
+            {
+                case Person::Event::Type::LEAVE_HOUSING:
+                    event.lease.setTenant(nullptr);
+                    addToMarket(event.lease);
+                    break;
+                case Person::Event::Type::QUIT_WORK:
+                    event.work.setEmployee(nullptr);
+                    addToMarket(event.work);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+Company::Company(std::string name, int creationYear, Person* owner) :
+    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner)
+{
+    sMessageBus->addMailbox(mMailbox);
 }
 
 const std::string& Company::getName() const
@@ -66,8 +92,6 @@ void Company::addBuilding(Building* building)
     else if (building->isIndustry())
     {
         Industry* industry = static_cast<Industry*>(building);
-        if (!industry->getManager().getEmployee())
-            addToMarket(industry->getManager());
         for (Work& work : industry->getEmployees())
         {
             if (!work.getEmployee())
@@ -77,8 +101,6 @@ void Company::addBuilding(Building* building)
     else if (building->isBusiness())
     {
         Business* business = static_cast<Business*>(building);
-        if (!business->getManager().getEmployee())
-            addToMarket(business->getManager());
         for (Work& work : business->getEmployees())
         {
             if (!work.getEmployee())

@@ -19,6 +19,8 @@ public:
 
     Company(std::string name, int creationYear, Person* owner = nullptr);
 
+    void update(float dt);
+
     const std::string& getName() const;
     void setCity(City* city);
     Person* getOwner() const;
