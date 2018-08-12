@@ -93,6 +93,11 @@ void GuiWidget::fitSizeToContent()
     setSize(mLayout->computeSize());
 }
 
+sf::Vector2f GuiWidget::getComputedSize() const
+{
+    return mLayout->computeSize();
+}
+
 void GuiWidget::setGui(Gui* gui)
 {
     mGui = gui;

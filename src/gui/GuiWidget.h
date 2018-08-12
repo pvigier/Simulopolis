@@ -30,6 +30,7 @@ public:
 
     virtual void updateSize();
     void fitSizeToContent();
+    sf::Vector2f getComputedSize() const;
 
     // Parameters
     void setGui(Gui* gui);
