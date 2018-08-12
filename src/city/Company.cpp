@@ -12,6 +12,38 @@ void Company::setMessageBus(MessageBus* messageBus)
     sMessageBus = messageBus;
 }
 
+std::vector<Work>* Company::getEmployees(Building* building)
+{
+    if (building->isIndustry())
+        return &static_cast<Industry*>(building)->getEmployees();
+    else if (building->isBusiness())
+        return &static_cast<Business*>(building)->getEmployees();
+    else if (building->isService())
+        return &static_cast<Service*>(building)->getEmployees();
+    else
+        return nullptr;
+}
+
+const std::vector<Work>* Company::getEmployees(const Building* building)
+{
+    if (building->isIndustry())
+        return &static_cast<const Industry*>(building)->getEmployees();
+    else if (building->isBusiness())
+        return &static_cast<const Business*>(building)->getEmployees();
+    else if (building->isService())
+        return &static_cast<const Service*>(building)->getEmployees();
+    else
+        return nullptr;
+}
+
+Company::Company(std::string name, int creationYear, Person* owner) :
+    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner)
+{
+    mRents.fill(0.0f);
+    mSalaries.fill(0.0f);
+    sMessageBus->addMailbox(mMailbox);
+}
+
 void Company::update(float dt)
 {
      // Messages
@@ -36,12 +68,6 @@ void Company::update(float dt)
             }
         }
     }
-}
-
-Company::Company(std::string name, int creationYear, Person* owner) :
-    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner)
-{
-    sMessageBus->addMailbox(mMailbox);
 }
 
 const std::string& Company::getName() const
@@ -89,28 +115,9 @@ void Company::addBuilding(Building* building)
                 addToMarket(lease);
         }
     }
-    else if (building->isIndustry())
+    else
     {
-        Industry* industry = static_cast<Industry*>(building);
-        for (Work& work : industry->getEmployees())
-        {
-            if (!work.getEmployee())
-                addToMarket(work);
-        }
-    }
-    else if (building->isBusiness())
-    {
-        Business* business = static_cast<Business*>(building);
-        for (Work& work : business->getEmployees())
-        {
-            if (!work.getEmployee())
-                addToMarket(work);
-        }
-    }
-    else if (building->isService())
-    {
-        Service* service = static_cast<Service*>(building);
-        for (Work& work : service->getEmployees())
+        for (Work& work : *getEmployees(building))
         {
             if (!work.getEmployee())
                 addToMarket(work);
@@ -126,6 +133,14 @@ float Company::getRent(Tile::Type housingType)
 void Company::setRent(Tile::Type housingType, float rent)
 {
     mRents[static_cast<int>(housingType) - static_cast<int>(Tile::Type::AFFORDABLE_HOUSING)] = rent;
+    for (Building* building : mBuildings)
+    {
+        if (building->getType() == housingType)
+        {
+            for (Lease& lease : static_cast<Housing*>(building)->getLeases())
+                lease.setRent(rent);
+        }
+    }
 }
 
 float Company::getSalary(Work::Qualification qualification)
@@ -136,16 +151,27 @@ float Company::getSalary(Work::Qualification qualification)
 void Company::setSalary(Work::Qualification qualification, float salary)
 {
     mSalaries[static_cast<int>(qualification)] = salary;
+    for (Building* building : mBuildings)
+    {
+        if (!building->isHousing())
+        {
+            for (Work& work : *getEmployees(building))
+            {
+                if (work.getQualification() == qualification)
+                    work.setSalary(salary);
+            }
+        }
+    }
 }
 
 void Company::addToMarket(Lease& lease)
 {
     Market<Lease>* market = static_cast<Market<Lease>*>(mCity->getMarket(VMarket::Type::RENT));
-    market->addItem(mMailbox.getId(), &lease, 0.0f);
+    market->addItem(mMailbox.getId(), &lease, lease.getRent());
 }
 
 void Company::addToMarket(Work& work)
 {
     Market<Work>* market = static_cast<Market<Work>*>(mCity->getMarket(VMarket::Type::WORK));
-    market->addItem(mMailbox.getId(), &work, 0.0f);
+    market->addItem(mMailbox.getId(), &work, work.getSalary());
 }

@@ -68,14 +68,7 @@ void BuildingWindow::setUp()
     {
         std::vector<std::string> names = {"Employee", "Work", "Salary"};
         mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
-        const std::vector<Work>* employees;
-        if (mBuilding.isIndustry())
-            employees = &static_cast<const Industry&>(mBuilding).getEmployees();
-        else if (mBuilding.isBusiness())
-            employees = &static_cast<const Business&>(mBuilding).getEmployees();
-        else
-            employees = &static_cast<const Service&>(mBuilding).getEmployees();
-        for (std::size_t i = 0; i < employees->size(); ++i)
+        for (std::size_t i = 0; i < Company::getEmployees(&mBuilding)->size(); ++i)
         {
             mTable->addRow({
                 mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
@@ -106,13 +99,7 @@ void BuildingWindow::update()
     }
     else
     {
-        const std::vector<Work>* employees;
-        if (mBuilding.isIndustry())
-            employees = &static_cast<const Industry&>(mBuilding).getEmployees();
-        else if (mBuilding.isBusiness())
-            employees = &static_cast<const Business&>(mBuilding).getEmployees();
-        else
-            employees = &static_cast<const Service&>(mBuilding).getEmployees();
+        const std::vector<Work>* employees = Company::getEmployees(&mBuilding);
         for (std::size_t i = 0; i < employees->size(); ++i)
         {
             static_cast<GuiText*>(mTable->getCellContent(i, 0))->setText((*employees)[i].getEmployeeName());

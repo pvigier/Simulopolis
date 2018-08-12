@@ -16,6 +16,8 @@ class Company
 {
 public:
     static void setMessageBus(MessageBus* messageBus);
+    static std::vector<Work>* getEmployees(Building* building);
+    static const std::vector<Work>* getEmployees(const Building* building);
 
     Company(std::string name, int creationYear, Person* owner = nullptr);
 

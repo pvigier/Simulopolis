@@ -25,11 +25,13 @@ Goal::State GoalEnterCity::process()
 {
     activateIfInactive();
 
+    // Try to obtain a home
     if (!mHomeFound)
     {
         for (const Market<Lease>::Item* item : mMarket->getItems())
             mMarket->addBid(item->id, mOwner->getMailboxId(), 0.0f);
     }
+    // Wait until the home is reachable
     else
     {
         sf::Vector2i entryPoint;
