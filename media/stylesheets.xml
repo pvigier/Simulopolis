@@ -17,6 +17,9 @@
     <stylesheet name="tabs">
         <background color="0xc6 0xc6 0xc6" />
     </stylesheet>
+    <stylesheet name="windowTabs">
+        <border size="-1" color="0x94 0x94 0x94" />
+    </stylesheet>
     <stylesheet name="table">
         <title>
             <background color="0x77 0x77 0x77" />

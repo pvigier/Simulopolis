@@ -20,12 +20,13 @@
 #include "game/CitizensWindow.h"
 #include "game/RentalMarketWindow.h"
 #include "game/LaborMarketWindow.h"
+#include "game/PoliciesWindow.h"
 
 GameStateEditor::GameStateEditor() :
     mActionState(ActionState::NONE), mZoomLevel(1.0f),
     mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor")),
     mImmigrantsWindow(nullptr), mCitizensWindow(nullptr),
-    mRentalMarketWindow(nullptr), mLaborMarketWindow(nullptr)
+    mRentalMarketWindow(nullptr), mLaborMarketWindow(nullptr), mPoliciesWindow(nullptr)
 {
     // Views
     sf::Vector2f windowSize = sf::Vector2f(sRenderEngine->getWindow().getSize());
@@ -227,6 +228,8 @@ void GameStateEditor::handleMessages()
                         openRentalMarketWindow();
                     else if (name == "openLaborMarketWindowButton")
                         openLaborMarketWindow();
+                    else if (name == "openPoliciesWindowButton")
+                        openPoliciesWindow();
                     else if (name.substr(0, 16) == "openPersonWindow")
                         openPersonWindow(*mCity.getPerson(extractId(name, "openPersonWindow")));
                     else if (name.substr(0, 16) == "openBuildingWindow")
@@ -262,11 +265,13 @@ void GameStateEditor::handleMessages()
                         mRentalMarketWindow = nullptr;
                     else if (mLaborMarketWindow == window)
                         mLaborMarketWindow = nullptr;
+                    else if (mPoliciesWindow == window)
+                        mPoliciesWindow = nullptr;
                     else
                     {
-                        for (std::unique_ptr<WindowManager>& windowManager : mWindowManagers)
+                        for (WindowManager& windowManager : mWindowManagers)
                         {
-                            if (windowManager->removeWindow(window))
+                            if (windowManager.removeWindow(window))
                                 break;
                         }
                     }
@@ -363,10 +368,11 @@ void GameStateEditor::createGui()
     mGui->get("openCitizensWindowButton")->subscribe(mMailbox.getId());
     mGui->get("openRentalMarketWindowButton")->subscribe(mMailbox.getId());
     mGui->get("openLaborMarketWindowButton")->subscribe(mMailbox.getId());
+    mGui->get("openPoliciesWindowButton")->subscribe(mMailbox.getId());
 
     // Window managers
-    mWindowManagers.emplace_back(new WindowManager(mMailbox.getId()));
-    mWindowManagers.emplace_back(new WindowManager(mMailbox.getId()));
+    mWindowManagers.emplace_back(mMailbox.getId());
+    mWindowManagers.emplace_back(mMailbox.getId());
 }
 
 void GameStateEditor::stopSelecting()
@@ -400,12 +406,12 @@ void GameStateEditor::generateMenuTextures()
 
 void GameStateEditor::openPersonWindow(const Person& person)
 {
-    mWindowManagers[0]->addWindow(mGui->createRootWithDefaultName<PersonWindow>(sStylesheetManager, person, mCity.getYear()));
+    mWindowManagers[0].addWindow(mGui->createRootWithDefaultName<PersonWindow>(sStylesheetManager, person, mCity.getYear()));
 }
 
 void GameStateEditor::openBuildingWindow(const Building& building)
 {
-    mWindowManagers[1]->addWindow(mGui->createRootWithDefaultName<BuildingWindow>(sStylesheetManager, building));
+    mWindowManagers[1].addWindow(mGui->createRootWithDefaultName<BuildingWindow>(sStylesheetManager, building));
 }
 
 void GameStateEditor::openImmigrantsWindow()
@@ -438,17 +444,28 @@ void GameStateEditor::openLaborMarketWindow()
     }
 }
 
+void GameStateEditor::openPoliciesWindow()
+{
+    if (!mPoliciesWindow)
+    {
+        mPoliciesWindow = mGui->createRootWithDefaultName<PoliciesWindow>(sMessageBus, sStylesheetManager);
+        mPoliciesWindow->subscribe(mMailbox.getId());
+    }
+}
+
 void GameStateEditor::updateWindows()
 {
     if (mCitizensWindow)
         mCitizensWindow->update();
-    for (GuiWindow* window : mWindowManagers[0]->getWindows())
+    if (mPoliciesWindow)
+        mPoliciesWindow->update();
+    for (GuiWindow* window : mWindowManagers[0].getWindows())
     {
         PersonWindow* personWindow = static_cast<PersonWindow*>(window);
         drawCity(personWindow->getRenderTexture(), personWindow->getView());
         personWindow->update();
     }
-    for (GuiWindow* window : mWindowManagers[1]->getWindows())
+    for (GuiWindow* window : mWindowManagers[1].getWindows())
     {
         BuildingWindow* buildingWindow = static_cast<BuildingWindow*>(window);
         drawCity(buildingWindow->getRenderTexture(), buildingWindow->getView());
@@ -535,6 +552,6 @@ void GameStateEditor::onNewYear()
         mImmigrantsWindow->onNewYear();
     if (mCitizensWindow)
         mCitizensWindow->onNewYear();
-    for (GuiWindow* window : mWindowManagers[0]->getWindows())
+    for (GuiWindow* window : mWindowManagers[0].getWindows())
         static_cast<PersonWindow*>(window)->onNewYear();
 }

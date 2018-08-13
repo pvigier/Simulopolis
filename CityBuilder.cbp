@@ -129,6 +129,8 @@
 		<Unit filename="src/game/LaborMarketWindow.h" />
 		<Unit filename="src/game/PersonWindow.cpp" />
 		<Unit filename="src/game/PersonWindow.h" />
+		<Unit filename="src/game/PoliciesWindow.cpp" />
+		<Unit filename="src/game/PoliciesWindow.h" />
 		<Unit filename="src/game/RentalMarketWindow.cpp" />
 		<Unit filename="src/game/RentalMarketWindow.h" />
 		<Unit filename="src/game/WindowManager.h" />
