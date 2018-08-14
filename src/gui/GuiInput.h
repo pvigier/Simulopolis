@@ -1,5 +1,6 @@
 #pragma once
 
+#include <regex>
 #include "SFML/Graphics.hpp"
 #include "gui/GuiText.h"
 
@@ -12,6 +13,8 @@ public:
 
     virtual void setPosition(sf::Vector2f position) override;
 
+    void setRegex(const std::string& s);
+
 protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -21,6 +24,8 @@ protected:
 private:
     std::size_t mCursor;
     sf::RectangleShape mCursorShape;
+    std::regex mRegex;
 
     void setCursor(std::size_t cursor);
+    bool updateText(const sf::String& text);
 };
