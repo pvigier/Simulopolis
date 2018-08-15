@@ -29,10 +29,7 @@ GuiText::~GuiText()
 void GuiText::setPosition(sf::Vector2f position)
 {
     GuiWidget::setPosition(position);
-    // Correct the text position
-    position.y -= mText.getCharacterSize() / 4;
-    position = sf::Vector2f(sf::Vector2i(position));
-    mText.setPosition(position);
+    mText.setPosition(sf::Vector2f(sf::Vector2i(position)));
 }
 
 void GuiText::setCharacterSize(unsigned int characterSize)
@@ -63,5 +60,5 @@ void GuiText::render(sf::RenderTarget& target, sf::RenderStates states) const
 
 void GuiText::computeSize()
 {
-    mSize = sf::Vector2f(mText.getGlobalBounds().width, mText.getCharacterSize());
+    mSize = sf::Vector2f(mText.getGlobalBounds().width, mText.getCharacterSize() * 5 / 4);
 }

@@ -27,9 +27,8 @@ void GuiWindow::setPosition(sf::Vector2f position)
     sf::Vector2f closeButtonSize = sf::Vector2f(mCloseButton.getGlobalBounds().width, mCloseButton.getGlobalBounds().height);
     mCloseButton.setPosition(position + sf::Vector2f(mSize.x - closeButtonSize.x * 1.5f, -barSize.y * 0.5f - closeButtonSize.y * 0.5f));
     // Title
-    sf::Vector2f offset(0.0f, mTitle.getCharacterSize() / 4);
-    sf::Vector2f titleSize = sf::Vector2f(mTitle.getGlobalBounds().width, mTitle.getCharacterSize());
-    sf::Vector2i titlePosition(position + sf::Vector2f(mSize.x * 0.5f, -barSize.y * 0.5f) - offset - titleSize * 0.5f);
+    sf::Vector2f titleSize = sf::Vector2f(mTitle.getGlobalBounds().width, mTitle.getCharacterSize() * 5 / 4);
+    sf::Vector2i titlePosition(position + sf::Vector2f(mSize.x * 0.5f, -barSize.y * 0.5f) - titleSize * 0.5f);
     mTitle.setPosition(sf::Vector2f(titlePosition));
 }
 
