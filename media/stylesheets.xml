@@ -33,4 +33,7 @@
         <background color="0xc6 0xc6 0xc6" />
         <border size="-1" color="0x94 0x94 0x94" />
     </stylesheet>
+    <stylesheet name="inputBackground">
+		<background color="0xd4 0xd4 0xd4" />
+	</stylesheet>
 </stylesheets>

@@ -25,5 +25,7 @@ private:
     std::vector<GuiButton*> mTabButtons;
     GuiTabWidget* mTabWidget;
 
+    void createLine(GuiWidget* tab, const std::string& label, const std::string& value,
+        const std::string& regex, const std::string& suffix = "");
     void updateTab(std::size_t tab);
 };

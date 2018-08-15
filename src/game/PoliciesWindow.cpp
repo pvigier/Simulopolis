@@ -4,6 +4,7 @@
 #include "gui/Gui.h"
 #include "gui/GuiText.h"
 #include "gui/GuiButton.h"
+#include "gui/GuiInput.h"
 #include "gui/GuiTabWidget.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
@@ -43,76 +44,36 @@ void PoliciesWindow::setUp()
     // Labor policy
     GuiWidget* laborPolicyTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
     laborPolicyTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
-
-    GuiWidget* weeklyStandardWorkingHoursWidget = mGui->createWithDefaultName<GuiWidget>();
-    weeklyStandardWorkingHoursWidget->add(mGui->createWithDefaultName<GuiText>("Weekly standard working hours: ", 12, mStylesheetManager->getStylesheet("button")));
-    weeklyStandardWorkingHoursWidget->setLayout(std::make_unique<GuiHBoxLayout>());
-    laborPolicyTab->add(weeklyStandardWorkingHoursWidget);
-
-    GuiWidget* minimumWageWidget = mGui->createWithDefaultName<GuiWidget>();
-    minimumWageWidget->add(mGui->createWithDefaultName<GuiText>("Minimum wage: ", 12, mStylesheetManager->getStylesheet("button")));
-    minimumWageWidget->setLayout(std::make_unique<GuiHBoxLayout>());
-    laborPolicyTab->add(minimumWageWidget);
-
     laborPolicyTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
+
+    createLine(laborPolicyTab, "Weekly standard working hours: ", "0", "|[0-9]|[1-9][0-9]|1[0-5][0-9]|16[0-8]");
+    createLine(laborPolicyTab, "Minimum wage: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
 
     // Housing policy
     GuiWidget* housingPolicyTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
     housingPolicyTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
-
-    GuiWidget* affordableHousingRentWidget = mGui->createWithDefaultName<GuiWidget>();
-    affordableHousingRentWidget->add(mGui->createWithDefaultName<GuiText>("Rent for an affordable housing: ", 12, mStylesheetManager->getStylesheet("button")));
-    affordableHousingRentWidget->setLayout(std::make_unique<GuiHBoxLayout>());
-    housingPolicyTab->add(affordableHousingRentWidget);
-
-    GuiWidget* apartmentBuildingRentWidget = mGui->createWithDefaultName<GuiWidget>();
-    apartmentBuildingRentWidget->add(mGui->createWithDefaultName<GuiText>("Rent for an apartment: ", 12, mStylesheetManager->getStylesheet("button")));
-    apartmentBuildingRentWidget->setLayout(std::make_unique<GuiHBoxLayout>());
-    housingPolicyTab->add(apartmentBuildingRentWidget);
-
-    GuiWidget* villaRentWidget = mGui->createWithDefaultName<GuiWidget>();
-    villaRentWidget->add(mGui->createWithDefaultName<GuiText>("Rent for a villa: ", 12, mStylesheetManager->getStylesheet("button")));
-    villaRentWidget->setLayout(std::make_unique<GuiHBoxLayout>());
-    housingPolicyTab->add(villaRentWidget);
-
     housingPolicyTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
+
+    createLine(housingPolicyTab, "Rent for an affordable housing: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
+    createLine(housingPolicyTab, "Rent for an apartment: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
+    createLine(housingPolicyTab, "Rent for a villa: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
 
     // Public service
     GuiWidget* publicServiceTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
     publicServiceTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
-
-    GuiWidget* nonQualifiedJobSalaryWidget = mGui->createWithDefaultName<GuiWidget>();
-    nonQualifiedJobSalaryWidget->add(mGui->createWithDefaultName<GuiText>("Salary of a non-qualified job: ", 12, mStylesheetManager->getStylesheet("button")));
-    nonQualifiedJobSalaryWidget->setLayout(std::make_unique<GuiHBoxLayout>());
-    publicServiceTab->add(nonQualifiedJobSalaryWidget);
-
-    GuiWidget* qualifiedJobSalaryWidget = mGui->createWithDefaultName<GuiWidget>();
-    qualifiedJobSalaryWidget->add(mGui->createWithDefaultName<GuiText>("Salary of a qualified job: ", 12, mStylesheetManager->getStylesheet("button")));
-    qualifiedJobSalaryWidget->setLayout(std::make_unique<GuiHBoxLayout>());
-    publicServiceTab->add(qualifiedJobSalaryWidget);
-
-    GuiWidget* highlyQualifiedJobSalaryWidget = mGui->createWithDefaultName<GuiWidget>();
-    highlyQualifiedJobSalaryWidget->add(mGui->createWithDefaultName<GuiText>("Salary of a highly qualified job: ", 12, mStylesheetManager->getStylesheet("button")));
-    highlyQualifiedJobSalaryWidget->setLayout(std::make_unique<GuiHBoxLayout>());
-    publicServiceTab->add(highlyQualifiedJobSalaryWidget);
-
     publicServiceTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
+
+    createLine(publicServiceTab, "Salary of a non-qualified job: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
+    createLine(publicServiceTab, "Salary of a qualified job: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
+    createLine(publicServiceTab, "Salary of a highly qualified job: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
 
     // Tax policy
     GuiWidget* taxPolicyTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
     taxPolicyTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
-
-    GuiWidget* incomeTaxWidget = mGui->createWithDefaultName<GuiWidget>();
-    incomeTaxWidget->add(mGui->createWithDefaultName<GuiText>("Income tax: ", 12, mStylesheetManager->getStylesheet("button")));
-    incomeTaxWidget->setLayout(std::make_unique<GuiHBoxLayout>());
-    taxPolicyTab->add(incomeTaxWidget);
-
-    GuiWidget* corporateTaxWidget = mGui->createWithDefaultName<GuiWidget>();
-    corporateTaxWidget->add(mGui->createWithDefaultName<GuiText>("Corporate tax: ", 12, mStylesheetManager->getStylesheet("button")));
-    corporateTaxWidget->setLayout(std::make_unique<GuiHBoxLayout>());
-    taxPolicyTab->add(corporateTaxWidget);
-
     taxPolicyTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
+
+    createLine(taxPolicyTab, "Income tax: ", "0", "|[0-9]|[1-9][0-9]|100", "%");
+    createLine(taxPolicyTab, "Corporate tax: ", "0", "|[0-9]|[1-9][0-9]|100", "%");
 
     // Tab widget
     mTabWidget = mGui->createWithDefaultName<GuiTabWidget>();
@@ -151,6 +112,32 @@ void PoliciesWindow::update()
             }
         }
     }
+}
+
+void PoliciesWindow::createLine(GuiWidget* tab, const std::string& label, const std::string& value,
+    const std::string& regex, const std::string& suffix)
+{
+    // Line
+    GuiWidget* widget = mGui->createWithDefaultName<GuiWidget>();
+    widget->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Center, 2.0f));
+    tab->add(widget);
+
+    // Label
+    widget->add(mGui->createWithDefaultName<GuiText>(label, 12, mStylesheetManager->getStylesheet("button")));
+
+    // Input
+    GuiWidget* inputBackground = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("inputBackground"));
+    GuiInput* input = mGui->createWithDefaultName<GuiInput>(12, mStylesheetManager->getStylesheet("button"));
+    input->setText(value);
+    input->setRegex(regex);
+    inputBackground->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
+    inputBackground->add(input);
+    widget->add(inputBackground);
+
+    // Suffix
+    if (!suffix.empty())
+        widget->add(mGui->createWithDefaultName<GuiText>(suffix, 12, mStylesheetManager->getStylesheet("button")));
+
 }
 
 void PoliciesWindow::updateTab(std::size_t tab)
