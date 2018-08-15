@@ -19,16 +19,19 @@ public:
 protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    virtual bool onPress(sf::Vector2f position, bool processed) override;
     virtual bool onKey(sf::Keyboard::Key key, bool processed) override;
     virtual bool onText(sf::Uint32 unicode, bool processed) override;
 
 private:
+    bool mFocus;
     std::size_t mCursor;
     sf::RectangleShape mCursorShape;
     mutable sf::Int32 mElapsedTime;
     mutable sf::Clock mClock;
     std::regex mRegex;
 
+    void resetClock() const;
     void setCursor(std::size_t cursor);
     bool updateText(const sf::String& text);
 };
