@@ -47,6 +47,7 @@ bool GuiInput::onPress(sf::Vector2f position, bool processed)
     {
         mFocus = true;
         resetClock();
+        setCursor(mousePositionToCursor(position));
         return true;
     }
 }
@@ -115,4 +116,25 @@ bool GuiInput::updateText(const sf::String& text)
         return true;
     }
     return false;
+}
+
+std::size_t GuiInput::mousePositionToCursor(sf::Vector2f position)
+{
+    std::size_t size = mText.getString().getSize();
+    float prevX = 0.0f;
+    for (std::size_t i = 0; i < size; ++i)
+    {
+        float x = mText.findCharacterPos(i).x;
+        if (position.x < x)
+        {
+            if (i == 0)
+                return 0;
+            else if (position.x - prevX < x - position.x)
+                return i - 1;
+            else
+                return i;
+        }
+        prevX = x;
+    }
+    return size;
 }

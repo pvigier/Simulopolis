@@ -34,4 +34,5 @@ private:
     void resetClock() const;
     void setCursor(std::size_t cursor);
     bool updateText(const sf::String& text);
+    std::size_t mousePositionToCursor(sf::Vector2f position);
 };
