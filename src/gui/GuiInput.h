@@ -2,6 +2,7 @@
 
 #include <regex>
 #include "SFML/Graphics.hpp"
+#include "SFML/System/Clock.hpp"
 #include "gui/GuiText.h"
 
 class GuiInput : public GuiText
@@ -24,6 +25,8 @@ protected:
 private:
     std::size_t mCursor;
     sf::RectangleShape mCursorShape;
+    mutable sf::Int32 mElapsedTime;
+    mutable sf::Clock mClock;
     std::regex mRegex;
 
     void setCursor(std::size_t cursor);

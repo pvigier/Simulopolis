@@ -1,7 +1,8 @@
 #include "gui/GuiInput.h"
 
 GuiInput::GuiInput(unsigned int characterSize, const XmlDocument* style) :
-    GuiText("", characterSize, style), mCursorShape(sf::Vector2f(1.0f, characterSize*5/4)), mRegex(".*")
+    GuiText("", characterSize, style), mCursorShape(sf::Vector2f(1.0f, characterSize*5/4)),
+    mElapsedTime(0.0f), mRegex(".*")
 {
     setCursor(0);
 }
@@ -29,8 +30,10 @@ void GuiInput::setRegex(const std::string& s)
 
 void GuiInput::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    mElapsedTime = (mElapsedTime + mClock.restart().asMilliseconds()) % 2000;
     GuiText::render(target, states);
-    target.draw(mCursorShape);
+    if (mElapsedTime < 1000)
+        target.draw(mCursorShape);
 }
 
 bool GuiInput::onKey(sf::Keyboard::Key key, bool processed)
@@ -72,10 +75,14 @@ bool GuiInput::onText(sf::Uint32 unicode, bool processed)
 void GuiInput::setCursor(std::size_t cursor)
 {
     mCursor = cursor;
+    // Move cursor
     if (mCursor >= mText.getString().getSize())
-        mCursorShape.setPosition(sf::Vector2f(mText.getGlobalBounds().left + mText.getGlobalBounds().width + 2.0f, mText.getPosition().y));
+        mCursorShape.setPosition(sf::Vector2f(mText.getGlobalBounds().left + mText.getGlobalBounds().width, mText.getPosition().y));
     else
         mCursorShape.setPosition(mText.findCharacterPos(mCursor));
+    // Reset clock
+    mElapsedTime = 0;
+    mClock.restart();
 }
 
 bool GuiInput::updateText(const sf::String& text)
