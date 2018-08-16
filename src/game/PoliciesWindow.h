@@ -7,14 +7,17 @@ class MessageBus;
 class StylesheetManager;
 class GuiButton;
 class GuiTabWidget;
+class GuiInput;
+class City;
 
 class PoliciesWindow : public GuiWindow
 {
 public:
-    PoliciesWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager);
+    PoliciesWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager, City& city);
     ~PoliciesWindow();
 
     virtual void setUp() override;
+    virtual void tearDown() override;
 
     void update();
 
@@ -24,6 +27,8 @@ private:
     GuiWidget* mTabButtonsWidget;
     std::vector<GuiButton*> mTabButtons;
     GuiTabWidget* mTabWidget;
+    std::vector<GuiInput*> mInputs;
+    City& mCity;
 
     void createLine(GuiWidget* tab, const std::string& label, const std::string& value,
         const std::string& regex, const std::string& suffix = "");

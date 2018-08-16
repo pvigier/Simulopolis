@@ -446,7 +446,7 @@ void GameStateEditor::openPoliciesWindow()
 {
     if (!mPoliciesWindow)
     {
-        mPoliciesWindow = mGui->createRootWithDefaultName<PoliciesWindow>(sMessageBus, sStylesheetManager);
+        mPoliciesWindow = mGui->createRootWithDefaultName<PoliciesWindow>(sMessageBus, sStylesheetManager, mCity);
         mPoliciesWindow->subscribe(mMailbox.getId());
     }
 }

@@ -10,11 +10,12 @@
 #include "gui/GuiHBoxLayout.h"
 #include "gui/GuiOverlapLayout.h"
 #include "gui/GuiEvent.h"
+#include "city/City.h"
 #include "util/format.h"
 
-PoliciesWindow::PoliciesWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager) :
+PoliciesWindow::PoliciesWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager, City& city) :
     GuiWindow("Policies", stylesheetManager->getStylesheet("window")),
-    mStylesheetManager(stylesheetManager)
+    mStylesheetManager(stylesheetManager), mCity(city)
 {
     messageBus->addMailbox(mMailbox);
 }
@@ -46,34 +47,34 @@ void PoliciesWindow::setUp()
     laborPolicyTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
     laborPolicyTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
-    createLine(laborPolicyTab, "Weekly standard working hours: ", "0", "|[0-9]|[1-9][0-9]|1[0-5][0-9]|16[0-8]");
-    createLine(laborPolicyTab, "Minimum wage: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
+    createLine(laborPolicyTab, "Weekly standard working hours: ", format("%d", mCity.getWeeklyStandardWorkingHours()), "|[0-9]|[1-9][0-9]|1[0-5][0-9]|16[0-8]");
+    createLine(laborPolicyTab, "Minimum wage: $", format("%.2f", mCity.getMinimumWage()), "\\d{0,9}\\.?\\d{0,2}");
 
     // Housing policy
     GuiWidget* housingPolicyTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
     housingPolicyTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
     housingPolicyTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
-    createLine(housingPolicyTab, "Rent for an affordable housing: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
-    createLine(housingPolicyTab, "Rent for an apartment: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
-    createLine(housingPolicyTab, "Rent for a villa: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
+    createLine(housingPolicyTab, "Rent for an affordable housing: $", format("%.2f", mCity.getCompany().getRent(Tile::Type::AFFORDABLE_HOUSING)), "\\d{0,9}\\.?\\d{0,2}");
+    createLine(housingPolicyTab, "Rent for an apartment: $", format("%.2f", mCity.getCompany().getRent(Tile::Type::APARTMENT_BUILDING)), "\\d{0,9}\\.?\\d{0,2}");
+    createLine(housingPolicyTab, "Rent for a villa: $", format("%.2f", mCity.getCompany().getRent(Tile::Type::VILLA)), "\\d{0,9}\\.?\\d{0,2}");
 
     // Public service
     GuiWidget* publicServiceTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
     publicServiceTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
     publicServiceTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
-    createLine(publicServiceTab, "Salary of a non-qualified job: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
-    createLine(publicServiceTab, "Salary of a qualified job: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
-    createLine(publicServiceTab, "Salary of a highly qualified job: $", "0.00", "\\d{0,9}\\.?\\d{0,2}");
+    createLine(publicServiceTab, "Salary of a non-qualified job: $", format("%.2f", mCity.getCompany().getSalary(Work::Qualification::NON_QUALIFIED)), "\\d{0,9}\\.?\\d{0,2}");
+    createLine(publicServiceTab, "Salary of a qualified job: $", format("%.2f", mCity.getCompany().getSalary(Work::Qualification::QUALIFIED)), "\\d{0,9}\\.?\\d{0,2}");
+    createLine(publicServiceTab, "Salary of a highly qualified job: $", format("%.2f", mCity.getCompany().getSalary(Work::Qualification::HIGHLY_QUALIFIED)), "\\d{0,9}\\.?\\d{0,2}");
 
     // Tax policy
     GuiWidget* taxPolicyTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
     taxPolicyTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
     taxPolicyTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
-    createLine(taxPolicyTab, "Income tax: ", "0", "|[0-9]|[1-9][0-9]|100", "%");
-    createLine(taxPolicyTab, "Corporate tax: ", "0", "|[0-9]|[1-9][0-9]|100", "%");
+    createLine(taxPolicyTab, "Income tax: ", format("%.0f", mCity.getIncomeTax()), "|[0-9]|[1-9][0-9]|100", "%");
+    createLine(taxPolicyTab, "Corporate tax: ", format("%.0f", mCity.getCorporateTax()), "|[0-9]|[1-9][0-9]|100", "%");
 
     // Tab widget
     mTabWidget = mGui->createWithDefaultName<GuiTabWidget>();
@@ -89,6 +90,28 @@ void PoliciesWindow::setUp()
     add(mTabWidget);
     setPosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(0.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
+}
+
+void PoliciesWindow::tearDown()
+{
+    // Labor policy
+    std::cout << mInputs[0]->getString().toAnsiString() << " " << std::stoi(mInputs[0]->getString().toAnsiString()) << std::endl;
+    mCity.setWeeklyStandardWorkingHours(std::stoi(mInputs[0]->getString().toAnsiString()));
+    mCity.setMinimumWage(std::stof(mInputs[1]->getString().toAnsiString()));
+
+    // Housing policy
+    mCity.getCompany().setRent(Tile::Type::AFFORDABLE_HOUSING, std::stof(mInputs[2]->getString().toAnsiString()));
+    mCity.getCompany().setRent(Tile::Type::APARTMENT_BUILDING, std::stof(mInputs[3]->getString().toAnsiString()));
+    mCity.getCompany().setRent(Tile::Type::VILLA, std::stof(mInputs[4]->getString().toAnsiString()));
+
+    // Public service
+    mCity.getCompany().setSalary(Work::Qualification::NON_QUALIFIED, std::stof(mInputs[5]->getString().toAnsiString()));
+    mCity.getCompany().setSalary(Work::Qualification::QUALIFIED, std::stof(mInputs[6]->getString().toAnsiString()));
+    mCity.getCompany().setSalary(Work::Qualification::HIGHLY_QUALIFIED, std::stof(mInputs[7]->getString().toAnsiString()));
+
+    // Tax policy
+    mCity.setIncomeTax(std::stof(mInputs[8]->getString().toAnsiString()));
+    mCity.setCorporateTax(std::stof(mInputs[9]->getString().toAnsiString()));
 }
 
 void PoliciesWindow::update()
@@ -127,6 +150,7 @@ void PoliciesWindow::createLine(GuiWidget* tab, const std::string& label, const 
 
     // Input
     GuiInput* input = mGui->createWithDefaultName<GuiInput>(12, mStylesheetManager->getStylesheet("input"));
+    mInputs.push_back(input);
     input->setString(value);
     input->setRegex(regex);
     input->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
