@@ -52,29 +52,45 @@ public:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    // Map
     void update(float dt);
     void bulldoze(Tile::Type type);
-
     Intersection intersect(const sf::Vector2f& position);
-
-    void eject(Person* person);
-    void welcome(Person* person);
-
     Map& getMap();
     const Map& getMap() const;
+
+    // Date
     unsigned int getMonth() const;
     unsigned int getYear() const;
     std::string getFormattedMonth() const;
-    unsigned int getPopulation() const;
-    unsigned int getUnemployed() const;
+
+    // Company
+    Company& getCompany();
     unsigned int getFunds() const;
     void decreaseFunds(unsigned int amount);
+
+    // Policy
+    unsigned int getWeeklyStandardWorkingHours() const;
+    void setWeeklyStandardWorkingHours(unsigned int weeklyStandardWorkingHours);
+    float getMinimumWage() const;
+    void setMinimumWage(float minimumWage);
+    float getIncomeTax() const;
+    void setIncomeTax(float incomeTax);
+    float getCorporateTax() const;
+    void setCorporateTax(float corporateTax);
+
+    // Agents
+    void eject(Person* person);
+    void welcome(Person* person);
+    unsigned int getPopulation() const;
+    unsigned int getUnemployed() const;
     Person* getPerson(Id id);
     const std::vector<Person*>& getCitizens() const;
     const std::vector<Person*>& getImmigrants() const;
     Building* getBuilding(Id id);
     VMarket* getMarket(VMarket::Type type);
 
+    // Util
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
     float toHumanTime(float cityTime) const; // cityTime is expressed in hours
     float toCityTime(float humanTime) const;
@@ -84,14 +100,25 @@ private:
     PersonGenerator mPersonGenerator;
     CompanyGenerator mCompanyGenerator;
 
+    // Map
+    Map mMap;
+
+    // Date
     float mCurrentTime;
     float mTimePerMonth;
     unsigned int mMonth;
     unsigned int mYear;
-    Map mMap;
+
+    // Company
     unsigned int mUnemployed;
     unsigned int mFunds;
     Company mCityCompany;
+
+    // Policy
+    unsigned int mWeeklyStandardWorkingHours;
+    float mMinimumWage;
+    float mIncomeTax;
+    float mCorporateTax;
 
     // Agents
     IdManager<std::unique_ptr<Person>> mPersons;
@@ -105,6 +132,7 @@ private:
     void generateImmigrant();
     void removeCitizen(Person* person);
 
+    // Events
     void onNewMonth();
     void onNewYear();
 };

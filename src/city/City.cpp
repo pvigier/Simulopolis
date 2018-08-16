@@ -22,7 +22,8 @@ City::Intersection::Intersection(const Building* building) : type(City::Intersec
 
 City::City() :
     mCurrentTime(0.0), mTimePerMonth(10.0f), mMonth(0), mYear(0),
-    mUnemployed(0), mFunds(0), mCityCompany("City", 0)
+    mUnemployed(0), mFunds(0), mCityCompany("City", 0),
+    mWeeklyStandardWorkingHours(0), mMinimumWage(0.0f), mIncomeTax(0.0f), mCorporateTax(0.0f)
 {
     // Generators
     mPersonGenerator.setUp();
@@ -230,23 +231,6 @@ City::Intersection City::intersect(const sf::Vector2f& position)
     return intersection;
 }
 
-void City::eject(Person* person)
-{
-    mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
-    mPersons.erase(person->getId());
-}
-
-void City::welcome(Person* person)
-{
-    mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
-    mCitizens.push_back(person);
-    person->setCity(this);
-    person->getLongTermBrain().activate();
-    person->getLongTermBrain().clearSubgoals();
-    person->getLongTermBrain().pushFront(new GoalEnterCity(person));
-    person->getLongTermBrain().process();
-}
-
 Map& City::getMap()
 {
     return mMap;
@@ -300,14 +284,9 @@ std::string City::getFormattedMonth() const
     }
 }
 
-unsigned int City::getPopulation() const
+Company& City::getCompany()
 {
-    return mCitizens.size();
-}
-
-unsigned int City::getUnemployed() const
-{
-    return mUnemployed;
+    return mCityCompany;
 }
 
 unsigned int City::getFunds() const
@@ -318,6 +297,73 @@ unsigned int City::getFunds() const
 void City::decreaseFunds(unsigned int amount)
 {
     mFunds -= amount;
+}
+
+unsigned int City::getWeeklyStandardWorkingHours() const
+{
+    return mWeeklyStandardWorkingHours;
+}
+
+void City::setWeeklyStandardWorkingHours(unsigned int weeklyStandardWorkingHours)
+{
+    mWeeklyStandardWorkingHours = weeklyStandardWorkingHours;
+}
+
+float City::getMinimumWage() const
+{
+    return mMinimumWage;
+}
+
+void City::setMinimumWage(float minimumWage)
+{
+    mMinimumWage = minimumWage;
+}
+
+float City::getIncomeTax() const
+{
+    return mIncomeTax;
+}
+
+void City::setIncomeTax(float incomeTax)
+{
+    mIncomeTax = incomeTax;
+}
+
+float City::getCorporateTax() const
+{
+    return mCorporateTax;
+}
+
+void City::setCorporateTax(float corporateTax)
+{
+    mCorporateTax = corporateTax;
+}
+
+void City::eject(Person* person)
+{
+    mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
+    mPersons.erase(person->getId());
+}
+
+void City::welcome(Person* person)
+{
+    mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
+    mCitizens.push_back(person);
+    person->setCity(this);
+    person->getLongTermBrain().activate();
+    person->getLongTermBrain().clearSubgoals();
+    person->getLongTermBrain().pushFront(new GoalEnterCity(person));
+    person->getLongTermBrain().process();
+}
+
+unsigned int City::getPopulation() const
+{
+    return mCitizens.size();
+}
+
+unsigned int City::getUnemployed() const
+{
+    return mUnemployed;
 }
 
 Person* City::getPerson(Id id)
