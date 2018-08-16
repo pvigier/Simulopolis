@@ -21,6 +21,7 @@ public:
 
     virtual void setUp();
     void update();
+    virtual void tearDown();
 
     void add(GuiWidget* widget);
     void insert(std::size_t i, GuiWidget* widget);

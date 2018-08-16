@@ -48,6 +48,11 @@ void GuiWidget::update()
     resetDirty();
 }
 
+void GuiWidget::tearDown()
+{
+
+}
+
 void GuiWidget::add(GuiWidget* widget)
 {
     widget->setParent(this);

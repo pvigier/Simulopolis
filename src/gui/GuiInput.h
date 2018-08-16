@@ -14,6 +14,7 @@ public:
     virtual ~GuiInput();
 
     virtual void setUp() override;
+    const sf::String& getString() const;
     bool setString(const sf::String& text);
     virtual void setPosition(sf::Vector2f position) override;
 

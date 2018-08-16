@@ -17,6 +17,10 @@ Gui::Gui() : mVisible(true), mCounter(0)
 
 Gui::~Gui()
 {
+    // Remove widgets
+    for (int i = mRootWidgets.size() - 1; i >= 0; --i)
+        remove(mRootWidgets[i]);
+
     // Unregister the mailbox
     sInputEngine->unsubscribe(mMailbox.getId());
     sMessageBus->removeMailbox(mMailbox);
@@ -94,6 +98,7 @@ void Gui::remove(const std::string& name)
 
 void Gui::remove(GuiWidget* widget)
 {
+    widget->tearDown();
     if (widget->isRoot())
         mRootWidgets.erase(std::find(mRootWidgets.begin(), mRootWidgets.end(), widget));
     for (GuiWidget* child : widget->getChildren())

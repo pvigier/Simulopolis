@@ -33,6 +33,11 @@ void GuiInput::setPosition(sf::Vector2f position)
     setCursor(mCursor);
 }
 
+const sf::String& GuiInput::getString() const
+{
+    return mText->getString();
+}
+
 bool GuiInput::setString(const sf::String& text)
 {
     if (std::regex_match(text.toAnsiString(), mRegex))
