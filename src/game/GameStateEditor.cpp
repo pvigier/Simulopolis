@@ -87,11 +87,11 @@ void GameStateEditor::update(float dt)
     mCity.update(dt);
 
     // Update the info bar at the bottom of the screen
-    mGui->get<GuiText>("dateText")->setText(format("%s %d", mCity.getFormattedMonth().c_str(), 2000 + mCity.getYear()));
-    mGui->get<GuiText>("fundsText")->setText("$" + std::to_string(mCity.getFunds()));
-    mGui->get<GuiText>("populationText")->setText("Population: " + std::to_string(mCity.getPopulation()));
-    mGui->get<GuiText>("employmentText")->setText("Unemployment: " + std::to_string(mCity.getUnemployed()));
-    mGui->get<GuiText>("currentTileText")->setText(Tile::typeToString(mCurrentTile));
+    mGui->get<GuiText>("dateText")->setString(format("%s %d", mCity.getFormattedMonth().c_str(), 2000 + mCity.getYear()));
+    mGui->get<GuiText>("fundsText")->setString("$" + std::to_string(mCity.getFunds()));
+    mGui->get<GuiText>("populationText")->setString("Population: " + std::to_string(mCity.getPopulation()));
+    mGui->get<GuiText>("employmentText")->setString("Unemployment: " + std::to_string(mCity.getUnemployed()));
+    mGui->get<GuiText>("currentTileText")->setString(Tile::typeToString(mCurrentTile));
 
     // Update the windows
     updateWindows();
@@ -142,7 +142,7 @@ void GameStateEditor::handleMessages()
                         // Update the GUI
                         unsigned int totalCost = computeCostOfSelection();
                         auto selectionCostText = mGui->get<GuiText>("selectionCostText");
-                        selectionCostText->setText("$" + std::to_string(totalCost));
+                        selectionCostText->setString("$" + std::to_string(totalCost));
                         //selectionCostText->setHighlight(mCity.getFunds() < totalCost);
                         selectionCostText->setPosition(sf::Vector2f(mousePosition) + sf::Vector2f(16, -16));
                         selectionCostText->setVisible(true);
@@ -360,8 +360,6 @@ void GameStateEditor::createGui()
     }
 
     updateTabs("landscapeTabButton");
-
-    //mGui->createRoot<GuiInput>("input", 32, sStylesheetManager->getStylesheet("text"));
 
     // Subscribe
     mGui->get("openImmigrantsWindowButton")->subscribe(mMailbox.getId());

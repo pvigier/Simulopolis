@@ -12,7 +12,6 @@ class RentalMarketWindow : public GuiWindow
 {
 public:
     RentalMarketWindow(StylesheetManager* stylesheetManager, Market<Lease>* market);
-
     ~RentalMarketWindow();
 
     virtual void setUp() override;

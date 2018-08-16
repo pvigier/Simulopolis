@@ -50,14 +50,14 @@ void CitizensWindow::addCitizen(Person* person, bool alreadyAdded)
     // Person button
     GuiWidget* personButton = mGui->create<GuiButton>("openPersonWindow" + std::to_string(person->getId()) + "|" + mTable->getName(), mStylesheetManager->getStylesheet("button"));
     personButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
-    personButton->add(mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("button")));
+    personButton->add(mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("darkText")));
     personButton->subscribe(mListenerId);
 
     // Add row
     mTable->addRow({
         personButton,
-        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
     });
 }
 
@@ -72,8 +72,8 @@ void CitizensWindow::update()
 {
     for (std::size_t i = 0; i < mCitizens.size(); ++i)
     {
-        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setText(format("%d", mCitizens[i]->getAge(mYear)));
-        static_cast<GuiText*>(mTable->getCellContent(i, 2))->setText(mCitizens[i]->getWorkStatus());
+        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("%d", mCitizens[i]->getAge(mYear)));
+        static_cast<GuiText*>(mTable->getCellContent(i, 2))->setString(mCitizens[i]->getWorkStatus());
     }
 }
 

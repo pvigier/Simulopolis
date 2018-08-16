@@ -2,9 +2,11 @@
 	<stylesheet name="button">
 		<background color="0xc6 0xc6 0xc6" hoverColor="0x94 0x94 0x94" pressColor="0x61 0x61 0x61" disableColor="0xd4 0xd4 0xd4" />
 		<border size="-1" color="0x94 0x94 0x94" />
-		<text font="font" color="0x00 0x00 0x00" disableColor="0x77 0x77 0x77" />
 	</stylesheet>
-	<stylesheet name="text">
+    <stylesheet name="darkText">
+        <text font="font" color="0x00 0x00 0x00" disableColor="0x77 0x77 0x77" />
+    </stylesheet>
+	<stylesheet name="costText">
 		<text font="font" color="0xff 0xff 0xff" highlightColor="0xff 0x00 0x00" />
 	</stylesheet>
 	<stylesheet name="window">
@@ -33,7 +35,8 @@
         <background color="0xc6 0xc6 0xc6" />
         <border size="-1" color="0x94 0x94 0x94" />
     </stylesheet>
-    <stylesheet name="inputBackground">
+    <stylesheet name="input">
 		<background color="0xd4 0xd4 0xd4" />
+        <text style="darkText" />
 	</stylesheet>
 </stylesheets>

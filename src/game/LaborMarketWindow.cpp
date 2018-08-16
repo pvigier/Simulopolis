@@ -51,10 +51,10 @@ void LaborMarketWindow::addItem(const Building* building, Work::Type type, float
 {
     // Add row
     mTable->addRow({
-        mGui->createWithDefaultName<GuiText>(format("%d", building->getId()), 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>(building->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>(Work::typeToString(type), 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>(format("%.2f", salary), 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>(format("%d", count), 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>(format("%d", building->getId()), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(building->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(Work::typeToString(type), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(format("%.2f", salary), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(format("%d", count), 12, mStylesheetManager->getStylesheet("darkText")),
     });
 }

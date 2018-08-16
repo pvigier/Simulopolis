@@ -35,8 +35,8 @@ void BuildingWindow::setUp()
 
     // Personal info
     auto infoWidget = mGui->createWithDefaultName<GuiWidget>();
-    auto typeText = mGui->createWithDefaultName<GuiText>("Type: " + Tile::typeToString(mBuilding.getType()), 12, mStylesheetManager->getStylesheet("button"));
-    auto ownerText = mGui->createWithDefaultName<GuiText>("Owner: " + mBuilding.getOwner()->getName(), 12, mStylesheetManager->getStylesheet("button"));
+    auto typeText = mGui->createWithDefaultName<GuiText>("Type: " + Tile::typeToString(mBuilding.getType()), 12, mStylesheetManager->getStylesheet("darkText"));
+    auto ownerText = mGui->createWithDefaultName<GuiText>("Owner: " + mBuilding.getOwner()->getName(), 12, mStylesheetManager->getStylesheet("darkText"));
     infoWidget->add(typeText);
     infoWidget->add(ownerText);
     infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
@@ -59,8 +59,8 @@ void BuildingWindow::setUp()
         for (std::size_t i = 0; i < static_cast<const Housing&>(mBuilding).getLeases().size(); ++i)
         {
             mTable->addRow({
-                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
-                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
+                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
+                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
             });
         }
     }
@@ -71,9 +71,9 @@ void BuildingWindow::setUp()
         for (std::size_t i = 0; i < Company::getEmployees(&mBuilding)->size(); ++i)
         {
             mTable->addRow({
-                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
-                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
-                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button")),
+                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
+                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
+                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
             });
         }
     }
@@ -93,8 +93,8 @@ void BuildingWindow::update()
         const std::vector<Lease>& leases = static_cast<const Housing&>(mBuilding).getLeases();
         for (std::size_t i = 0; i < leases.size(); ++i)
         {
-            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setText(leases[i].getTenantName());
-            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setText(format("$%.2f", leases[i].getRent()));
+            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setString(leases[i].getTenantName());
+            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("$%.2f", leases[i].getRent()));
         }
     }
     else
@@ -102,9 +102,9 @@ void BuildingWindow::update()
         const std::vector<Work>* employees = Company::getEmployees(&mBuilding);
         for (std::size_t i = 0; i < employees->size(); ++i)
         {
-            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setText((*employees)[i].getEmployeeName());
-            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setText(Work::typeToString((*employees)[i].getType()));
-            static_cast<GuiText*>(mTable->getCellContent(i, 2))->setText(format("$%.2f", (*employees)[i].getSalary()));
+            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setString((*employees)[i].getEmployeeName());
+            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(Work::typeToString((*employees)[i].getType()));
+            static_cast<GuiText*>(mTable->getCellContent(i, 2))->setString(format("$%.2f", (*employees)[i].getSalary()));
         }
     }
 }

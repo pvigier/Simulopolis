@@ -33,7 +33,7 @@ void PoliciesWindow::setUp()
     for (const std::string& name : tabNames)
     {
         mTabButtons.push_back(mGui->createWithDefaultName<GuiButton>(mStylesheetManager->getStylesheet("button")));
-        mTabButtons.back()->add(mGui->createWithDefaultName<GuiText>(name, 12, mStylesheetManager->getStylesheet("button")));
+        mTabButtons.back()->add(mGui->createWithDefaultName<GuiText>(name, 12, mStylesheetManager->getStylesheet("darkText")));
         mTabButtons.back()->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{3.0f, 3.0f, 3.0f, 3.0f}));
         mTabButtons.back()->subscribe(mMailbox.getId());
         mTabButtonsWidget->add(mTabButtons.back());
@@ -123,20 +123,18 @@ void PoliciesWindow::createLine(GuiWidget* tab, const std::string& label, const 
     tab->add(widget);
 
     // Label
-    widget->add(mGui->createWithDefaultName<GuiText>(label, 12, mStylesheetManager->getStylesheet("button")));
+    widget->add(mGui->createWithDefaultName<GuiText>(label, 12, mStylesheetManager->getStylesheet("darkText")));
 
     // Input
-    GuiWidget* inputBackground = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("inputBackground"));
-    GuiInput* input = mGui->createWithDefaultName<GuiInput>(12, mStylesheetManager->getStylesheet("button"));
-    input->setText(value);
+    GuiInput* input = mGui->createWithDefaultName<GuiInput>(12, mStylesheetManager->getStylesheet("input"));
+    input->setString(value);
     input->setRegex(regex);
-    inputBackground->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
-    inputBackground->add(input);
-    widget->add(inputBackground);
+    input->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
+    widget->add(input);
 
     // Suffix
     if (!suffix.empty())
-        widget->add(mGui->createWithDefaultName<GuiText>(suffix, 12, mStylesheetManager->getStylesheet("button")));
+        widget->add(mGui->createWithDefaultName<GuiText>(suffix, 12, mStylesheetManager->getStylesheet("darkText")));
 
 }
 

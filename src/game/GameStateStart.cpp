@@ -99,7 +99,7 @@ void GameStateStart::createGui(bool resume)
     mGui->get("menu")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
     // Resume button
-    const PropertyList& textProperties = sStylesheetManager->getStylesheet("button")->getFirstChildByName("text").getAttributes();
+    const PropertyList& textProperties = sStylesheetManager->getStylesheet("darkText")->getFirstChildByName("text").getAttributes();
     sf::Color textColor = textProperties.get<sf::Color>("color");
     if (resume)
         mGui->get<GuiButton>("resumeGameButton")->setState(GuiButton::State::NORMAL);

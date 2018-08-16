@@ -31,7 +31,7 @@ void ImmigrantsWindow::setUp()
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
     // Text
-    mText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("button"));
+    mText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     onNewMonth();
 
     // Window
@@ -59,10 +59,10 @@ void ImmigrantsWindow::addImmigrant(Person* person, bool alreadyAdded)
     visaButtons->setLayout(std::make_unique<GuiHBoxLayout>(2.0f));
     GuiButton* acceptedButton = mGui->create<GuiButton>("Accepted" + std::to_string(person->getId()) + "|" + visaButtons->getName(), mStylesheetManager->getStylesheet("button"));
     acceptedButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
-    acceptedButton->add(mGui->createWithDefaultName<GuiText>("Yes", 12, mStylesheetManager->getStylesheet("button")));
+    acceptedButton->add(mGui->createWithDefaultName<GuiText>("Yes", 12, mStylesheetManager->getStylesheet("darkText")));
     acceptedButton->subscribe(mListenerId);
     GuiButton* rejectedButton = mGui->create<GuiButton>("Rejected" + std::to_string(person->getId()) + "|" + visaButtons->getName(), mStylesheetManager->getStylesheet("button"));
-    rejectedButton->add(mGui->createWithDefaultName<GuiText>("No", 12, mStylesheetManager->getStylesheet("button")));
+    rejectedButton->add(mGui->createWithDefaultName<GuiText>("No", 12, mStylesheetManager->getStylesheet("darkText")));
     rejectedButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
     rejectedButton->subscribe(mListenerId);
     visaButtons->add(acceptedButton);
@@ -70,9 +70,9 @@ void ImmigrantsWindow::addImmigrant(Person* person, bool alreadyAdded)
 
     // Add row
     mTable->addRow({
-        mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>(format("%d", person->getAge(mYear)), 12, mStylesheetManager->getStylesheet("button")),
-        mGui->createWithDefaultName<GuiText>(format("%.2f", person->getMoney()), 12, mStylesheetManager->getStylesheet("button")),
+        mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(format("%d", person->getAge(mYear)), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(format("%.2f", person->getMoney()), 12, mStylesheetManager->getStylesheet("darkText")),
         visaButtons
     });
 }
@@ -86,12 +86,12 @@ void ImmigrantsWindow::removeImmigrant(Person* person)
 
 void ImmigrantsWindow::onNewMonth()
 {
-    mText->setText(format("Housing available: %d", mMarket->getItems().size()));
+    mText->setString(format("Housing available: %d", mMarket->getItems().size()));
 }
 
 void ImmigrantsWindow::onNewYear()
 {
     ++mYear;
     for (std::size_t i = 0; i < mImmigrants.size(); ++i)
-        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setText(format("%d", mImmigrants[i]->getAge(mYear)));
+        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("%d", mImmigrants[i]->getAge(mYear)));
 }
