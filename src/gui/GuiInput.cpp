@@ -1,13 +1,16 @@
 #include "gui/GuiInput.h"
+#include "resource/XmlDocument.h"
+#include "gui/Gui.h"
+#include "gui/GuiText.h"
 
 GuiInput::GuiInput(unsigned int characterSize, const XmlDocument* style) :
-    GuiText("", characterSize, style), mFocus(false), mCursorShape(sf::Vector2f(1.0f, characterSize*5/4)),
-    mElapsedTime(0.0f), mRegex(".*")
+    GuiWidget(style), mFocus(false), mCharacterSize(characterSize), mText(nullptr),
+    mCursorShape(sf::Vector2f(1.0f, mCharacterSize * 5 / 4)), mElapsedTime(0.0f), mRegex(".*")
 {
-    setCursor(0);
+
 }
 
-GuiInput::GuiInput(const PropertyList& properties) : GuiText(properties)
+GuiInput::GuiInput(const PropertyList& properties) : GuiWidget(properties)
 {
 
 }
@@ -17,10 +20,27 @@ GuiInput::~GuiInput()
     //dtor
 }
 
+void GuiInput::setUp()
+{
+    mText = mGui->createWithDefaultName<GuiText>("", mCharacterSize, mStyle->getFirstChildByName("text").getAttributes().get<const XmlDocument*>("style"));
+    add(mText);
+    setCursor(0);
+}
+
 void GuiInput::setPosition(sf::Vector2f position)
 {
-    GuiText::setPosition(position);
+    GuiWidget::setPosition(position);
     setCursor(mCursor);
+}
+
+bool GuiInput::setString(const sf::String& text)
+{
+    if (std::regex_match(text.toAnsiString(), mRegex))
+    {
+        mText->setString(text);
+        return true;
+    }
+    return false;
 }
 
 void GuiInput::setRegex(const std::string& s)
@@ -30,15 +50,15 @@ void GuiInput::setRegex(const std::string& s)
 
 void GuiInput::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    GuiWidget::render(target, states);
     mElapsedTime = (mElapsedTime + mClock.restart().asMilliseconds()) % 2000;
-    GuiText::render(target, states);
     if (mFocus && mElapsedTime < 1000)
         target.draw(mCursorShape);
 }
 
 bool GuiInput::onPress(sf::Vector2f position, bool processed)
 {
-    if (processed || !mText.getGlobalBounds().contains(position))
+    if (processed || !mBackground.getGlobalBounds().contains(position))
     {
         mFocus = false;
         return false;
@@ -58,7 +78,7 @@ bool GuiInput::onKey(sf::Keyboard::Key key, bool processed)
     {
         if (key == sf::Keyboard::Left && mCursor > 0)
             setCursor(mCursor - 1);
-        else if (key == sf::Keyboard::Right && mCursor < mText.getString().getSize())
+        else if (key == sf::Keyboard::Right && mCursor < mText->getText().getString().getSize())
             setCursor(mCursor + 1);
         return true;
     }
@@ -69,20 +89,20 @@ bool GuiInput::onText(sf::Uint32 unicode, bool processed)
 {
     if (mFocus && !processed)
     {
-        sf::String s = mText.getString();
+        sf::String s = mText->getString();
         if (unicode == 8)
         {
             if (s.getSize() > 0 && mCursor > 0)
             {
                 s.erase(mCursor - 1);
-                if (updateText(s))
+                if (setString(s))
                     setCursor(mCursor - 1);
             }
         }
         else if (unicode >= 32)
         {
             s.insert(mCursor, unicode);
-            if (updateText(s))
+            if (setString(s))
                 setCursor(mCursor + 1);
         }
         return true;
@@ -100,31 +120,22 @@ void GuiInput::setCursor(std::size_t cursor)
 {
     mCursor = cursor;
     // Move cursor
-    if (mCursor >= mText.getString().getSize())
-        mCursorShape.setPosition(sf::Vector2f(mText.getGlobalBounds().left + mText.getGlobalBounds().width, mText.getPosition().y));
+    const sf::Text& text = mText->getText();
+    if (mCursor >= mText->getString().getSize())
+        mCursorShape.setPosition(sf::Vector2f(text.getGlobalBounds().left + text.getGlobalBounds().width, text.getPosition().y));
     else
-        mCursorShape.setPosition(mText.findCharacterPos(mCursor));
+        mCursorShape.setPosition(text.findCharacterPos(mCursor));
     // Reset clock
     resetClock();
 }
 
-bool GuiInput::updateText(const sf::String& text)
-{
-    if (std::regex_match(text.toAnsiString(), mRegex))
-    {
-        GuiText::setText(text);
-        return true;
-    }
-    return false;
-}
-
 std::size_t GuiInput::mousePositionToCursor(sf::Vector2f position)
 {
-    std::size_t size = mText.getString().getSize();
+    std::size_t size = mText->getString().getSize();
     float prevX = 0.0f;
     for (std::size_t i = 0; i < size; ++i)
     {
-        float x = mText.findCharacterPos(i).x;
+        float x = mText->getText().findCharacterPos(i).x;
         if (position.x < x)
         {
             if (i == 0)

@@ -15,7 +15,9 @@ public:
 
     virtual void setPosition(sf::Vector2f position) override;
     virtual void setCharacterSize(unsigned int characterSize);
-    void setText(const sf::String& text);
+    const sf::Text& getText() const;
+    const sf::String& getString() const;
+    void setString(const sf::String& text);
     void setColor(sf::Color color);
 
 protected:
@@ -24,5 +26,5 @@ protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 private:
-    void computeSize();
+    sf::Vector2f computeSize() const;
 };

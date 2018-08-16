@@ -1,17 +1,20 @@
 #pragma once
 
 #include <regex>
-#include "SFML/Graphics.hpp"
-#include "SFML/System/Clock.hpp"
-#include "gui/GuiText.h"
+#include <SFML/System/Clock.hpp>
+#include "gui/GuiWidget.h"
 
-class GuiInput : public GuiText
+class GuiText;
+
+class GuiInput : public GuiWidget
 {
 public:
     GuiInput(unsigned int characterSize, const XmlDocument* style);
     GuiInput(const PropertyList& properties);
     virtual ~GuiInput();
 
+    virtual void setUp() override;
+    bool setString(const sf::String& text);
     virtual void setPosition(sf::Vector2f position) override;
 
     void setRegex(const std::string& s);
@@ -25,6 +28,8 @@ protected:
 
 private:
     bool mFocus;
+    unsigned int mCharacterSize;
+    GuiText* mText;
     std::size_t mCursor;
     sf::RectangleShape mCursorShape;
     mutable sf::Int32 mElapsedTime;

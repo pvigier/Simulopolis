@@ -6,8 +6,7 @@ GuiText::GuiText(const sf::String& text, unsigned int characterSize, const XmlDo
     mText(text, mStyle->getFirstChildByName("text").getAttributes().get<const sf::Font&>("font"), characterSize)
 {
     mText.setFillColor(mStyle->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
-    computeSize();
-    mFixedSize = true;
+    setFixedSize(computeSize());
 }
 
 GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
@@ -17,8 +16,7 @@ GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
     mText.setFont(style->getFirstChildByName("text").getAttributes().get<const sf::Font&>("font"));
     mText.setCharacterSize(properties.get<unsigned int>("characterSize", 0));
     mText.setFillColor(style->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
-    computeSize();
-    mFixedSize = true;
+    setFixedSize(computeSize());
 }
 
 GuiText::~GuiText()
@@ -35,16 +33,25 @@ void GuiText::setPosition(sf::Vector2f position)
 void GuiText::setCharacterSize(unsigned int characterSize)
 {
     mText.setCharacterSize(characterSize);
-    computeSize();
+    setFixedSize(computeSize());
 }
 
-void GuiText::setText(const sf::String& text)
+const sf::Text& GuiText::getText() const
+{
+    return mText;
+}
+
+const sf::String& GuiText::getString() const
+{
+    return mText.getString();
+}
+
+void GuiText::setString(const sf::String& text)
 {
     if (text != mText.getString())
     {
         mText.setString(text);
-        computeSize();
-        setDirty();
+        setFixedSize(computeSize());
     }
 }
 
@@ -55,10 +62,11 @@ void GuiText::setColor(sf::Color color)
 
 void GuiText::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    GuiWidget::render(target, states);
     target.draw(mText);
 }
 
-void GuiText::computeSize()
+sf::Vector2f GuiText::computeSize() const
 {
-    mSize = sf::Vector2f(mText.getGlobalBounds().width, mText.getCharacterSize() * 5 / 4);
+    return sf::Vector2f(mText.getGlobalBounds().width, mText.getCharacterSize() * 5 / 4);
 }
