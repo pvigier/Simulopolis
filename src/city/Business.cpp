@@ -4,7 +4,8 @@ Business::Business(const std::string& name, Type type, unsigned int nbStairs, Go
     Work::Type employeeType) :
     Building(name, type, nbStairs), mGood(good), mQuantity(0), mPrice(0.0f)
 {
-    //ctor
+    mEmployees.push_back(Work(Work::Type::MANAGER, this));
+    mEmployees.resize(nbEmployees + 1, Work(employeeType, this));
 }
 
 Business::~Business()

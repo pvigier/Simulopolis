@@ -34,7 +34,7 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::WORKSHOP, 2, Good::LUXURY, 2, 4, Work::Type::CRAFTSPERSON)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_BUSINESS, sf::Color(178, 83, 83))));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::MARKET, 1, Good::NECESSARY, 2, Work::Type::GROCER)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::MALL, 3, Good::NECESSARY, 6, Work::Type::CASHIER)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::MALL, 3, Good::NORMAL, 6, Work::Type::CASHIER)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::BOUTIQUE, 2, Good::LUXURY, 4, Work::Type::SALESPERSON)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_HOSPITAL, sf::Color(255, 255, 255))));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Service("hospital", Tile::Type::HOSPITAL, 2, 1, Work::Type::DOCTOR)));
