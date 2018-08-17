@@ -23,7 +23,7 @@ City::Intersection::Intersection(const Building* building) : type(City::Intersec
 City::City() :
     mCurrentTime(0.0), mTimePerMonth(10.0f), mMonth(0), mYear(0),
     mUnemployed(0), mFunds(0), mCityCompany("City", 0),
-    mWeeklyStandardWorkingHours(0), mMinimumWage(0.0f), mIncomeTax(0.0f), mCorporateTax(0.0f)
+    mWeeklyStandardWorkingHours(0), mMinimumWage(0.0), mIncomeTax(0.0f), mCorporateTax(0.0f)
 {
     // Generators
     mPersonGenerator.setUp();
@@ -309,12 +309,12 @@ void City::setWeeklyStandardWorkingHours(unsigned int weeklyStandardWorkingHours
     mWeeklyStandardWorkingHours = weeklyStandardWorkingHours;
 }
 
-float City::getMinimumWage() const
+Money City::getMinimumWage() const
 {
     return mMinimumWage;
 }
 
-void City::setMinimumWage(float minimumWage)
+void City::setMinimumWage(Money minimumWage)
 {
     mMinimumWage = minimumWage;
 }

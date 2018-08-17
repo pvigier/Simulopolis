@@ -23,5 +23,5 @@ private:
     Market<Work>* mMarket;
     GuiTable* mTable;
 
-    void addItem(const Building* building, Work::Type type, float salary, int count);
+    void addItem(const Building* building, Work::Type type, Money salary, int count);
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "city/Money.h"
 
 class Person;
 class Company;
@@ -24,8 +25,8 @@ public:
     const Company* getEmployer() const;
     void setEmployer(Company* employer);
     const Building* getWorkplace() const;
-    void setSalary(float salary);
-    float getSalary() const;
+    void setSalary(Money salary);
+    Money getSalary() const;
     float getNbHoursPerWeek() const;
     bool hasAlreadyWorkedThisMonth() const;
     void setAlreadyWorkedThisMonth(bool alreadyWorkedThisMonth);
@@ -36,7 +37,7 @@ private:
     Person* mEmployee;
     Company* mEmployer;
     Building* mWorkplace;
-    float mSalary;
+    Money mSalary;
     float mNbHoursPerWeek;
     bool mAlreadyWorkedThisMonth;
 };

@@ -40,14 +40,14 @@ void RentalMarketWindow::setUp()
 void RentalMarketWindow::onNewMonth()
 {
     mTable->clear();
-    std::map<std::tuple<const Housing*, float>, int> mCounts;
+    std::map<std::tuple<const Housing*, Money>, int> mCounts;
     for (const Market<Lease>::Item* item : mMarket->getItems())
         ++mCounts[std::make_tuple(item->good->getHousing(), item->good->getRent())];
     for (auto it = mCounts.begin(); it != mCounts.end(); ++it)
         addItem(std::get<0>(it->first), std::get<1>(it->first), it->second);
 }
 
-void RentalMarketWindow::addItem(const Housing* housing, float rent, int count)
+void RentalMarketWindow::addItem(const Housing* housing, Money rent, int count)
 {
     // Add row
     mTable->addRow({

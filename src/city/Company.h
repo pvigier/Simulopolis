@@ -31,10 +31,10 @@ public:
     const std::vector<Building*>& getBuildings() const;
     void addBuilding(Building* building);
 
-    float getRent(Tile::Type housingType);
-    void setRent(Tile::Type housingType, float rent);
-    float getSalary(Work::Qualification qualification);
-    void setSalary(Work::Qualification qualification, float salary);
+    Money getRent(Tile::Type housingType);
+    void setRent(Tile::Type housingType, Money rent);
+    Money getSalary(Work::Qualification qualification);
+    void setSalary(Work::Qualification qualification, Money salary);
 
 private:
     static MessageBus* sMessageBus;
@@ -45,13 +45,14 @@ private:
     City* mCity;
     Person* mOwner;
     Mailbox mMailbox;
+    Money mFunds;
 
     // Buildings
     std::vector<Building*> mBuildings;
 
     // Rent and salaries
-    std::array<float, 3> mRents;
-    std::array<float, 3> mSalaries;
+    std::array<Money, 3> mRents;
+    std::array<Money, 3> mSalaries;
 
     void addToMarket(Lease& lease);
     void addToMarket(Work& work);

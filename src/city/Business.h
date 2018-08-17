@@ -16,7 +16,7 @@ public:
     virtual void setOwner(Company* owner) override;
 
     Good getGood() const;
-    float getPrice() const;
+    Money getPrice() const;
     Work& getManager();
     const Work& getManager() const;
     std::vector<Work>& getEmployees();
@@ -25,6 +25,6 @@ public:
 protected:
     Good mGood;
     unsigned int mQuantity;
-    float mPrice;
+    Money mPrice;
     std::vector<Work> mEmployees;
 };

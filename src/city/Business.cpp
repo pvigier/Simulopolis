@@ -2,7 +2,7 @@
 
 Business::Business(const std::string& name, Type type, unsigned int nbStairs, Good good, std::size_t nbEmployees,
     Work::Type employeeType) :
-    Building(name, type, nbStairs), mGood(good), mQuantity(0), mPrice(0.0f)
+    Building(name, type, nbStairs), mGood(good), mQuantity(0), mPrice(0.0)
 {
     mEmployees.push_back(Work(Work::Type::MANAGER, this));
     mEmployees.resize(nbEmployees + 1, Work(employeeType, this));
@@ -30,7 +30,7 @@ Good Business::getGood() const
     return mGood;
 }
 
-float Business::getPrice() const
+Money Business::getPrice() const
 {
     return mPrice;
 }

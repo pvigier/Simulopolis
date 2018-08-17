@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "city/Money.h"
 
 class Person;
 class Housing;
@@ -18,12 +19,12 @@ public:
     void setHousing(Housing* housing);
     const Company* getOwner() const;
     void setOwner(Company* owner);
-    float getRent() const;
-    void setRent(float rent);
+    Money getRent() const;
+    void setRent(Money rent);
 
 private:
     Person* mTenant;
     Housing* mHousing;
     Company* mOwner;
-    float mRent;
+    Money mRent;
 };

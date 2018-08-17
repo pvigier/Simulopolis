@@ -72,8 +72,8 @@ public:
     // Policy
     unsigned int getWeeklyStandardWorkingHours() const;
     void setWeeklyStandardWorkingHours(unsigned int weeklyStandardWorkingHours);
-    float getMinimumWage() const;
-    void setMinimumWage(float minimumWage);
+    Money getMinimumWage() const;
+    void setMinimumWage(Money minimumWage);
     float getIncomeTax() const;
     void setIncomeTax(float incomeTax);
     float getCorporateTax() const;
@@ -116,7 +116,7 @@ private:
 
     // Policy
     unsigned int mWeeklyStandardWorkingHours;
-    float mMinimumWage;
+    Money mMinimumWage;
     float mIncomeTax;
     float mCorporateTax;
 

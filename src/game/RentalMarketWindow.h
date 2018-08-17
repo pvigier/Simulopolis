@@ -23,5 +23,5 @@ private:
     Market<Lease>* mMarket;
     GuiTable* mTable;
 
-    void addItem(const Housing* housing, float rent, int count);
+    void addItem(const Housing* housing, Money rent, int count);
 };

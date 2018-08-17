@@ -31,7 +31,7 @@ std::string Work::typeToString(Type type)
 }
 
 Work::Work(Type type, Building* workplace) :
-    mType(type), mEmployee(nullptr), mEmployer(nullptr), mWorkplace(workplace), mSalary(0.0f)
+    mType(type), mEmployee(nullptr), mEmployer(nullptr), mWorkplace(workplace), mSalary(0.0)
 {
     switch (mType)
     {
@@ -99,12 +99,12 @@ const Building* Work::getWorkplace() const
     return mWorkplace;
 }
 
-void Work::setSalary(float salary)
+void Work::setSalary(Money salary)
 {
     mSalary = salary;
 }
 
-float Work::getSalary() const
+Money Work::getSalary() const
 {
     return mSalary;
 }

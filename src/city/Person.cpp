@@ -28,7 +28,7 @@ void Person::setMessageBus(MessageBus* messageBus)
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
     mState(State::WAITING), mHome(nullptr), mWork(nullptr), mFavoriteShop(nullptr), mCar(car),
-    mMoney(0.0f), mSleep(1.0f), mHealth(1.0f), mSafety(1.0f), mHunger(1.0f), mHappiness(0.0f),
+    mMoney(0.0), mSleep(1.0f), mHealth(1.0f), mSafety(1.0f), mHunger(1.0f), mHappiness(0.0f),
     mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
@@ -197,14 +197,14 @@ const Car& Person::getCar() const
     return mCar;
 }
 
-float Person::getMoney() const
+Money Person::getMoney() const
 {
     return mMoney;
 }
 
-float Person::getOutcome() const
+Money Person::getOutcome() const
 {
-    float outcome = 0.0f;
+    Money outcome(0.0);
     if (mHome)
         outcome -= mHome->getRent();
     if (mWork)

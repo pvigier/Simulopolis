@@ -68,8 +68,8 @@ public:
     const Car& getCar() const;
 
     // Finance
-    float getMoney() const;
-    float getOutcome() const;
+    Money getMoney() const;
+    Money getOutcome() const;
 
     // Needs
     float getSleep() const;
@@ -118,7 +118,7 @@ private:
     Car mCar;
 
     // Finance
-    float mMoney;
+    Money mMoney;
 
     // Needs (Physiological and security)
     float mSleep;

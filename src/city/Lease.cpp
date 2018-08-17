@@ -2,7 +2,7 @@
 #include "city/Person.h"
 
 Lease::Lease(Housing* housing) :
-    mTenant(nullptr), mHousing(housing), mOwner(nullptr), mRent(0.0f)
+    mTenant(nullptr), mHousing(housing), mOwner(nullptr), mRent(0.0)
 {
 
 }
@@ -45,12 +45,12 @@ void Lease::setOwner(Company* owner)
     mOwner = owner;
 }
 
-float Lease::getRent() const
+Money Lease::getRent() const
 {
     return mRent;
 }
 
-void Lease::setRent(float rent)
+void Lease::setRent(Money rent)
 {
     mRent = rent;
 }

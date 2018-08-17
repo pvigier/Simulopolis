@@ -40,14 +40,14 @@ void LaborMarketWindow::setUp()
 void LaborMarketWindow::onNewMonth()
 {
     mTable->clear();
-    std::map<std::tuple<const Building*, Work::Type, float>, int> mCounts;
+    std::map<std::tuple<const Building*, Work::Type, Money>, int> mCounts;
     for (const Market<Work>::Item* item : mMarket->getItems())
         ++mCounts[std::make_tuple(item->good->getWorkplace(), item->good->getType(), item->good->getSalary())];
     for (auto it = mCounts.begin(); it != mCounts.end(); ++it)
         addItem(std::get<0>(it->first), std::get<1>(it->first), std::get<2>(it->first), it->second);
 }
 
-void LaborMarketWindow::addItem(const Building* building, Work::Type type, float salary, int count)
+void LaborMarketWindow::addItem(const Building* building, Work::Type type, Money salary, int count)
 {
     // Add row
     mTable->addRow({

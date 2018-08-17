@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "util/IdManager.h"
 #include "message/MessageBus.h"
+#include "city/Money.h"
 
 class VMarket
 {
@@ -42,13 +43,13 @@ public:
         Id id;
         Id sellerId;
         T* good;
-        float reservePrice;
+        Money reservePrice;
     };
 
     struct Bid
     {
         Id bidderId;
-        float value;
+        Money value;
     };
 
     struct Auction
@@ -65,12 +66,12 @@ public:
         Type type;
         VMarket::Type marketType;
         T* good;
-        float value;
+        Money value;
     };
 
     using VMarket::VMarket;
 
-    Id addItem(Id sellerId, T* good, float reservePrice)
+    Id addItem(Id sellerId, T* good, Money reservePrice)
     {
         Auction auction{mTime++, Item{UNDEFINED, sellerId, good, reservePrice}, {}};
         Id id = mAuctions.add(auction);
@@ -96,7 +97,7 @@ public:
         mDesiredQuantities[bidderId] = quantity;
     }
 
-    void addBid(Id itemId, Id bidderId, float value)
+    void addBid(Id itemId, Id bidderId, Money value)
     {
         if (mDesiredQuantities.find((bidderId)) == mDesiredQuantities.end())
             mDesiredQuantities[bidderId] = 1;

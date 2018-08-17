@@ -37,10 +37,10 @@ const std::vector<Work>* Company::getEmployees(const Building* building)
 }
 
 Company::Company(std::string name, int creationYear, Person* owner) :
-    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner)
+    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner), mFunds(0.0)
 {
-    mRents.fill(0.0f);
-    mSalaries.fill(0.0f);
+    mRents.fill(Money(0.0));
+    mSalaries.fill(Money(0.0));
     sMessageBus->addMailbox(mMailbox);
 }
 
@@ -125,12 +125,12 @@ void Company::addBuilding(Building* building)
     }
 }
 
-float Company::getRent(Tile::Type housingType)
+Money Company::getRent(Tile::Type housingType)
 {
     return mRents[static_cast<int>(housingType) - static_cast<int>(Tile::Type::AFFORDABLE_HOUSING)];
 }
 
-void Company::setRent(Tile::Type housingType, float rent)
+void Company::setRent(Tile::Type housingType, Money rent)
 {
     mRents[static_cast<int>(housingType) - static_cast<int>(Tile::Type::AFFORDABLE_HOUSING)] = rent;
     for (Building* building : mBuildings)
@@ -143,12 +143,12 @@ void Company::setRent(Tile::Type housingType, float rent)
     }
 }
 
-float Company::getSalary(Work::Qualification qualification)
+Money Company::getSalary(Work::Qualification qualification)
 {
     return mSalaries[static_cast<int>(qualification)];
 }
 
-void Company::setSalary(Work::Qualification qualification, float salary)
+void Company::setSalary(Work::Qualification qualification, Money salary)
 {
     mSalaries[static_cast<int>(qualification)] = salary;
     for (Building* building : mBuildings)
