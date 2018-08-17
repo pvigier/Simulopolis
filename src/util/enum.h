@@ -40,9 +40,9 @@ typename std::enable_if<EnableBitMaskOperators<E>::enable, bool>::type any(E e)
     return static_cast<bool>(static_cast<underlying>(e));
 }
 
-#define ENABLE_BITMASK_OPERATORS(x)  \
-template<>                           \
-struct EnableBitMaskOperators<x>     \
-{                                    \
-    static const bool enable = true; \
+#define ENABLE_BITMASK_OPERATORS(E)                        \
+template<>                                                 \
+struct EnableBitMaskOperators<E>                           \
+{                                                          \
+    static constexpr bool enable = std::is_enum<E>::value; \
 };

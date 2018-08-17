@@ -58,7 +58,7 @@ bool GoalGetBetterWork::handle(Message message)
         {
             mOwner->quitWork();
             mOwner->setWork(event.good);
-            mState == State::COMPLETED;
+            mState = State::COMPLETED;
             return true;
         }
     }

@@ -20,6 +20,11 @@ public:                                    \
         return *this;                      \
     }                                      \
                                            \
+    operator const Type&() const           \
+    {                                      \
+        return mT;                         \
+    }                                      \
+                                           \
     operator Type&()                       \
     {                                      \
         return mT;                         \

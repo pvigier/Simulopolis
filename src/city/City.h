@@ -92,6 +92,8 @@ public:
 
     // Util
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
+    float getTimePerMonth() const;
+    float computeNbHoursInAmonth(float nbHoursInAWeek);
     float toHumanTime(float cityTime) const; // cityTime is expressed in hours
     float toCityTime(float humanTime) const;
 

@@ -99,6 +99,7 @@
 		<Unit filename="src/city/Map.h" />
 		<Unit filename="src/city/Market.cpp" />
 		<Unit filename="src/city/Market.h" />
+		<Unit filename="src/city/Money.h" />
 		<Unit filename="src/city/Network.cpp" />
 		<Unit filename="src/city/Network.h" />
 		<Unit filename="src/city/Person.cpp" />

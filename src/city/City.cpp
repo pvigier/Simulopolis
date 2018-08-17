@@ -398,6 +398,16 @@ sf::Vector2i City::toTileIndices(const sf::Vector2f& position) const
     return sf::Vector2i(x, y);
 }
 
+float City::getTimePerMonth() const
+{
+    return mTimePerMonth;
+}
+
+float City::computeNbHoursInAmonth(float nbHoursInAWeek)
+{
+    return 30.0f / 7.0f * nbHoursInAWeek;
+}
+
 float City::toHumanTime(float cityTime) const
 {
     return cityTime / NB_HOURS_PER_MONTH * mTimePerMonth;
