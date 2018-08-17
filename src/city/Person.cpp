@@ -27,8 +27,9 @@ void Person::setMessageBus(MessageBus* messageBus)
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
-    mState(State::WAITING), mHome(nullptr), mWork(nullptr), mFavoriteShop(nullptr), mCar(car),
-    mMoney(0.0), mSleep(1.0f), mHealth(1.0f), mSafety(1.0f), mHunger(1.0f), mHappiness(0.0f),
+    mState(State::WAITING), mHome(nullptr), mWork(nullptr), mFavoriteShop(nullptr), mCar(car), mMoney(0.0),
+    mEnergyDecayRate(0.1f), mSatietyDecayRate(0.1f), mHealthDecayRate(0.01f), mSafetyDecayRate(0.01f), mHappinessDecayRate(0.01f),
+    mEnergy(1.0f), mSatiety(1.0f), mHealth(1.0f), mSafety(1.0f), mHappiness(0.0f),
     mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
@@ -154,7 +155,7 @@ void Person::leaveHome()
     }
 }
 
-const Work* Person::getWork() const
+Work* Person::getWork()
 {
     return mWork;
 }
@@ -214,14 +215,29 @@ Money Person::getOutcome() const
     return outcome;
 }
 
-float Person::getSleep() const
+float Person::getEnergyDecayRate() const
 {
-    return mSleep;
+    return mEnergyDecayRate;
 }
 
-void Person::increaseSleep(float delta)
+float Person::getEnergy() const
 {
-    mSleep = clamp(mSleep + delta, 0.0f, 1.0f);
+    return mEnergy;
+}
+
+void Person::increaseEnergy(float delta)
+{
+    mEnergy = clamp(mEnergy + delta, 0.0f, 1.0f);
+}
+
+float Person::getSatiety() const
+{
+    return mSatiety;
+}
+
+void Person::increaseSatiety(float delta)
+{
+    mSatiety = clamp(mSatiety + delta, 0.0f, 1.0f);
 }
 
 float Person::getHealth() const
@@ -244,16 +260,6 @@ void Person::increaseSafety(float delta)
     mSafety = clamp(mSafety + delta, 0.0f, 1.0f);
 }
 
-float Person::getHunger() const
-{
-    return mHunger;
-}
-
-void Person::increaseHunger(float delta)
-{
-    mHunger = clamp(mHunger + delta, 0.0f, 1.0f);
-}
-
 float Person::getHappiness() const
 {
     return mHappiness;
@@ -261,7 +267,7 @@ float Person::getHappiness() const
 
 void Person::increaseHappiness(float delta)
 {
-    mHappiness = std::min(0.0f, mHappiness + delta);
+    mHappiness = std::max(0.0f, mHappiness + delta);
 }
 
 Work::Qualification Person::getQualification() const
@@ -291,11 +297,10 @@ const GoalThink& Person::getLongTermBrain() const
 
 void Person::updateNeeds(float dt)
 {
-    static float sum = 0.0f;
-    sum += dt;
-    float dmonth = dt / 10.0f;
-    increaseSleep(-dmonth * 0.1f);
-    increaseHealth(-dmonth * 0.01f);
-    increaseSafety(-dmonth * 0.01f);
-    increaseHunger(-dmonth * 0.1f);
+    float dmonth = dt / mCity->getTimePerMonth();
+    increaseEnergy(-dmonth * mEnergyDecayRate);
+    increaseSatiety(-dmonth * mSatietyDecayRate);
+    increaseHealth(-dmonth * mHealthDecayRate);
+    increaseSafety(-dmonth * mSafetyDecayRate);
+    increaseHappiness(-dmonth * mHappinessDecayRate);
 }

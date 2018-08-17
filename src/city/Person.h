@@ -57,7 +57,7 @@ public:
     const Lease* getHome() const;
     void setHome(Lease* home);
     void leaveHome();
-    const Work* getWork() const;
+    Work* getWork();
     void setWork(Work* work);
     void quitWork();
     std::string getWorkStatus() const;
@@ -71,15 +71,18 @@ public:
     Money getMoney() const;
     Money getOutcome() const;
 
+    // Physiology
+    float getEnergyDecayRate() const;
+
     // Needs
-    float getSleep() const;
-    void increaseSleep(float delta);
+    float getEnergy() const;
+    void increaseEnergy(float delta);
+    float getSatiety() const;
+    void increaseSatiety(float delta);
     float getHealth() const;
     void increaseHealth(float delta);
     float getSafety() const;
     void increaseSafety(float delta);
-    float getHunger() const;
-    void increaseHunger(float delta);
 
     // Happiness
     float getHappiness() const;
@@ -120,11 +123,18 @@ private:
     // Finance
     Money mMoney;
 
+    // Physiology
+    float mEnergyDecayRate;
+    float mSatietyDecayRate;
+    float mHealthDecayRate;
+    float mSafetyDecayRate;
+    float mHappinessDecayRate;
+
     // Needs (Physiological and security)
-    float mSleep;
+    float mEnergy;
+    float mSatiety;
     float mHealth;
     float mSafety;
-    float mHunger;
 
     // Happiness
     float mHappiness;

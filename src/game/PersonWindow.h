@@ -31,10 +31,10 @@ private:
     GuiText* mWorkText;
     GuiText* mShortTermGoalText;
     GuiText* mLongTermGoalText;
-    GuiText* mSleepText;
+    GuiText* mEnergyText;
+    GuiText* mSatietyText;
     GuiText* mHealthText;
     GuiText* mSafetyText;
-    GuiText* mHungerText;
     GuiText* mHappinessText;
     sf::RenderTexture mRenderTexture;
 };

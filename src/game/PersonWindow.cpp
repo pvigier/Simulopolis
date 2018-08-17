@@ -12,7 +12,7 @@ PersonWindow::PersonWindow(StylesheetManager* stylesheetManager, const Person& p
     GuiWindow(person.getFullName(), stylesheetManager->getStylesheet("window")),
     mStylesheetManager(stylesheetManager), mPerson(person), mYear(year), mImage(nullptr),
     mAgeText(nullptr), mWorkText(nullptr), mShortTermGoalText(nullptr), mLongTermGoalText(nullptr),
-    mSleepText(nullptr), mHealthText(nullptr), mSafetyText(nullptr), mHungerText(nullptr), mHappinessText(nullptr)
+    mEnergyText(nullptr), mHealthText(nullptr), mSafetyText(nullptr), mSatietyText(nullptr), mHappinessText(nullptr)
 {
 
 }
@@ -53,15 +53,15 @@ void PersonWindow::setUp()
 
     // Bottom widget
     auto bottomWidget = mGui->createWithDefaultName<GuiWidget>();
-    mSleepText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mEnergyText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mHealthText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mSafetyText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mHungerText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mSatietyText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mHappinessText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    bottomWidget->add(mSleepText);
+    bottomWidget->add(mEnergyText);
     bottomWidget->add(mHealthText);
     bottomWidget->add(mSafetyText);
-    bottomWidget->add(mHungerText);
+    bottomWidget->add(mSatietyText);
     bottomWidget->add(mHappinessText);
     bottomWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
@@ -78,10 +78,10 @@ void PersonWindow::update()
     mWorkText->setString("Work: " + mPerson.getWorkStatus());
     mShortTermGoalText->setString("Short term goal: " + mPerson.getShortTermBrain().toString());
     mLongTermGoalText->setString("Long term goal: " + mPerson.getLongTermBrain().toString());
-    mSleepText->setString(format("Sleep: %.2f", mPerson.getSleep()));
+    mEnergyText->setString(format("Energy: %.2f", mPerson.getEnergy()));
+    mSatietyText->setString(format("Satiety: %.2f", mPerson.getSatiety()));
     mHealthText->setString(format("Health: %.2f", mPerson.getHealth()));
     mSafetyText->setString(format("Safety: %.2f", mPerson.getSafety()));
-    mHungerText->setString(format("Hunger: %.2f", mPerson.getHunger()));
     mHappinessText->setString(format("Happiness: %.2f", mPerson.getHappiness()));
 }
 
