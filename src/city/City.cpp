@@ -19,6 +19,21 @@ City::Intersection::Intersection(const Building* building) : type(City::Intersec
 
 }
 
+City::Event::Event(Type type, unsigned int data) : type(type), month(data)
+{
+
+}
+
+City::Event::Event(Person* person) : type(Type::NEW_IMMIGRANT), person(person)
+{
+
+}
+
+City::Event::Event(Money minimumWage) : type(Type::NEW_MINIMUM_WAGE), minimumWage(minimumWage)
+{
+
+}
+
 City::City() :
     mCurrentTime(0.0), mTimePerMonth(10.0f), mMonth(0), mYear(0),
     mUnemployed(0), mFunds(0), mCityCompany("City", 0),
@@ -172,6 +187,11 @@ void City::update(float dt)
     for (Person* citizen : mCitizens)
         citizen->update(dt);
 
+    // Update the companies
+    mCityCompany.update(dt);
+    for (std::unique_ptr<Company>& company : mCompanies)
+        company->update(dt);
+
     // Update the map
     for (unsigned int i = 0; i < mMap.getHeight(); ++i)
     {
@@ -316,6 +336,10 @@ Money City::getMinimumWage() const
 void City::setMinimumWage(Money minimumWage)
 {
     mMinimumWage = minimumWage;
+    // Send messages
+    sMessageBus->send(Message::create(mCityCompany.getMailboxId(), MessageType::CITY, Event(mMinimumWage)));
+    for (std::unique_ptr<Company>& company : mCompanies)
+        sMessageBus->send(Message::create(company->getMailboxId(), MessageType::CITY, Event(mMinimumWage)));
 }
 
 float City::getIncomeTax() const
@@ -442,13 +466,16 @@ void City::onNewMonth()
         market->update();
 
     // Send messages
-    notify(Message::create(MessageType::CITY, Event{Event::Type::NEW_MONTH, mMonth}));
+    notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
     for (Person* citizen : mCitizens)
-        sMessageBus->send(Message::create(citizen->getMailboxId(), MessageType::CITY, Event{Event::Type::NEW_MONTH, mMonth}));
+        sMessageBus->send(Message::create(citizen->getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
+    sMessageBus->send(Message::create(mCityCompany.getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
+    for (std::unique_ptr<Company>& company : mCompanies)
+        sMessageBus->send(Message::create(company->getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
 }
 
 void City::onNewYear()
 {
     // Send messages
-    notify(Message::create(MessageType::CITY, Event{Event::Type::NEW_YEAR, mYear}));
+    notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_YEAR, mYear)));
 }

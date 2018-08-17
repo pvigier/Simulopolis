@@ -50,7 +50,22 @@ void Company::update(float dt)
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();
-        if (message.type == MessageType::PERSON)
+        if (message.type == MessageType::CITY)
+        {
+            const City::Event& event = message.getInfo<City::Event>();
+            switch (event.type)
+            {
+                case City::Event::Type::NEW_MONTH:
+                    onNewMonth();
+                    break;
+                case City::Event::Type::NEW_MINIMUM_WAGE:
+                    onNewMinimumWage(event.minimumWage);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (message.type == MessageType::PERSON)
         {
             const Person::Event& event = message.getInfo<Person::Event>();
             switch (event.type)
@@ -179,4 +194,28 @@ void Company::addToMarket(Work& work)
 {
     Market<Work>* market = static_cast<Market<Work>*>(mCity->getMarket(VMarket::Type::WORK));
     market->addItem(mMailbox.getId(), &work, work.getSalary());
+}
+
+void Company::onNewMonth()
+{
+    for (Building* building : mBuildings)
+    {
+        if (!building->isHousing())
+        {
+            for (Work& work : *getEmployees(building))
+                work.setAlreadyWorkedThisMonth(false);
+        }
+    }
+}
+
+void Company::onNewMinimumWage(Money minimumWage)
+{
+    for (Building* building : mBuildings)
+    {
+        if (!building->isHousing())
+        {
+            for (Work& work : *getEmployees(building))
+                work.setSalary(std::max(work.getSalary(), minimumWage));
+        }
+    }
 }

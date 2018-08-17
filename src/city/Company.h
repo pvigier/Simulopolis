@@ -37,9 +37,6 @@ public:
     Money getSalary(Work::Qualification qualification);
     void setSalary(Work::Qualification qualification, Money salary);
 
-    // Events
-    void onNewMinimumWage(Money minimumWage);
-
 private:
     static MessageBus* sMessageBus;
 
@@ -60,4 +57,8 @@ private:
 
     void addToMarket(Lease& lease);
     void addToMarket(Work& work);
+
+    // Events
+    void onNewMonth();
+    void onNewMinimumWage(Money minimumWage);
 };
