@@ -6,6 +6,7 @@
 #include "ai/GoalRestEvaluator.h"
 #include "ai/GoalWorkEvaluator.h"
 #include "ai/GoalShopEvaluator.h"
+#include "ai/GoalEnterCityEvaluator.h"
 #include "ai/GoalGetBetterWorkEvaluator.h"
 
 Person::Event::Event(Type type, Lease& lease) : type(type), lease(lease)
@@ -39,6 +40,7 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mShortTermBrain.addEvaluator(new GoalRestEvaluator(1.0f));
     mShortTermBrain.addEvaluator(new GoalWorkEvaluator(1.0f));
     mShortTermBrain.addEvaluator(new GoalShopEvaluator(1.0f));
+    mLongTermBrain.addEvaluator(new GoalEnterCityEvaluator(1.0f));
     mLongTermBrain.addEvaluator(new GoalGetBetterWorkEvaluator(1.0f));
 }
 

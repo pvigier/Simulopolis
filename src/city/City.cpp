@@ -3,7 +3,6 @@
 #include <sstream>
 #include <iostream>
 #include "city/Building.h"
-#include "ai/GoalEnterCity.h"
 
 City::Intersection::Intersection() : type(City::Intersection::Type::NONE), car(nullptr)
 {
@@ -350,10 +349,6 @@ void City::welcome(Person* person)
     mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
     mCitizens.push_back(person);
     person->setCity(this);
-    person->getLongTermBrain().activate();
-    person->getLongTermBrain().clearSubgoals();
-    person->getLongTermBrain().pushFront(new GoalEnterCity(person));
-    person->getLongTermBrain().process();
 }
 
 unsigned int City::getPopulation() const

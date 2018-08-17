@@ -29,7 +29,7 @@ Goal::State GoalEnterCity::process()
     if (!mHomeFound)
     {
         for (const Market<Lease>::Item* item : mMarket->getItems())
-            mMarket->addBid(item->id, mOwner->getMailboxId(), 0.0f);
+            mMarket->addBid(item->id, mOwner->getMailboxId(), item->reservePrice);
     }
     // Wait until the home is reachable
     else
