@@ -24,6 +24,7 @@ public:
     void update(float dt);
 
     const std::string& getName() const;
+    City* getCity();
     void setCity(City* city);
     Person* getOwner() const;
     void setOwner(Person* owner);
@@ -35,6 +36,9 @@ public:
     void setRent(Tile::Type housingType, Money rent);
     Money getSalary(Work::Qualification qualification);
     void setSalary(Work::Qualification qualification, Money salary);
+
+    // Events
+    void onNewMinimumWage(Money minimumWage);
 
 private:
     static MessageBus* sMessageBus;

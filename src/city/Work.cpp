@@ -109,11 +109,6 @@ Money Work::getSalary() const
     return mSalary;
 }
 
-float Work::getNbHoursPerWeek() const
-{
-    return mNbHoursPerWeek;
-}
-
 bool Work::hasAlreadyWorkedThisMonth() const
 {
     return mAlreadyWorkedThisMonth;

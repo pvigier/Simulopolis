@@ -19,11 +19,12 @@ GoalWork::~GoalWork()
 void GoalWork::activate()
 {
     mState = State::ACTIVE;
+    mOwner->getWork()->setAlreadyWorkedThisMonth(true);
     // Add subgoals
     clearSubgoals();
     const Work* work = mOwner->getWork();
     pushBack(new GoalMoveTo(mOwner, work->getWorkplace()));
-    pushBack(new GoalWait(mOwner, 4.0f * work->getNbHoursPerWeek()));
+    pushBack(new GoalWait(mOwner, mOwner->getCity()->computeNbHoursInAmonth(mOwner->getCity()->getWeeklyStandardWorkingHours())));
 }
 
 Goal::State GoalWork::process()

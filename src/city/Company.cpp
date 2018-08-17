@@ -75,6 +75,11 @@ const std::string& Company::getName() const
     return mName;
 }
 
+City* Company::getCity()
+{
+    return mCity;
+}
+
 void Company::setCity(City* city)
 {
     mCity = city;
