@@ -1,10 +1,11 @@
-#include "GoalRest.h"
+#include "ai/GoalRest.h"
+#include "city/City.h"
 #include "city/Person.h"
 #include "city/Housing.h"
-#include "GoalMoveTo.h"
-#include "GoalWait.h"
+#include "ai/GoalMoveTo.h"
+#include "ai/GoalWait.h"
 
-GoalRest::GoalRest(Person* owner) : Goal(owner)
+GoalRest::GoalRest(Person* owner) : Goal(owner), mAtHome(false)
 {
     //ctor
 }
@@ -17,12 +18,10 @@ GoalRest::~GoalRest()
 void GoalRest::activate()
 {
     mState = State::ACTIVE;
-    // Compute the number of hours needed to be rested
-    float nbHours = (1.0f - mOwner->getSleep()) * 1000.0f; // Temporary
+
     // Add subgoals
     clearSubgoals();
     pushBack(new GoalMoveTo(mOwner, mOwner->getHome()->getHousing()));
-    pushBack(new GoalWait(mOwner, nbHours));
 }
 
 Goal::State GoalRest::process()
@@ -30,12 +29,39 @@ Goal::State GoalRest::process()
     activateIfInactive();
 
     mState = processSubgoals();
+
+    if (mAtHome)
+    {
+        // Update sleep and happiness
+        float dt = mClock.restart().asSeconds();
+        if (mSubgoals.size() == 1)
+        {
+            float dmonth = dt / mOwner->getCity()->getTimePerMonth();
+            mOwner->increaseEnergy(Housing::ENERGY_GROWTH_RATE * dmonth);
+            mOwner->increaseHappiness(mOwner->getHome()->getHousing()->getComfort() * dmonth);
+        }
+    }
+
+    // If we just arrive at home
+    if (isCompleted() && !mAtHome)
+    {
+        mClock.restart();
+        mState = State::ACTIVE;
+        mAtHome = true;
+        mOwner->setState(Person::State::WAITING);
+        // Compute the number of hours needed to be rested
+        float nbMonths = (1.0f - mOwner->getEnergy()) / (Housing::ENERGY_GROWTH_RATE - mOwner->getEnergyDecayRate());
+        float nbHours =  nbMonths * City::NB_HOURS_PER_MONTH;
+        // Add subgoal
+        pushBack(new GoalWait(mOwner, nbHours));
+    }
+
     return mState;
 }
 
 void GoalRest::terminate()
 {
-    mOwner->increaseHappiness(mOwner->getHome()->getHousing()->getComfort());
+
 }
 
 std::string GoalRest::toString() const
