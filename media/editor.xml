@@ -82,6 +82,10 @@
                         <image size="26 26" />
                         <hboxlayout hAlignment="center" vAlignment="center" />
                     </button>
+                    <button name="waterButton" size="32 32" style="button">
+                        <image size="26 26" />
+                        <hboxlayout hAlignment="center" vAlignment="center" />
+                    </button>
                     <hboxlayout spacing="2" />
                 </widget>
                 <vboxlayout margins="13 13 13 13" spacing="16" />

@@ -137,6 +137,8 @@ void GameStateEditor::handleMessages()
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, ~(Tile::Category::WATER | Tile::Category::BRIDGE));
                         else if (mCurrentTile == Tile::Type::BRIDGE)
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::WATER);
+                        else if (mCurrentTile == Tile::Type::WATER)
+                            mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::BRIDGE);
                         else
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::GROUND);
                         // Update the GUI
