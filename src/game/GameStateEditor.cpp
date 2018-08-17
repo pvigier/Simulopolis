@@ -134,8 +134,8 @@ void GameStateEditor::handleMessages()
                         mSelectionEnd = mCity.toTileIndices(gamePos);
                         mCity.getMap().deselect();
                         if (mCurrentTile == Tile::Type::GRASS)
-                            mCity.getMap().select(mSelectionStart, mSelectionEnd, ~Tile::Category::WATER);
-                        else if (mCurrentTile == Tile::Type::ROAD_WATER)
+                            mCity.getMap().select(mSelectionStart, mSelectionEnd, ~(Tile::Category::WATER | Tile::Category::BRIDGE));
+                        else if (mCurrentTile == Tile::Type::BRIDGE)
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::WATER);
                         else
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::GROUND);

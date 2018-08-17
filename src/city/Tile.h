@@ -9,8 +9,8 @@ class ImageManager;
 class Tile : public sf::Drawable
 {
 public:
-    enum class Category : unsigned int {GROUND = 1, WATER = 2, BUILDING = 4, ROAD = 8, OBSTACLE = 16,
-        CALL_FOR_BIDS = 32};
+    enum class Category : unsigned int {GROUND = 1, WATER = 2, BUILDING = 4, ROAD = 8, BRIDGE = 16,
+        OBSTACLE = 32, CALL_FOR_BIDS = 64};
     enum class Type : int {VOID, GRASS, FOREST, WATER, DIRT,
         CFB_HOUSING, AFFORDABLE_HOUSING, APARTMENT_BUILDING, VILLA,
         CFB_INDUSTRY, FARM, FACTORY, WORKSHOP,
@@ -18,7 +18,7 @@ public:
         CFB_HOSPITAL, HOSPITAL,
         CFB_POLICE_STATION, POLICE_STATION,
         CFB_SCHOOL, SCHOOL,
-        ROAD_GRASS, ROAD_SIDEWALK, ROAD_WATER};
+        ROAD_GRASS, ROAD_SIDEWALK, BRIDGE};
     enum class State{DESELECTED, SELECTED, INVALID};
     static constexpr unsigned int SIZE = 64;
     static constexpr float TILE_HEIGHT = 101.f;

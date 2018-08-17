@@ -232,7 +232,7 @@
                         <image size="26 26" />
                         <hboxlayout hAlignment="center" vAlignment="center" />
                     </button>
-                    <button name="roadWaterButton" size="32 32" style="button">
+                    <button name="bridgeButton" size="32 32" style="button">
                         <image size="26 26" />
                         <hboxlayout hAlignment="center" vAlignment="center" />
                     </button>

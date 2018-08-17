@@ -44,7 +44,7 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Service("school", Tile::Type::SCHOOL, 2, 1, Work::Type::TEACHER)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_GRASS)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_SIDEWALK)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::ROAD_WATER)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Road("road", Tile::Type::BRIDGE)));
 }
 
 const Map::TileAtlas& Map::getTileAtlas()

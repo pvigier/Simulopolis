@@ -78,8 +78,8 @@ Tile::Type Tile::stringToType(const std::string& s)
         return Type::ROAD_GRASS;
     else if (s == "roadSidewalk")
         return Type::ROAD_SIDEWALK;
-    else if (s == "roadWater")
-        return Type::ROAD_WATER;
+    else if (s == "bridge")
+        return Type::BRIDGE;
     else
         return Type::VOID;
 }
@@ -138,8 +138,8 @@ std::string Tile::typeToString(Tile::Type type)
             return "Road";
         case Type::ROAD_SIDEWALK:
             return "Road with sidewalk";
-        case Type::ROAD_WATER:
-            return "Road on water";
+        case Type::BRIDGE:
+            return "Bridge";
         default:
             return "";
     }
@@ -251,7 +251,14 @@ bool Tile::isCallForBids() const
 
 bool Tile::isRoad() const
 {
-    return mCategory == Category::ROAD;
+    switch (mCategory)
+    {
+        case Category::ROAD:
+        case Category::BRIDGE:
+            return true;
+        default:
+            return false;
+    }
 }
 
 bool Tile::hasSidewalk() const

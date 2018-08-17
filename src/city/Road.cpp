@@ -6,8 +6,11 @@ Road::Road(const std::string& name, Type type) :
     sf::IntRect rect(0, 0, 132, 101);
     if (type == Type::ROAD_SIDEWALK)
         rect.left = 132;
-    else if (type == Type::ROAD_WATER)
+    else if (type == Type::BRIDGE)
+    {
         rect.left = 264;
+        mCategory = Category::BRIDGE;
+    }
     mSprite.setTextureRect(rect);
 }
 
