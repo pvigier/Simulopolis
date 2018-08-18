@@ -18,7 +18,7 @@ void GoalGetBetterWork::activate()
 {
     mState = State::ACTIVE;
     // Choose the right market
-    mMarket = static_cast<Market<Work>*>(mOwner->getCity()->getMarket(VMarket::Type::WORK));
+    mMarket = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(VMarket::Type::WORK));
 }
 
 Goal::State GoalGetBetterWork::process()
@@ -34,7 +34,7 @@ Goal::State GoalGetBetterWork::process()
         {
             if (static_cast<int>(qualification) >= static_cast<int>(item->good->getQualification()) &&
                 (!work || item->good->getSalary() > work->getSalary()))
-                mMarket->addBid(item->id, mOwner->getMailboxId(), item->reservePrice);
+                mOwner->getMessageBus()->send(Message::create(mOwner->getMailboxId(), mMarket->getMailboxId(), MessageType::MARKET, mMarket->createBidEvent(item->id, item->reservePrice)));
         }
     }
     else if (mNbMonthsBeforeFailing == 0)
@@ -57,7 +57,7 @@ bool GoalGetBetterWork::handle(Message message)
         if (event.type == Market<Work>::Event::Type::PURCHASE)
         {
             mOwner->quitWork();
-            mOwner->setWork(event.good);
+            mOwner->setWork(event.sale.good);
             mState = State::COMPLETED;
             return true;
         }

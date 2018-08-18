@@ -21,5 +21,5 @@ public:
 
 private:
     unsigned int mNbMonthsBeforeFailing;
-    Market<Work>* mMarket;
+    const Market<Work>* mMarket;
 };

@@ -37,6 +37,8 @@ public:
 
     void update(float dt);
 
+    MessageBus* getMessageBus();
+
     // Personal data
     Id getId() const;
     void setId(Id id);
@@ -45,8 +47,8 @@ public:
     std::string getFullName() const;
     Gender getGender() const;
     int getAge(int year) const;
-    City* getCity();
-    void setCity(City* city);
+    const City* getCity() const;
+    void setCity(const City* city);
     Id getMailboxId() const;
 
     // State
@@ -106,7 +108,7 @@ private:
     std::string mLastName;
     Gender mGender;
     int mBirth;
-    City* mCity;
+    const City* mCity;
     Mailbox mMailbox;
 
     // State

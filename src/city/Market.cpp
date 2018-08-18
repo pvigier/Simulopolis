@@ -9,5 +9,10 @@ void VMarket::setMessageBus(MessageBus* messageBus)
 
 VMarket::VMarket(Type type) : mTime(0), mType(type)
 {
+    sMessageBus->addMailbox(mMailbox);
+}
 
+const Id VMarket::getMailboxId() const
+{
+    return mMailbox.getId();
 }

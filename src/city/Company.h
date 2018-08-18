@@ -24,10 +24,10 @@ public:
     void update(float dt);
 
     const std::string& getName() const;
-    City* getCity();
-    void setCity(City* city);
-    Person* getOwner() const;
-    void setOwner(Person* owner);
+    const City* getCity();
+    void setCity(const City* city);
+    const Person* getOwner() const;
+    void setOwner(const Person* owner);
     Id getMailboxId() const;
     const std::vector<Building*>& getBuildings() const;
     void addBuilding(Building* building);
@@ -43,8 +43,8 @@ private:
     // Data
     std::string mName;
     int mCreationYear;
-    City* mCity;
-    Person* mOwner;
+    const City* mCity;
+    const Person* mOwner;
     Mailbox mMailbox;
     Money mFunds;
 

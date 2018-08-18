@@ -18,7 +18,7 @@ void GoalEnterCity::activate()
 {
     mState = State::ACTIVE;
     // Choose the right market
-    mMarket = static_cast<Market<Lease>*>(mOwner->getCity()->getMarket(VMarket::Type::RENT));
+    mMarket = static_cast<const Market<Lease>*>(mOwner->getCity()->getMarket(VMarket::Type::RENT));
 }
 
 Goal::State GoalEnterCity::process()
@@ -29,7 +29,7 @@ Goal::State GoalEnterCity::process()
     if (!mHomeFound)
     {
         for (const Market<Lease>::Item* item : mMarket->getItems())
-            mMarket->addBid(item->id, mOwner->getMailboxId(), item->reservePrice);
+            mOwner->getMessageBus()->send(Message::create(mOwner->getMailboxId(), mMarket->getMailboxId(), MessageType::MARKET, mMarket->createBidEvent(item->id, item->reservePrice)));
     }
     // Wait until the home is reachable
     else
@@ -63,7 +63,7 @@ bool GoalEnterCity::handle(Message message)
         if (event.type == Market<Lease>::Event::Type::PURCHASE)
         {
             mHomeFound = true;
-            mOwner->setHome(event.good);
+            mOwner->setHome(event.sale.good);
             return true;
         }
     }

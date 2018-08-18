@@ -77,6 +77,11 @@ void Person::update(float dt)
     updateNeeds(dt);
 }
 
+MessageBus* Person::getMessageBus()
+{
+    return sMessageBus;
+}
+
 Id Person::getId() const
 {
     return mId;
@@ -107,12 +112,12 @@ Person::Gender Person::getGender() const
     return mGender;
 }
 
-City* Person::getCity()
+const City* Person::getCity() const
 {
     return mCity;
 }
 
-void Person::setCity(City* city)
+void Person::setCity(const City* city)
 {
     mCity = city;
 }

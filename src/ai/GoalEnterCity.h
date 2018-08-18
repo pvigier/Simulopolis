@@ -20,6 +20,6 @@ public:
     virtual std::string toString() const override;
 
 private:
-    Market<Lease>* mMarket;
+    const Market<Lease>* mMarket;
     bool mHomeFound;
 };

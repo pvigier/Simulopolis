@@ -27,9 +27,14 @@ public:
     static void setMessageBus(MessageBus* messageBus);
 
     virtual void update() = 0;
+    virtual void sellItems() = 0;
+
+    const Id getMailboxId() const;
 
 protected:
     static MessageBus* sMessageBus;
+
+    Mailbox mMailbox;
     unsigned int mTime;
     Type mType;
 };
@@ -61,12 +66,35 @@ public:
 
     struct Event
     {
-        enum class Type{PURCHASE, SALE};
+        enum class Type{ADD_ITEM, BID, PURCHASE, SALE};
 
-        Type type;
+        struct AddItemEvent
+        {
+            T* good;
+            Money reservePrice;
+        };
+
+        struct BidEvent
+        {
+            Id itemId;
+            Money value;
+        };
+
+        struct SaleEvent
+        {
+            T* good;
+            Money value;
+        };
+
         VMarket::Type marketType;
-        T* good;
-        Money value;
+        Type type;
+
+        union
+        {
+            AddItemEvent item;
+            BidEvent bid;
+            SaleEvent sale;
+        };
     };
 
     using VMarket::VMarket;
@@ -111,6 +139,29 @@ public:
 
     virtual void update() override
     {
+        while (!mMailbox.isEmpty())
+        {
+            Message message = mMailbox.get();
+            if (message.type == MessageType::MARKET)
+            {
+                const Event& event = message.getInfo<Event>();
+                switch (event.type)
+                {
+                    case Event::Type::ADD_ITEM:
+                        addItem(message.sender, event.item.good, event.item.reservePrice);
+                        break;
+                    case Event::Type::BID:
+                        addBid(event.bid.itemId, message.sender, event.bid.value);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    virtual void sellItems() override
+    {
         // Sort auctions by timestamp
         std::vector<Auction*> auctions;
         for (Auction& auction : mAuctions.getObjects())
@@ -127,8 +178,10 @@ public:
                 Item& item = auction->item;
                 if (bid.value >= item.reservePrice && mDesiredQuantities[bid.bidderId] > 0)
                 {
-                    sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, Event{Event::Type::PURCHASE, mType, item.good, bid.value}));
-                    sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, Event{Event::Type::SALE, mType, item.good, bid.value}));
+                    Event event{mType, Event::Type::PURCHASE};
+                    event.sale = typename Event::SaleEvent{item.good, bid.value};
+                    sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, event));
+                    sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, event));
                     mDesiredQuantities[bid.bidderId]--;
                     soldItems.push_back(item.id);
                 }
@@ -145,6 +198,20 @@ public:
         for (Auction& auction : mAuctions.getObjects())
             auction.bids.clear();
         mDesiredQuantities.clear();
+    }
+
+    Event createAddItemEvent(T* good, Money reservePrice) const
+    {
+        Event event{mType, Event::Type::ADD_ITEM};
+        event.item = typename Event::AddItemEvent{good, reservePrice};
+        return event;
+    }
+
+    Event createBidEvent(Id itemId, Money value) const
+    {
+        Event event{mType, Event::Type::BID};
+        event.bid = typename Event::BidEvent{itemId, value};
+        return event;
     }
 
 private:

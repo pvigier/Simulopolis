@@ -174,15 +174,6 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void City::update(float dt)
 {
-    // Update the date
-    mCurrentTime += dt;
-    while (mCurrentTime >= mTimePerMonth)
-    {
-        mCurrentTime -= mTimePerMonth;
-        ++mMonth;
-        onNewMonth();
-    }
-
     // Update the citizens
     for (Person* citizen : mCitizens)
         citizen->update(dt);
@@ -191,6 +182,19 @@ void City::update(float dt)
     mCityCompany.update(dt);
     for (std::unique_ptr<Company>& company : mCompanies)
         company->update(dt);
+
+    // Update markets
+    for (std::unique_ptr<VMarket>& market : mMarkets)
+        market->update();
+
+    // Update the date
+    mCurrentTime += dt;
+    while (mCurrentTime >= mTimePerMonth)
+    {
+        mCurrentTime -= mTimePerMonth;
+        ++mMonth;
+        onNewMonth();
+    }
 
     // Update the map
     for (unsigned int i = 0; i < mMap.getHeight(); ++i)
@@ -405,7 +409,7 @@ Building* City::getBuilding(Id id)
     return mBuildings.get(id);
 }
 
-VMarket* City::getMarket(VMarket::Type type)
+const VMarket* City::getMarket(VMarket::Type type) const
 {
     return mMarkets[static_cast<int>(type)].get();
 }
@@ -422,7 +426,7 @@ float City::getTimePerMonth() const
     return mTimePerMonth;
 }
 
-float City::computeNbHoursInAmonth(float nbHoursInAWeek)
+float City::computeNbHoursInAmonth(float nbHoursInAWeek) const
 {
     return 30.0f / 7.0f * nbHoursInAWeek;
 }
@@ -463,7 +467,7 @@ void City::onNewMonth()
 
     // Update markets
     for (std::unique_ptr<VMarket>& market : mMarkets)
-        market->update();
+        market->sellItems();
 
     // Send messages
     notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));

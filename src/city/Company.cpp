@@ -90,22 +90,22 @@ const std::string& Company::getName() const
     return mName;
 }
 
-City* Company::getCity()
+const City* Company::getCity()
 {
     return mCity;
 }
 
-void Company::setCity(City* city)
+void Company::setCity(const City* city)
 {
     mCity = city;
 }
 
-Person* Company::getOwner() const
+const Person* Company::getOwner() const
 {
     return mOwner;
 }
 
-void Company::setOwner(Person* owner)
+void Company::setOwner(const Person* owner)
 {
     mOwner = owner;
 }
@@ -186,14 +186,14 @@ void Company::setSalary(Work::Qualification qualification, Money salary)
 
 void Company::addToMarket(Lease& lease)
 {
-    Market<Lease>* market = static_cast<Market<Lease>*>(mCity->getMarket(VMarket::Type::RENT));
-    market->addItem(mMailbox.getId(), &lease, lease.getRent());
+    const Market<Lease>* market = static_cast<const Market<Lease>*>(mCity->getMarket(VMarket::Type::RENT));
+    sMessageBus->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(&lease, lease.getRent())));
 }
 
 void Company::addToMarket(Work& work)
 {
-    Market<Work>* market = static_cast<Market<Work>*>(mCity->getMarket(VMarket::Type::WORK));
-    market->addItem(mMailbox.getId(), &work, work.getSalary());
+    const Market<Work>* market = static_cast<const Market<Work>*>(mCity->getMarket(VMarket::Type::WORK));
+    sMessageBus->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(&work, work.getSalary())));
 }
 
 void Company::onNewMonth()

@@ -93,12 +93,12 @@ public:
     const std::vector<Person*>& getCitizens() const;
     const std::vector<Person*>& getImmigrants() const;
     Building* getBuilding(Id id);
-    VMarket* getMarket(VMarket::Type type);
+    const VMarket* getMarket(VMarket::Type type) const;
 
     // Util
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
     float getTimePerMonth() const;
-    float computeNbHoursInAmonth(float nbHoursInAWeek);
+    float computeNbHoursInAmonth(float nbHoursInAWeek) const;
     float toHumanTime(float cityTime) const; // cityTime is expressed in hours
     float toCityTime(float humanTime) const;
 
