@@ -11,7 +11,7 @@
 #include "util/format.h"
 
 ImmigrantsWindow::ImmigrantsWindow(Id listenerId, StylesheetManager* stylesheetManager,
-    std::vector<Person*> immigrants, int year, Market<Lease>* market) :
+    std::vector<Person*> immigrants, int year, const Market<Lease>* market) :
     GuiWindow("Immigrants", stylesheetManager->getStylesheet("window")), mListenerId(listenerId),
     mStylesheetManager(stylesheetManager), mImmigrants(std::move(immigrants)), mYear(year), mMarket(market),
     mTable(nullptr), mText(nullptr)

@@ -11,7 +11,7 @@ class Building;
 class LaborMarketWindow : public GuiWindow
 {
 public:
-    LaborMarketWindow(StylesheetManager* stylesheetManager, Market<Work>* market);
+    LaborMarketWindow(StylesheetManager* stylesheetManager, const Market<Work>* market);
     ~LaborMarketWindow();
 
     virtual void setUp() override;
@@ -20,7 +20,7 @@ public:
 
 private:
     StylesheetManager* mStylesheetManager;
-    Market<Work>* mMarket;
+    const Market<Work>* mMarket;
     GuiTable* mTable;
 
     void addItem(const Building* building, Work::Type type, Money salary, int count);

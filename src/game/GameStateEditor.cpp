@@ -417,7 +417,7 @@ void GameStateEditor::openBuildingWindow(const Building& building)
 void GameStateEditor::openImmigrantsWindow()
 {
     if (!mImmigrantsWindow)
-        mImmigrantsWindow = mGui->createRootWithDefaultName<ImmigrantsWindow>(mMailbox.getId(), sStylesheetManager, mCity.getImmigrants(), mCity.getYear(), static_cast<Market<Lease>*>(mCity.getMarket(VMarket::Type::RENT)));
+        mImmigrantsWindow = mGui->createRootWithDefaultName<ImmigrantsWindow>(mMailbox.getId(), sStylesheetManager, mCity.getImmigrants(), mCity.getYear(), static_cast<const Market<Lease>*>(mCity.getMarket(VMarket::Type::RENT)));
 }
 
 void GameStateEditor::openCitizensWindow()
@@ -430,7 +430,7 @@ void GameStateEditor::openRentalMarketWindow()
 {
     if (!mRentalMarketWindow)
     {
-        mRentalMarketWindow = mGui->createRootWithDefaultName<RentalMarketWindow>(sStylesheetManager, static_cast<Market<Lease>*>(mCity.getMarket(VMarket::Type::RENT)));
+        mRentalMarketWindow = mGui->createRootWithDefaultName<RentalMarketWindow>(sStylesheetManager, static_cast<const Market<Lease>*>(mCity.getMarket(VMarket::Type::RENT)));
         mRentalMarketWindow->subscribe(mMailbox.getId());
     }
 }
@@ -439,7 +439,7 @@ void GameStateEditor::openLaborMarketWindow()
 {
     if (!mLaborMarketWindow)
     {
-        mLaborMarketWindow = mGui->createRootWithDefaultName<LaborMarketWindow>(sStylesheetManager, static_cast<Market<Work>*>(mCity.getMarket(VMarket::Type::WORK)));
+        mLaborMarketWindow = mGui->createRootWithDefaultName<LaborMarketWindow>(sStylesheetManager, static_cast<const Market<Work>*>(mCity.getMarket(VMarket::Type::WORK)));
         mLaborMarketWindow->subscribe(mMailbox.getId());
     }
 }

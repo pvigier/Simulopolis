@@ -29,6 +29,7 @@ private:
     GuiImage* mImage;
     GuiText* mAgeText;
     GuiText* mWorkText;
+    GuiText* mBankAccountText;
     GuiText* mShortTermGoalText;
     GuiText* mLongTermGoalText;
     GuiText* mEnergyText;

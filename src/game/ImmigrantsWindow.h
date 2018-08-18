@@ -13,7 +13,7 @@ class ImmigrantsWindow : public GuiWindow
 {
 public:
     ImmigrantsWindow(Id listenerId, StylesheetManager* stylesheetManager,
-        std::vector<Person*> immigrants, int year, Market<Lease>* market);
+        std::vector<Person*> immigrants, int year, const Market<Lease>* market);
     ~ImmigrantsWindow();
 
     virtual void setUp() override;
@@ -29,7 +29,7 @@ private:
     StylesheetManager* mStylesheetManager;
     std::vector<Person*> mImmigrants;
     int mYear;
-    Market<Lease>* mMarket;
+    const Market<Lease>* mMarket;
     GuiTable* mTable;
     GuiText* mText;
 };

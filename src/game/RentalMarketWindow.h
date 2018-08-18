@@ -11,7 +11,7 @@ class Housing;
 class RentalMarketWindow : public GuiWindow
 {
 public:
-    RentalMarketWindow(StylesheetManager* stylesheetManager, Market<Lease>* market);
+    RentalMarketWindow(StylesheetManager* stylesheetManager, const Market<Lease>* market);
     ~RentalMarketWindow();
 
     virtual void setUp() override;
@@ -20,7 +20,7 @@ public:
 
 private:
     StylesheetManager* mStylesheetManager;
-    Market<Lease>* mMarket;
+    const Market<Lease>* mMarket;
     GuiTable* mTable;
 
     void addItem(const Housing* housing, Money rent, int count);

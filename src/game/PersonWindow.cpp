@@ -12,7 +12,7 @@ PersonWindow::PersonWindow(StylesheetManager* stylesheetManager, const Person& p
     GuiWindow(person.getFullName(), stylesheetManager->getStylesheet("window")),
     mStylesheetManager(stylesheetManager), mPerson(person), mYear(year), mImage(nullptr),
     mAgeText(nullptr), mWorkText(nullptr), mShortTermGoalText(nullptr), mLongTermGoalText(nullptr),
-    mEnergyText(nullptr), mHealthText(nullptr), mSafetyText(nullptr), mSatietyText(nullptr), mHappinessText(nullptr)
+    mEnergyText(nullptr), mSatietyText(nullptr), mHealthText(nullptr), mSafetyText(nullptr), mHappinessText(nullptr)
 {
 
 }
@@ -35,12 +35,14 @@ void PersonWindow::setUp()
     auto lastNameText = mGui->createWithDefaultName<GuiText>("Last name: " + mPerson.getLastName(), 12, mStylesheetManager->getStylesheet("darkText"));
     mAgeText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mWorkText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mBankAccountText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mShortTermGoalText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mLongTermGoalText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     infoWidget->add(firstNameText);
     infoWidget->add(lastNameText);
     infoWidget->add(mAgeText);
     infoWidget->add(mWorkText);
+    infoWidget->add(mBankAccountText);
     infoWidget->add(mShortTermGoalText);
     infoWidget->add(mLongTermGoalText);
     infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
@@ -54,14 +56,14 @@ void PersonWindow::setUp()
     // Bottom widget
     auto bottomWidget = mGui->createWithDefaultName<GuiWidget>();
     mEnergyText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mSatietyText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mHealthText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mSafetyText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mSatietyText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mHappinessText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     bottomWidget->add(mEnergyText);
+    bottomWidget->add(mSatietyText);
     bottomWidget->add(mHealthText);
     bottomWidget->add(mSafetyText);
-    bottomWidget->add(mSatietyText);
     bottomWidget->add(mHappinessText);
     bottomWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
@@ -76,6 +78,7 @@ void PersonWindow::update()
 {
     mAgeText->setString(format("Age: %d", mPerson.getAge(mYear)));
     mWorkText->setString("Work: " + mPerson.getWorkStatus());
+    mBankAccountText->setString(format("Bank account: $%.2f", mPerson.getMoney()));
     mShortTermGoalText->setString("Short term goal: " + mPerson.getShortTermBrain().toString());
     mLongTermGoalText->setString("Long term goal: " + mPerson.getLongTermBrain().toString());
     mEnergyText->setString(format("Energy: %.2f", mPerson.getEnergy()));

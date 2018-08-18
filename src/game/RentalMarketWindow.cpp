@@ -10,7 +10,7 @@
 #include "city/Housing.h"
 #include "util/format.h"
 
-RentalMarketWindow::RentalMarketWindow(StylesheetManager* stylesheetManager, Market<Lease>* market) :
+RentalMarketWindow::RentalMarketWindow(StylesheetManager* stylesheetManager, const Market<Lease>* market) :
     GuiWindow("Rental market", stylesheetManager->getStylesheet("window")),
     mStylesheetManager(stylesheetManager), mMarket(market), mTable(nullptr)
 {

@@ -10,7 +10,7 @@
 #include "city/Housing.h"
 #include "util/format.h"
 
-LaborMarketWindow::LaborMarketWindow(StylesheetManager* stylesheetManager, Market<Work>* market) :
+LaborMarketWindow::LaborMarketWindow(StylesheetManager* stylesheetManager, const Market<Work>* market) :
     GuiWindow("Labor market", stylesheetManager->getStylesheet("window")),
     mStylesheetManager(stylesheetManager), mMarket(market), mTable(nullptr)
 {
