@@ -15,14 +15,14 @@
 
 PoliciesWindow::PoliciesWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager, City& city) :
     GuiWindow("Policies", stylesheetManager->getStylesheet("window")),
-    mStylesheetManager(stylesheetManager), mCity(city)
+    mMessageBus(messageBus), mStylesheetManager(stylesheetManager), mCity(city)
 {
-    messageBus->addMailbox(mMailbox);
+    mMessageBus->addMailbox(mMailbox);
 }
 
 PoliciesWindow::~PoliciesWindow()
 {
-    //dtor
+    mMessageBus->removeMailbox(mMailbox);
 }
 
 void PoliciesWindow::setUp()

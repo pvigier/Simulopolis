@@ -51,6 +51,7 @@ Goal::State GoalRest::process()
         mOwner->setState(Person::State::WAITING);
         // Compute the number of hours needed to be rested
         float nbMonths = (1.0f - mOwner->getEnergy()) / (Housing::ENERGY_GROWTH_RATE - mOwner->getEnergyDecayRate());
+        nbMonths = std::max(0.1f, nbMonths);
         float nbHours =  nbMonths * City::NB_HOURS_PER_MONTH;
         // Add subgoal
         pushBack(new GoalWait(mOwner, nbHours));

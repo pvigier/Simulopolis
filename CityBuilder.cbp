@@ -76,6 +76,8 @@
 		<Unit filename="src/ai/SteeringBehaviors.h" />
 		<Unit filename="src/audio/AudioEngine.cpp" />
 		<Unit filename="src/audio/AudioEngine.h" />
+		<Unit filename="src/city/Bank.cpp" />
+		<Unit filename="src/city/Bank.h" />
 		<Unit filename="src/city/Building.cpp" />
 		<Unit filename="src/city/Building.h" />
 		<Unit filename="src/city/Business.cpp" />
@@ -223,6 +225,7 @@
 		<Unit filename="src/util/common.h" />
 		<Unit filename="src/util/enum.h" />
 		<Unit filename="src/util/format.h" />
+		<Unit filename="src/util/strong_typedef.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

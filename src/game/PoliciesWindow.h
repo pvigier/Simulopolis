@@ -22,6 +22,7 @@ public:
     void update();
 
 private:
+    MessageBus* mMessageBus;
     StylesheetManager* mStylesheetManager;
     Mailbox mMailbox;
     GuiWidget* mTabButtonsWidget;

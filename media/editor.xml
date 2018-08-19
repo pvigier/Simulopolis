@@ -249,26 +249,26 @@
         <hboxlayout hAlignment="right" vAlignment="top" />
     </widget>
     <widget name="infoBar" position="0 584" size="800 16">
-        <button name="dateButton" size="160 16" style="button">
+        <widget name="dateButton" size="160 16" style="button">
             <text name="dateText" characterSize="12" style="darkText" />
             <hboxlayout hAlignment="center" vAlignment="center" />
-        </button>
-        <button name="fundsButton" size="160 16" style="button">
+        </widget>
+        <widget name="fundsButton" size="160 16" style="button">
             <text name="fundsText" characterSize="12" style="darkText" />
             <hboxlayout hAlignment="center" vAlignment="center" />
-        </button>
-        <button name="populationButton" size="160 16" style="button">
+        </widget>
+        <widget name="populationButton" size="160 16" style="button">
             <text name="populationText" characterSize="12" style="darkText" />
             <hboxlayout hAlignment="center" vAlignment="center" />
-        </button>
-        <button name="employmentButton" size="160 16" style="button">
+        </widget>
+        <widget name="employmentButton" size="160 16" style="button">
             <text name="employmentText" characterSize="12" style="darkText" />
             <hboxlayout hAlignment="center" vAlignment="center" />
-        </button>
-        <button name="currentTileButton" size="160 16" style="button">
+        </widget>
+        <widget name="currentTileButton" size="160 16" style="button">
             <text name="currentTileText" characterSize="12" style="darkText" />
             <hboxlayout hAlignment="center" vAlignment="center" />
-        </button>
+        </widget>
         <hboxlayout vAlignment="bottom" />
     </widget>
 </gui>
