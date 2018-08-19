@@ -51,14 +51,14 @@ bool Network::getAdjacentRoad(int i, int j, sf::Vector2i& coords) const
 {
     if (i < 0 || j < 0 || i >= static_cast<int>(mRoads.getHeight()) || j >= static_cast<int>(mRoads.getWidth()))
         return false;
-    else if (i > 0 && mRoads.get(i - 1, j))
-    {
-        coords = sf::Vector2i(j, i - 1);
-        return true;
-    }
     else if (j + 1 < static_cast<int>(mRoads.getWidth()) && mRoads.get(i, j + 1))
     {
         coords = sf::Vector2i(j + 1, i);
+        return true;
+    }
+    else if (i + 1 < static_cast<int>(mRoads.getHeight()) && mRoads.get(i + 1, j))
+    {
+        coords = sf::Vector2i(j, i + 1);
         return true;
     }
     else if (j > 0 && mRoads.get(i, j - 1))
@@ -66,9 +66,9 @@ bool Network::getAdjacentRoad(int i, int j, sf::Vector2i& coords) const
         coords = sf::Vector2i(j - 1, i);
         return true;
     }
-    else if (i + 1 < static_cast<int>(mRoads.getHeight()) && mRoads.get(i + 1, j))
+    else if (i > 0 && mRoads.get(i - 1, j))
     {
-        coords = sf::Vector2i(j, i + 1);
+        coords = sf::Vector2i(j, i - 1);
         return true;
     }
     else

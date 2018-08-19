@@ -52,11 +52,13 @@ bool Building::updateVariant(const Tile* neighbors[3][3])
 {
     sf::IntRect rect(0, 85, 132, 128);
 
-    if (neighbors[0][1]->isRoad())
-        rect.left = 264;
+    if (neighbors[2][1]->isRoad())
+        rect.left = 0;
     else if (neighbors[1][2]->isRoad())
         rect.left = 132;
-    else if (neighbors[1][0]->isRoad())
+    else if (neighbors[0][1]->isRoad())
+        rect.left = 264;
+    else
         rect.left = 396;
 
     if (mSprite.getTextureRect() == rect)
