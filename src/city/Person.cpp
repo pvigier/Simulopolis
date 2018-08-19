@@ -229,6 +229,11 @@ const Car& Person::getCar() const
     return mCar;
 }
 
+Id Person::getAccount() const
+{
+    return mAccount;
+}
+
 Money Person::getAccountBalance() const
 {
     if (mAccount != UNDEFINED)

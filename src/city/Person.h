@@ -71,6 +71,7 @@ public:
     const Car& getCar() const;
 
     // Finance
+    Id getAccount() const;
     Money getAccountBalance() const;
     Money getLastMonthOutcome() const;
 

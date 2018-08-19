@@ -24,15 +24,21 @@ public:
 
     void update(float dt);
 
+    // Data
     const std::string& getName() const;
     const City* getCity();
     void setCity(const City* city);
     const Person* getOwner() const;
     void setOwner(const Person* owner);
     Id getMailboxId() const;
+    Id getAccount() const;
+    Money getAccountBalance() const;
+
+    // Buildings
     const std::vector<Building*>& getBuildings() const;
     void addBuilding(Building* building);
 
+    // Rent and salaries
     Money getRent(Tile::Type housingType);
     void setRent(Tile::Type housingType, Money rent);
     Money getSalary(Work::Qualification qualification);

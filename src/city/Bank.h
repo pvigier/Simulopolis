@@ -46,6 +46,7 @@ public:
 
     // Account management
     void createAccount(Id owner);
+    Id createAccount();
     void closeAccount(Id account);
     Money getBalance(Id account) const;
 

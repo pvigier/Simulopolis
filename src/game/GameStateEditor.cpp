@@ -88,9 +88,9 @@ void GameStateEditor::update(float dt)
 
     // Update the info bar at the bottom of the screen
     mGui->get<GuiText>("dateText")->setString(format("%s %d", mCity.getFormattedMonth().c_str(), 2000 + mCity.getYear()));
-    mGui->get<GuiText>("fundsText")->setString("$" + std::to_string(mCity.getFunds()));
-    mGui->get<GuiText>("populationText")->setString("Population: " + std::to_string(mCity.getPopulation()));
-    mGui->get<GuiText>("employmentText")->setString("Unemployment: " + std::to_string(mCity.getUnemployed()));
+    mGui->get<GuiText>("fundsText")->setString(format("$%.2f", mCity.getFunds()));
+    mGui->get<GuiText>("populationText")->setString(format("Population: %d", mCity.getPopulation()));
+    mGui->get<GuiText>("employmentText")->setString(format("Unemployment: %d", 0));
     mGui->get<GuiText>("currentTileText")->setString(Tile::typeToString(mCurrentTile));
 
     // Update the windows
@@ -183,7 +183,7 @@ void GameStateEditor::handleMessages()
                     {
                         if (mActionState == ActionState::SELECTING)
                         {
-                            unsigned int totalCost = computeCostOfSelection();
+                            Money totalCost = computeCostOfSelection();
                             if(mCity.getFunds() >= totalCost)
                             {
                                 mCity.bulldoze(mCurrentTile);
@@ -506,7 +506,7 @@ void GameStateEditor::zoom(float factor)
     mZoomLevel *= factor;
 }
 
-unsigned int GameStateEditor::getCost(Tile::Type type) const
+Money GameStateEditor::getCost(Tile::Type type) const
 {
     switch (type)
     {
@@ -516,13 +516,13 @@ unsigned int GameStateEditor::getCost(Tile::Type type) const
         case Tile::Type::COMMERCIAL: return 300;
         case Tile::Type::INDUSTRIAL: return 300;
         case Tile::Type::ROAD_GRASS: return 100;*/
-        default: return 0;
+        default: return Money(0.0);
     }
 }
 
-unsigned int GameStateEditor::computeCostOfSelection() const
+Money GameStateEditor::computeCostOfSelection() const
 {
-    return getCost(mCurrentTile) * mCity.getMap().getNbSelected();
+    return Money(getCost(mCurrentTile) * mCity.getMap().getNbSelected());
 }
 
 Id GameStateEditor::extractId(const std::string& name, const std::string& prefix) const

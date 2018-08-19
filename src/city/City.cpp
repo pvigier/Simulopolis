@@ -35,8 +35,7 @@ City::Event::Event(Money minimumWage) : type(Type::NEW_MINIMUM_WAGE), minimumWag
 }
 
 City::City() :
-    mCurrentTime(0.0), mTimePerMonth(10.0f), mMonth(0), mYear(0),
-    mUnemployed(0), mFunds(0), mCityCompany("City", 0),
+    mCurrentTime(0.0), mTimePerMonth(10.0f), mMonth(0), mYear(0), mCityCompany("City", 0),
     mWeeklyStandardWorkingHours(0), mMinimumWage(0.0), mIncomeTax(0.0f), mCorporateTax(0.0f)
 {
     // Generators
@@ -49,6 +48,9 @@ City::City() :
     mMarkets.emplace_back(new Market<>(VMarket::Type::LUXURY_GOOD));
     mMarkets.emplace_back(new Market<Lease>(VMarket::Type::RENT));
     mMarkets.emplace_back(new Market<Work>(VMarket::Type::WORK));
+
+    // Economy
+    mWorldAccount = mBank.createAccount();
 
     // Company
     mCityCompany.setCity(this);
@@ -77,9 +79,9 @@ void City::load(const std::string& name)
                 else if(key == "month")
                     mMonth = std::stoi(value);
                 else if(key == "unemployed")
-                    mUnemployed = std::stod(value);
+                    break;
                 else if(key == "funds")
-                    mFunds = std::stod(value);
+                    break;
             }
             else
                 std::cerr << "Error, no value for key " << key << std::endl;
@@ -125,8 +127,8 @@ void City::save(const std::string& name)
     outputFile << "height=" << mMap.getHeight() << std::endl;
     outputFile << "month=" << mMonth << std::endl;
     outputFile << "population=" << 0 << std::endl;
-    outputFile << "unemployed=" << mUnemployed << std::endl;
-    outputFile << "funds=" << mFunds << std::endl;
+    outputFile << "unemployed=" << 0 << std::endl;
+    outputFile << "funds=" << 0 << std::endl;
 
     outputFile.close();
 
@@ -325,14 +327,14 @@ Company& City::getCompany()
     return mCityCompany;
 }
 
-unsigned int City::getFunds() const
+Money City::getFunds() const
 {
-    return mFunds;
+    return mBank.getBalance(mCityCompany.getAccount());
 }
 
-void City::decreaseFunds(unsigned int amount)
+void City::decreaseFunds(Money amount)
 {
-    mFunds -= amount;
+    mBank.transferMoney(mCityCompany.getAccount(), mWorldAccount, amount);
 }
 
 unsigned int City::getWeeklyStandardWorkingHours() const
@@ -395,11 +397,6 @@ void City::welcome(Person* person)
 unsigned int City::getPopulation() const
 {
     return mCitizens.size();
-}
-
-unsigned int City::getUnemployed() const
-{
-    return mUnemployed;
 }
 
 Person* City::getPerson(Id id)

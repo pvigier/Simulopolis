@@ -36,6 +36,7 @@ void Bank::update()
                     break;
                 case Event::Type::TRANSFER_MONEY:
                     transferMoney(event.transfer.issuer, event.transfer.receiver, event.transfer.amount);
+                    break;
                 default:
                     break;
             }
@@ -52,6 +53,11 @@ void Bank::createAccount(Id owner)
 {
     Id account = mAccounts.add(Account{owner, Money(0.0)});
     sMessageBus->send(Message::create(owner, MessageType::BANK, Event{Event::Type::ACCOUNT_CREATED, account}));
+}
+
+Id Bank::createAccount()
+{
+    return mAccounts.add(Account{UNDEFINED, Money(0.0)});
 }
 
 void Bank::closeAccount(Id account)

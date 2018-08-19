@@ -71,8 +71,8 @@ private:
 
     void zoom(float factor);
 
-    unsigned int getCost(Tile::Type type) const;
-    unsigned int computeCostOfSelection() const;
+    Money getCost(Tile::Type type) const;
+    Money computeCostOfSelection() const;
 
     Id extractId(const std::string& name, const std::string& prefix) const;
 

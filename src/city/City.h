@@ -72,8 +72,8 @@ public:
 
     // Company
     Company& getCompany();
-    unsigned int getFunds() const;
-    void decreaseFunds(unsigned int amount);
+    Money getFunds() const;
+    void decreaseFunds(Money amount);
 
     // Policy
     unsigned int getWeeklyStandardWorkingHours() const;
@@ -89,7 +89,6 @@ public:
     void eject(Person* person);
     void welcome(Person* person);
     unsigned int getPopulation() const;
-    unsigned int getUnemployed() const;
     Person* getPerson(Id id);
     const std::vector<Person*>& getCitizens() const;
     const std::vector<Person*>& getImmigrants() const;
@@ -121,10 +120,9 @@ private:
     // Economy
     Bank mBank;
     std::vector<std::unique_ptr<VMarket>> mMarkets;
+    Id mWorldAccount;
 
     // City company
-    unsigned int mUnemployed;
-    unsigned int mFunds;
     Company mCityCompany;
 
     // Policy

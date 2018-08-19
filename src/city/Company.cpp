@@ -138,6 +138,18 @@ Id Company::getMailboxId() const
     return mMailbox.getId();
 }
 
+Id Company::getAccount() const
+{
+    return mAccount;
+}
+
+Money Company::getAccountBalance() const
+{
+    if (mAccount != UNDEFINED)
+        return mCity->getBank().getBalance(mAccount);
+    return Money(0.0);
+}
+
 const std::vector<Building*>& Company::getBuildings() const
 {
     return mBuildings;
@@ -226,7 +238,15 @@ void Company::onNewMonth()
         if (!building->isHousing())
         {
             for (Work& work : *getEmployees(building))
+            {
+                if (work.hasAlreadyWorkedThisMonth())
+                {
+                    Bank::Event event{Bank::Event::Type::TRANSFER_MONEY};
+                    event.transfer = Bank::Event::TransferMoneyEvent{mAccount, work.getEmployee()->getAccount(), work.getSalary()};
+                    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, event));
+                }
                 work.setAlreadyWorkedThisMonth(false);
+            }
         }
     }
 }
