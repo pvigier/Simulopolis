@@ -28,7 +28,8 @@ void Person::setMessageBus(MessageBus* messageBus)
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
-    mState(State::WAITING), mHome(nullptr), mWork(nullptr), mFavoriteShop(nullptr), mCar(car), mMoney(0.0),
+    mState(State::WAITING), mHome(nullptr), mWork(nullptr), mFavoriteShop(nullptr), mCar(car),
+    mAccount(UNDEFINED), mLastMonthBalance(0.0), mMonthBalance(0.0),
     mEnergyDecayRate(0.1f), mSatietyDecayRate(0.1f), mHealthDecayRate(0.01f), mSafetyDecayRate(0.01f), mHappinessDecayRate(0.01f),
     mEnergy(1.0f), mSatiety(1.0f), mHealth(1.0f), mSafety(1.0f), mHappiness(0.0f),
     mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
@@ -42,6 +43,14 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mShortTermBrain.addEvaluator(new GoalShopEvaluator(1.0f));
     mLongTermBrain.addEvaluator(new GoalEnterCityEvaluator(1.0f));
     mLongTermBrain.addEvaluator(new GoalGetBetterWorkEvaluator(1.0f));
+}
+
+Person::~Person()
+{
+    // Close bank account
+    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CLOSE_ACCOUNT, mAccount}));
+    // Unregister mailbox
+    sMessageBus->removeMailbox(mMailbox);
 }
 
 void Person::update(float dt)
@@ -61,7 +70,19 @@ void Person::update(float dt)
             switch (event.type)
             {
                 case City::Event::Type::NEW_MONTH:
-                    mLongTermBrain.process();
+                    onNewMonth();
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (message.type == MessageType::BANK)
+        {
+            const Bank::Event& event = message.getInfo<Bank::Event>();
+            switch (event.type)
+            {
+                case Bank::Event::Type::ACCOUNT_CREATED:
+                    mAccount = event.account;
                     break;
                 default:
                     break;
@@ -120,6 +141,8 @@ const City* Person::getCity() const
 void Person::setCity(const City* city)
 {
     mCity = city;
+    // Create bank account
+    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CREATE_ACCOUNT}));
 }
 
 Id Person::getMailboxId() const
@@ -205,21 +228,16 @@ const Car& Person::getCar() const
     return mCar;
 }
 
-Money Person::getMoney() const
+Money Person::getAccountBalance() const
 {
-    return mMoney;
+    if (mAccount != UNDEFINED)
+        return mCity->getBank().getBalance(mAccount);
+    return Money(0.0);
 }
 
-Money Person::getOutcome() const
+Money Person::getLastMonthOutcome() const
 {
-    Money outcome(0.0);
-    if (mHome)
-        outcome -= mHome->getRent();
-    if (mWork)
-        outcome += mWork->getSalary();
-    if (mFavoriteShop)
-        outcome -= mFavoriteShop->getPrice();
-    return outcome;
+    return Money(mMonthBalance - mLastMonthBalance);
 }
 
 float Person::getEnergyDecayRate() const
@@ -310,4 +328,11 @@ void Person::updateNeeds(float dt)
     increaseHealth(-dmonth * mHealthDecayRate);
     increaseSafety(-dmonth * mSafetyDecayRate);
     increaseHappiness(-dmonth * mHappinessDecayRate);
+}
+
+void Person::onNewMonth()
+{
+    mLastMonthBalance = mMonthBalance;
+    mMonthBalance = mCity->getBank().getBalance(mAccount);
+    mLongTermBrain.process();
 }

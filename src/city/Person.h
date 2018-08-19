@@ -34,6 +34,7 @@ public:
     static void setMessageBus(MessageBus* messageBus);
 
     Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car);
+    ~Person();
 
     void update(float dt);
 
@@ -70,8 +71,8 @@ public:
     const Car& getCar() const;
 
     // Finance
-    Money getMoney() const;
-    Money getOutcome() const;
+    Money getAccountBalance() const;
+    Money getLastMonthOutcome() const;
 
     // Physiology
     float getEnergyDecayRate() const;
@@ -123,7 +124,9 @@ private:
     Car mCar;
 
     // Finance
-    Money mMoney;
+    Id mAccount;
+    Money mLastMonthBalance;
+    Money mMonthBalance;
 
     // Physiology
     float mEnergyDecayRate;
@@ -149,4 +152,7 @@ private:
     GoalThink mLongTermBrain;
 
     void updateNeeds(float dt);
+
+    // Events
+    void onNewMonth();
 };

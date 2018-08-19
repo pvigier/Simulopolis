@@ -37,11 +37,19 @@ const std::vector<Work>* Company::getEmployees(const Building* building)
 }
 
 Company::Company(std::string name, int creationYear, Person* owner) :
-    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner), mFunds(0.0)
+    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner), mAccount(UNDEFINED)
 {
     mRents.fill(Money(0.0));
     mSalaries.fill(Money(0.0));
     sMessageBus->addMailbox(mMailbox);
+}
+
+Company::~Company()
+{
+    // Close bank account
+    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CLOSE_ACCOUNT, mAccount}));
+    // Unregister mailbox
+    sMessageBus->removeMailbox(mMailbox);
 }
 
 void Company::update(float dt)
@@ -60,6 +68,18 @@ void Company::update(float dt)
                     break;
                 case City::Event::Type::NEW_MINIMUM_WAGE:
                     onNewMinimumWage(event.minimumWage);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (message.type == MessageType::BANK)
+        {
+            const Bank::Event& event = message.getInfo<Bank::Event>();
+            switch (event.type)
+            {
+                case Bank::Event::Type::ACCOUNT_CREATED:
+                    mAccount = event.account;
                     break;
                 default:
                     break;
@@ -98,6 +118,8 @@ const City* Company::getCity()
 void Company::setCity(const City* city)
 {
     mCity = city;
+    // Create bank account
+    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CREATE_ACCOUNT}));
 }
 
 const Person* Company::getOwner() const

@@ -6,6 +6,7 @@
 #include "pcg/PersonGenerator.h"
 #include "pcg/CompanyGenerator.h"
 #include "city/Map.h"
+#include "city/Bank.h"
 #include "city/Market.h"
 
 class Building;
@@ -93,6 +94,7 @@ public:
     const std::vector<Person*>& getCitizens() const;
     const std::vector<Person*>& getImmigrants() const;
     Building* getBuilding(Id id);
+    const Bank& getBank() const;
     const VMarket* getMarket(VMarket::Type type) const;
 
     // Util
@@ -133,6 +135,7 @@ private:
     std::vector<Person*> mImmigrants;
     std::vector<std::unique_ptr<Company>> mCompanies;
     IdManager<Building*> mBuildings;
+    Bank mBank;
     std::vector<std::unique_ptr<VMarket>> mMarkets;
     Array2<std::vector<const Car*>> mCarsByTile;
 

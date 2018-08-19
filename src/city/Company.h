@@ -20,6 +20,7 @@ public:
     static const std::vector<Work>* getEmployees(const Building* building);
 
     Company(std::string name, int creationYear, Person* owner = nullptr);
+    ~Company();
 
     void update(float dt);
 
@@ -46,7 +47,7 @@ private:
     const City* mCity;
     const Person* mOwner;
     Mailbox mMailbox;
-    Money mFunds;
+    Id mAccount;
 
     // Buildings
     std::vector<Building*> mBuildings;

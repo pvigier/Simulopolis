@@ -30,6 +30,7 @@ Game::Game()
     Tile::setImageManager(&mResourceManager.getImageManager());
     Person::setMessageBus(&mMessageBus);
     Company::setMessageBus(&mMessageBus);
+    Bank::setMessageBus(&mMessageBus);
     VMarket::setMessageBus(&mMessageBus);
 
     // Load resources

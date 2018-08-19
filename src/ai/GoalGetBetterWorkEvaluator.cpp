@@ -10,7 +10,7 @@ GoalGetBetterWorkEvaluator::GoalGetBetterWorkEvaluator(float bias) : GoalEvaluat
 float GoalGetBetterWorkEvaluator::computeDesirability(Person* person) const
 {
     if (person->getHome())
-        return mBias * std::exp(-person->getOutcome());
+        return mBias * std::exp(-person->getLastMonthOutcome());
     return 0.0f;
 }
 

@@ -187,6 +187,9 @@ void City::update(float dt)
     for (std::unique_ptr<VMarket>& market : mMarkets)
         market->update();
 
+    // Update bank
+    mBank.update();
+
     // Update the date
     mCurrentTime += dt;
     while (mCurrentTime >= mTimePerMonth)
@@ -407,6 +410,11 @@ const std::vector<Person*>& City::getImmigrants() const
 Building* City::getBuilding(Id id)
 {
     return mBuildings.get(id);
+}
+
+const Bank& City::getBank() const
+{
+    return mBank;
 }
 
 const VMarket* City::getMarket(VMarket::Type type) const

@@ -78,7 +78,7 @@ void PersonWindow::update()
 {
     mAgeText->setString(format("Age: %d", mPerson.getAge(mYear)));
     mWorkText->setString("Work: " + mPerson.getWorkStatus());
-    mBankAccountText->setString(format("Bank account: $%.2f", mPerson.getMoney()));
+    mBankAccountText->setString(format("Bank account: $%.2f", mPerson.getAccountBalance()));
     mShortTermGoalText->setString("Short term goal: " + mPerson.getShortTermBrain().toString());
     mLongTermGoalText->setString("Long term goal: " + mPerson.getLongTermBrain().toString());
     mEnergyText->setString(format("Energy: %.2f", mPerson.getEnergy()));

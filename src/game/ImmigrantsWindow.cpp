@@ -72,7 +72,7 @@ void ImmigrantsWindow::addImmigrant(Person* person, bool alreadyAdded)
     mTable->addRow({
         mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("%d", person->getAge(mYear)), 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>(format("%.2f", person->getMoney()), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(format("$%.2f", person->getAccountBalance()), 12, mStylesheetManager->getStylesheet("darkText")),
         visaButtons
     });
 }
