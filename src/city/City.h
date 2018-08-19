@@ -118,7 +118,11 @@ private:
     unsigned int mMonth;
     unsigned int mYear;
 
-    // Company
+    // Economy
+    Bank mBank;
+    std::vector<std::unique_ptr<VMarket>> mMarkets;
+
+    // City company
     unsigned int mUnemployed;
     unsigned int mFunds;
     Company mCityCompany;
@@ -135,8 +139,6 @@ private:
     std::vector<Person*> mImmigrants;
     std::vector<std::unique_ptr<Company>> mCompanies;
     IdManager<Building*> mBuildings;
-    Bank mBank;
-    std::vector<std::unique_ptr<VMarket>> mMarkets;
     Array2<std::vector<const Car*>> mCarsByTile;
 
     void generateImmigrant();

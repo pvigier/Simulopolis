@@ -310,6 +310,16 @@ std::string City::getFormattedMonth() const
     }
 }
 
+const Bank& City::getBank() const
+{
+    return mBank;
+}
+
+const VMarket* City::getMarket(VMarket::Type type) const
+{
+    return mMarkets[static_cast<int>(type)].get();
+}
+
 Company& City::getCompany()
 {
     return mCityCompany;
@@ -410,16 +420,6 @@ const std::vector<Person*>& City::getImmigrants() const
 Building* City::getBuilding(Id id)
 {
     return mBuildings.get(id);
-}
-
-const Bank& City::getBank() const
-{
-    return mBank;
-}
-
-const VMarket* City::getMarket(VMarket::Type type) const
-{
-    return mMarkets[static_cast<int>(type)].get();
 }
 
 sf::Vector2i City::toTileIndices(const sf::Vector2f& position) const

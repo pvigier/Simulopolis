@@ -48,7 +48,8 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
 Person::~Person()
 {
     // Close bank account
-    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CLOSE_ACCOUNT, mAccount}));
+    if (mAccount != UNDEFINED)
+        sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CLOSE_ACCOUNT, mAccount}));
     // Unregister mailbox
     sMessageBus->removeMailbox(mMailbox);
 }
