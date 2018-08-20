@@ -31,7 +31,8 @@ std::string Work::typeToString(Type type)
 }
 
 Work::Work(Type type, Building* workplace) :
-    mType(type), mEmployee(nullptr), mEmployer(nullptr), mWorkplace(workplace), mSalary(0.0)
+    mType(type), mEmployee(nullptr), mEmployer(nullptr), mWorkplace(workplace), mSalary(0.0),
+    mAlreadyWorkedThisMonth(false)
 {
     switch (mType)
     {

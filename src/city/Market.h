@@ -23,6 +23,7 @@ public:
     };
 
     VMarket(Type type);
+    virtual ~VMarket();
 
     static void setMessageBus(MessageBus* messageBus);
 
@@ -97,7 +98,10 @@ public:
         };
     };
 
-    using VMarket::VMarket;
+    Market(Type type) : VMarket(type), mDirty(false)
+    {
+
+    }
 
     Id addItem(Id sellerId, T* good, Money reservePrice)
     {

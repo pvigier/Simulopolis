@@ -329,7 +329,7 @@ Company& City::getCompany()
 
 Money City::getFunds() const
 {
-    return mBank.getBalance(mCityCompany.getAccount());
+    return mCityCompany.getAccountBalance();
 }
 
 void City::decreaseFunds(Money amount)
