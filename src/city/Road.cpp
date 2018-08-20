@@ -24,7 +24,7 @@ std::unique_ptr<Tile> Road::clone() const
     return std::unique_ptr<Tile>(new Road(*this));
 }
 
-bool Road::updateVariant(const Tile* neighbors[3][3])
+void Road::updateVariant(const Tile* neighbors[3][3])
 {
     sf::IntRect rect = mSprite.getTextureRect();
 
@@ -47,14 +47,10 @@ bool Road::updateVariant(const Tile* neighbors[3][3])
         rect.top = 606;
     else if (neighbors[1][2]->isRoad() && neighbors[0][1]->isRoad())
         rect.top = 303;
-    else if ((neighbors[1][0]->isRoad() && neighbors[1][2]->isRoad()) ||
-        (neighbors[1][0]->isRoad() && !neighbors[1][2]->isRoad()) ||
-        (!neighbors[1][0]->isRoad() && neighbors[1][2]->isRoad()))
+    else if ((neighbors[1][0]->isRoad() || neighbors[1][2]->isRoad()))
         rect.top = 101;
-
-    if (mSprite.getTextureRect() == rect)
-        return false;
+    else
+        rect.top = 0;
 
     mSprite.setTextureRect(rect);
-    return true;
 }

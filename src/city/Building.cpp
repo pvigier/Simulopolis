@@ -48,7 +48,7 @@ std::unique_ptr<Tile> Building::clone() const
     return std::unique_ptr<Tile>(new Building(*this));
 }
 
-bool Building::updateVariant(const Tile* neighbors[3][3])
+void Building::updateVariant(const Tile* neighbors[3][3])
 {
     sf::IntRect rect(0, 85, 132, 128);
 
@@ -61,11 +61,7 @@ bool Building::updateVariant(const Tile* neighbors[3][3])
     else
         rect.left = 396;
 
-    if (mSprite.getTextureRect() == rect)
-        return false;
-
     mSprite.setTextureRect(rect);
-    return true;
 }
 
 Id Building::getId() const

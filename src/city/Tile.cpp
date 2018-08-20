@@ -160,10 +160,9 @@ std::unique_ptr<Tile> Tile::clone() const
     return std::unique_ptr<Tile>(new Tile(*this));
 }
 
-bool Tile::updateVariant(const Tile* neighbors[3][3])
+void Tile::updateVariant(const Tile* neighbors[3][3])
 {
     mSprite.setOrigin(sf::Vector2f(0.0f, mSprite.getTextureRect().height - TILE_HEIGHT));
-    return false;
 }
 
 sf::Vector2i Tile::getCoordinates() const

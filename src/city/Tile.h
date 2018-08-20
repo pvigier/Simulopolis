@@ -37,7 +37,7 @@ public:
 
     virtual std::unique_ptr<Tile> clone() const;
 
-    virtual bool updateVariant(const Tile* neighbors[3][3]);
+    virtual void updateVariant(const Tile* neighbors[3][3]);
 
     sf::Vector2i getCoordinates() const;
     virtual void setPosition(sf::Vector2i coordinates, sf::Vector2f position);

@@ -144,22 +144,29 @@ void Map::bulldoze(Tile::Type type, Company& owner, IdManager<Building*>& buildi
         {
             if (mTiles.get(i, j)->getState() == Tile::State::SELECTED)
             {
+                // Remove the old tile
+                if (mTiles.get(i, j)->isRoad())
+                    mNetwork.removeRoad(i, j);
+                else if (mTiles.get(i, j)->isBuilding())
+                {
+                    Building* building = static_cast<Building*>(mTiles.get(i, j).get());
+                    //owner.removeBuilding(building);
+                    buildings.erase(building->getId());
+                }
+                // Add the new tile
                 mTiles.set(i, j, createTile(type));
                 mTiles.get(i, j)->setPosition(sf::Vector2i(j, i), computePosition(i, j));
-                updateNeighborhood(i, j);
                 if (mTiles.get(i, j)->isRoad())
                     mNetwork.addRoad(i, j);
-                else
+                else if (mTiles.get(i, j)->isBuilding())
                 {
-                    mNetwork.removeRoad(i, j);
-                    if (mTiles.get(i, j)->isBuilding())
-                    {
-                        Building* building = static_cast<Building*>(mTiles.get(i, j).get());
-                        owner.addBuilding(building);
-                        Id id = buildings.add(building);
-                        building->setId(id);
-                    }
+                    Building* building = static_cast<Building*>(mTiles.get(i, j).get());
+                    owner.addBuilding(building);
+                    Id id = buildings.add(building);
+                    building->setId(id);
                 }
+                // Update neighborhood
+                updateNeighborhood(i, j);
             }
         }
     }
@@ -185,8 +192,7 @@ void Map::select(sf::Vector2i start, sf::Vector2i end, Tile::Category mask)
     {
         for (int j = start.x; j <= end.x; ++j)
         {
-            // Check if the tile type is in the blacklist. If it is, mark it as
-            // invalid, otherwise select it
+            // Check if the tile type is in the whitelist
             const std::unique_ptr<Tile>& tile = mTiles.get(i, j);
             if (any(tile->getCategory() & mask))
             {
@@ -278,13 +284,12 @@ void Map::updateTile(int i, int j)
         {
             if (i + di >= 0 && i + di < static_cast<int>(mHeight) &&
                 j + dj >= 0 && j + dj < static_cast<int>(mWidth))
-                neighbors[dj+1][di+1] = mTiles.get(i + di, j + dj).get();
+                neighbors[dj + 1][di + 1] = mTiles.get(i + di, j + dj).get();
             else
-                neighbors[dj+1][di+1] = sTileAtlas[static_cast<int>(Tile::Type::VOID)].get();
+                neighbors[dj + 1][di + 1] = sTileAtlas[static_cast<int>(Tile::Type::VOID)].get();
         }
     }
-    if (mTiles.get(i, j)->updateVariant(neighbors))
-        updateNeighborhood(i, j);
+    mTiles.get(i, j)->updateVariant(neighbors);
 }
 
 void Map::updateNeighborhood(int i, int j)

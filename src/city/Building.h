@@ -20,7 +20,7 @@ public:
 
     virtual std::unique_ptr<Tile> clone() const override;
 
-    virtual bool updateVariant(const Tile* neighbors[3][3]) override;
+    virtual void updateVariant(const Tile* neighbors[3][3]) override;
 
     Id getId() const;
     void setId(Id id);
