@@ -56,8 +56,8 @@ Tile::Type Tile::stringToType(const std::string& s)
         return Type::WORKSHOP;
     else if (s == "CFBBusiness")
         return Type::CFB_BUSINESS;
-    else if (s == "market")
-        return Type::MARKET;
+    else if (s == "grocery")
+        return Type::GROCERY;
     else if (s == "mall")
         return Type::MALL;
     else if (s == "boutique")
@@ -116,8 +116,8 @@ std::string Tile::typeToString(Tile::Type type)
             return "Workshop";
         case Type::CFB_BUSINESS:
             return "Call for bids (business)";
-        case Type::MARKET:
-            return "Market";
+        case Type::GROCERY:
+            return "Grocery";
         case Type::MALL:
             return "Mall";
         case Type::BOUTIQUE:
@@ -221,7 +221,7 @@ bool Tile::isBusiness() const
 {
     switch (mType)
     {
-        case Type::MARKET:
+        case Type::GROCERY:
         case Type::MALL:
         case Type::BOUTIQUE:
             return true;
