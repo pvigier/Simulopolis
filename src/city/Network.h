@@ -19,6 +19,7 @@ public:
     void updateComponents();
     bool getAdjacentRoad(int i, int j, sf::Vector2i& coords) const;
     bool getRandomEntryPoint(int i, int j, sf::Vector2i& coords) const;
+    bool isReachableFrom(sf::Vector2i start, sf::Vector2i end) const;
     std::vector<sf::Vector2i> getPath(sf::Vector2i start, sf::Vector2i end) const;
 
 private:

@@ -205,6 +205,19 @@ void Map::select(sf::Vector2i start, sf::Vector2i end, Tile::Category mask)
     }
 }
 
+const Network& Map::getNetwork() const
+{
+    return mNetwork;
+}
+
+bool Map::isReachable(const Building* start, const Building* end) const
+{
+    sf::Vector2i startRoad, endRoad;
+    mNetwork.getAdjacentRoad(start->getCoordinates().y, start->getCoordinates().x, startRoad);
+    mNetwork.getAdjacentRoad(end->getCoordinates().y, end->getCoordinates().x, endRoad);
+    return mNetwork.isReachableFrom(startRoad, endRoad);
+}
+
 Path Map::getPath(sf::Vector2i start, sf::Vector2i end) const
 {
     std::vector<sf::Vector2i> coordinates = mNetwork.getPath(start, end);
@@ -237,9 +250,23 @@ Path Map::getPath(sf::Vector2i start, sf::Vector2i end) const
     return Path(points);
 }
 
-const Network& Map::getNetwork() const
+std::vector<const Building*> Map::getReachableBuildingsAround(const Building* origin, int radius, Tile::Type type) const
 {
-    return mNetwork;
+    std::vector<const Building*> buildings;
+    sf::Vector2i center = origin->getCoordinates();
+    for (int i = std::max(0, center.y - radius); i < std::min(static_cast<int>(mHeight), center.y + radius); ++i)
+    {
+        for (int j = std::max(0, center.x - radius); j < std::min(static_cast<int>(mWidth), center.x + radius); ++j)
+        {
+            if (mTiles.get(i, j)->getType() == type)
+            {
+                const Building* building = static_cast<Building*>(mTiles.get(i, j).get());
+                if (isReachable(origin, building))
+                    buildings.push_back(building);
+            }
+        }
+    }
+    return std::move(buildings);
 }
 
 unsigned int Map::getWidth() const

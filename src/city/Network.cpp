@@ -90,11 +90,20 @@ bool Network::getRandomEntryPoint(int i, int j, sf::Vector2i& coords) const
     }
 }
 
+bool Network::isReachableFrom(sf::Vector2i start, sf::Vector2i end) const
+{
+    return mComponents.get(start.y, start.x) == mComponents.get(end.y, end.x);
+}
+
 std::vector<sf::Vector2i> Network::getPath(sf::Vector2i start, sf::Vector2i end) const
 {
     // Trivial case
     if (start == end)
         return {start};
+
+    // Check if the end is reachable from the start
+    if (!isReachableFrom(start, end))
+        return {};
 
     // Inverse the start and the end, because we will find a path from end to start
     std::swap(start, end);

@@ -21,22 +21,29 @@ public:
     static void loadTiles(const TextureManager& textureManager);
     static const TileAtlas& getTileAtlas();
 
+    // IO
     void load(const std::string& filename, unsigned int width, unsigned int height);
     void save(const std::string& filename);
     void fromArray(const Array2<Tile::Type>& tiles);
 
+    // Modifying the map
     void select(sf::Vector2i start, sf::Vector2i end, Tile::Category mask);
     void deselect();
     void bulldoze(Tile::Type type, Company& owner, IdManager<Building*>& buildings);
 
-    Path getPath(sf::Vector2i start, sf::Vector2i end) const;
+    // Network
     const Network& getNetwork() const;
+    bool isReachable(const Building* start, const Building* end) const;
+    Path getPath(sf::Vector2i start, sf::Vector2i end) const;
+    std::vector<const Building*> getReachableBuildingsAround(const Building* origin, int radius, Tile::Type type) const;
 
+    // Data
     unsigned int getWidth() const;
     unsigned int getHeight() const;
     const Array2<std::unique_ptr<Tile>>& getTiles() const;
     unsigned int getNbSelected() const;
 
+    // Util
     sf::Vector2f computePosition(std::size_t i, std::size_t j) const;
 
 private:
