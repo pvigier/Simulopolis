@@ -27,8 +27,8 @@ public:
     const Building* getWorkplace() const;
     void setSalary(Money salary);
     Money getSalary() const;
-    bool hasAlreadyWorkedThisMonth() const;
-    void setAlreadyWorkedThisMonth(bool alreadyWorkedThisMonth);
+    bool hasWorkedThisMonth() const;
+    void setWorkedThisMonth(bool workedThisMonth);
 
 private:
     Type mType;
@@ -37,5 +37,5 @@ private:
     Company* mEmployer;
     Building* mWorkplace;
     Money mSalary;
-    bool mAlreadyWorkedThisMonth;
+    bool mWorkedThisMonth;
 };

@@ -32,7 +32,7 @@ std::string Work::typeToString(Type type)
 
 Work::Work(Type type, Building* workplace) :
     mType(type), mEmployee(nullptr), mEmployer(nullptr), mWorkplace(workplace), mSalary(0.0),
-    mAlreadyWorkedThisMonth(false)
+    mWorkedThisMonth(false)
 {
     switch (mType)
     {
@@ -110,11 +110,12 @@ Money Work::getSalary() const
     return mSalary;
 }
 
-bool Work::hasAlreadyWorkedThisMonth() const
+bool Work::hasWorkedThisMonth() const
 {
-    return mAlreadyWorkedThisMonth;
+    return mWorkedThisMonth;
 }
-void Work::setAlreadyWorkedThisMonth(bool alreadyWorkedThisMonth)
+
+void Work::setWorkedThisMonth(bool workedThisMonth)
 {
-    mAlreadyWorkedThisMonth = alreadyWorkedThisMonth;
+    mWorkedThisMonth = workedThisMonth;
 }

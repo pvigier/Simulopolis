@@ -5,6 +5,7 @@
  #include "message/Mailbox.h"
  #include "city/Tile.h"
  #include "city/Work.h"
+ #include "city/Good.h"
 
 class MessageBus;
 class Person;
@@ -24,6 +25,8 @@ public:
 
     void update(float dt);
 
+    MessageBus* getMessageBus();
+
     // Data
     const std::string& getName() const;
     const City* getCity();
@@ -39,10 +42,14 @@ public:
     void addBuilding(Building* building);
 
     // Rent and salaries
-    Money getRent(Tile::Type housingType);
+    Money getRent(Tile::Type housingType) const;
     void setRent(Tile::Type housingType, Money rent);
-    Money getSalary(Work::Qualification qualification);
+    Money getSalary(Work::Qualification qualification) const;
     void setSalary(Work::Qualification qualification, Money salary);
+    double getWholesaleMargin(Good good) const;
+    void setWholesaleMargin(Good good, double margin);
+    double getRetailMargin(Good good) const;
+    void setRetailMargin(Good good, double margin);
 
 private:
     static MessageBus* sMessageBus;
@@ -58,9 +65,11 @@ private:
     // Buildings
     std::vector<Building*> mBuildings;
 
-    // Rent and salaries
+    // Rent, salaries and prices
     std::array<Money, 3> mRents;
     std::array<Money, 3> mSalaries;
+    std::array<double, 3> mWholesaleMargins;
+    std::array<double, 3> mRetailMargins;
 
     void addToMarket(Lease& lease);
     void addToMarket(Work& work);

@@ -106,6 +106,11 @@ void Company::update(float dt)
     }
 }
 
+MessageBus* Company::getMessageBus()
+{
+    return sMessageBus;
+}
+
 const std::string& Company::getName() const
 {
     return mName;
@@ -180,7 +185,7 @@ void Company::addBuilding(Building* building)
     }
 }
 
-Money Company::getRent(Tile::Type housingType)
+Money Company::getRent(Tile::Type housingType) const
 {
     return mRents[static_cast<int>(housingType) - static_cast<int>(Tile::Type::AFFORDABLE_HOUSING)];
 }
@@ -198,7 +203,7 @@ void Company::setRent(Tile::Type housingType, Money rent)
     }
 }
 
-Money Company::getSalary(Work::Qualification qualification)
+Money Company::getSalary(Work::Qualification qualification) const
 {
     return mSalaries[static_cast<int>(qualification)];
 }
@@ -217,6 +222,26 @@ void Company::setSalary(Work::Qualification qualification, Money salary)
             }
         }
     }
+}
+
+double Company::getWholesaleMargin(Good good) const
+{
+    return mWholesaleMargins[static_cast<int>(good)];
+}
+
+void Company::setWholesaleMargin(Good good, double margin)
+{
+    mWholesaleMargins[static_cast<int>(good)] = margin;
+}
+
+double Company::getRetailMargin(Good good) const
+{
+     return mRetailMargins[static_cast<int>(good)];
+}
+
+void Company::setRetailMargin(Good good, double margin)
+{
+    mRetailMargins[static_cast<int>(good)] = margin;
 }
 
 void Company::addToMarket(Lease& lease)

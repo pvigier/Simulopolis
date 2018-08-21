@@ -29,9 +29,9 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Housing("housing", Tile::Type::APARTMENT_BUILDING, 2, 2, 10)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Housing("housing", Tile::Type::VILLA, 1, 1, 20)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_INDUSTRY, sf::Color(192, 188, 170))));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::FARM, 1, Good::NECESSARY, 20, 2, Work::Type::FARMER)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::FACTORY, 3, Good::NORMAL, 6, 6, Work::Type::WORKER)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::WORKSHOP, 2, Good::LUXURY, 2, 4, Work::Type::CRAFTSPERSON)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::FARM, 1, Good::NECESSARY, 4, 2, Work::Type::FARMER)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::FACTORY, 3, Good::NORMAL, 1, 6, Work::Type::WORKER)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::WORKSHOP, 2, Good::LUXURY, 0.25, 4, Work::Type::CRAFTSPERSON)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_BUSINESS, sf::Color(178, 83, 83))));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::GROCERY, 1, Good::NECESSARY, 2, Work::Type::GROCER)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::MALL, 3, Good::NORMAL, 6, Work::Type::CASHIER)));
