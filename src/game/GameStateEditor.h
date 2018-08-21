@@ -11,6 +11,7 @@ class ImmigrantsWindow;
 class CitizensWindow;
 class RentalMarketWindow;
 class LaborMarketWindow;
+class GoodsMarketWindow;
 class PoliciesWindow;
 
 enum class ActionState{NONE, PANNING, SELECTING};
@@ -50,6 +51,7 @@ private:
     CitizensWindow* mCitizensWindow;
     RentalMarketWindow* mRentalMarketWindow;
     LaborMarketWindow* mLaborMarketWindow;
+    GoodsMarketWindow* mGoodsMarketWindow;
     PoliciesWindow* mPoliciesWindow;
     std::vector<std::unique_ptr<sf::RenderTexture>> mMenuTextures;
 
@@ -64,6 +66,7 @@ private:
     void openCitizensWindow();
     void openRentalMarketWindow();
     void openLaborMarketWindow();
+    void openGoodsMarketWindow();
     void openPoliciesWindow();
     void updateWindows();
     bool updateTabs(const std::string& name);

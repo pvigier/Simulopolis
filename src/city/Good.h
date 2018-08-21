@@ -1,3 +1,7 @@
 #pragma once
 
-enum class Good{NECESSARY, NORMAL, LUXURY};
+#include <string>
+
+enum class Good : int {NECESSARY = 0, NORMAL, LUXURY};
+
+std::string goodToString(Good good);

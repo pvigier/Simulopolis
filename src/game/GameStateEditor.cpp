@@ -20,13 +20,15 @@
 #include "game/CitizensWindow.h"
 #include "game/RentalMarketWindow.h"
 #include "game/LaborMarketWindow.h"
+#include "game/GoodsMarketWindow.h"
 #include "game/PoliciesWindow.h"
 
 GameStateEditor::GameStateEditor() :
     mActionState(ActionState::NONE), mZoomLevel(1.0f),
     mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor")),
     mImmigrantsWindow(nullptr), mCitizensWindow(nullptr),
-    mRentalMarketWindow(nullptr), mLaborMarketWindow(nullptr), mPoliciesWindow(nullptr)
+    mRentalMarketWindow(nullptr), mLaborMarketWindow(nullptr), mGoodsMarketWindow(nullptr),
+    mPoliciesWindow(nullptr)
 {
     // Views
     sf::Vector2f windowSize = sf::Vector2f(sRenderEngine->getWindow().getSize());
@@ -230,6 +232,8 @@ void GameStateEditor::handleMessages()
                         openRentalMarketWindow();
                     else if (name == "openLaborMarketWindowButton")
                         openLaborMarketWindow();
+                    else if (name == "openGoodsMarketWindowButton")
+                        openGoodsMarketWindow();
                     else if (name == "openPoliciesWindowButton")
                         openPoliciesWindow();
                     else if (name.substr(0, 16) == "openPersonWindow")
@@ -267,6 +271,8 @@ void GameStateEditor::handleMessages()
                         mRentalMarketWindow = nullptr;
                     else if (mLaborMarketWindow == window)
                         mLaborMarketWindow = nullptr;
+                    else if (mGoodsMarketWindow == window)
+                        mGoodsMarketWindow = nullptr;
                     else if (mPoliciesWindow == window)
                         mPoliciesWindow = nullptr;
                     else
@@ -368,6 +374,7 @@ void GameStateEditor::createGui()
     mGui->get("openCitizensWindowButton")->subscribe(mMailbox.getId());
     mGui->get("openRentalMarketWindowButton")->subscribe(mMailbox.getId());
     mGui->get("openLaborMarketWindowButton")->subscribe(mMailbox.getId());
+    mGui->get("openGoodsMarketWindowButton")->subscribe(mMailbox.getId());
     mGui->get("openPoliciesWindowButton")->subscribe(mMailbox.getId());
 
     // Window managers
@@ -443,6 +450,21 @@ void GameStateEditor::openLaborMarketWindow()
         mLaborMarketWindow->subscribe(mMailbox.getId());
     }
 }
+
+void GameStateEditor::openGoodsMarketWindow()
+{
+    if (!mGoodsMarketWindow)
+    {
+        std::array<const Market<const Building>*, 3> markets = {
+            static_cast<const Market<const Building>*>(mCity.getMarket(VMarket::Type::NECESSARY_GOOD)),
+            static_cast<const Market<const Building>*>(mCity.getMarket(VMarket::Type::NORMAL_GOOD)),
+            static_cast<const Market<const Building>*>(mCity.getMarket(VMarket::Type::LUXURY_GOOD))
+        };
+        mGoodsMarketWindow = mGui->createRootWithDefaultName<GoodsMarketWindow>(sStylesheetManager, std::move(markets));
+        mGoodsMarketWindow->subscribe(mMailbox.getId());
+    }
+}
+
 
 void GameStateEditor::openPoliciesWindow()
 {
