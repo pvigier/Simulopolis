@@ -25,7 +25,7 @@ LaborMarketWindow::~LaborMarketWindow()
 void LaborMarketWindow::setUp()
 {
     // Create table
-    std::vector<std::string> names{"Building", "Company", "Type", "Salary", "Count"};
+    std::vector<std::string> names{"Company", "Building", "Type", "Salary", "Count"};
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
     // Window
@@ -51,10 +51,10 @@ void LaborMarketWindow::addItem(const Building* building, Work::Type type, Money
 {
     // Add row
     mTable->addRow({
-        mGui->createWithDefaultName<GuiText>(format("%d", building->getId()), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(building->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(format("%d", building->getId()), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(Work::typeToString(type), 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>(format("%.2f", salary), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(format("$%.2f", salary), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("%d", count), 12, mStylesheetManager->getStylesheet("darkText")),
     });
 }

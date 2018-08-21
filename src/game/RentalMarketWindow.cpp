@@ -54,7 +54,7 @@ void RentalMarketWindow::addItem(const Housing* housing, Money rent, int count)
         mGui->createWithDefaultName<GuiText>(format("%d", housing->getId()), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(housing->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(Tile::typeToString(housing->getType()), 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>(format("%.2f", rent), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(format("$%.2f", rent), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("%d", count), 12, mStylesheetManager->getStylesheet("darkText")),
     });
 }

@@ -25,7 +25,7 @@ GoodsMarketWindow::~GoodsMarketWindow()
 void GoodsMarketWindow::setUp()
 {
     // Create table
-    std::vector<std::string> names{"Building", "Company", "Good", "Price", "Count"};
+    std::vector<std::string> names{"Company", "Building", "Good", "Price", "Count"};
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
     // Window
@@ -47,17 +47,17 @@ void GoodsMarketWindow::onNewMonth()
         Good good = static_cast<Good>(i);
         for (const Market<const Building>::Item* item : market->getItems())
             ++mCounts[std::make_tuple(item->good, good, item->reservePrice)];
-        for (auto it = mCounts.begin(); it != mCounts.end(); ++it)
-            addItem(std::get<0>(it->first), std::get<1>(it->first), std::get<2>(it->first), it->second);
     }
+    for (auto it = mCounts.begin(); it != mCounts.end(); ++it)
+            addItem(std::get<0>(it->first), std::get<1>(it->first), std::get<2>(it->first), it->second);
 }
 
 void GoodsMarketWindow::addItem(const Building* building, Good good, Money price, int count)
 {
     // Add row
     mTable->addRow({
-        mGui->createWithDefaultName<GuiText>(format("%d", building->getId()), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(building->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(format("%d", building->getId()), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(goodToString(good), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("$%.2f", price), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("%d", count), 12, mStylesheetManager->getStylesheet("darkText")),
