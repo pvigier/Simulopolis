@@ -566,6 +566,8 @@ void GameStateEditor::onNewMonth()
         mRentalMarketWindow->onNewMonth();
     if (mLaborMarketWindow)
         mLaborMarketWindow->onNewMonth();
+    if (mGoodsMarketWindow)
+        mGoodsMarketWindow->onNewMonth();
 }
 
 void GameStateEditor::onNewYear()

@@ -40,7 +40,7 @@ protected:
     Type mType;
 };
 
-template<typename T = int>
+template<typename T>
 class Market : public VMarket
 {
 public:

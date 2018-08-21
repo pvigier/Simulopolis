@@ -90,6 +90,7 @@
 		<Unit filename="src/city/City.h" />
 		<Unit filename="src/city/Company.cpp" />
 		<Unit filename="src/city/Company.h" />
+		<Unit filename="src/city/Good.cpp" />
 		<Unit filename="src/city/Good.h" />
 		<Unit filename="src/city/Housing.cpp" />
 		<Unit filename="src/city/Housing.h" />
@@ -126,6 +127,8 @@
 		<Unit filename="src/game/GameStateEditor.h" />
 		<Unit filename="src/game/GameStateStart.cpp" />
 		<Unit filename="src/game/GameStateStart.h" />
+		<Unit filename="src/game/GoodsMarketWindow.cpp" />
+		<Unit filename="src/game/GoodsMarketWindow.h" />
 		<Unit filename="src/game/ImmigrantsWindow.cpp" />
 		<Unit filename="src/game/ImmigrantsWindow.h" />
 		<Unit filename="src/game/LaborMarketWindow.cpp" />

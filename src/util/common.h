@@ -17,11 +17,19 @@ constexpr float SQRT_2 = std::sqrt(2.0f);
 bool isAlmostZero(float x);
 bool isSquareRootAlmostZero(float x);
 bool almostEquals(float x, float y);
-float toDegrees(float theta);
-float toRadians(float theta);
+
+constexpr float toDegrees(float theta)
+{
+    return 180.0f * INV_PI * theta;
+}
+
+constexpr float toRadians(float theta)
+{
+    return PI / 180.0f * theta;
+}
 
 template<typename T>
-const T& clamp(const T& v, const T& lo, const T& hi)
+constexpr const T& clamp(const T& v, const T& lo, const T& hi)
 {
     return std::max(lo, std::min(v, hi));
 }

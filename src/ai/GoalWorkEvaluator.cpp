@@ -9,7 +9,7 @@ GoalWorkEvaluator::GoalWorkEvaluator(float bias) : GoalEvaluator(bias)
 
 float GoalWorkEvaluator::computeDesirability(Person* person) const
 {
-    if (person->getWork() && !person->getWork()->hasAlreadyWorkedThisMonth())
+    if (person->getWork() && !person->getWork()->hasWorkedThisMonth())
         return mBias * 1.0f;
     return 0.0f;
 }

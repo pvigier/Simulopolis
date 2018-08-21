@@ -19,7 +19,6 @@ GoalWork::~GoalWork()
 void GoalWork::activate()
 {
     mState = State::ACTIVE;
-    mOwner->getWork()->setAlreadyWorkedThisMonth(true);
     // Add subgoals
     clearSubgoals();
     const Work* work = mOwner->getWork();
@@ -37,7 +36,7 @@ Goal::State GoalWork::process()
 
 void GoalWork::terminate()
 {
-
+    mOwner->getWork()->setWorkedThisMonth(true);
 }
 
 std::string GoalWork::toString() const
