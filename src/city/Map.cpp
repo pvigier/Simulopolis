@@ -210,7 +210,7 @@ const Network& Map::getNetwork() const
     return mNetwork;
 }
 
-bool Map::isReachable(const Building* start, const Building* end) const
+bool Map::isReachableFrom(const Building* start, const Building* end) const
 {
     sf::Vector2i startRoad, endRoad;
     mNetwork.getAdjacentRoad(start->getCoordinates().y, start->getCoordinates().x, startRoad);
@@ -261,7 +261,7 @@ std::vector<const Building*> Map::getReachableBuildingsAround(const Building* or
             if (mTiles.get(i, j)->getType() == type)
             {
                 const Building* building = static_cast<Building*>(mTiles.get(i, j).get());
-                if (isReachable(origin, building))
+                if (isReachableFrom(origin, building))
                     buildings.push_back(building);
             }
         }

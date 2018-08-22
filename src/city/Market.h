@@ -30,7 +30,7 @@ public:
     virtual void update() = 0;
     virtual void sellItems() = 0;
 
-    const Id getMailboxId() const;
+    Id getMailboxId() const;
 
 protected:
     static MessageBus* sMessageBus;
@@ -67,7 +67,7 @@ public:
 
     struct Event
     {
-        enum class Type{ADD_ITEM, BID, PURCHASE, SALE};
+        enum class Type{ADD_ITEM, BID, SET_QUANTITY, PURCHASE, SALE};
 
         struct AddItemEvent
         {
@@ -94,6 +94,7 @@ public:
         {
             AddItemEvent item;
             BidEvent bid;
+            unsigned int desiredQuantity;
             SaleEvent sale;
         };
     };
@@ -157,6 +158,8 @@ public:
                     case Event::Type::BID:
                         addBid(event.bid.itemId, message.sender, event.bid.value);
                         break;
+                    case Event::Type::SET_QUANTITY:
+                        setDesiredQuantity(message.sender, event.desiredQuantity);
                     default:
                         break;
                 }
@@ -182,7 +185,7 @@ public:
                 Item& item = auction->item;
                 if (bid.value >= item.reservePrice && mDesiredQuantities[bid.bidderId] > 0)
                 {
-                    Event event{mType, Event::Type::PURCHASE};
+                    Event event{mType, Event::Type::PURCHASE, {}};
                     event.sale = typename Event::SaleEvent{item.good, bid.value};
                     sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, event));
                     sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, event));
@@ -206,15 +209,22 @@ public:
 
     Event createAddItemEvent(T* good, Money reservePrice) const
     {
-        Event event{mType, Event::Type::ADD_ITEM};
+        Event event{mType, Event::Type::ADD_ITEM, {}};
         event.item = typename Event::AddItemEvent{good, reservePrice};
         return event;
     }
 
     Event createBidEvent(Id itemId, Money value) const
     {
-        Event event{mType, Event::Type::BID};
+        Event event{mType, Event::Type::BID, {}};
         event.bid = typename Event::BidEvent{itemId, value};
+        return event;
+    }
+
+    Event createSetQuantityEvent(unsigned int desiredQuantity) const
+    {
+        Event event{mType, Event::Type::SET_QUANTITY, {}};
+        event.desiredQuantity = desiredQuantity;
         return event;
     }
 

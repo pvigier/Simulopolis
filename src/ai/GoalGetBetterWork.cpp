@@ -2,6 +2,8 @@
 #include "city/City.h"
 #include "city/Person.h"
 #include "city/Market.h"
+#include "city/Lease.h"
+#include "city/Housing.h"
 
 GoalGetBetterWork::GoalGetBetterWork(Person* owner, unsigned int nbMonthsBeforeFailing) :
     Goal(owner), mNbMonthsBeforeFailing(nbMonthsBeforeFailing), mMarket(nullptr)
@@ -33,7 +35,8 @@ Goal::State GoalGetBetterWork::process()
         for (const Market<Work>::Item* item : mMarket->getItems())
         {
             if (static_cast<int>(qualification) >= static_cast<int>(item->good->getQualification()) &&
-                (!work || item->good->getSalary() > work->getSalary()))
+                (!work || item->good->getSalary() > work->getSalary()) &&
+                mOwner->getCity()->getMap().isReachableFrom(mOwner->getHome()->getHousing(), item->good->getWorkplace()))
                 mOwner->getMessageBus()->send(Message::create(mOwner->getMailboxId(), mMarket->getMailboxId(), MessageType::MARKET, mMarket->createBidEvent(item->id, item->reservePrice)));
         }
     }

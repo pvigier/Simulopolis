@@ -4,9 +4,9 @@
 #include "city/Building.h"
 #include "city/Good.h"
 #include "city/Work.h"
-#include "city/Market.h"
 
 class Work;
+template<typename T> class Market;
 
 class Industry : public Building
 {
@@ -42,6 +42,7 @@ protected:
     double mEmployeeProductivity;
     std::vector<Work> mEmployees;
 
+    void updateStock();
     void sellGoods();
     const Market<const Building>* getMarket();
 };

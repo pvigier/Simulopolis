@@ -17,7 +17,7 @@ VMarket::~VMarket()
 
 }
 
-const Id VMarket::getMailboxId() const
+Id VMarket::getMailboxId() const
 {
     return mMailbox.getId();
 }

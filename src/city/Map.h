@@ -33,7 +33,7 @@ public:
 
     // Network
     const Network& getNetwork() const;
-    bool isReachable(const Building* start, const Building* end) const;
+    bool isReachableFrom(const Building* start, const Building* end) const;
     Path getPath(sf::Vector2i start, sf::Vector2i end) const;
     std::vector<const Building*> getReachableBuildingsAround(const Building* origin, int radius, Tile::Type type) const;
 

@@ -125,7 +125,7 @@ void Company::setCity(const City* city)
 {
     mCity = city;
     // Create bank account
-    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CREATE_ACCOUNT}));
+    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CREATE_ACCOUNT, {}}));
 }
 
 const Person* Company::getOwner() const
@@ -258,19 +258,27 @@ void Company::addToMarket(Work& work)
 
 void Company::onNewMonth()
 {
+    // Update buildings
+    for (Building* building : mBuildings)
+    {
+        if (building->isIndustry())
+            static_cast<Industry*>(building)->onNewMonth();
+    }
+
+    // Pay salaries
     for (Building* building : mBuildings)
     {
         if (!building->isHousing())
         {
             for (Work& work : *getEmployees(building))
             {
-                if (work.hasAlreadyWorkedThisMonth())
+                if (work.hasWorkedThisMonth())
                 {
-                    Bank::Event event{Bank::Event::Type::TRANSFER_MONEY};
+                    Bank::Event event{Bank::Event::Type::TRANSFER_MONEY, {}};
                     event.transfer = Bank::Event::TransferMoneyEvent{mAccount, work.getEmployee()->getAccount(), work.getSalary()};
                     sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, event));
                 }
-                work.setAlreadyWorkedThisMonth(false);
+                work.setWorkedThisMonth(false);
             }
         }
     }

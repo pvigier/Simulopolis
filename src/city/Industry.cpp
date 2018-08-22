@@ -1,6 +1,7 @@
 #include "city/Industry.h"
 #include "city/City.h"
 #include "city/Company.h"
+#include "city/Market.h"
 
 Industry::Industry(const std::string& name, Type type, unsigned int nbStairs, Good good,
     double employeeProductivity, std::size_t nbEmployees, Work::Type employeeType) :
@@ -54,7 +55,17 @@ const std::vector<Work>& Industry::getEmployees() const
 
 void Industry::onNewMonth()
 {
-    // Update stock
+    updateStock();
+    sellGoods();
+}
+
+Money Industry::Batch::getCostPerUnit()
+{
+    return Money(cost / quantity);
+}
+
+void Industry::updateStock()
+{
     Batch batch{0.0, Money(0.0)};
     for (std::size_t i = 1; i < mEmployees.size(); ++i)
     {
@@ -71,14 +82,6 @@ void Industry::onNewMonth()
     }
     if (batch.quantity > 0.0)
         mStock.push_back(batch);
-
-    // Sell goods
-    sellGoods();
-}
-
-Money Industry::Batch::getCostPerUnit()
-{
-    return Money(cost / quantity);
 }
 
 void Industry::sellGoods()

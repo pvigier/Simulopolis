@@ -143,7 +143,7 @@ void Person::setCity(const City* city)
 {
     mCity = city;
     // Create bank account
-    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CREATE_ACCOUNT}));
+    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CREATE_ACCOUNT, {}}));
 }
 
 Id Person::getMailboxId() const

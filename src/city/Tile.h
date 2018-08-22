@@ -68,4 +68,4 @@ protected:
     State mState;
 };
 
-ENABLE_BITMASK_OPERATORS(Tile::Category);
+ENABLE_BITMASK_OPERATORS(Tile::Category)
