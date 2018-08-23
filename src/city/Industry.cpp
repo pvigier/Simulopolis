@@ -94,7 +94,7 @@ void Industry::sellGoods()
         {
             Money costPerUnit = mStock.front().getCostPerUnit();
             Money price(costPerUnit * (1.0 + mOwner->getWholesaleMargin(mGood)));
-            mOwner->getMessageBus()->send(Message::create(mOwner->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(this, price)));
+            mOwner->getMessageBus()->send(Message::create(mOwner->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mOwner->getAccount(), this, price)));
             mStock.front().quantity -= 1.0;
             mStock.front().cost -= costPerUnit;
             if (mStock.front().quantity <= 0.0)

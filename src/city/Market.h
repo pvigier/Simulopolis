@@ -48,6 +48,7 @@ public:
     {
         Id id;
         Id sellerId;
+        Id sellerAccount;
         T* good;
         Money reservePrice;
     };
@@ -71,6 +72,7 @@ public:
 
         struct AddItemEvent
         {
+            Id sellerAccount;
             T* good;
             Money reservePrice;
         };
@@ -83,6 +85,7 @@ public:
 
         struct SaleEvent
         {
+            Id sellerAccount;
             T* good;
             Money value;
         };
@@ -104,9 +107,9 @@ public:
 
     }
 
-    Id addItem(Id sellerId, T* good, Money reservePrice)
+    Id addItem(Id sellerId, Id sellerAccount, T* good, Money reservePrice)
     {
-        Auction auction{mTime++, Item{UNDEFINED, sellerId, good, reservePrice}, {}};
+        Auction auction{mTime++, Item{UNDEFINED, sellerId, sellerAccount, good, reservePrice}, {}};
         Id id = mAuctions.add(auction);
         mAuctions.get(id).item.id = id;
         mDirty = true;
@@ -153,7 +156,7 @@ public:
                 switch (event.type)
                 {
                     case Event::Type::ADD_ITEM:
-                        addItem(message.sender, event.item.good, event.item.reservePrice);
+                        addItem(message.sender, event.item.sellerAccount, event.item.good, event.item.reservePrice);
                         break;
                     case Event::Type::BID:
                         addBid(event.bid.itemId, message.sender, event.bid.value);
@@ -186,7 +189,7 @@ public:
                 if (bid.value >= item.reservePrice && mDesiredQuantities[bid.bidderId] > 0)
                 {
                     Event event{mType, Event::Type::PURCHASE, {}};
-                    event.sale = typename Event::SaleEvent{item.good, bid.value};
+                    event.sale = typename Event::SaleEvent{item.sellerAccount, item.good, bid.value};
                     sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, event));
                     sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, event));
                     mDesiredQuantities[bid.bidderId]--;
@@ -207,10 +210,10 @@ public:
         mDesiredQuantities.clear();
     }
 
-    Event createAddItemEvent(T* good, Money reservePrice) const
+    Event createAddItemEvent(Id sellerAccount, T* good, Money reservePrice) const
     {
         Event event{mType, Event::Type::ADD_ITEM, {}};
-        event.item = typename Event::AddItemEvent{good, reservePrice};
+        event.item = typename Event::AddItemEvent{sellerAccount, good, reservePrice};
         return event;
     }
 

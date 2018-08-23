@@ -247,13 +247,13 @@ void Company::setRetailMargin(Good good, double margin)
 void Company::addToMarket(Lease& lease)
 {
     const Market<Lease>* market = static_cast<const Market<Lease>*>(mCity->getMarket(VMarket::Type::RENT));
-    sMessageBus->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(&lease, lease.getRent())));
+    sMessageBus->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, &lease, lease.getRent())));
 }
 
 void Company::addToMarket(Work& work)
 {
     const Market<Work>* market = static_cast<const Market<Work>*>(mCity->getMarket(VMarket::Type::WORK));
-    sMessageBus->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(&work, work.getSalary())));
+    sMessageBus->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, &work, work.getSalary())));
 }
 
 void Company::onNewMonth()
@@ -273,11 +273,7 @@ void Company::onNewMonth()
             for (Work& work : *getEmployees(building))
             {
                 if (work.hasWorkedThisMonth())
-                {
-                    Bank::Event event{Bank::Event::Type::TRANSFER_MONEY, {}};
-                    event.transfer = Bank::Event::TransferMoneyEvent{mAccount, work.getEmployee()->getAccount(), work.getSalary()};
-                    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, event));
-                }
+                    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createTransferMoneyEvent(mAccount, work.getEmployee()->getAccount(), work.getSalary())));
                 work.setWorkedThisMonth(false);
             }
         }

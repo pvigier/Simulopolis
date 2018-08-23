@@ -70,8 +70,15 @@ Money Bank::getBalance(Id account) const
     return mAccounts.get(account).balance;
 }
 
-bool Bank::transferMoney(Id issuer, Id receiver, Money amount)
+void Bank::transferMoney(Id issuer, Id receiver, Money amount)
 {
     mAccounts.get(issuer).balance -= amount;
     mAccounts.get(receiver).balance += amount;
+}
+
+Bank::Event Bank::createTransferMoneyEvent(Id issuer, Id receiver, Money amount) const
+{
+    Event event{Event::Type::TRANSFER_MONEY, {}};
+    event.transfer = Event::TransferMoneyEvent{issuer, receiver, amount};
+    return event;
 }

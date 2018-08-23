@@ -51,7 +51,10 @@ public:
     Money getBalance(Id account) const;
 
     // Transfer
-    bool transferMoney(Id issuer, Id receiver, Money amount);
+    void transferMoney(Id issuer, Id receiver, Money amount);
+
+    // Events
+    Event createTransferMoneyEvent(Id issuer, Id receiver, Money amount) const;
 
 private:
     static MessageBus* sMessageBus;
