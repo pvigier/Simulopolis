@@ -33,7 +33,7 @@ void Car::setImageManager(ImageManager* imageManager)
 
 void Car::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mSprite);
+    target.draw(mSprite, states);
 }
 
 void Car::update(float dt)

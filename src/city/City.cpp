@@ -167,9 +167,9 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
         for (unsigned int j = jMin; j < jMax; ++j)
         {
-            target.draw(*tiles.get(i, j));
+            target.draw(*tiles.get(i, j), states);
             for (const Car* car : mCarsByTile.get(i, j))
-                target.draw(*car);
+                target.draw(*car, states);
         }
     }
 }

@@ -85,9 +85,9 @@ void GuiWindow::setSize(sf::Vector2f size)
 void GuiWindow::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
     GuiWidget::render(target, states);
-    target.draw(mBar);
-    target.draw(mCloseButton);
-    target.draw(mTitle);
+    target.draw(mBar, states);
+    target.draw(mCloseButton, states);
+    target.draw(mTitle, states);
 }
 
 void GuiWindow::applyStyle()

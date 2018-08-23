@@ -32,7 +32,7 @@ void GuiWidget::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
         render(target, states);
         for (const GuiWidget* widget : mChildren)
-            target.draw(*widget);
+            target.draw(*widget, states);
     }
 }
 
@@ -290,7 +290,7 @@ void GuiWidget::resetDirty()
 
 void GuiWidget::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mBackground);
+    target.draw(mBackground, states);
 }
 
 bool GuiWidget::onHover(sf::Vector2f position, bool processed)

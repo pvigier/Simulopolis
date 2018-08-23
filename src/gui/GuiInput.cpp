@@ -58,7 +58,7 @@ void GuiInput::render(sf::RenderTarget& target, sf::RenderStates states) const
     GuiWidget::render(target, states);
     mElapsedTime = (mElapsedTime + mClock.restart().asMilliseconds()) % 2000;
     if (mFocus && mElapsedTime < 1000)
-        target.draw(mCursorShape);
+        target.draw(mCursorShape, states);
 }
 
 bool GuiInput::onPress(sf::Vector2f position, bool processed)

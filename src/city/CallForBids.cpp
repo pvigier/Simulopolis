@@ -14,9 +14,9 @@ CallForBids::~CallForBids()
 
 void CallForBids::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mSprite);
+    target.draw(mSprite, states);
     // Sign
-    target.draw(mSignSprite);
+    target.draw(mSignSprite, states);
 }
 
 std::unique_ptr<Tile> CallForBids::clone() const

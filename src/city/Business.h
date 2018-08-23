@@ -13,7 +13,7 @@ class Business : public Building
 public:
     struct Event
     {
-        enum class Type{RESERVATION, RESERVATION_ACCEPTED, RESERVATION_REFUSED, GIVE_GOOD};
+        enum class Type{RESERVATION, RESERVATION_ACCEPTED, RESERVATION_REFUSED};
 
         Type type;
     };
@@ -29,6 +29,7 @@ public:
     void update();
 
     Good getGood() const;
+    std::size_t getStockSize() const;
     bool hasPreparedGoods() const;
     Money getPrice() const;
     Work& getManager();

@@ -147,7 +147,7 @@ std::string Tile::typeToString(Tile::Type type)
 
 void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mSprite);
+    target.draw(mSprite, states);
 }
 
 bool Tile::intersect(const sf::Vector2f& position) const

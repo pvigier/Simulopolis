@@ -63,7 +63,7 @@ void GuiText::setColor(sf::Color color)
 void GuiText::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
     GuiWidget::render(target, states);
-    target.draw(mText);
+    target.draw(mText, states);
 }
 
 sf::Vector2f GuiText::computeSize() const

@@ -53,5 +53,5 @@ void GuiImage::setSize(sf::Vector2f size)
 
 void GuiImage::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mSprite);
+    target.draw(mSprite, states);
 }

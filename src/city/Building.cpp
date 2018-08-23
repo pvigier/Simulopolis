@@ -16,14 +16,14 @@ Building::~Building()
 
 void Building::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mSprite);
+    target.draw(mSprite, states);
     // Stairs
     sf::Sprite sprite(mSprite);
     sprite.setTextureRect(sf::IntRect(mSprite.getTextureRect().left, 0, 132, 85));
     for (unsigned int i = 0; i < mNbStairs - 1; ++i)
     {
         sprite.move(0, -STAIR_HEIGHT);
-        target.draw(sprite);
+        target.draw(sprite, states);
     }
 }
 
