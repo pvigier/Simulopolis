@@ -1,7 +1,7 @@
 #include "render/RenderEngine.h"
 
-RenderEngine::RenderEngine() : mWindow(sf::VideoMode(800, 600), "City Builder", sf::Style::Default,
-    sf::ContextSettings(0, 0, 4))
+RenderEngine::RenderEngine() : mWindow(sf::VideoMode(800, 600), "City Builder",
+    sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 4))
 {
    mWindow.setFramerateLimit(60);
 }
