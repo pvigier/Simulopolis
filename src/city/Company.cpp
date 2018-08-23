@@ -104,6 +104,13 @@ void Company::update(float dt)
             }
         }
     }
+
+    // Update buildings
+    for (Building* building : mBuildings)
+    {
+        if (building->isBusiness())
+            static_cast<Business*>(building)->update();
+    }
 }
 
 MessageBus* Company::getMessageBus()
@@ -263,6 +270,8 @@ void Company::onNewMonth()
     {
         if (building->isIndustry())
             static_cast<Industry*>(building)->onNewMonth();
+        else if (building->isBusiness())
+            static_cast<Business*>(building)->onNewMonth();
     }
 
     // Pay salaries

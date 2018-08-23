@@ -34,12 +34,44 @@ void Business::setOwner(Company* owner)
 
 void Business::update()
 {
-
+    while (!mMailbox.isEmpty())
+    {
+        Message message = mMailbox.get();
+        if (message.type == MessageType::MARKET)
+        {
+            const Market<const Building>::Event& event = message.getInfo<Market<const Building>::Event>();
+            if (event.type == Market<const Building>::Event::Type::PURCHASE)
+            {
+                // To do : save the building to fetch the good later
+                mStock.push(event.sale.value);
+                mOwner->getMessageBus()->send(Message::create(mOwner->getCity()->getBank().getMailboxId(), MessageType::BANK, mOwner->getCity()->getBank().createTransferMoneyEvent(mOwner->getAccount(), event.sale.sellerAccount, event.sale.value)));
+            }
+        }
+        else if (message.type == MessageType::BUSINESS)
+        {
+            const Event& event = message.getInfo<Event>();
+            if (event.type == Event::Type::RESERVATION)
+            {
+                if (!mStock.empty())
+                {
+                    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), message.sender, MessageType::BUSINESS, Event{Event::Type::RESERVATION_ACCEPTED}));
+                    mStock.pop();
+                }
+                else
+                    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), message.sender, MessageType::BUSINESS, Event{Event::Type::RESERVATION_REFUSED}));
+            }
+        }
+    }
 }
 
 Good Business::getGood() const
 {
     return mGood;
+}
+
+std::size_t Business::getStockSize() const
+{
+    return mStock.size();
 }
 
 bool Business::hasPreparedGoods() const
