@@ -41,3 +41,6 @@ media/gimp
 
 # Python
 *.py
+
+# Profiling
+gmon.out
