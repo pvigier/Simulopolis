@@ -4,6 +4,21 @@
 #include "city/Company.h"
 #include "city/Market.h"
 
+Tile::Type Business::getBusinessType(Good good)
+{
+    switch (good)
+    {
+        case Good::NECESSARY:
+            return Tile::Type::GROCERY;
+        case Good::NORMAL:
+            return Tile::Type::MALL;
+        case Good::LUXURY:
+            return Tile::Type::BOUTIQUE;
+        default:
+            return Tile::Type::GROCERY;
+    }
+}
+
 Business::Business(const std::string& name, Type type, unsigned int nbStairs, Good good, unsigned int maxSizeStock,
     std::size_t nbEmployees, Work::Type employeeType) :
     Building(name, type, nbStairs), mGood(good), mMaxSizeStock(maxSizeStock), mStock(0), mStockCost(0.0),
@@ -37,6 +52,7 @@ void Business::update()
 {
     // Read messages
     bool priceDirty = false;
+    bool desiredQuantityDirty = false;
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();
@@ -49,6 +65,7 @@ void Business::update()
                 ++mStock;
                 mStockCost += event.sale.value;
                 priceDirty = true;
+                desiredQuantityDirty = true;
                 mOwner->getMessageBus()->send(Message::create(mOwner->getCity()->getBank().getMailboxId(), MessageType::BANK, mOwner->getCity()->getBank().createTransferMoneyEvent(mOwner->getAccount(), event.sale.sellerAccount, event.sale.value)));
             }
         }
@@ -57,12 +74,13 @@ void Business::update()
             const Event& event = message.getInfo<Event>();
             if (event.type == Event::Type::RESERVATION)
             {
-                if (mStock > 0)
+                if (hasPreparedGoods())
                 {
                     mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), message.sender, MessageType::BUSINESS, Event{Event::Type::RESERVATION_ACCEPTED, mOwner->getAccount(), mPrice}));
                     --mStock;
                     mStockCost -= mPrice;
                     mPreparedGoods -= 1.0;
+                    desiredQuantityDirty = true;
                 }
                 else
                     mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), message.sender, MessageType::BUSINESS, Event{Event::Type::RESERVATION_REFUSED, {}, {}}));
@@ -73,6 +91,10 @@ void Business::update()
     // Update price
     if (priceDirty)
         updatePrice();
+
+    // Update desired quantity
+    if (desiredQuantityDirty)
+        updateDesiredQuantity();
 }
 
 Id Business::getMailboxId() const
@@ -92,7 +114,7 @@ unsigned int Business::getStock() const
 
 bool Business::hasPreparedGoods() const
 {
-    return mPreparedGoods >= 1.0;
+    return mStock > 0 && mPreparedGoods >= 1.0;
 }
 
 Money Business::getPrice() const
@@ -141,8 +163,8 @@ void Business::prepareGoods()
 
 void Business::buyGoods()
 {
+    updateDesiredQuantity();
     const Market<const Building>* market = getMarket();
-    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createSetQuantityEvent(mMaxSizeStock - mStock)));
     for (const Market<const Building>::Item* item : market->getItems())
     {
         if (mOwner->getCity()->getMap().isReachableFrom(this, item->good))
@@ -176,4 +198,11 @@ void Business::updatePrice()
     }
     // Update price
     mPrice = (mStockCost + payroll) / mStock * mOwner->getRetailMargin(mGood);
+}
+
+void Business::updateDesiredQuantity()
+{
+    const Market<const Building>* market = getMarket();
+    unsigned int desiredQuantity = std::max(0, static_cast<int>(mMaxSizeStock) - static_cast<int>(mStock));
+    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createSetQuantityEvent(desiredQuantity)));
 }

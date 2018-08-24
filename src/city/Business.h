@@ -20,6 +20,8 @@ public:
         Money price;
     };
 
+    static Type getBusinessType(Good good);
+
     Business(const std::string& name, Type type, unsigned int nbStairs, Good good, unsigned int maxSizeStock,
         std::size_t nbEmployees, Work::Type employeeType);
     virtual ~Business();
@@ -57,4 +59,5 @@ protected:
     void buyGoods();
     const Market<const Building>* getMarket();
     void updatePrice();
+    void updateDesiredQuantity();
 };
