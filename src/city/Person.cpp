@@ -28,7 +28,7 @@ void Person::setMessageBus(MessageBus* messageBus)
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
-    mState(State::WAITING), mHome(nullptr), mWork(nullptr), mFavoriteShop(nullptr), mCar(car),
+    mState(State::WAITING), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::NECESSARY), mCar(car),
     mAccount(UNDEFINED), mLastMonthBalance(0.0), mMonthBalance(0.0),
     mEnergyDecayRate(0.1f), mSatietyDecayRate(0.1f), mHealthDecayRate(0.01f), mSafetyDecayRate(0.01f), mHappinessDecayRate(0.01f),
     mEnergy(1.0f), mSatiety(1.0f), mHealth(1.0f), mSafety(1.0f), mHappiness(0.0f),
@@ -214,9 +214,9 @@ std::string Person::getWorkStatus() const
         return "Unemployed";
 }
 
-const Business* Person::getFavoriteShop() const
+Good Person::getConsumptionHabit() const
 {
-    return mFavoriteShop;
+    return mConsumptionHabit;
 }
 
 Car& Person::getCar()

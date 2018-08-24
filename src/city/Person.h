@@ -4,6 +4,7 @@
 #include "ai/GoalThink.h"
 #include "city/Car.h"
 #include "city/Work.h"
+#include "city/Good.h"
 
 class MessageBus;
 class City;
@@ -64,7 +65,7 @@ public:
     void setWork(Work* work);
     void quitWork();
     std::string getWorkStatus() const;
-    const Business* getFavoriteShop() const;
+    Good getConsumptionHabit() const;
 
     // Car
     Car& getCar();
@@ -119,7 +120,7 @@ private:
     // Daily life
     Lease* mHome;
     Work* mWork;
-    Business* mFavoriteShop;
+    Good mConsumptionHabit;
 
     // Car
     Car mCar;

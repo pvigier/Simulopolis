@@ -9,7 +9,7 @@ GoalShopEvaluator::GoalShopEvaluator(float bias) : GoalEvaluator(bias)
 
 float GoalShopEvaluator::computeDesirability(Person* person) const
 {
-    if (person->getFavoriteShop())
+    if (person->getHome() && person->getAccountBalance() >= 0.0)
         return mBias * (1.0f - person->getSatiety());
     return 0.0f;
 }
