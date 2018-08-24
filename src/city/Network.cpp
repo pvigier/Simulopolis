@@ -115,7 +115,7 @@ std::vector<sf::Vector2i> Network::getPath(sf::Vector2i start, sf::Vector2i end)
     while (!frontier.empty() && frontier.front() != end) {
         sf::Vector2i position = frontier.front();
         frontier.pop();
-        for (int i = 0; i < sDirections.size(); ++i)
+        for (int i = 0; i < static_cast<int>(sDirections.size()); ++i)
         {
             sf::Vector2i neighbor = position + sDirections[i];
             if (isValid(neighbor.y, neighbor.x) &&

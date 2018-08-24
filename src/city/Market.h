@@ -192,7 +192,7 @@ public:
                     event.sale = typename Event::SaleEvent{item.sellerAccount, item.good, bid.value};
                     sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, event));
                     sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, event));
-                    mDesiredQuantities[bid.bidderId]--;
+                    --mDesiredQuantities[bid.bidderId];
                     soldItems.push_back(item.id);
                 }
             }

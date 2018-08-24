@@ -51,6 +51,8 @@
 		<Unit filename="src/ai/Goal.h" />
 		<Unit filename="src/ai/GoalEnterCity.cpp" />
 		<Unit filename="src/ai/GoalEnterCity.h" />
+		<Unit filename="src/ai/GoalEnterCityEvaluator.cpp" />
+		<Unit filename="src/ai/GoalEnterCityEvaluator.h" />
 		<Unit filename="src/ai/GoalEvaluator.cpp" />
 		<Unit filename="src/ai/GoalEvaluator.h" />
 		<Unit filename="src/ai/GoalGetBetterWork.cpp" />

@@ -18,7 +18,7 @@ public:
 
     Map();
 
-    static void loadTiles(const TextureManager& textureManager);
+    static void loadTiles();
     static const TileAtlas& getTileAtlas();
 
     // IO

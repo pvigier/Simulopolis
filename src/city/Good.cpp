@@ -14,3 +14,18 @@ std::string goodToString(Good good)
             return "";
     }
 }
+
+float goodToHappiness(Good good)
+{
+    switch (good)
+    {
+        case Good::NECESSARY:
+            return 0.0f;
+        case Good::NORMAL:
+            return 5.0f;
+        case Good::LUXURY:
+            return 20.0f;
+        default:
+            return 0.0f;
+    }
+}

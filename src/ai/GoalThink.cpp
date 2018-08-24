@@ -40,7 +40,7 @@ void GoalThink::addEvaluator(GoalEvaluator* evaluator)
 
 bool GoalThink::handle(Message message)
 {
-    forward(message);
+    return forward(message);
 }
 
 void GoalThink::arbitrate()

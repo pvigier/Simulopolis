@@ -17,7 +17,7 @@ Map::Map() : mWidth(0), mHeight(0), mNbSelected(0), mNetwork(mWidth, mHeight)
 
 }
 
-void Map::loadTiles(const TextureManager& textureManager)
+void Map::loadTiles()
 {
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("grass", Tile::Type::VOID, Tile::Category::GROUND)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Tile("grass", Tile::Type::GRASS, Tile::Category::GROUND)));
@@ -30,12 +30,12 @@ void Map::loadTiles(const TextureManager& textureManager)
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Housing("housing", Tile::Type::VILLA, 1, 1, 20)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_INDUSTRY, sf::Color(192, 188, 170))));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::FARM, 1, Good::NECESSARY, 4, 2, Work::Type::FARMER)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::FACTORY, 3, Good::NORMAL, 1, 6, Work::Type::WORKER)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::WORKSHOP, 2, Good::LUXURY, 0.25, 4, Work::Type::CRAFTSPERSON)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::FACTORY, 3, Good::NORMAL, 0.5, 6, Work::Type::WORKER)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Industry("industry", Tile::Type::WORKSHOP, 2, Good::LUXURY, 0.125, 4, Work::Type::CRAFTSPERSON)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_BUSINESS, sf::Color(178, 83, 83))));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::GROCERY, 1, Good::NECESSARY, 2, Work::Type::GROCER)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::MALL, 3, Good::NORMAL, 6, Work::Type::CASHIER)));
-    sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::BOUTIQUE, 2, Good::LUXURY, 4, Work::Type::SALESPERSON)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::GROCERY, 1, Good::NECESSARY, 16, 2, Work::Type::GROCER)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::MALL, 3, Good::NORMAL, 12, 6, Work::Type::CASHIER)));
+    sTileAtlas.push_back(std::unique_ptr<Tile>(new Business("business", Tile::Type::BOUTIQUE, 2, Good::LUXURY, 4, 4, Work::Type::SALESPERSON)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_HOSPITAL, sf::Color(255, 255, 255))));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new Service("hospital", Tile::Type::HOSPITAL, 2, 1, Work::Type::DOCTOR)));
     sTileAtlas.push_back(std::unique_ptr<Tile>(new CallForBids("grass", Tile::Type::CFB_POLICE_STATION, sf::Color(49, 122, 187))));

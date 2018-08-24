@@ -41,6 +41,8 @@ Company::Company(std::string name, int creationYear, Person* owner) :
 {
     mRents.fill(Money(0.0));
     mSalaries.fill(Money(0.0));
+    mWholesaleMargins.fill(0.0);
+    mRetailMargins.fill(0.0);
     sMessageBus->addMailbox(mMailbox);
 }
 
