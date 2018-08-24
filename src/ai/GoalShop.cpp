@@ -22,27 +22,14 @@ void GoalShop::activate()
     mState = State::ACTIVE;
 
     // Select the right type of shop
-    Tile::Type type;
-    switch (mOwner->getConsumptionHabit())
-    {
-        case Good::NECESSARY:
-            type = Tile::Type::GROCERY;
-            break;
-        case Good::NORMAL:
-            type = Tile::Type::MALL;
-            break;
-        default:
-            type = Tile::Type::BOUTIQUE;
-            break;
-    }
+    Tile::Type type = Business::getBusinessType(mOwner->getConsumptionHabit());
 
     // Find a shop
     std::vector<const Building*> buildings = mOwner->getCity()->getMap().getReachableBuildingsAround(mOwner->getHome()->getHousing(), RADIUS, type);
     for (const Building* building : buildings)
     {
         const Business* shop = static_cast<const Business*>(building);
-        if (mOwner->getCity()->getMap().isReachableFrom(mOwner->getHome()->getHousing(), shop) &&
-            shop->hasPreparedGoods() && shop->getPrice() <= mOwner->getAccountBalance())
+        if (shop->hasPreparedGoods() && shop->getPrice() <= mOwner->getAccountBalance())
         {
             if (!mSelectedShop || shop->getPrice() < mSelectedShop->getPrice())
                 mSelectedShop = shop;
@@ -74,6 +61,8 @@ Goal::State GoalShop::process()
 void GoalShop::terminate()
 {
 
+    mOwner->increaseSatiety(1.0f);
+    mOwner->increaseHappiness(goodToHappiness(mOwner->getConsumptionHabit()));
 }
 
 bool GoalShop::handle(Message message)
