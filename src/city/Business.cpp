@@ -4,9 +4,10 @@
 #include "city/Company.h"
 #include "city/Market.h"
 
-Business::Business(const std::string& name, Type type, unsigned int nbStairs, Good good, std::size_t maxSizeStock,
+Business::Business(const std::string& name, Type type, unsigned int nbStairs, Good good, unsigned int maxSizeStock,
     std::size_t nbEmployees, Work::Type employeeType) :
-    Building(name, type, nbStairs), mGood(good), mMaxSizeStock(maxSizeStock), mPrice(0.0)
+    Building(name, type, nbStairs), mGood(good), mMaxSizeStock(maxSizeStock), mStock(0), mStockCost(0.0),
+    mPrice(0.0)
 {
     mEmployees.push_back(Work(Work::Type::MANAGER, this));
     mEmployees.resize(nbEmployees + 1, Work(employeeType, this));
@@ -34,6 +35,8 @@ void Business::setOwner(Company* owner)
 
 void Business::update()
 {
+    // Read messages
+    bool priceDirty = false;
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();
@@ -43,7 +46,9 @@ void Business::update()
             if (event.type == Market<const Building>::Event::Type::PURCHASE)
             {
                 // To do : save the building to fetch the good later
-                mStock.push(event.sale.value);
+                ++mStock;
+                mStockCost += event.sale.value;
+                priceDirty = true;
                 mOwner->getMessageBus()->send(Message::create(mOwner->getCity()->getBank().getMailboxId(), MessageType::BANK, mOwner->getCity()->getBank().createTransferMoneyEvent(mOwner->getAccount(), event.sale.sellerAccount, event.sale.value)));
             }
         }
@@ -52,16 +57,27 @@ void Business::update()
             const Event& event = message.getInfo<Event>();
             if (event.type == Event::Type::RESERVATION)
             {
-                if (!mStock.empty())
+                if (mStock > 0)
                 {
-                    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), message.sender, MessageType::BUSINESS, Event{Event::Type::RESERVATION_ACCEPTED}));
-                    mStock.pop();
+                    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), message.sender, MessageType::BUSINESS, Event{Event::Type::RESERVATION_ACCEPTED, mOwner->getAccount(), mPrice}));
+                    --mStock;
+                    mStockCost -= mPrice;
+                    mPreparedGoods -= 1.0;
                 }
                 else
-                    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), message.sender, MessageType::BUSINESS, Event{Event::Type::RESERVATION_REFUSED}));
+                    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), message.sender, MessageType::BUSINESS, Event{Event::Type::RESERVATION_REFUSED, {}, {}}));
             }
         }
     }
+
+    // Update price
+    if (priceDirty)
+        updatePrice();
+}
+
+Id Business::getMailboxId() const
+{
+    return mMailbox.getId();
 }
 
 Good Business::getGood() const
@@ -69,9 +85,9 @@ Good Business::getGood() const
     return mGood;
 }
 
-std::size_t Business::getStockSize() const
+unsigned int Business::getStock() const
 {
-    return mStock.size();
+    return mStock;
 }
 
 bool Business::hasPreparedGoods() const
@@ -126,7 +142,7 @@ void Business::prepareGoods()
 void Business::buyGoods()
 {
     const Market<const Building>* market = getMarket();
-    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createSetQuantityEvent(mMaxSizeStock - mStock.size())));
+    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createSetQuantityEvent(mMaxSizeStock - mStock)));
     for (const Market<const Building>::Item* item : market->getItems())
     {
         if (mOwner->getCity()->getMap().isReachableFrom(this, item->good))
@@ -147,4 +163,17 @@ const Market<const Building>* Business::getMarket()
         default:
             return nullptr;
     };
+}
+
+void Business::updatePrice()
+{
+    // Compute payroll
+    Money payroll(0.0);
+    for (const Work& employee : mEmployees)
+    {
+        if (employee.hasWorkedThisMonth())
+            payroll += employee.getSalary();
+    }
+    // Update price
+    mPrice = (mStockCost + payroll) / mStock * mOwner->getRetailMargin(mGood);
 }

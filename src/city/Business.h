@@ -16,9 +16,11 @@ public:
         enum class Type{RESERVATION, RESERVATION_ACCEPTED, RESERVATION_REFUSED};
 
         Type type;
+        Id accountId;
+        Money price;
     };
 
-    Business(const std::string& name, Type type, unsigned int nbStairs, Good good, std::size_t maxSizeStock,
+    Business(const std::string& name, Type type, unsigned int nbStairs, Good good, unsigned int maxSizeStock,
         std::size_t nbEmployees, Work::Type employeeType);
     virtual ~Business();
 
@@ -28,8 +30,9 @@ public:
 
     void update();
 
+    Id getMailboxId() const;
     Good getGood() const;
-    std::size_t getStockSize() const;
+    unsigned int getStock() const;
     bool hasPreparedGoods() const;
     Money getPrice() const;
     Work& getManager();
@@ -43,8 +46,9 @@ public:
 protected:
     Mailbox mMailbox;
     Good mGood;
-    unsigned mMaxSizeStock;
-    std::queue<Money> mStock;
+    unsigned int mMaxSizeStock;
+    unsigned int mStock;
+    Money mStockCost;
     double mPreparedGoods;
     Money mPrice;
     std::vector<Work> mEmployees;
@@ -52,4 +56,5 @@ protected:
     void prepareGoods();
     void buyGoods();
     const Market<const Building>* getMarket();
+    void updatePrice();
 };
