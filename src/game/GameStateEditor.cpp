@@ -437,7 +437,7 @@ void GameStateEditor::openRentalMarketWindow()
 {
     if (!mRentalMarketWindow)
     {
-        mRentalMarketWindow = mGui->createRootWithDefaultName<RentalMarketWindow>(sStylesheetManager, static_cast<const Market<Lease>*>(mCity.getMarket(VMarket::Type::RENT)));
+        mRentalMarketWindow = mGui->createRootWithDefaultName<RentalMarketWindow>(sMessageBus, sStylesheetManager, static_cast<Market<Lease>*>(mCity.getMarket(VMarket::Type::RENT)));
         mRentalMarketWindow->subscribe(mMailbox.getId());
     }
 }
@@ -446,7 +446,7 @@ void GameStateEditor::openLaborMarketWindow()
 {
     if (!mLaborMarketWindow)
     {
-        mLaborMarketWindow = mGui->createRootWithDefaultName<LaborMarketWindow>(sStylesheetManager, static_cast<const Market<Work>*>(mCity.getMarket(VMarket::Type::WORK)));
+        mLaborMarketWindow = mGui->createRootWithDefaultName<LaborMarketWindow>(sMessageBus, sStylesheetManager, static_cast<Market<Work>*>(mCity.getMarket(VMarket::Type::WORK)));
         mLaborMarketWindow->subscribe(mMailbox.getId());
     }
 }
@@ -455,12 +455,12 @@ void GameStateEditor::openGoodsMarketWindow()
 {
     if (!mGoodsMarketWindow)
     {
-        std::array<const Market<const Building>*, 3> markets = {
-            static_cast<const Market<const Building>*>(mCity.getMarket(VMarket::Type::NECESSARY_GOOD)),
-            static_cast<const Market<const Building>*>(mCity.getMarket(VMarket::Type::NORMAL_GOOD)),
-            static_cast<const Market<const Building>*>(mCity.getMarket(VMarket::Type::LUXURY_GOOD))
+        std::array<Market<const Building>*, 3> markets = {
+            static_cast<Market<const Building>*>(mCity.getMarket(VMarket::Type::NECESSARY_GOOD)),
+            static_cast<Market<const Building>*>(mCity.getMarket(VMarket::Type::NORMAL_GOOD)),
+            static_cast<Market<const Building>*>(mCity.getMarket(VMarket::Type::LUXURY_GOOD))
         };
-        mGoodsMarketWindow = mGui->createRootWithDefaultName<GoodsMarketWindow>(sStylesheetManager, std::move(markets));
+        mGoodsMarketWindow = mGui->createRootWithDefaultName<GoodsMarketWindow>(sMessageBus, sStylesheetManager, std::move(markets));
         mGoodsMarketWindow->subscribe(mMailbox.getId());
     }
 }
@@ -479,6 +479,12 @@ void GameStateEditor::updateWindows()
 {
     if (mCitizensWindow)
         mCitizensWindow->update();
+    if (mRentalMarketWindow)
+        mRentalMarketWindow->update();
+    if (mLaborMarketWindow)
+        mLaborMarketWindow->update();
+    if (mGoodsMarketWindow)
+        mGoodsMarketWindow->update();
     if (mPoliciesWindow)
         mPoliciesWindow->update();
     for (GuiWindow* window : mWindowManagers[0].getWindows())
@@ -562,12 +568,6 @@ void GameStateEditor::onNewMonth()
 {
     if (mImmigrantsWindow)
         mImmigrantsWindow->onNewMonth();
-    if (mRentalMarketWindow)
-        mRentalMarketWindow->onNewMonth();
-    if (mLaborMarketWindow)
-        mLaborMarketWindow->onNewMonth();
-    if (mGoodsMarketWindow)
-        mGoodsMarketWindow->onNewMonth();
 }
 
 void GameStateEditor::onNewYear()

@@ -115,7 +115,7 @@ void City::load(const std::string& name)
     mCitizens.back()->setState(Person::State::MOVING);*/
 
     // tmp
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 10; ++i)
         generateImmigrant();
 }
 
@@ -315,6 +315,11 @@ std::string City::getFormattedMonth() const
 const Bank& City::getBank() const
 {
     return mBank;
+}
+
+VMarket* City::getMarket(VMarket::Type type)
+{
+    return mMarkets[static_cast<int>(type)].get();
 }
 
 const VMarket* City::getMarket(VMarket::Type type) const

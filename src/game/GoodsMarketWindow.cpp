@@ -1,4 +1,5 @@
 #include "GoodsMarketWindow.h"
+#include "message/MessageBus.h"
 #include "resource/StylesheetManager.h"
 #include "gui/Gui.h"
 #include "gui/GuiText.h"
@@ -10,16 +11,21 @@
 #include "city/Housing.h"
 #include "util/format.h"
 
-GoodsMarketWindow::GoodsMarketWindow(StylesheetManager* stylesheetManager, std::array<const Market<const Building>*, 3> markets) :
+GoodsMarketWindow::GoodsMarketWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager,
+    std::array<Market<const Building>*, 3> markets) :
     GuiWindow("Goods market", stylesheetManager->getStylesheet("window")),
-    mStylesheetManager(stylesheetManager), mMarkets(std::move(markets)), mTable(nullptr)
+    mMessageBus(messageBus), mStylesheetManager(stylesheetManager), mMarkets(std::move(markets)), mTable(nullptr)
 {
-
+    mMessageBus->addMailbox(mMailbox);
+    for (Market<const Building>* market : mMarkets)
+        market->subscribe(mMailbox.getId());
 }
 
 GoodsMarketWindow::~GoodsMarketWindow()
 {
-    //dtor
+    for (Market<const Building>* market : mMarkets)
+        market->unsubscribe(mMailbox.getId());
+    mMessageBus->removeMailbox(mMailbox);
 }
 
 void GoodsMarketWindow::setUp()
@@ -33,26 +39,74 @@ void GoodsMarketWindow::setUp()
     setPosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
-    // Add rows
-    onNewMonth();
-}
-
-void GoodsMarketWindow::onNewMonth()
-{
-    mTable->clear();
-    std::map<std::tuple<const Building*, Good, Money>, int> mCounts;
+    // Add items
     for (int i = 0; i < 3; ++i)
     {
-        const Market<const Building>* market = mMarkets[i];
-        Good good = static_cast<Good>(i);
-        for (const Market<const Building>::Item* item : market->getItems())
-            ++mCounts[std::make_tuple(item->good, good, item->reservePrice)];
+        for (const Market<const Building>::Item* item : mMarkets[i]->getItems())
+            addItem(static_cast<VMarket::Type>(i), item->id);
     }
-    for (auto it = mCounts.begin(); it != mCounts.end(); ++it)
-            addItem(std::get<0>(it->first), std::get<1>(it->first), std::get<2>(it->first), it->second);
 }
 
-void GoodsMarketWindow::addItem(const Building* building, Good good, Money price, int count)
+void GoodsMarketWindow::update()
+{
+    while (!mMailbox.isEmpty())
+    {
+        Message message = mMailbox.get();
+        if (message.type == MessageType::MARKET)
+        {
+            const Market<const Building>::Event& event = message.getInfo<Market<const Building>::Event>();
+            switch (event.type)
+            {
+                case Market<const Building>::Event::Type::ITEM_ADDED:
+                    addItem(event.marketType, event.itemId);
+                    break;
+                case Market<const Building>::Event::Type::ITEM_REMOVED:
+                    removeItem(event.marketType, event.itemId);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+void GoodsMarketWindow::addItem(VMarket::Type type, Id itemId)
+{
+    const Market<const Building>::Item& item = getMarket(type)->getItem(itemId);
+    std::tuple<VMarket::Type, Id> id(type, itemId);
+    Good good = getGood(type);
+    mItems[id] = std::make_tuple(item.good, good, item.reservePrice);
+    std::size_t i = getRow(mItems[id]);
+    if (i == mCounts.size())
+    {
+        mCounts.push_back(std::make_pair(mItems[id], 1));
+        addRow(item.good, good, item.reservePrice, 1);
+    }
+    else
+        updateRow(i, ++mCounts[i].second);
+}
+
+void GoodsMarketWindow::removeItem(VMarket::Type type, Id itemId)
+{
+    std::tuple<VMarket::Type, Id> id(type, itemId);
+    std::size_t i = getRow(mItems[id]);
+    --mCounts[i].second;
+    if (mCounts[i].second > 0)
+        updateRow(i, mCounts[i].second);
+    else
+    {
+        mItems.erase(id);
+        mCounts.erase(mCounts.begin() + i);
+        mTable->removeRow(i);
+    }
+}
+
+std::size_t GoodsMarketWindow::getRow(const Key& key) const
+{
+    return std::find_if(mCounts.begin(), mCounts.end(), [&key](const std::pair<Key, int>& x){ return x.first == key; }) - mCounts.begin();
+}
+
+void GoodsMarketWindow::addRow(const Building* building, Good good, Money price, int count)
 {
     // Add row
     mTable->addRow({
@@ -62,4 +116,29 @@ void GoodsMarketWindow::addItem(const Building* building, Good good, Money price
         mGui->createWithDefaultName<GuiText>(format("$%.2f", price), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("%d", count), 12, mStylesheetManager->getStylesheet("darkText")),
     });
+}
+
+void GoodsMarketWindow::updateRow(std::size_t i, int count)
+{
+    static_cast<GuiText*>(mTable->getCellContent(i, 4))->setString(format("%d", count));
+}
+
+Market<const Building>* GoodsMarketWindow::getMarket(VMarket::Type type)
+{
+    switch (type)
+    {
+        case VMarket::Type::NECESSARY_GOOD:
+            return mMarkets[0];
+        case VMarket::Type::NORMAL_GOOD:
+            return mMarkets[1];
+        case VMarket::Type::LUXURY_GOOD:
+            return mMarkets[2];
+        default:
+            return nullptr;
+    }
+}
+
+Good GoodsMarketWindow::getGood(VMarket::Type type) const
+{
+    return static_cast<Good>(type);
 }

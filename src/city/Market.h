@@ -4,9 +4,10 @@
 #include <algorithm>
 #include "util/IdManager.h"
 #include "message/MessageBus.h"
+#include "message/Subject.h"
 #include "city/Money.h"
 
-class VMarket
+class VMarket : public Subject
 {
 public:
     enum class Type : int {
@@ -25,16 +26,12 @@ public:
     VMarket(Type type);
     virtual ~VMarket();
 
-    static void setMessageBus(MessageBus* messageBus);
-
     virtual void update() = 0;
     virtual void sellItems() = 0;
 
     Id getMailboxId() const;
 
 protected:
-    static MessageBus* sMessageBus;
-
     Mailbox mMailbox;
     unsigned int mTime;
     Type mType;
@@ -68,7 +65,7 @@ public:
 
     struct Event
     {
-        enum class Type{ADD_ITEM, BID, SET_QUANTITY, PURCHASE, SALE};
+        enum class Type{ADD_ITEM, BID, SET_QUANTITY, PURCHASE, SALE, ITEM_ADDED, ITEM_REMOVED};
 
         struct AddItemEvent
         {
@@ -99,6 +96,7 @@ public:
             BidEvent bid;
             unsigned int desiredQuantity;
             SaleEvent sale;
+            Id itemId;
         };
     };
 
@@ -109,11 +107,21 @@ public:
 
     Id addItem(Id sellerId, Id sellerAccount, T* good, Money reservePrice)
     {
+        // Create a new auction
         Auction auction{mTime++, Item{UNDEFINED, sellerId, sellerAccount, good, reservePrice}, {}};
         Id id = mAuctions.add(auction);
         mAuctions.get(id).item.id = id;
         mDirty = true;
+        // Notify
+        Event event{mType, Event::Type::ITEM_ADDED, {}};
+        event.itemId = id;
+        notify(Message::create(MessageType::MARKET, event));
         return id;
+    }
+
+    const Item& getItem(Id itemId) const
+    {
+        return mAuctions.get(itemId).item;
     }
 
     const std::vector<const Item*>& getItems() const
@@ -200,7 +208,13 @@ public:
 
         // Update mActions
         for (Id id : soldItems)
+        {
             mAuctions.erase(id);
+            // Notify
+            Event event{mType, Event::Type::ITEM_REMOVED, {}};
+            event.itemId = id;
+            notify(Message::create(MessageType::MARKET, event));
+        }
         if (!soldItems.empty())
             mDirty = true;
 

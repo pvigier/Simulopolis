@@ -70,6 +70,11 @@ public:
     unsigned int getYear() const;
     std::string getFormattedMonth() const;
 
+    // Economy
+    const Bank& getBank() const;
+    VMarket* getMarket(VMarket::Type type);
+    const VMarket* getMarket(VMarket::Type type) const;
+
     // Company
     Company& getCompany();
     Money getFunds() const;
@@ -93,8 +98,6 @@ public:
     const std::vector<Person*>& getCitizens() const;
     const std::vector<Person*>& getImmigrants() const;
     Building* getBuilding(Id id);
-    const Bank& getBank() const;
-    const VMarket* getMarket(VMarket::Type type) const;
 
     // Util
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;

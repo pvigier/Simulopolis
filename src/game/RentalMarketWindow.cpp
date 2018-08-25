@@ -1,4 +1,5 @@
 #include "RentalMarketWindow.h"
+#include "message/MessageBus.h"
 #include "resource/StylesheetManager.h"
 #include "gui/Gui.h"
 #include "gui/GuiText.h"
@@ -10,22 +11,25 @@
 #include "city/Housing.h"
 #include "util/format.h"
 
-RentalMarketWindow::RentalMarketWindow(StylesheetManager* stylesheetManager, const Market<Lease>* market) :
+RentalMarketWindow::RentalMarketWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager,
+    Market<Lease>* market) :
     GuiWindow("Rental market", stylesheetManager->getStylesheet("window")),
-    mStylesheetManager(stylesheetManager), mMarket(market), mTable(nullptr)
+    mMessageBus(messageBus), mStylesheetManager(stylesheetManager), mMarket(market), mTable(nullptr)
 {
-
+    mMessageBus->addMailbox(mMailbox);
+    mMarket->subscribe(mMailbox.getId());
 }
 
 RentalMarketWindow::~RentalMarketWindow()
 {
-    //dtor
+    mMarket->unsubscribe(mMailbox.getId());
+    mMessageBus->removeMailbox(mMailbox);
 }
 
 void RentalMarketWindow::setUp()
 {
     // Create table
-    std::vector<std::string> names{"Building", "Owner", "Type", "Rent", "Count"};
+    std::vector<std::string> names{"Owner", "Building", "Type", "Rent", "Count"};
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
     // Window
@@ -33,28 +37,81 @@ void RentalMarketWindow::setUp()
     setPosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
-    // Add rows
-    onNewMonth();
-}
-
-void RentalMarketWindow::onNewMonth()
-{
-    mTable->clear();
-    std::map<std::tuple<const Housing*, Money>, int> mCounts;
+    // Add items
     for (const Market<Lease>::Item* item : mMarket->getItems())
-        ++mCounts[std::make_tuple(item->good->getHousing(), item->good->getRent())];
-    for (auto it = mCounts.begin(); it != mCounts.end(); ++it)
-        addItem(std::get<0>(it->first), std::get<1>(it->first), it->second);
+        addItem(item->id);
 }
 
-void RentalMarketWindow::addItem(const Housing* housing, Money rent, int count)
+void RentalMarketWindow::update()
+{
+    while (!mMailbox.isEmpty())
+    {
+        Message message = mMailbox.get();
+        if (message.type == MessageType::MARKET)
+        {
+            const Market<Lease>::Event& event = message.getInfo<Market<Lease>::Event>();
+            switch (event.type)
+            {
+                case Market<Lease>::Event::Type::ITEM_ADDED:
+                    addItem(event.itemId);
+                    break;
+                case Market<Lease>::Event::Type::ITEM_REMOVED:
+                    removeItem(event.itemId);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+void RentalMarketWindow::addItem(Id itemId)
+{
+    const Market<Lease>::Item& item = mMarket->getItem(itemId);
+    mItems[itemId] = std::make_tuple(item.good->getHousing(), item.reservePrice);
+    std::size_t i = getRow(mItems[itemId]);
+    if (i == mCounts.size())
+    {
+        mCounts.push_back(std::make_pair(mItems[itemId], 1));
+        addRow(item.good->getHousing(), item.reservePrice, 1);
+    }
+    else
+        updateRow(i, ++mCounts[i].second);
+}
+
+void RentalMarketWindow::removeItem(Id itemId)
+{
+    std::size_t i = getRow(mItems[itemId]);
+    --mCounts[i].second;
+    if (mCounts[i].second > 0)
+        updateRow(i, mCounts[i].second);
+    else
+    {
+        mItems.erase(itemId);
+        mCounts.erase(mCounts.begin() + i);
+        mTable->removeRow(i);
+    }
+}
+
+std::size_t RentalMarketWindow::getRow(const Key& key) const
+{
+    return std::find_if(mCounts.begin(), mCounts.end(), [&key](const std::pair<Key, int>& x){ return x.first == key; }) - mCounts.begin();
+}
+
+void RentalMarketWindow::addRow(const Housing* housing, Money rent, int count)
 {
     // Add row
     mTable->addRow({
-        mGui->createWithDefaultName<GuiText>(format("%d", housing->getId()), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(housing->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(format("%d", housing->getId()), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(Tile::typeToString(housing->getType()), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("$%.2f", rent), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("%d", count), 12, mStylesheetManager->getStylesheet("darkText")),
     });
 }
+
+void RentalMarketWindow::updateRow(std::size_t i, int count)
+{
+    static_cast<GuiText*>(mTable->getCellContent(i, 4))->setString(format("%d", count));
+}
+
