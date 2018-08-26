@@ -27,12 +27,6 @@ void GuiInput::setUp()
     setCursor(0);
 }
 
-void GuiInput::setPosition(sf::Vector2f position)
-{
-    GuiWidget::setPosition(position);
-    setCursor(mCursor);
-}
-
 const sf::String& GuiInput::getString() const
 {
     return mText->getString();
@@ -59,6 +53,12 @@ void GuiInput::render(sf::RenderTarget& target, sf::RenderStates states) const
     mElapsedTime = (mElapsedTime + mClock.restart().asMilliseconds()) % 2000;
     if (mFocus && mElapsedTime < 1000)
         target.draw(mCursorShape, states);
+}
+
+void GuiInput::onPositionChanged()
+{
+    GuiWidget::onPositionChanged();
+    setCursor(mCursor);
 }
 
 bool GuiInput::onPress(sf::Vector2f position, bool processed)

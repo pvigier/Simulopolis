@@ -14,15 +14,15 @@ public:
     virtual ~GuiInput();
 
     virtual void setUp() override;
+
     const sf::String& getString() const;
     bool setString(const sf::String& text);
-    virtual void setPosition(sf::Vector2f position) override;
-
     void setRegex(const std::string& s);
 
 protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    virtual void onPositionChanged() override;
     virtual bool onPress(sf::Vector2f position, bool processed) override;
     virtual bool onKey(sf::Keyboard::Key key, bool processed) override;
     virtual bool onText(sf::Uint32 unicode, bool processed) override;

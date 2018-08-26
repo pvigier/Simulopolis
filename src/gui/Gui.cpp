@@ -143,6 +143,9 @@ void Gui::handleMessages()
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
                         processed = mRootWidgets[i]->updateMouseButtonReleased(mousePosition, processed) || processed;
                     break;
+                case sf::Event::MouseWheelMoved:
+                    for (int i = mRootWidgets.size() - 1; i >= 0; --i)
+                        processed = mRootWidgets[i]->updateMouseWheelScrolled(event.mouseWheel.delta, processed) || processed;
                 case sf::Event::TextEntered:
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
                         processed = mRootWidgets[i]->updateTextEntered(event.text.unicode, processed) || processed;

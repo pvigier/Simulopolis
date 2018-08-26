@@ -13,8 +13,7 @@ public:
     GuiText(const PropertyList& properties);
     virtual ~GuiText();
 
-    virtual void setPosition(sf::Vector2f position) override;
-    virtual void setCharacterSize(unsigned int characterSize);
+    void setCharacterSize(unsigned int characterSize);
     const sf::Text& getText() const;
     const sf::String& getString() const;
     void setString(const sf::String& text);
@@ -24,6 +23,8 @@ protected:
     sf::Text mText;
 
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+    virtual void onPositionChanged() override;
 
 private:
     sf::Vector2f computeSize() const;

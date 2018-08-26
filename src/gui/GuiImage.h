@@ -12,13 +12,13 @@ public:
     GuiImage(const PropertyList& properties);
     virtual ~GuiImage();
 
-    virtual void setPosition(sf::Vector2f position) override;
     void setSprite(sf::Sprite sprite);
 
 protected:
-    virtual void setSize(sf::Vector2f size) override;
-
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+    virtual void onPositionChanged() override;
+    virtual void onSizeFixed() override;
 
 private:
     sf::Sprite mSprite;

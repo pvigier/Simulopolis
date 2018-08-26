@@ -17,7 +17,7 @@ public:
     GuiWidget(const PropertyList& properties);
     virtual ~GuiWidget();
 
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const final override;
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     virtual void setUp();
     void update();
@@ -31,7 +31,7 @@ public:
 
     virtual void updateSize();
     void fitSizeToContent();
-    sf::Vector2f getComputedSize() const;
+    sf::Vector2f getContentSize() const;
 
     // Parameters
     void setGui(Gui* gui);
@@ -42,21 +42,22 @@ public:
     const GuiWidget* getParent() const;
     void setParent(GuiWidget* parent);
     void setLayout(std::unique_ptr<GuiLayout> layout);
-    virtual sf::Vector2f getPosition() const;
-    virtual void setPosition(sf::Vector2f position);
-    virtual sf::Vector2f getSize() const;
+    sf::Vector2f getPosition() const;
+    void setPosition(sf::Vector2f position);
+    sf::Vector2f getSize() const;
     void setFixedSize(sf::Vector2f size);
-    virtual sf::FloatRect getRect() const;
+    sf::FloatRect getRect() const;
     void setBackgroundColor(const sf::Color& color);
     void setBorderSize(int borderSize);
     bool isVisible() const;
     void setVisible(bool visible);
     bool isDirty() const;
 
-    // Events
-    bool updateMouseMoved(sf::Vector2f position, bool processed);
-    bool updateMouseButtonPressed(sf::Vector2f position, bool processed);
-    bool updateMouseButtonReleased(sf::Vector2f position, bool processed);
+    // Input
+    virtual bool updateMouseMoved(sf::Vector2f position, bool processed);
+    virtual bool updateMouseButtonPressed(sf::Vector2f position, bool processed);
+    virtual bool updateMouseButtonReleased(sf::Vector2f position, bool processed);
+    bool updateMouseWheelScrolled(float delta, bool processed);
     bool updateKeyPressed(sf::Keyboard::Key key, bool processed);
     bool updateTextEntered(sf::Uint32 unicode, bool processed);
 
@@ -77,16 +78,21 @@ protected:
     sf::RectangleShape mBackground;
 
     void setDirty();
-    virtual void setSize(sf::Vector2f size);
     void updateAlignment();
     void resetDirty();
 
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const;
 
     // Events
+    virtual void onPositionChanged();
+    virtual void onContentSizeChanged(sf::Vector2f contentSize);
+    virtual void onSizeFixed();
+
+    // Input
     virtual bool onHover(sf::Vector2f position, bool processed);
     virtual bool onPress(sf::Vector2f position, bool processed);
     virtual bool onRelease(sf::Vector2f position, bool processed);
+    virtual bool onMouseWheelScroll(float delta, bool processed);
     virtual bool onKey(sf::Keyboard::Key key, bool processed);
     virtual bool onText(sf::Uint32 unicode, bool processed);
 

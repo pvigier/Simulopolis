@@ -41,9 +41,9 @@ void GuiTable::updateSize()
 {
     updateTable();
     for (GuiWidget* widget : mChildren)
-        widget->fitSizeToContent();
+        widget->setFixedSize(widget->getContentSize());
     if (!mFixedSize)
-        fitSizeToContent();
+        onContentSizeChanged(getContentSize());
 }
 
 GuiWidget* GuiTable::getCell(std::size_t i, std::size_t j)
@@ -99,7 +99,7 @@ void GuiTable::updateTable()
         {
             GuiWidget* cell = mChildren[j]->getChildren()[i];
             cell->updateSize();
-            sf::Vector2f size = cell->getComputedSize();
+            sf::Vector2f size = cell->getContentSize();
             mColumnWidths[j] = std::max(mColumnWidths[j], size.x);
             mRowHeights[i] = std::max(mRowHeights[i], size.y);
         }

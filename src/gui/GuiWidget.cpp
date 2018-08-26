@@ -12,11 +12,12 @@ GuiWidget::GuiWidget(const XmlDocument* style) :
 GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nullptr), mDirty(true)
 {
     mVisible = properties.get<bool>("visible", true);
-    mPosition = properties.get<sf::Vector2f>("position", sf::Vector2f());
+    setPosition(properties.get<sf::Vector2f>("position", sf::Vector2f()));
     mSize = properties.get<sf::Vector2f>("size", sf::Vector2f());
-    mFixedSize = properties.has("size");
-    setPosition(mPosition);
-    setSize(mSize);
+    if (properties.has("size"))
+        setFixedSize(mSize);
+    else
+        mFixedSize = false;
     mStyle = properties.get<const XmlDocument*>("style", nullptr);
     applyStyle();
 }
@@ -89,16 +90,16 @@ void GuiWidget::updateSize()
     for (GuiWidget* widget : mChildren)
         widget->updateSize();
     if (!mFixedSize)
-        fitSizeToContent();
+        onContentSizeChanged(getContentSize());
 }
 
 void GuiWidget::fitSizeToContent()
 {
     mFixedSize = false;
-    setSize(mLayout->computeSize());
+    setDirty();
 }
 
-sf::Vector2f GuiWidget::getComputedSize() const
+sf::Vector2f GuiWidget::getContentSize() const
 {
     return mLayout->computeSize();
 }
@@ -153,7 +154,7 @@ sf::Vector2f GuiWidget::getPosition() const
 void GuiWidget::setPosition(sf::Vector2f position)
 {
     mPosition = position;
-    mBackground.setPosition(position);
+    onPositionChanged();
     setDirty();
 }
 
@@ -164,8 +165,10 @@ sf::Vector2f GuiWidget::getSize() const
 
 void GuiWidget::setFixedSize(sf::Vector2f size)
 {
-    setSize(size);
+    mSize = size;
     mFixedSize = true;
+    onSizeFixed();
+    setDirty();
 }
 
 sf::FloatRect GuiWidget::getRect() const
@@ -231,6 +234,17 @@ bool GuiWidget::updateMouseButtonReleased(sf::Vector2f position, bool processed)
     return processed;
 }
 
+bool GuiWidget::updateMouseWheelScrolled(float delta, bool processed)
+{
+    if (mVisible)
+    {
+        for (GuiWidget* widget : mChildren)
+            processed = widget->updateMouseWheelScrolled(delta, processed) || processed;
+        processed = onMouseWheelScroll(delta, processed) || processed;
+    }
+    return processed;
+}
+
 bool GuiWidget::updateKeyPressed(sf::Keyboard::Key key, bool processed)
 {
     if (mVisible)
@@ -266,13 +280,6 @@ void GuiWidget::setDirty()
         mParent->setDirty();
 }
 
-void GuiWidget::setSize(sf::Vector2f size)
-{
-    mSize = size;
-    mBackground.setSize(size);
-    setDirty();
-}
-
 void GuiWidget::updateAlignment()
 {
     if (mLayout)
@@ -293,6 +300,22 @@ void GuiWidget::render(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(mBackground, states);
 }
 
+void GuiWidget::onPositionChanged()
+{
+    mBackground.setPosition(mPosition);
+}
+
+void GuiWidget::onContentSizeChanged(sf::Vector2f contentSize)
+{
+    mSize = contentSize;
+    onSizeFixed();
+}
+
+void GuiWidget::onSizeFixed()
+{
+    mBackground.setSize(mSize);
+}
+
 bool GuiWidget::onHover(sf::Vector2f position, bool processed)
 {
     return false;
@@ -304,6 +327,11 @@ bool GuiWidget::onPress(sf::Vector2f position, bool processed)
 }
 
 bool GuiWidget::onRelease(sf::Vector2f position, bool processed)
+{
+    return false;
+}
+
+bool GuiWidget::onMouseWheelScroll(float delta, bool processed)
 {
     return false;
 }

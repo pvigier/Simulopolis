@@ -24,12 +24,6 @@ GuiText::~GuiText()
     //dtor
 }
 
-void GuiText::setPosition(sf::Vector2f position)
-{
-    GuiWidget::setPosition(position);
-    mText.setPosition(sf::Vector2f(sf::Vector2i(position)));
-}
-
 void GuiText::setCharacterSize(unsigned int characterSize)
 {
     mText.setCharacterSize(characterSize);
@@ -64,6 +58,12 @@ void GuiText::render(sf::RenderTarget& target, sf::RenderStates states) const
 {
     GuiWidget::render(target, states);
     target.draw(mText, states);
+}
+
+void GuiText::onPositionChanged()
+{
+    GuiWidget::onPositionChanged();
+    mText.setPosition(sf::Vector2f(sf::Vector2i(mPosition)));
 }
 
 sf::Vector2f GuiText::computeSize() const
