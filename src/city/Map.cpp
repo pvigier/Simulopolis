@@ -243,7 +243,7 @@ Path Map::getPath(sf::Vector2i start, sf::Vector2i end) const
             denom = std::abs(iOffset.x) + std::abs(iOffset.y);
         // Corner
         else
-            denom = 0.5f;
+            denom = 0.75f;
         sf::Vector2f offset = t * (xOffset * iOffset.x + yOffset * iOffset.y) / denom;
         points.push_back(computePosition(coords.y, coords.x) + sf::Vector2f(Tile::SIZE, Tile::SIZE * 0.5f) + offset);
     }

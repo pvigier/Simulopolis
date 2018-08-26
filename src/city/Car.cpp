@@ -6,7 +6,7 @@ TextureManager* Car::sTextureManager = nullptr;
 ImageManager* Car::sImageManager = nullptr;
 
 Car::Car(const std::string& model) :
-    mKinematic(1.0f, 150.0f, 800.0f), mSteering(mKinematic), mMask(sImageManager->getImage(model)),
+    mKinematic(1.0f, 150.0f), mSteering(mKinematic), mMask(sImageManager->getImage(model)),
     mDriver(nullptr)
 {
     const sf::Texture& texture = sTextureManager->getTexture(model);
@@ -17,8 +17,8 @@ Car::Car(const std::string& model) :
     mSprite.setTextureRect(sf::IntRect(0, 0, mWidth, mHeight));
     mSprite.setOrigin(sf::Vector2f(mWidth * 0.5f, mHeight * 0.5f));
 
-    mSteering.setSeekDistance(32.0f);
-    mSteering.setArriveDistance(32.0f);
+    mSteering.setSeekDistance(4.0f);
+    mSteering.setArriveDistance(4.0f);
 }
 
 void Car::setTextureManager(TextureManager* textureManager)
@@ -33,6 +33,13 @@ void Car::setImageManager(ImageManager* imageManager)
 
 void Car::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    // Debug : draw path
+    /*const Path& path = mSteering.getPath();
+    std::vector<sf::Vertex> lines;
+    for (const Vector2f& point : path.getPoints())
+        lines.push_back(sf::Vertex(point));
+    target.draw(lines.data(), lines.size(), sf::LinesStrip);*/
+    // Draw car
     target.draw(mSprite, states);
 }
 

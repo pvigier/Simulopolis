@@ -15,6 +15,11 @@ Vector2f Path::getCurrentPoint() const
     return mPoints[mCurPoint];
 }
 
+const std::vector<Vector2f> Path::getPoints() const
+{
+    return mPoints;
+}
+
 void Path::setNextPoint()
 {
     ++mCurPoint;
