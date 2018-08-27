@@ -4,6 +4,7 @@
 #include "gui/GuiText.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiTable.h"
+#include "gui/GuiScrollArea.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
 #include "city/Person.h"
@@ -28,8 +29,13 @@ void CitizensWindow::setUp()
     std::vector<std::string> names{"Name", "Age", "Work"};
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
+    // Scroll area
+    GuiScrollArea* scrollArea = mGui->createWithDefaultName<GuiScrollArea>(sf::Vector2i(400, 200));
+    scrollArea->add(mTable);
+    scrollArea->setLayout(std::make_unique<GuiVBoxLayout>());
+
     // Window
-    add(mTable);
+    add(scrollArea);
     setOutsidePosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
