@@ -17,9 +17,6 @@ GameStateStart::GameStateStart(bool resume) : mGui(sGuiManager->getGui("menu"))
 {
     // Gui
     createGui(resume);
-
-    // Subscribe to inputs
-    mGui->subscribe(mMailbox.getId());
 }
 
 GameStateStart::~GameStateStart()
@@ -28,7 +25,13 @@ GameStateStart::~GameStateStart()
     mGui->get("newGameButton")->unsubscribe(mMailbox.getId());
     mGui->get("loadGameButton")->unsubscribe(mMailbox.getId());
     mGui->get("exitButton")->unsubscribe(mMailbox.getId());
-    mGui->unsubscribe(mMailbox.getId());
+}
+
+void GameStateStart::enter()
+{
+    mGui->handleMessages();
+    // Subscribe to inputs
+    mGui->subscribe(mMailbox.getId());
 }
 
 void GameStateStart::handleMessages()
@@ -86,6 +89,12 @@ void GameStateStart::update(float dt)
 void GameStateStart::draw()
 {
     sRenderEngine->draw(*mGui);
+}
+
+void GameStateStart::exit()
+{
+    // Unsubscribe to inputs
+    mGui->unsubscribe(mMailbox.getId());
 }
 
 void GameStateStart::setCityTexture(const sf::Texture& texture)

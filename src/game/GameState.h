@@ -18,7 +18,7 @@ class GameState : public NonCopyable, public NonMovable
 public:
     struct Event
     {
-        enum class Type{RESUME_GAME, NEW_GAME, LOAD_GAME, DISPLAY_MENU};
+        enum class Type{RESUME_GAME, NEW_GAME, LOAD_GAME, PAUSE_GAME, DISPLAY_MENU};
 
         Type type;
     };
@@ -36,9 +36,11 @@ public:
     static void setGuiManager(GuiManager* guiManager);
     static void setMusicManager(MusicManager* musicManager);
 
+    virtual void enter() = 0;
     virtual void handleMessages() = 0;
     virtual void update(float dt) = 0;
     virtual void draw() = 0;
+    virtual void exit() = 0;
 
 protected:
     static MessageBus* sMessageBus;

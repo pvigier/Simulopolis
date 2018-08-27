@@ -45,9 +45,6 @@ GameStateEditor::GameStateEditor() :
     // Gui
     createGui();
 
-    // Subscribe to inputs
-    mGui->subscribe(mMailbox.getId());
-
     // Subscribe to the city
     mCity.subscribe(mMailbox.getId());
 }
@@ -66,8 +63,13 @@ GameStateEditor::~GameStateEditor()
         for (GuiWidget* button : buttonsWidget->getChildren())
             button->unsubscribe(mMailbox.getId());
     }
+}
 
-    mGui->unsubscribe(mMailbox.getId());
+void GameStateEditor::enter()
+{
+    mGui->handleMessages();
+    // Subscribe to inputs
+    mGui->subscribe(mMailbox.getId());
 }
 
 void GameStateEditor::handleMessages()
@@ -89,7 +91,7 @@ void GameStateEditor::handleMessages()
                     break;
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
-                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event{Event::Type::DISPLAY_MENU}));
+                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event{Event::Type::PAUSE_GAME}));
                     break;
                 case sf::Event::MouseMoved:
                     // Pan the camera
@@ -307,6 +309,12 @@ void GameStateEditor::draw()
     sRenderEngine->setView(mGuiView);
     sRenderEngine->draw(sf::Sprite(mRenderTexture.getTexture()));
     sRenderEngine->draw(*mGui);
+}
+
+void GameStateEditor::exit()
+{
+    // Unsubscribe to inputs
+    mGui->unsubscribe(mMailbox.getId());
 }
 
 void GameStateEditor::newGame()

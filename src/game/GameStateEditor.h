@@ -22,9 +22,11 @@ public:
     GameStateEditor();
     virtual ~GameStateEditor();
 
+    virtual void enter() override;
     virtual void handleMessages() override;
     virtual void update(float dt) override;
     virtual void draw() override;
+    virtual void exit() override;
 
     void newGame();
     void loadGame(const std::string& path);

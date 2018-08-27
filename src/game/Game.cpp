@@ -2,6 +2,7 @@
 #include "game/GameState.h"
 #include "game/GameStateStart.h"
 #include "game/GameStateEditor.h"
+#include "game/GameStateNewCity.h"
 
 Game::Game()
 {
@@ -42,14 +43,11 @@ Game::Game()
     mAudioEngine.addMusic(mResourceManager.getMusicManager().getMusic("gymnopedie3"));
 
     // Add the start state
-    pushState(new GameStateStart());
+    pushState(std::make_unique<GameStateStart>());
 }
 
 Game::~Game()
 {
-    while (!mStates.empty())
-        popState();
-
     // Free resources
     mResourceManager.tearDown();
 
@@ -57,29 +55,44 @@ Game::~Game()
     mMessageBus.removeMailbox(mMailbox);
 }
 
-void Game::pushState(GameState* state)
+void Game::pushState(std::unique_ptr<GameState> state)
 {
-    mStates.push(state);
+    if (!mStates.empty())
+        mStates.top()->exit();
+    mStates.push(std::move(state));
+    mStates.top()->enter();
 }
 
 void Game::popState()
 {
-    delete mStates.top();
+    mStates.top()->exit();
     mStates.pop();
+    if (!mStates.empty())
+        mStates.top()->enter();
 }
 
-void Game::changeState(GameState* state)
+void Game::changeState(std::unique_ptr<GameState> state)
 {
     if (!mStates.empty())
-        popState();
-    pushState(state);
+    {
+        mStates.top()->exit();
+        mStates.pop();
+    }
+    mStates.push(std::move(state));
+    mStates.top()->enter();
 }
 
 GameState* Game::peekState()
 {
     if (mStates.empty())
         return nullptr;
-    return mStates.top();
+    return mStates.top().get();
+}
+
+void Game::clearStates()
+{
+    while (!mStates.empty())
+        mStates.pop();
 }
 
 void Game::run()
@@ -119,24 +132,31 @@ void Game::handleMessages()
                     break;
                 case GameState::Event::Type::NEW_GAME:
                 {
-                    GameStateEditor* state = new GameStateEditor();
-                    state->newGame();
-                    changeState(state);
+                    std::unique_ptr<GameStateNewCity> state(new GameStateNewCity());
+                    //state->newGame();
+                    changeState(std::move(state));
                     break;
                 }
                 case GameState::Event::Type::LOAD_GAME:
                 {
-                    GameStateEditor* state = new GameStateEditor();
+                    std::unique_ptr<GameStateEditor> state(new GameStateEditor());
                     state->loadGame("saves/city");
-                    changeState(state);
+                    changeState(std::move(state));
+                    break;
+                }
+                case GameState::Event::Type::PAUSE_GAME:
+                {
+                    const sf::Texture& texture = static_cast<GameStateEditor*>(peekState())->getCityTexture();
+                    std::unique_ptr<GameStateStart> state(new GameStateStart(true));
+                    state->setCityTexture(texture);
+                    pushState(std::move(state));
                     break;
                 }
                 case GameState::Event::Type::DISPLAY_MENU:
                 {
-                    const sf::Texture& texture = static_cast<GameStateEditor*>(mStates.top())->getCityTexture();
-                    GameStateStart* state = new GameStateStart(true);
-                    state->setCityTexture(texture);
-                    pushState(state);
+                    clearStates();
+                    std::unique_ptr<GameStateStart> state(new GameStateStart(false));
+                     changeState(std::move(state));
                     break;
                 }
                 default:

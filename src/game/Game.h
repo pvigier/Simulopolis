@@ -19,21 +19,22 @@ public:
     Game();
     ~Game();
 
-    void pushState(GameState* state);
+    void pushState(std::unique_ptr<GameState> state);
     void popState();
-    void changeState(GameState* state);
+    void changeState(std::unique_ptr<GameState> state);
     GameState* peekState();
+    void clearStates();
 
     void run();
 
 private:
-    std::stack<GameState*> mStates;
     MessageBus mMessageBus;
     Mailbox mMailbox;
     RenderEngine mRenderEngine;
     InputEngine mInputEngine;
     AudioEngine mAudioEngine;
     ResourceManager mResourceManager;
+    std::stack<std::unique_ptr<GameState>> mStates;
 
     void handleMessages();
 };
