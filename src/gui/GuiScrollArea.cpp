@@ -1,13 +1,15 @@
 #include "GuiScrollArea.h"
+#include "resource/XmlDocument.h"
 #include "util/common.h"
 
-GuiScrollArea::GuiScrollArea(sf::Vector2i maxVisibleSize) :
-    GuiWidget(), mFocus(false), mScrollbarVisible(false), mOffset(0.0f), mMaxVisibleSize(maxVisibleSize),
+GuiScrollArea::GuiScrollArea(sf::Vector2i maxVisibleSize, const XmlDocument* style) :
+    GuiWidget(style), mFocus(false), mScrollbarVisible(false), mOffset(0.0f), mMaxVisibleSize(maxVisibleSize),
     mScrolling(false), mAnchor(0.0f)
 {
     mRenderTexture.create(mMaxVisibleSize.x, mMaxVisibleSize.y);
     mSprite.setTexture(mRenderTexture.getTexture());
     mScrollButton.setSize(sf::Vector2f(8.0f, 32.0f));
+    applyStyle();
 }
 
 GuiScrollArea::GuiScrollArea(const PropertyList& properties) : GuiWidget(properties)
@@ -136,6 +138,16 @@ bool GuiScrollArea::onMouseWheelScroll(float delta, bool processed)
         return true;
     }
     return false;
+}
+
+void GuiScrollArea::applyStyle()
+{
+    sf::Color scrollbarColor = mStyle->getFirstChildByName("scrollbar").getAttributes().get<sf::Color>("color", sf::Color());
+    mLine[0].color = scrollbarColor;
+    mLine[1].color = scrollbarColor;
+    mScrollButton.setFillColor(mStyle->getFirstChildByName("scrollbutton").getAttributes().get<sf::Color>("color", sf::Color()));
+    mScrollButton.setOutlineThickness(mStyle->getFirstChildByName("scrollbutton").getAttributes().get<float>("borderSize", 0.0f));
+    mScrollButton.setOutlineColor(mStyle->getFirstChildByName("scrollbutton").getAttributes().get<sf::Color>("borderColor", sf::Color()));
 }
 
 void GuiScrollArea::updateView()

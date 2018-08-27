@@ -39,4 +39,8 @@
 		<background color="0xd4 0xd4 0xd4" />
         <text style="darkText" />
 	</stylesheet>
+    <stylesheet name="scrollarea">
+        <scrollbar color="0xff 0xff 0xff" />
+        <scrollbutton color="0xc6 0xc6 0xc6" borderSize="-1" borderColor="0x94 0x94 0x94" />
+    </stylesheet>
 </stylesheets>

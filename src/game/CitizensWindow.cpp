@@ -30,7 +30,7 @@ void CitizensWindow::setUp()
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
     // Scroll area
-    GuiScrollArea* scrollArea = mGui->createWithDefaultName<GuiScrollArea>(sf::Vector2i(400, 200));
+    GuiScrollArea* scrollArea = mGui->createWithDefaultName<GuiScrollArea>(sf::Vector2i(400, 200), mStylesheetManager->getStylesheet("scrollarea"));
     scrollArea->add(mTable);
     scrollArea->setLayout(std::make_unique<GuiVBoxLayout>());
 

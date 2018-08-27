@@ -9,7 +9,7 @@ public:
     static constexpr float OFFSET_BY_TICK = 48.0f;
     static constexpr float SCROLLBAR_OFFSET = 8.0f;
 
-    GuiScrollArea(sf::Vector2i maxVisibleSize);
+    GuiScrollArea(sf::Vector2i maxVisibleSize, const XmlDocument* style = nullptr);
     GuiScrollArea(const PropertyList& properties);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -27,6 +27,8 @@ protected:
     virtual bool onRelease(sf::Vector2f position, bool processed) override;
     virtual bool onHover(sf::Vector2f position, bool processed) override;
     virtual bool onMouseWheelScroll(float delta, bool processed) override;
+
+    virtual void applyStyle() override;
 
 private:
     bool mFocus;

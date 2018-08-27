@@ -104,6 +104,7 @@ protected:
     virtual bool onKey(sf::Keyboard::Key key, bool processed);
     virtual bool onText(sf::Uint32 unicode, bool processed);
 
+    // Style
     virtual void applyStyle();
 
 private:
