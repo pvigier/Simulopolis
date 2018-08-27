@@ -9,6 +9,9 @@
 	<stylesheet name="costText">
 		<text font="font" color="0xff 0xff 0xff" highlightColor="0xff 0x00 0x00" />
 	</stylesheet>
+    <stylesheet name="titleText">
+        <text font="titleFont" color="0xf1 0xf1 0xf1" />
+    </stylesheet>
 	<stylesheet name="window">
 		<bar color="0x4d 0x4d 0x4d" height="16" />
 		<background color="0xc6 0xc6 0xc6" />

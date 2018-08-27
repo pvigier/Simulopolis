@@ -1,3 +1,4 @@
 <fonts>
-	<font name="font" path="font.ttf" />
+	<font name="font" path="Gravity-Regular.otf" />
+    <font name="titleFont" path="BebasNeue-Regular.ttf" />
 </fonts>

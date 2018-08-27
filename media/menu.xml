@@ -1,23 +1,31 @@
 <gui>
 	<image name="background" texture="background" />
     <image name="city" />
-	<widget name="menu">
-        <button name="resumeGameButton" size="192 36" style="button">
-			<text name="resumeGameText" text="Resume game" characterSize="24" style="darkText" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-        <button name="newGameButton" size="192 36" style="button">
-			<text name="newGameText" text="New game" characterSize="24" style="darkText" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<button name="loadGameButton" size="192 36" style="button">
-			<text name="loadGameText" text="Load game" characterSize="24" style="darkText" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<button name="exitButton" size="192 36" style="button">
-			<text name="exitText" text="Exit" characterSize="24" style="darkText" />
-			<hboxlayout hAlignment="center" vAlignment="center" />
-		</button>
-		<vboxlayout hAlignment="center" vAlignment="center" spacing="16" />
-	</widget>
+    <widget size="800 600">
+        <widget>
+            <text text="Welcome to" characterSize="32" style="titleText" />
+            <text text="Simulopolis" characterSize="96" style="titleText" />
+            <vboxlayout hAlignment="center" vAlignment="center" spacing="-32" />
+        </widget>
+        <widget name="menu">
+            <button name="resumeGameButton" size="192 36" style="button">
+                <text name="resumeGameText" text="Resume game" characterSize="24" style="darkText" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <button name="newGameButton" size="192 36" style="button">
+                <text text="New game" characterSize="24" style="darkText" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <button name="loadGameButton" size="192 36" style="button">
+                <text text="Load game" characterSize="24" style="darkText" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <button name="exitButton" size="192 36" style="button">
+                <text text="Exit" characterSize="24" style="darkText" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <vboxlayout hAlignment="center" vAlignment="center" spacing="16" />
+        </widget>
+        <vboxlayout hAlignment="center" vAlignment="center" spacing="32" />
+    </widget>
 </gui>
