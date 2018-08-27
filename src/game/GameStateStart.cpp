@@ -31,17 +31,6 @@ GameStateStart::~GameStateStart()
     mGui->unsubscribe(mMailbox.getId());
 }
 
-void GameStateStart::draw(float dt)
-{
-    sRenderEngine->draw(*mGui);
-}
-
-void GameStateStart::update(float dt)
-{
-    sAudioEngine->update();
-    mGui->update();
-}
-
 void GameStateStart::handleMessages()
 {
     mGui->handleMessages();
@@ -73,11 +62,11 @@ void GameStateStart::handleMessages()
                 {
                     const std::string& name = event.widget->getName();
                     if (name == "resumeGameButton")
-                        sMessageBus->send(Message::create(sGameId, MessageType::RESUME_GAME));
+                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event{Event::Type::RESUME_GAME}));
                     else if (name == "newGameButton")
-                        sMessageBus->send(Message::create(sGameId, MessageType::NEW_GAME));
+                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event{Event::Type::NEW_GAME}));
                     else if (name == "loadGameButton")
-                        sMessageBus->send(Message::create(sGameId, MessageType::LOAD_GAME));
+                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event{Event::Type::LOAD_GAME}));
                     else if (name == "exitButton")
                         sRenderEngine->getWindow().close();
                 }
@@ -88,6 +77,17 @@ void GameStateStart::handleMessages()
     }
 }
 
+void GameStateStart::update(float dt)
+{
+    sAudioEngine->update();
+    mGui->update();
+}
+
+void GameStateStart::draw()
+{
+    sRenderEngine->draw(*mGui);
+}
+
 void GameStateStart::setCityTexture(const sf::Texture& texture)
 {
     mGui->get<GuiImage>("city")->setSprite(sf::Sprite(texture));
@@ -96,7 +96,7 @@ void GameStateStart::setCityTexture(const sf::Texture& texture)
 void GameStateStart::createGui(bool resume)
 {
     mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
-    mGui->get("menu")->setFixedSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
+    mGui->get("menu")->setFixedInsideSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
     // Resume button
     const PropertyList& textProperties = sStylesheetManager->getStylesheet("darkText")->getFirstChildByName("text").getAttributes();

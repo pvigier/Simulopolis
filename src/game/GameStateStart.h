@@ -11,9 +11,9 @@ public:
     GameStateStart(bool resume = false);
     virtual ~GameStateStart();
 
-    virtual void draw(float dt) override;
-    virtual void update(float dt) override;
     virtual void handleMessages() override;
+    virtual void update(float dt) override;
+    virtual void draw() override;
 
     void setCityTexture(const sf::Texture& texture);
 

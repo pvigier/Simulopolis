@@ -16,6 +16,13 @@ class MusicManager;
 class GameState : public NonCopyable, public NonMovable
 {
 public:
+    struct Event
+    {
+        enum class Type{RESUME_GAME, NEW_GAME, LOAD_GAME, DISPLAY_MENU};
+
+        Type type;
+    };
+
     GameState();
     virtual ~GameState();
 
@@ -29,9 +36,9 @@ public:
     static void setGuiManager(GuiManager* guiManager);
     static void setMusicManager(MusicManager* musicManager);
 
-    virtual void draw(float dt) = 0;
-    virtual void update(float dt) = 0;
     virtual void handleMessages() = 0;
+    virtual void update(float dt) = 0;
+    virtual void draw() = 0;
 
 protected:
     static MessageBus* sMessageBus;

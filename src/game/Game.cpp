@@ -31,11 +31,10 @@ Game::Game()
     Person::setMessageBus(&mMessageBus);
     Company::setMessageBus(&mMessageBus);
     Bank::setMessageBus(&mMessageBus);
-    VMarket::setMessageBus(&mMessageBus);
 
     // Load resources
     mResourceManager.setUp();
-    Map::loadTiles(mResourceManager.getTextureManager());
+    Map::loadTiles();
 
     // Add musics
     mAudioEngine.addMusic(mResourceManager.getMusicManager().getMusic("gymnopedie1"));
@@ -98,7 +97,7 @@ void Game::run()
             mInputEngine.pollEvents();
             curState->handleMessages();
             curState->update(dt);
-            curState->draw(dt);
+            curState->draw();
             mRenderEngine.display();
             handleMessages();
         }
@@ -110,26 +109,39 @@ void Game::handleMessages()
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();
-        if (message.type == MessageType::RESUME_GAME)
-            popState();
-        if (message.type == MessageType::NEW_GAME)
+        if (message.type == MessageType::GAME)
         {
-            GameStateEditor* state = new GameStateEditor();
-            state->newGame();
-            changeState(state);
-        }
-        else if (message.type == MessageType::LOAD_GAME)
-        {
-            GameStateEditor* state = new GameStateEditor();
-            state->loadGame("saves/city");
-            changeState(state);
-        }
-        else if (message.type == MessageType::DISPLAY_MENU)
-        {
-            const sf::Texture& texture = static_cast<GameStateEditor*>(mStates.top())->getCityTexture();
-            GameStateStart* state = new GameStateStart(true);
-            state->setCityTexture(texture);
-            pushState(state);
+            const GameState::Event& event = message.getInfo<GameState::Event>();
+            switch (event.type)
+            {
+                case GameState::Event::Type::RESUME_GAME:
+                    popState();
+                    break;
+                case GameState::Event::Type::NEW_GAME:
+                {
+                    GameStateEditor* state = new GameStateEditor();
+                    state->newGame();
+                    changeState(state);
+                    break;
+                }
+                case GameState::Event::Type::LOAD_GAME:
+                {
+                    GameStateEditor* state = new GameStateEditor();
+                    state->loadGame("saves/city");
+                    changeState(state);
+                    break;
+                }
+                case GameState::Event::Type::DISPLAY_MENU:
+                {
+                    const sf::Texture& texture = static_cast<GameStateEditor*>(mStates.top())->getCityTexture();
+                    GameStateStart* state = new GameStateStart(true);
+                    state->setCityTexture(texture);
+                    pushState(state);
+                    break;
+                }
+                default:
+                    break;
+            }
         }
     }
 }

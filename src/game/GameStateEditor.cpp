@@ -70,37 +70,6 @@ GameStateEditor::~GameStateEditor()
     mGui->unsubscribe(mMailbox.getId());
 }
 
-void GameStateEditor::draw(float dt)
-{
-    sRenderEngine->clear();
-
-    // City
-    drawCity(mRenderTexture, mGameView);
-
-    // GUI
-    sRenderEngine->setView(mGuiView);
-    sRenderEngine->draw(sf::Sprite(mRenderTexture.getTexture()));
-    sRenderEngine->draw(*mGui);
-}
-
-void GameStateEditor::update(float dt)
-{
-    sAudioEngine->update();
-    mCity.update(dt);
-
-    // Update the info bar at the bottom of the screen
-    mGui->get<GuiText>("dateText")->setString(format("%s %d", mCity.getFormattedMonth().c_str(), 2000 + mCity.getYear()));
-    mGui->get<GuiText>("fundsText")->setString(format("$%.2f", mCity.getFunds()));
-    mGui->get<GuiText>("populationText")->setString(format("Population: %d", mCity.getPopulation()));
-    mGui->get<GuiText>("employmentText")->setString(format("Unemployment: %d", 0));
-    mGui->get<GuiText>("currentTileText")->setString(Tile::typeToString(mCurrentTile));
-
-    // Update the windows
-    updateWindows();
-
-    mGui->update();
-}
-
 void GameStateEditor::handleMessages()
 {
     mGui->handleMessages();
@@ -120,7 +89,7 @@ void GameStateEditor::handleMessages()
                     break;
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
-                        sMessageBus->send(Message::create(sGameId, MessageType::DISPLAY_MENU));
+                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event{Event::Type::DISPLAY_MENU}));
                     break;
                 case sf::Event::MouseMoved:
                     // Pan the camera
@@ -148,7 +117,7 @@ void GameStateEditor::handleMessages()
                         auto selectionCostText = mGui->get<GuiText>("selectionCostText");
                         selectionCostText->setString("$" + std::to_string(totalCost));
                         //selectionCostText->setHighlight(mCity.getFunds() < totalCost);
-                        selectionCostText->setPosition(sf::Vector2f(mousePosition) + sf::Vector2f(16, -16));
+                        selectionCostText->setOutsidePosition(sf::Vector2f(mousePosition) + sf::Vector2f(16, -16));
                         selectionCostText->setVisible(true);
                     }
                     break;
@@ -307,6 +276,37 @@ void GameStateEditor::handleMessages()
             }
         }
     }
+}
+
+void GameStateEditor::update(float dt)
+{
+    sAudioEngine->update();
+    mCity.update(dt);
+
+    // Update the info bar at the bottom of the screen
+    mGui->get<GuiText>("dateText")->setString(format("%s %d", mCity.getFormattedMonth().c_str(), 2000 + mCity.getYear()));
+    mGui->get<GuiText>("fundsText")->setString(format("$%.2f", mCity.getFunds()));
+    mGui->get<GuiText>("populationText")->setString(format("Population: %d", mCity.getPopulation()));
+    mGui->get<GuiText>("employmentText")->setString(format("Unemployment: %d", 0));
+    mGui->get<GuiText>("currentTileText")->setString(Tile::typeToString(mCurrentTile));
+
+    // Update the windows
+    updateWindows();
+
+    mGui->update();
+}
+
+void GameStateEditor::draw()
+{
+    sRenderEngine->clear();
+
+    // City
+    drawCity(mRenderTexture, mGameView);
+
+    // GUI
+    sRenderEngine->setView(mGuiView);
+    sRenderEngine->draw(sf::Sprite(mRenderTexture.getTexture()));
+    sRenderEngine->draw(*mGui);
 }
 
 void GameStateEditor::newGame()
