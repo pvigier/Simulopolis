@@ -3,21 +3,21 @@
 
 void GuiHBoxLayout::align()
 {
-    sf::Vector2f offset = mOwner->getPosition() + sf::Vector2f(mMargins.left, mMargins.top);
+    sf::Vector2f offset = mOwner->getInsidePosition() + sf::Vector2f(mMargins.left, mMargins.top);
     sf::Vector2f size = computeSize();
     if (mHAlignment == HAlignment::Center)
-        offset.x += mOwner->getSize().x * 0.5f - size.x * 0.5f;
+        offset.x += mOwner->getInsideSize().x * 0.5f - size.x * 0.5f;
     else if (mHAlignment == HAlignment::Right)
-        offset.x += mOwner->getSize().x - size.x;
+        offset.x += mOwner->getInsideSize().x - size.x;
     for (GuiWidget* widget : mOwner->getChildren())
     {
-        offset.y = mOwner->getPosition().y + mMargins.top;
+        offset.y = mOwner->getInsidePosition().y + mMargins.top;
         if (mVAlignment == VAlignment::Center)
-            offset.y += (mOwner->getSize().y - mMargins.top - mMargins.bottom) * 0.5f - widget->getSize().y * 0.5f;
+            offset.y += (mOwner->getInsideSize().y - mMargins.top - mMargins.bottom) * 0.5f - widget->getOutsideSize().y * 0.5f;
         else if (mVAlignment == VAlignment::Bottom)
-            offset.y += mOwner->getSize().y - mMargins.top - mMargins.bottom - widget->getSize().y;
-        widget->setPosition(offset);
-        offset.x += widget->getSize().x + mSpacing;
+            offset.y += mOwner->getInsideSize().y - mMargins.top - mMargins.bottom - widget->getOutsideSize().y;
+        widget->setOutsidePosition(offset);
+        offset.x += widget->getOutsideSize().x + mSpacing;
     }
 }
 
@@ -26,8 +26,8 @@ sf::Vector2f GuiHBoxLayout::computeSize() const
     sf::Vector2f size;
     for (const GuiWidget* widget : mOwner->getChildren())
     {
-        size.x += widget->getSize().x + mSpacing;
-        size.y = std::max(size.y, widget->getSize().y);
+        size.x += widget->getOutsideSize().x + mSpacing;
+        size.y = std::max(size.y, widget->getOutsideSize().y);
     }
     size.x -= mSpacing;
     return size + sf::Vector2f(mMargins.left + mMargins.right, mMargins.top + mMargins.bottom);

@@ -44,7 +44,7 @@ void PoliciesWindow::setUp()
 
     // Labor policy
     GuiWidget* laborPolicyTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
-    laborPolicyTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
+    laborPolicyTab->setFixedInsideSize(sf::Vector2f(400.0f, 100.0f));
     laborPolicyTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
     createLine(laborPolicyTab, "Weekly standard working hours: ", format("%d", mCity.getWeeklyStandardWorkingHours()), "|[0-9]|[1-9][0-9]|1[0-5][0-9]|16[0-8]");
@@ -52,7 +52,7 @@ void PoliciesWindow::setUp()
 
     // Housing policy
     GuiWidget* housingPolicyTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
-    housingPolicyTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
+    housingPolicyTab->setFixedInsideSize(sf::Vector2f(400.0f, 100.0f));
     housingPolicyTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
     createLine(housingPolicyTab, "Rent for an affordable housing: $", format("%.2f", mCity.getCompany().getRent(Tile::Type::AFFORDABLE_HOUSING)), "\\d{0,9}(\\.\\d{0,2})?");
@@ -61,7 +61,7 @@ void PoliciesWindow::setUp()
 
     // Public service
     GuiWidget* publicServiceTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
-    publicServiceTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
+    publicServiceTab->setFixedInsideSize(sf::Vector2f(400.0f, 100.0f));
     publicServiceTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
     createLine(publicServiceTab, "Salary of a non-qualified job: $", format("%.2f", mCity.getCompany().getSalary(Work::Qualification::NON_QUALIFIED)), "\\d{0,9}(\\.\\d{0,2})?");
@@ -70,7 +70,7 @@ void PoliciesWindow::setUp()
 
     // Tax policy
     GuiWidget* taxPolicyTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
-    taxPolicyTab->setFixedSize(sf::Vector2f(400.0f, 100.0f));
+    taxPolicyTab->setFixedInsideSize(sf::Vector2f(400.0f, 100.0f));
     taxPolicyTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
     createLine(taxPolicyTab, "Income tax: ", format("%.0f", mCity.getIncomeTax()), "|[0-9]|[1-9][0-9]|100", "%");
@@ -88,7 +88,7 @@ void PoliciesWindow::setUp()
     // Window
     add(mTabButtonsWidget);
     add(mTabWidget);
-    setPosition(sf::Vector2f(50.0f, 50.0f));
+    setOutsidePosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(0.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 }
 

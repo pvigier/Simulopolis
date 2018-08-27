@@ -3,15 +3,13 @@
 
 GuiImage::GuiImage(const sf::Sprite& sprite) : mSprite(sprite)
 {
-    setFixedSize(sf::Vector2f(sprite.getTextureRect().width, sprite.getTextureRect().height));
+    setFixedInsideSize(sf::Vector2f(sprite.getTextureRect().width, sprite.getTextureRect().height));
 }
 
 GuiImage::GuiImage(const PropertyList& properties) : GuiWidget(properties)
 {
     if (properties.has("texture"))
         mSprite.setTexture(properties.get<const sf::Texture&>("texture"));
-    if (properties.has("position"))
-        mSprite.setPosition(mPosition);
     if (properties.has("rect"))
         mSprite.setTextureRect(properties.get<sf::IntRect>("rect"));
     if (properties.has("size"))
@@ -22,7 +20,7 @@ GuiImage::GuiImage(const PropertyList& properties) : GuiWidget(properties)
         mSprite.scale(scale);
     }
     else
-        setFixedSize(sf::Vector2f(mSprite.getTextureRect().width, mSprite.getTextureRect().height));
+        setFixedInsideSize(sf::Vector2f(mSprite.getTextureRect().width, mSprite.getTextureRect().height));
 }
 
 GuiImage::~GuiImage()
@@ -41,18 +39,18 @@ void GuiImage::render(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(mSprite, states);
 }
 
-void GuiImage::onPositionChanged()
+void GuiImage::onOutsidePositionChanged()
 {
-    GuiWidget::onPositionChanged();
-    mSprite.setPosition(mPosition);
+    GuiWidget::onOutsidePositionChanged();
+    mSprite.setPosition(mInsidePosition);
 }
 
-void GuiImage::onSizeFixed()
+void GuiImage::onInsideSizeFixed()
 {
+    GuiWidget::onInsideSizeFixed();
     if (mSprite.getTexture())
     {
         sf::Vector2f textureSize(mSprite.getTexture()->getSize());
-        mSprite.setScale(mSize.x / textureSize.x, mSize.y / textureSize.y);
+        mSprite.setScale(mInsideSize.x / textureSize.x, mInsideSize.y / textureSize.y);
     }
-    GuiWidget::onSizeFixed();
 }

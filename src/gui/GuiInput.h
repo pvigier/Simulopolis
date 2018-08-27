@@ -22,7 +22,7 @@ public:
 protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    virtual void onPositionChanged() override;
+    virtual void onOutsidePositionChanged() override;
     virtual bool onPress(sf::Vector2f position, bool processed) override;
     virtual bool onKey(sf::Keyboard::Key key, bool processed) override;
     virtual bool onText(sf::Uint32 unicode, bool processed) override;

@@ -23,15 +23,12 @@ public:
     void update();
     virtual void tearDown();
 
+    // Hierarchy
     void add(GuiWidget* widget);
     void insert(std::size_t i, GuiWidget* widget);
     GuiWidget* remove(std::size_t i);
     std::vector<GuiWidget*>& getChildren();
     const std::vector<GuiWidget*>& getChildren() const;
-
-    virtual void updateSize();
-    void fitSizeToContent();
-    sf::Vector2f getContentSize() const;
 
     // Parameters
     void setGui(Gui* gui);
@@ -42,16 +39,25 @@ public:
     const GuiWidget* getParent() const;
     void setParent(GuiWidget* parent);
     void setLayout(std::unique_ptr<GuiLayout> layout);
-    sf::Vector2f getPosition() const;
-    void setPosition(sf::Vector2f position);
-    sf::Vector2f getSize() const;
-    void setFixedSize(sf::Vector2f size);
-    sf::FloatRect getRect() const;
+    bool isDirty() const;
+
+    // Positions and sizes
+    sf::Vector2f getOutsidePosition() const;
+    void setOutsidePosition(sf::Vector2f position);
+    sf::Vector2f getInsidePosition() const;
+    sf::Vector2f getOutsideSize() const;
+    sf::Vector2f getInsideSize() const;
+    void setFixedInsideSize(sf::Vector2f size);
+    void fitInsideSizeToContent();
+    sf::Vector2f getContentSize() const;
+    sf::FloatRect getOutsideRect() const;
+    virtual void updateSize();
+
+    // Style
     void setBackgroundColor(const sf::Color& color);
     void setBorderSize(int borderSize);
     bool isVisible() const;
     void setVisible(bool visible);
-    bool isDirty() const;
 
     // Input
     virtual bool updateMouseMoved(sf::Vector2f position, bool processed);
@@ -70,8 +76,10 @@ protected:
     GuiWidget* mParent;
     std::vector<GuiWidget*> mChildren;
     std::unique_ptr<GuiLayout> mLayout;
-    sf::Vector2f mPosition;
-    sf::Vector2f mSize;
+    sf::Vector2f mOutsidePosition;
+    sf::Vector2f mInsidePosition;
+    sf::Vector2f mOutsideSize;
+    sf::Vector2f mInsideSize;
     bool mVisible;
     bool mFixedSize;
     const XmlDocument* mStyle;
@@ -84,9 +92,9 @@ protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const;
 
     // Events
-    virtual void onPositionChanged();
+    virtual void onOutsidePositionChanged();
     virtual void onContentSizeChanged(sf::Vector2f contentSize);
-    virtual void onSizeFixed();
+    virtual void onInsideSizeFixed();
 
     // Input
     virtual bool onHover(sf::Vector2f position, bool processed);

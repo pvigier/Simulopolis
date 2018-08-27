@@ -71,12 +71,12 @@ void GuiScrollArea::render(sf::RenderTarget& target, sf::RenderStates states) co
     }
 }
 
-void GuiScrollArea::onPositionChanged()
+void GuiScrollArea::onOutsidePositionChanged()
 {
-    GuiWidget::onPositionChanged();
+    GuiWidget::onOutsidePositionChanged();
     // Content
     updateView();
-    mSprite.setPosition(mPosition);
+    mSprite.setPosition(mInsidePosition);
     // Scroll bar
     updateScrollbar();
 }
@@ -84,12 +84,15 @@ void GuiScrollArea::onPositionChanged()
 void GuiScrollArea::onContentSizeChanged(sf::Vector2f contentSize)
 {
     mContentSize = contentSize;
-    mSize = sf::Vector2f(std::min<int>(mContentSize.x, mMaxVisibleSize.x), std::min<int>(mContentSize.y, mMaxVisibleSize.y));
-    mSprite.setTextureRect(sf::IntRect(0, 0, mSize.x, mSize.y));
-    mScrollbarVisible = contentSize.y > mSize.y;
+    mInsideSize = sf::Vector2f(std::min<int>(mContentSize.x, mMaxVisibleSize.x), std::min<int>(mContentSize.y, mMaxVisibleSize.y));
+    mOutsideSize = mInsideSize;
+    mSprite.setTextureRect(sf::IntRect(0, 0, mInsideSize.x, mInsideSize.y));
+    mScrollbarVisible = contentSize.y > mInsideSize.y;
+    if (mScrollbarVisible)
+        mOutsideSize.x += SCROLLBAR_OFFSET + 0.5f * mScrollButton.getSize().x;
     updateView();
     updateScrollbar();
-    GuiWidget::onContentSizeChanged(mSize);
+    mBackground.setSize(mOutsideSize);
 }
 
 bool GuiScrollArea::onPress(sf::Vector2f position, bool processed)
@@ -114,7 +117,7 @@ bool GuiScrollArea::onHover(sf::Vector2f position, bool processed)
     mFocus = mBackground.getGlobalBounds().contains(position);
     if (mScrolling)
     {
-        float deltaRatio = (position.y - mAnchor) / (mSize.y - mScrollButton.getSize().y);
+        float deltaRatio = (position.y - mAnchor) / (mInsideSize.y - mScrollButton.getSize().y);
         float ratio = clamp(getOffsetRatio() + deltaRatio, 0.0f, 1.0f);
         setOffsetRatio(ratio);
         mAnchor = position.y;
@@ -137,16 +140,16 @@ bool GuiScrollArea::onMouseWheelScroll(float delta, bool processed)
 
 void GuiScrollArea::updateView()
 {
-    mRenderTexture.setView(sf::View(sf::FloatRect(mPosition.x, mOffset + mPosition.y, mMaxVisibleSize.x, mMaxVisibleSize.y)));
+    mRenderTexture.setView(sf::View(sf::FloatRect(mInsidePosition.x, mOffset + mInsidePosition.y, mMaxVisibleSize.x, mMaxVisibleSize.y)));
 }
 
 void GuiScrollArea::updateScrollbar()
 {
-    mLine[0].position = mPosition + sf::Vector2f(mSize.x + SCROLLBAR_OFFSET, 0.0f);
-    mLine[1].position = mPosition + sf::Vector2f(mSize.x + SCROLLBAR_OFFSET, mSize.y);
-    float scrollButtonOffsetX = mSize.x + SCROLLBAR_OFFSET - 0.5f * mScrollButton.getSize().x;
-    float scrollbuttonOffsetY = getOffsetRatio() * (mSize.y - mScrollButton.getSize().y);
-    mScrollButton.setPosition(mPosition + sf::Vector2f(scrollButtonOffsetX, scrollbuttonOffsetY));
+    mLine[0].position = mInsidePosition + sf::Vector2f(mInsideSize.x + SCROLLBAR_OFFSET, 0.0f);
+    mLine[1].position = mInsidePosition + sf::Vector2f(mInsideSize.x + SCROLLBAR_OFFSET, mInsideSize.y);
+    float scrollButtonOffsetX = mInsideSize.x + SCROLLBAR_OFFSET - 0.5f * mScrollButton.getSize().x;
+    float scrollbuttonOffsetY = getOffsetRatio() * (mInsideSize.y - mScrollButton.getSize().y);
+    mScrollButton.setPosition(mInsidePosition + sf::Vector2f(scrollButtonOffsetX, scrollbuttonOffsetY));
 }
 
 float GuiScrollArea::getOffsetRatio() const

@@ -24,7 +24,7 @@ protected:
 
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    virtual void onPositionChanged() override;
+    virtual void onOutsidePositionChanged() override;
 
 private:
     sf::Vector2f computeSize() const;

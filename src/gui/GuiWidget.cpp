@@ -12,12 +12,12 @@ GuiWidget::GuiWidget(const XmlDocument* style) :
 GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nullptr), mDirty(true)
 {
     mVisible = properties.get<bool>("visible", true);
-    setPosition(properties.get<sf::Vector2f>("position", sf::Vector2f()));
-    mSize = properties.get<sf::Vector2f>("size", sf::Vector2f());
+    setOutsidePosition(properties.get<sf::Vector2f>("position", sf::Vector2f()));
+    mInsideSize = properties.get<sf::Vector2f>("size", sf::Vector2f());
     if (properties.has("size"))
-        setFixedSize(mSize);
+        setFixedInsideSize(mInsideSize);
     else
-        mFixedSize = false;
+        fitInsideSizeToContent();
     mStyle = properties.get<const XmlDocument*>("style", nullptr);
     applyStyle();
 }
@@ -85,25 +85,6 @@ const std::vector<GuiWidget*>& GuiWidget::getChildren() const
     return mChildren;
 }
 
-void GuiWidget::updateSize()
-{
-    for (GuiWidget* widget : mChildren)
-        widget->updateSize();
-    if (!mFixedSize)
-        onContentSizeChanged(getContentSize());
-}
-
-void GuiWidget::fitSizeToContent()
-{
-    mFixedSize = false;
-    setDirty();
-}
-
-sf::Vector2f GuiWidget::getContentSize() const
-{
-    return mLayout->computeSize();
-}
-
 void GuiWidget::setGui(Gui* gui)
 {
     mGui = gui;
@@ -146,34 +127,68 @@ void GuiWidget::setLayout(std::unique_ptr<GuiLayout> layout)
     setDirty();
 }
 
-sf::Vector2f GuiWidget::getPosition() const
+bool GuiWidget::isDirty() const
 {
-    return mPosition;
+    return mDirty;
 }
 
-void GuiWidget::setPosition(sf::Vector2f position)
+sf::Vector2f GuiWidget::getOutsidePosition() const
 {
-    mPosition = position;
-    onPositionChanged();
+    return mOutsidePosition;
+}
+
+void GuiWidget::setOutsidePosition(sf::Vector2f position)
+{
+    mOutsidePosition = position;
+    onOutsidePositionChanged();
     setDirty();
 }
 
-sf::Vector2f GuiWidget::getSize() const
+sf::Vector2f GuiWidget::getInsidePosition() const
 {
-    return mSize;
+    return mInsidePosition;
 }
 
-void GuiWidget::setFixedSize(sf::Vector2f size)
+sf::Vector2f GuiWidget::getOutsideSize() const
 {
-    mSize = size;
+    return mOutsideSize;
+}
+
+sf::Vector2f GuiWidget::getInsideSize() const
+{
+    return mInsideSize;
+}
+
+void GuiWidget::setFixedInsideSize(sf::Vector2f size)
+{
+    mInsideSize = size;
     mFixedSize = true;
-    onSizeFixed();
+    onInsideSizeFixed();
     setDirty();
 }
 
-sf::FloatRect GuiWidget::getRect() const
+void GuiWidget::fitInsideSizeToContent()
 {
-    return sf::FloatRect(mPosition, mSize);
+    mFixedSize = false;
+    setDirty();
+}
+
+sf::Vector2f GuiWidget::getContentSize() const
+{
+    return mLayout->computeSize();
+}
+
+sf::FloatRect GuiWidget::getOutsideRect() const
+{
+    return sf::FloatRect(mOutsidePosition, mOutsideSize);
+}
+
+void GuiWidget::updateSize()
+{
+    for (GuiWidget* widget : mChildren)
+        widget->updateSize();
+    if (!mFixedSize)
+        onContentSizeChanged(getContentSize());
 }
 
 void GuiWidget::setBackgroundColor(const sf::Color& color)
@@ -194,11 +209,6 @@ bool GuiWidget::isVisible() const
 void GuiWidget::setVisible(bool visible)
 {
     mVisible = visible;
-}
-
-bool GuiWidget::isDirty() const
-{
-    return mDirty;
 }
 
 bool GuiWidget::updateMouseMoved(sf::Vector2f position, bool processed)
@@ -300,20 +310,23 @@ void GuiWidget::render(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(mBackground, states);
 }
 
-void GuiWidget::onPositionChanged()
+void GuiWidget::onOutsidePositionChanged()
 {
-    mBackground.setPosition(mPosition);
+    mInsidePosition = mOutsidePosition;
+    mBackground.setPosition(mOutsidePosition);
 }
 
 void GuiWidget::onContentSizeChanged(sf::Vector2f contentSize)
 {
-    mSize = contentSize;
-    onSizeFixed();
+    mOutsideSize = contentSize;
+    mInsideSize = contentSize;
+    mBackground.setSize(mOutsideSize);
 }
 
-void GuiWidget::onSizeFixed()
+void GuiWidget::onInsideSizeFixed()
 {
-    mBackground.setSize(mSize);
+    mOutsideSize = mInsideSize;
+    mBackground.setSize(mOutsideSize);
 }
 
 bool GuiWidget::onHover(sf::Vector2f position, bool processed)

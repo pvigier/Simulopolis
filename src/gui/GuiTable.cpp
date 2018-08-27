@@ -41,7 +41,7 @@ void GuiTable::updateSize()
 {
     updateTable();
     for (GuiWidget* widget : mChildren)
-        widget->setFixedSize(widget->getContentSize());
+        widget->setFixedInsideSize(widget->getContentSize());
     if (!mFixedSize)
         onContentSizeChanged(getContentSize());
 }
@@ -111,7 +111,7 @@ void GuiTable::updateTable()
         for (std::size_t i = 0; i < mRowHeights.size(); ++i)
         {
             GuiWidget* cell = mChildren[j]->getChildren()[i];
-            cell->setFixedSize(sf::Vector2f(mColumnWidths[j], mRowHeights[i]));
+            cell->setFixedInsideSize(sf::Vector2f(mColumnWidths[j], mRowHeights[i]));
         }
     }
 }

@@ -55,9 +55,9 @@ void GuiInput::render(sf::RenderTarget& target, sf::RenderStates states) const
         target.draw(mCursorShape, states);
 }
 
-void GuiInput::onPositionChanged()
+void GuiInput::onOutsidePositionChanged()
 {
-    GuiWidget::onPositionChanged();
+    GuiWidget::onOutsidePositionChanged();
     setCursor(mCursor);
 }
 

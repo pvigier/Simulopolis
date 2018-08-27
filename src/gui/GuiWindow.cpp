@@ -34,35 +34,35 @@ void GuiWindow::render(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(mTitle, states);
 }
 
-void GuiWindow::onPositionChanged()
+void GuiWindow::onOutsidePositionChanged()
 {
-    GuiWidget::onPositionChanged();
-    mBar.setPosition(mPosition);
+    GuiWidget::onOutsidePositionChanged();
+    mBar.setPosition(mInsidePosition);
     sf::Vector2f barSize = sf::Vector2f(mBar.getGlobalBounds().width, mBar.getGlobalBounds().height);
     // Close button
     sf::Vector2f closeButtonSize = sf::Vector2f(mCloseButton.getGlobalBounds().width, mCloseButton.getGlobalBounds().height);
-    mCloseButton.setPosition(mPosition + sf::Vector2f(mSize.x - closeButtonSize.x * 1.5f, -barSize.y * 0.5f - closeButtonSize.y * 0.5f));
+    mCloseButton.setPosition(mInsidePosition + sf::Vector2f(mInsideSize.x - closeButtonSize.x * 1.5f, -barSize.y * 0.5f - closeButtonSize.y * 0.5f));
     // Title
     sf::Vector2f titleSize = sf::Vector2f(mTitle.getGlobalBounds().width, mTitle.getCharacterSize() * 5 / 4);
-    sf::Vector2i titlePosition(mPosition + sf::Vector2f(mSize.x * 0.5f, -barSize.y * 0.5f) - titleSize * 0.5f);
+    sf::Vector2i titlePosition(mInsidePosition + sf::Vector2f(mInsideSize.x * 0.5f, -barSize.y * 0.5f) - titleSize * 0.5f);
     mTitle.setPosition(sf::Vector2f(titlePosition));
 }
 
 void GuiWindow::onContentSizeChanged(sf::Vector2f contentSize)
 {
-    mSize = contentSize;
-    mBar.setSize(sf::Vector2f(mSize.x, mStyle->getFirstChildByName("bar").getAttributes().get<float>("height")));
+    mInsideSize = contentSize;
+    mBar.setSize(sf::Vector2f(mInsideSize.x, mStyle->getFirstChildByName("bar").getAttributes().get<float>("height")));
     mCloseButton.setRadius(mStyle->getFirstChildByName("bar").getAttributes().get<float>("height") * 0.25f);
     // Update position
-    onPositionChanged();
-    GuiWidget::onContentSizeChanged(mSize);
+    onOutsidePositionChanged();
+    GuiWidget::onContentSizeChanged(mInsideSize); // To remove
 }
 
 bool GuiWindow::onHover(sf::Vector2f position, bool processed)
 {
     if (mOnMove)
     {
-        setPosition(mPosition + position - mAnchor);
+        setOutsidePosition(mOutsidePosition + position - mAnchor);
         mAnchor = position;
     }
     return mBackground.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);

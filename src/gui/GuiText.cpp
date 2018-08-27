@@ -6,7 +6,7 @@ GuiText::GuiText(const sf::String& text, unsigned int characterSize, const XmlDo
     mText(text, mStyle->getFirstChildByName("text").getAttributes().get<const sf::Font&>("font"), characterSize)
 {
     mText.setFillColor(mStyle->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
-    setFixedSize(computeSize());
+    setFixedInsideSize(computeSize());
 }
 
 GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
@@ -16,7 +16,7 @@ GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
     mText.setFont(style->getFirstChildByName("text").getAttributes().get<const sf::Font&>("font"));
     mText.setCharacterSize(properties.get<unsigned int>("characterSize", 0));
     mText.setFillColor(style->getFirstChildByName("text").getAttributes().get<sf::Color>("color"));
-    setFixedSize(computeSize());
+    setFixedInsideSize(computeSize());
 }
 
 GuiText::~GuiText()
@@ -27,7 +27,7 @@ GuiText::~GuiText()
 void GuiText::setCharacterSize(unsigned int characterSize)
 {
     mText.setCharacterSize(characterSize);
-    setFixedSize(computeSize());
+    setFixedInsideSize(computeSize());
 }
 
 const sf::Text& GuiText::getText() const
@@ -45,7 +45,7 @@ void GuiText::setString(const sf::String& text)
     if (text != mText.getString())
     {
         mText.setString(text);
-        setFixedSize(computeSize());
+        setFixedInsideSize(computeSize());
     }
 }
 
@@ -60,10 +60,10 @@ void GuiText::render(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(mText, states);
 }
 
-void GuiText::onPositionChanged()
+void GuiText::onOutsidePositionChanged()
 {
-    GuiWidget::onPositionChanged();
-    mText.setPosition(sf::Vector2f(sf::Vector2i(mPosition)));
+    GuiWidget::onOutsidePositionChanged();
+    mText.setPosition(sf::Vector2f(sf::Vector2i(mInsidePosition)));
 }
 
 sf::Vector2f GuiText::computeSize() const

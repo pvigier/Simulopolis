@@ -17,8 +17,8 @@ public:
 protected:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    virtual void onPositionChanged() override;
-    virtual void onSizeFixed() override;
+    virtual void onOutsidePositionChanged() override;
+    virtual void onInsideSizeFixed() override;
 
 private:
     sf::Sprite mSprite;
