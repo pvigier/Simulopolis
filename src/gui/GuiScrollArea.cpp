@@ -38,8 +38,9 @@ bool GuiScrollArea::updateMouseMoved(sf::Vector2f position, bool processed)
 {
     if (mVisible)
     {
+        sf::Vector2f offsetPosition = sf::Vector2f(position.x, position.y + mOffset);
         for (GuiWidget* widget : mChildren)
-            processed = widget->updateMouseMoved(position, processed) || processed;
+            processed = widget->updateMouseMoved(offsetPosition, processed) || processed;
         processed = onHover(position, processed) || processed;
     }
     return processed;
@@ -49,8 +50,9 @@ bool GuiScrollArea::updateMouseButtonPressed(sf::Vector2f position, bool process
 {
     if (mVisible)
     {
+        sf::Vector2f offsetPosition = sf::Vector2f(position.x, position.y + mOffset);
         for (GuiWidget* widget : mChildren)
-            processed = widget->updateMouseButtonPressed(position, processed) || processed;
+            processed = widget->updateMouseButtonPressed(offsetPosition, processed) || processed;
         processed = onPress(position, processed) || processed;
     }
     return processed;
@@ -60,8 +62,9 @@ bool GuiScrollArea::updateMouseButtonReleased(sf::Vector2f position, bool proces
 {
     if (mVisible)
     {
+        sf::Vector2f offsetPosition = sf::Vector2f(position.x, position.y + mOffset);
         for (GuiWidget* widget : mChildren)
-            processed = widget->updateMouseButtonReleased(position, processed) || processed;
+            processed = widget->updateMouseButtonReleased(offsetPosition, processed) || processed;
         processed = onRelease(position, processed) || processed;
     }
     return processed;
@@ -97,6 +100,7 @@ void GuiScrollArea::onContentSizeChanged(sf::Vector2f contentSize)
     mScrollbarVisible = contentSize.y > mInsideSize.y;
     if (mScrollbarVisible)
         mOutsideSize.x += SCROLLBAR_OFFSET + 0.5f * mScrollButton.getSize().x;
+    mOffset = clamp(mOffset, 0.0f, mContentSize.y - mMaxVisibleSize.y);
     updateView();
     updateScrollbar();
     mBackground.setSize(mOutsideSize);

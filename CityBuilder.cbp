@@ -167,6 +167,8 @@
 		<Unit filename="src/gui/GuiLayout.h" />
 		<Unit filename="src/gui/GuiOverlapLayout.cpp" />
 		<Unit filename="src/gui/GuiOverlapLayout.h" />
+		<Unit filename="src/gui/GuiScrollArea.cpp" />
+		<Unit filename="src/gui/GuiScrollArea.h" />
 		<Unit filename="src/gui/GuiTabWidget.cpp" />
 		<Unit filename="src/gui/GuiTabWidget.h" />
 		<Unit filename="src/gui/GuiTable.cpp" />
