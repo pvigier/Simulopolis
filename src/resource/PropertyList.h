@@ -69,6 +69,9 @@ template<>
 sf::String PropertyList::get(const std::string& name) const;
 
 template<>
+sf::Vector2i PropertyList::get(const std::string& name) const;
+
+template<>
 sf::Vector2f PropertyList::get(const std::string& name) const;
 
 template<>

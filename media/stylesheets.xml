@@ -40,7 +40,7 @@
     </stylesheet>
     <stylesheet name="input">
 		<background color="0xd4 0xd4 0xd4" />
-        <text style="darkText" />
+        <text style="darkText" margins="2 2 2 2" />
 	</stylesheet>
     <stylesheet name="scrollarea">
         <scrollbar color="0xff 0xff 0xff" />

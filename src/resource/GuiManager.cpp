@@ -8,6 +8,8 @@
 #include "gui/GuiText.h"
 #include "gui/GuiImage.h"
 #include "gui/GuiTabWidget.h"
+#include "gui/GuiInput.h"
+#include "gui/GuiScrollArea.h"
 #include "gui/GuiHBoxLayout.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiOverlapLayout.h"
@@ -98,7 +100,8 @@ std::unique_ptr<GuiWidget> GuiManager::loadWidgets(Gui* gui, const XmlDocument& 
 bool GuiManager::isWidget(const XmlDocument& node)
 {
     const std::string& type = node.getName();
-    return (type == "widget" || type == "button" || type == "text" || type == "image" || type == "tabwidget");
+    return (type == "widget" || type == "button" || type == "text" || type == "image" || type == "tabwidget" ||
+            type == "input" || type == "scrollarea");
 }
 
 bool GuiManager::isLayout(const XmlDocument& node)
@@ -121,6 +124,13 @@ std::unique_ptr<GuiWidget> GuiManager::createWidget(const XmlDocument& node)
         widget = std::make_unique<GuiImage>(node.getAttributes());
     else if (type == "tabwidget")
         widget = std::make_unique<GuiTabWidget>(node.getAttributes());
+    else if (type == "input")
+    {
+        widget = std::make_unique<GuiInput>(node.getAttributes());
+        std::cout << "oK" << std::endl;
+    }
+    else if (type == "scrollarea")
+        widget = std::make_unique<GuiScrollArea>(node.getAttributes());
     return std::move(widget);
 }
 

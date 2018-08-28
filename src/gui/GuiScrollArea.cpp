@@ -12,9 +12,14 @@ GuiScrollArea::GuiScrollArea(sf::Vector2i maxVisibleSize, const XmlDocument* sty
     applyStyle();
 }
 
-GuiScrollArea::GuiScrollArea(const PropertyList& properties) : GuiWidget(properties)
+GuiScrollArea::GuiScrollArea(const PropertyList& properties) :
+    GuiWidget(properties), mFocus(false), mScrollbarVisible(false), mOffset(0.0f), mScrolling(false), mAnchor(0.0f)
 {
-
+    mMaxVisibleSize = properties.get<sf::Vector2i>("maxVisibleSize", sf::Vector2i());
+    mRenderTexture.create(mMaxVisibleSize.x, mMaxVisibleSize.y);
+    mSprite.setTexture(mRenderTexture.getTexture());
+    mScrollButton.setSize(sf::Vector2f(8.0f, 32.0f));
+    applyStyle();
 }
 
 void GuiScrollArea::draw(sf::RenderTarget& target, sf::RenderStates states) const

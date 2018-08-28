@@ -152,7 +152,6 @@ void PoliciesWindow::createLine(GuiWidget* tab, const std::string& label, const 
     mInputs.push_back(input);
     input->setString(value);
     input->setRegex(regex);
-    input->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
     widget->add(input);
 
     // Suffix

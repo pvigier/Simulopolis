@@ -2,6 +2,7 @@
 #include "resource/XmlDocument.h"
 #include "gui/Gui.h"
 #include "gui/GuiText.h"
+#include "gui/GuiHBoxLayout.h"
 
 GuiInput::GuiInput(unsigned int characterSize, const XmlDocument* style) :
     GuiWidget(style), mFocus(false), mCharacterSize(characterSize), mText(nullptr),
@@ -10,9 +11,12 @@ GuiInput::GuiInput(unsigned int characterSize, const XmlDocument* style) :
 
 }
 
-GuiInput::GuiInput(const PropertyList& properties) : GuiWidget(properties)
+GuiInput::GuiInput(const PropertyList& properties) :
+    GuiWidget(properties), mFocus(false), mText(nullptr), mElapsedTime(0.0f)
 {
-
+    mCharacterSize = properties.get<unsigned int>("characterSize", 0);
+    mCursorShape.setSize(sf::Vector2f(sf::Vector2f(1.0f, mCharacterSize * 5 / 4)));
+    setRegex(properties.get<std::string>("regex", ".*"));
 }
 
 GuiInput::~GuiInput()
@@ -25,6 +29,7 @@ void GuiInput::setUp()
     mText = mGui->createWithDefaultName<GuiText>("", mCharacterSize, mStyle->getFirstChildByName("text").getAttributes().get<const XmlDocument*>("style"));
     add(mText);
     setCursor(0);
+    setLayout(std::make_unique<GuiHBoxLayout>(0.0f, mStyle->getFirstChildByName("text").getAttributes().get<GuiLayout::Margins>("margins", GuiLayout::Margins{0.0f, 0.0f, 0.0f, 0.0f})));
 }
 
 const sf::String& GuiInput::getString() const

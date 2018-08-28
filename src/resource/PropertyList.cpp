@@ -72,6 +72,15 @@ sf::String PropertyList::get(const std::string& name) const
 }
 
 template<>
+sf::Vector2i PropertyList::get(const std::string& name) const
+{
+    std::istringstream stream(mProperties.at(name));
+    std::string x, y;
+    stream >> x >> y;
+    return sf::Vector2i(std::stoi(x), std::stoi(y));
+}
+
+template<>
 sf::Vector2f PropertyList::get(const std::string& name) const
 {
     std::istringstream stream(mProperties.at(name));
