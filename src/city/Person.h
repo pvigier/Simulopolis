@@ -19,7 +19,7 @@ public:
 
     struct Event
     {
-        enum class Type{LEAVE_HOUSING, QUIT_WORK};
+        enum class Type{LEAVE_HOUSING, QUIT_WORK, FIRED, EXPELLED};
 
         Type type;
         union
@@ -28,6 +28,7 @@ public:
             Work& work;
         };
 
+        Event(Type type);
         Event(Type type, Lease& lease);
         Event(Type type, Work& work);
     };

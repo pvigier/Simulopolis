@@ -30,13 +30,27 @@ Goal::State GoalWork::process()
 {
     activateIfInactive();
 
-    mState = processSubgoals();
+    if (!hasFailed())
+        mState = processSubgoals();
+
     return mState;
 }
 
 void GoalWork::terminate()
 {
     mOwner->getWork()->setWorkedThisMonth(true);
+}
+
+bool GoalWork::handle(Message message)
+{
+    if (message.type == MessageType::PERSON)
+    {
+        const Person::Event& event = message.getInfo<Person::Event>();
+        if (event.type == Person::Event::Type::FIRED)
+            mState = State::FAILED;
+        return true;
+    }
+    return false;
 }
 
 std::string GoalWork::toString() const

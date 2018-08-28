@@ -150,7 +150,7 @@ void Map::bulldoze(Tile::Type type, Company& owner, IdManager<Building*>& buildi
                 else if (mTiles.get(i, j)->isBuilding())
                 {
                     Building* building = static_cast<Building*>(mTiles.get(i, j).get());
-                    //owner.removeBuilding(building);
+                    building->getOwner()->removeBuilding(building);
                     buildings.erase(building->getId());
                 }
                 // Add the new tile

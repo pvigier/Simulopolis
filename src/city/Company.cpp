@@ -194,6 +194,36 @@ void Company::addBuilding(Building* building)
     }
 }
 
+void Company::removeBuilding(Building* building)
+{
+    // Alert the tenants
+    if (building->isHousing())
+    {
+        Housing* housing = static_cast<Housing*>(building);
+        for (Lease& lease : housing->getLeases())
+        {
+            if (lease.getTenant())
+                sMessageBus->send(Message::create(lease.getTenant()->getMailboxId(), MessageType::PERSON, Person::Event{Person::Event::Type::EXPELLED}));
+        }
+    }
+    // Alert the employees
+    else
+    {
+        for (Work& work : *getEmployees(building))
+        {
+            if (work.getEmployee())
+            {
+                // Pay the employee if necessary
+                if (work.hasWorkedThisMonth())
+                    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createTransferMoneyEvent(mAccount, work.getEmployee()->getAccount(), work.getSalary())));
+                sMessageBus->send(Message::create(work.getEmployee()->getMailboxId(), MessageType::PERSON, Person::Event{Person::Event::Type::FIRED}));
+            }
+        }
+    }
+    // Remove from the list of buildings
+    mBuildings.erase(std::find(mBuildings.begin(), mBuildings.end(), building));
+}
+
 Money Company::getRent(Tile::Type housingType) const
 {
     return mRents[static_cast<int>(housingType) - static_cast<int>(Tile::Type::AFFORDABLE_HOUSING)];

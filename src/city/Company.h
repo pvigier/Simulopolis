@@ -40,6 +40,7 @@ public:
     // Buildings
     const std::vector<Building*>& getBuildings() const;
     void addBuilding(Building* building);
+    void removeBuilding(Building* building);
 
     // Rent and salaries
     Money getRent(Tile::Type housingType) const;

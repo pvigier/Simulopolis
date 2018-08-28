@@ -85,6 +85,11 @@ void Building::setPosition(sf::Vector2i coordinates, sf::Vector2f position)
     mSprite.setPosition(sf::Vector2f(position.x, position.y - OFFSET_Y));
 }
 
+Company* Building::getOwner()
+{
+    return mOwner;
+}
+
 const Company* Building::getOwner() const
 {
     return mOwner;

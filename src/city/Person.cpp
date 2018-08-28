@@ -9,6 +9,11 @@
 #include "ai/GoalEnterCityEvaluator.h"
 #include "ai/GoalGetBetterWorkEvaluator.h"
 
+Person::Event::Event(Type type) : type(type)
+{
+
+}
+
 Person::Event::Event(Type type, Lease& lease) : type(type), lease(lease)
 {
 
@@ -84,6 +89,21 @@ void Person::update(float dt)
             {
                 case Bank::Event::Type::ACCOUNT_CREATED:
                     mAccount = event.account;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (message.type == MessageType::PERSON)
+        {
+            const Event& event = message.getInfo<Event>();
+            switch (event.type)
+            {
+                case Event::Type::EXPELLED:
+                    mHome = nullptr;
+                    break;
+                case Event::Type::FIRED:
+                    mWork = nullptr;
                     break;
                 default:
                     break;

@@ -27,6 +27,7 @@ public:
     sf::Vector2f getPosition() const;
     virtual void setPosition(sf::Vector2i coordinates, sf::Vector2f position) override;
     virtual void setOwner(Company* owner);
+    Company* getOwner();
     const Company* getOwner() const;
     virtual sf::FloatRect getBounds() const override;
 

@@ -13,6 +13,8 @@ public:
     virtual State process() override;
     virtual void terminate() override;
 
+    virtual bool handle(Message message) override;
+
     virtual std::string toString() const override;
 
 private:
