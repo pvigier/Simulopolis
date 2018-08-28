@@ -3,7 +3,9 @@
 #include <regex>
 #include <SFML/System/Clock.hpp>
 #include "gui/GuiWidget.h"
+#include "gui/GuiLayout.h"
 
+class XmlDocument;
 class GuiText;
 
 class GuiInput : public GuiWidget
@@ -30,6 +32,8 @@ protected:
 private:
     bool mFocus;
     unsigned int mCharacterSize;
+    GuiLayout::Margins mMargins;
+    const XmlDocument* mTextStyle;
     GuiText* mText;
     std::size_t mCursor;
     sf::RectangleShape mCursorShape;

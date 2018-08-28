@@ -5,18 +5,29 @@
 #include "gui/GuiHBoxLayout.h"
 
 GuiInput::GuiInput(unsigned int characterSize, const XmlDocument* style) :
-    GuiWidget(style), mFocus(false), mCharacterSize(characterSize), mText(nullptr),
-    mCursorShape(sf::Vector2f(1.0f, mCharacterSize * 5 / 4)), mElapsedTime(0.0f), mRegex(".*")
+    GuiWidget(style), mFocus(false), mCharacterSize(characterSize), mMargins{0.0f, 0.0f, 0.0f, 0.0f},
+    mTextStyle(nullptr), mText(nullptr), mCursorShape(sf::Vector2f(1.0f, mCharacterSize * 5 / 4)),
+    mElapsedTime(0.0f), mRegex(".*")
 {
-
+    if (mStyle)
+    {
+        mMargins = mStyle->getFirstChildByName("text").getAttributes().get<GuiLayout::Margins>("margins", GuiLayout::Margins{0.0f, 0.0f, 0.0f, 0.0f});
+        mTextStyle = mStyle->getFirstChildByName("text").getAttributes().get<const XmlDocument*>("style", nullptr);
+    }
 }
 
 GuiInput::GuiInput(const PropertyList& properties) :
-    GuiWidget(properties), mFocus(false), mText(nullptr), mElapsedTime(0.0f)
+    GuiWidget(properties), mFocus(false), mMargins{0.0f, 0.0f, 0.0f, 0.0f}, mTextStyle(nullptr), mText(nullptr),
+    mElapsedTime(0.0f)
 {
     mCharacterSize = properties.get<unsigned int>("characterSize", 0);
     mCursorShape.setSize(sf::Vector2f(sf::Vector2f(1.0f, mCharacterSize * 5 / 4)));
     setRegex(properties.get<std::string>("regex", ".*"));
+    if (mStyle)
+    {
+        mMargins = mStyle->getFirstChildByName("text").getAttributes().get<GuiLayout::Margins>("margins", GuiLayout::Margins{0.0f, 0.0f, 0.0f, 0.0f});
+        mTextStyle = mStyle->getFirstChildByName("text").getAttributes().get<const XmlDocument*>("style", nullptr);
+    }
 }
 
 GuiInput::~GuiInput()
@@ -26,10 +37,10 @@ GuiInput::~GuiInput()
 
 void GuiInput::setUp()
 {
-    mText = mGui->createWithDefaultName<GuiText>("", mCharacterSize, mStyle->getFirstChildByName("text").getAttributes().get<const XmlDocument*>("style"));
+    mText = mGui->createWithDefaultName<GuiText>("", mCharacterSize, mTextStyle);
     add(mText);
     setCursor(0);
-    setLayout(std::make_unique<GuiHBoxLayout>(0.0f, mStyle->getFirstChildByName("text").getAttributes().get<GuiLayout::Margins>("margins", GuiLayout::Margins{0.0f, 0.0f, 0.0f, 0.0f})));
+    setLayout(std::make_unique<GuiHBoxLayout>(0.0f, mMargins));
 }
 
 const sf::String& GuiInput::getString() const
@@ -63,6 +74,7 @@ void GuiInput::render(sf::RenderTarget& target, sf::RenderStates states) const
 void GuiInput::onOutsidePositionChanged()
 {
     GuiWidget::onOutsidePositionChanged();
+    updateAlignment();
     setCursor(mCursor);
 }
 
