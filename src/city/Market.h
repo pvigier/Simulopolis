@@ -23,6 +23,13 @@ public:
         COUNT
     };
 
+    struct EventBase
+    {
+        VMarket::Type marketType;
+
+        EventBase(VMarket::Type marketType);
+    };
+
     VMarket(Type type);
     virtual ~VMarket();
 
@@ -63,9 +70,9 @@ public:
         std::vector<Bid> bids;
     };
 
-    struct Event
+    struct Event : public EventBase
     {
-        enum class Type{ADD_ITEM, BID, SET_QUANTITY, PURCHASE, SALE, ITEM_ADDED, ITEM_REMOVED};
+        enum class Type{ADD_ITEM, REMOVE_ITEM, BID, SET_QUANTITY, PURCHASE, SALE, ITEM_ADDED, ITEM_REMOVED};
 
         struct AddItemEvent
         {
@@ -82,12 +89,12 @@ public:
 
         struct SaleEvent
         {
+            Id itemId;
             Id sellerAccount;
             T* good;
             Money value;
         };
 
-        VMarket::Type marketType;
         Type type;
 
         union
@@ -98,6 +105,11 @@ public:
             SaleEvent sale;
             Id itemId;
         };
+
+        Event(VMarket::Type marketType, Type type) : EventBase(marketType), type(type)
+        {
+
+        }
     };
 
     Market(Type type) : VMarket(type), mDirty(false)
@@ -113,10 +125,20 @@ public:
         mAuctions.get(id).item.id = id;
         mDirty = true;
         // Notify
-        Event event{mType, Event::Type::ITEM_ADDED, {}};
+        Event event(mType, Event::Type::ITEM_ADDED);
         event.itemId = id;
+        sMessageBus->send(Message::create(sellerId, MessageType::MARKET, event));
         notify(Message::create(MessageType::MARKET, event));
         return id;
+    }
+
+    void removeItem(Id itemId)
+    {
+        // Remove item
+        mAuctions.erase(itemId);
+        mDirty = true;
+        // Notify
+        notify(Message::create(MessageType::MARKET, createItemRemovedEvent(itemId)));
     }
 
     const Item& getItem(Id itemId) const
@@ -166,6 +188,9 @@ public:
                     case Event::Type::ADD_ITEM:
                         addItem(message.sender, event.item.sellerAccount, event.item.good, event.item.reservePrice);
                         break;
+                    case Event::Type::REMOVE_ITEM:
+                        removeItem(event.itemId);
+                        break;
                     case Event::Type::BID:
                         addBid(event.bid.itemId, message.sender, event.bid.value);
                         break;
@@ -196,8 +221,8 @@ public:
                 Item& item = auction->item;
                 if (bid.value >= item.reservePrice && mDesiredQuantities[bid.bidderId] > 0)
                 {
-                    Event event{mType, Event::Type::PURCHASE, {}};
-                    event.sale = typename Event::SaleEvent{item.sellerAccount, item.good, bid.value};
+                    Event event(mType, Event::Type::PURCHASE);
+                    event.sale = typename Event::SaleEvent{item.id, item.sellerAccount, item.good, bid.value};
                     sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, event));
                     sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, event));
                     --mDesiredQuantities[bid.bidderId];
@@ -211,9 +236,7 @@ public:
         {
             mAuctions.erase(id);
             // Notify
-            Event event{mType, Event::Type::ITEM_REMOVED, {}};
-            event.itemId = id;
-            notify(Message::create(MessageType::MARKET, event));
+            notify(Message::create(MessageType::MARKET, createItemRemovedEvent(id)));
         }
         if (!soldItems.empty())
             mDirty = true;
@@ -226,22 +249,36 @@ public:
 
     Event createAddItemEvent(Id sellerAccount, T* good, Money reservePrice) const
     {
-        Event event{mType, Event::Type::ADD_ITEM, {}};
+        Event event(mType, Event::Type::ADD_ITEM);
         event.item = typename Event::AddItemEvent{sellerAccount, good, reservePrice};
+        return event;
+    }
+
+    Event createRemoveItemEvent(Id itemId) const
+    {
+        Event event(mType, Event::Type::REMOVE_ITEM);
+        event.itemId = itemId;
         return event;
     }
 
     Event createBidEvent(Id itemId, Money value) const
     {
-        Event event{mType, Event::Type::BID, {}};
+        Event event(mType, Event::Type::BID);
         event.bid = typename Event::BidEvent{itemId, value};
         return event;
     }
 
     Event createSetQuantityEvent(unsigned int desiredQuantity) const
     {
-        Event event{mType, Event::Type::SET_QUANTITY, {}};
+        Event event(mType, Event::Type::SET_QUANTITY);
         event.desiredQuantity = desiredQuantity;
+        return event;
+    }
+
+    Event createItemRemovedEvent(Id itemId) const
+    {
+        Event event(mType, Event::Type::ITEM_REMOVED);
+        event.itemId = itemId;
         return event;
     }
 
