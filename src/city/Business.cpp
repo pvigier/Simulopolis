@@ -43,9 +43,6 @@ void Business::setOwner(Company* owner)
     Building::setOwner(owner);
     for (Work& employee : mEmployees)
         employee.setEmployer(mOwner);
-    // Register mailbox
-    if (mMailbox.getId() == UNDEFINED)
-        mOwner->getMessageBus()->addMailbox(mMailbox);
 }
 
 void Business::update()
@@ -58,15 +55,34 @@ void Business::update()
         Message message = mMailbox.get();
         if (message.type == MessageType::MARKET)
         {
-            const Market<const Building>::Event& event = message.getInfo<Market<const Building>::Event>();
-            if (event.type == Market<const Building>::Event::Type::PURCHASE)
+            const VMarket::EventBase& eventBase = message.getInfo<VMarket::EventBase>();
+            if (eventBase.marketType == VMarket::Type::WORK)
             {
-                // To do : save the building to fetch the good later
-                ++mStock;
-                mStockCost += event.sale.value;
-                priceDirty = true;
-                desiredQuantityDirty = true;
-                mOwner->getMessageBus()->send(Message::create(mOwner->getCity()->getBank().getMailboxId(), MessageType::BANK, mOwner->getCity()->getBank().createTransferMoneyEvent(mOwner->getAccount(), event.sale.sellerAccount, event.sale.value)));
+                const Market<Work>::Event& event = static_cast<const Market<Work>::Event&>(eventBase);
+                switch (event.type)
+                {
+                    case Market<Work>::Event::Type::ITEM_ADDED:
+                        mWorksInMarket.insert(event.itemId);
+                        break;
+                    case Market<Work>::Event::Type::SALE:
+                        mWorksInMarket.erase(event.sale.itemId);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                const Market<const Building>::Event& event = static_cast<const Market<const Building>::Event&>(eventBase);
+                if (event.type == Market<const Building>::Event::Type::PURCHASE)
+                {
+                    // To do : save the building to fetch the good later
+                    ++mStock;
+                    mStockCost += event.sale.value;
+                    priceDirty = true;
+                    desiredQuantityDirty = true;
+                    mOwner->getMessageBus()->send(Message::create(mOwner->getCity()->getBank().getMailboxId(), MessageType::BANK, mOwner->getCity()->getBank().createTransferMoneyEvent(mOwner->getAccount(), event.sale.sellerAccount, event.sale.value)));
+                }
             }
         }
         else if (message.type == MessageType::BUSINESS)
@@ -97,9 +113,15 @@ void Business::update()
         updateDesiredQuantity();
 }
 
-Id Business::getMailboxId() const
+void Business::tearDown()
 {
-    return mMailbox.getId();
+    update();
+    // Remove everything from markets
+    const Market<Work>* market = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(VMarket::Type::WORK));
+    for (Id id : mWorksInMarket)
+        mOwner->getMessageBus()->send(Message::create(market->getMailboxId(), MessageType::MARKET, market->createRemoveItemEvent(id)));
+    // Remove bids for market
+    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createSetQuantityEvent(0)));
 }
 
 Good Business::getGood() const

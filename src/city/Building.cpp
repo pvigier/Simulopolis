@@ -1,4 +1,5 @@
-#include "Building.h"
+#include "city/Building.h"
+#include "message/MessageBus.h"
 #include "render/sprite_intersection.h"
 #include "city/Person.h"
 #include "city/Company.h"
@@ -11,7 +12,9 @@ Building::Building(const std::string& name, Type type, unsigned int nbStairs) :
 
 Building::~Building()
 {
-    //dtor
+    // Unregister mailbox
+    if (mMailbox.getId() != UNDEFINED)
+        mOwner->getMessageBus()->removeMailbox(mMailbox);
 }
 
 void Building::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -64,6 +67,17 @@ void Building::updateVariant(const Tile* neighbors[3][3])
     mSprite.setTextureRect(rect);
 }
 
+void Building::update()
+{
+    while (!mMailbox.isEmpty())
+        mMailbox.get();
+}
+
+void Building::tearDown()
+{
+
+}
+
 Id Building::getId() const
 {
     return mId;
@@ -97,7 +111,19 @@ const Company* Building::getOwner() const
 
 void Building::setOwner(Company* owner)
 {
+    // Unregister mailbox
+    if (mMailbox.getId() != UNDEFINED)
+        mOwner->getMessageBus()->removeMailbox(mMailbox);
+    // Update owner
     mOwner = owner;
+    // Register mailbox
+    if (owner != nullptr)
+        mOwner->getMessageBus()->addMailbox(mMailbox);
+}
+
+Id Building::getMailboxId() const
+{
+    return mMailbox.getId();
 }
 
 sf::FloatRect Building::getBounds() const

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <queue>
-#include "message/Mailbox.h"
+#include <set>
 #include "city/Building.h"
 #include "city/Good.h"
 #include "city/Work.h"
@@ -27,12 +27,10 @@ public:
     virtual ~Business();
 
     virtual std::unique_ptr<Tile> clone() const override;
-
+    virtual void update() override;
+    virtual void tearDown() override;
     virtual void setOwner(Company* owner) override;
 
-    void update();
-
-    Id getMailboxId() const;
     Good getGood() const;
     unsigned int getStock() const;
     bool hasPreparedGoods() const;
@@ -46,7 +44,6 @@ public:
     void onNewMonth();
 
 protected:
-    Mailbox mMailbox;
     Good mGood;
     unsigned int mMaxSizeStock;
     unsigned int mStock;
@@ -54,6 +51,7 @@ protected:
     double mPreparedGoods;
     Money mPrice;
     std::vector<Work> mEmployees;
+    std::set<Id> mWorksInMarket;
 
     void prepareGoods();
     void buyGoods();

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <set>
 #include "city/Building.h"
 #include "city/Lease.h"
 
@@ -12,7 +13,8 @@ public:
     virtual ~Housing();
 
     virtual std::unique_ptr<Tile> clone() const override;
-
+    virtual void update() override;
+    virtual void tearDown() override;
     virtual void setOwner(Company* owner) override;
 
     std::vector<Lease>& getLeases();
@@ -21,5 +23,6 @@ public:
 
 protected:
     std::vector<Lease> mLeases;
+    std::set<Id> mLeasesInMarket;
     float mComfort; // Happiness per month
 };

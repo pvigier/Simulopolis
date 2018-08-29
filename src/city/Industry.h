@@ -1,6 +1,7 @@
 #pragma once
 
 #include <deque>
+#include <set>
 #include "city/Building.h"
 #include "city/Good.h"
 #include "city/Work.h"
@@ -16,7 +17,8 @@ public:
     virtual ~Industry();
 
     virtual std::unique_ptr<Tile> clone() const override;
-
+    virtual void update() override;
+    virtual void tearDown() override;
     virtual void setOwner(Company* owner) override;
 
     Good getGood() const;
@@ -39,8 +41,10 @@ protected:
 
     Good mGood;
     std::deque<Batch> mStock;
+    std::set<Id> mGoodsInMarket;
     double mEmployeeProductivity;
     std::vector<Work> mEmployees;
+    std::set<Id> mWorksInMarket;
 
     void updateStock();
     void sellGoods();

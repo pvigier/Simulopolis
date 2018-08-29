@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "util/Id.h"
+#include "message/Mailbox.h"
 #include "city/Tile.h"
 
 class Company;
@@ -17,10 +17,11 @@ public:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     virtual bool intersect(const sf::Vector2f& position) const override;
-
     virtual std::unique_ptr<Tile> clone() const override;
-
     virtual void updateVariant(const Tile* neighbors[3][3]) override;
+
+    virtual void update();
+    virtual void tearDown();
 
     Id getId() const;
     void setId(Id id);
@@ -29,10 +30,12 @@ public:
     virtual void setOwner(Company* owner);
     Company* getOwner();
     const Company* getOwner() const;
+    Id getMailboxId() const;
     virtual sf::FloatRect getBounds() const override;
 
 protected:
     Id mId;
     unsigned int mNbStairs;
     Company* mOwner;
+    Mailbox mMailbox;
 };

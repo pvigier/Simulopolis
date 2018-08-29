@@ -109,10 +109,7 @@ void Company::update(float dt)
 
     // Update buildings
     for (Building* building : mBuildings)
-    {
-        if (building->isBusiness())
-            static_cast<Business*>(building)->update();
-    }
+        building->update();
 }
 
 MessageBus* Company::getMessageBus()
@@ -220,6 +217,8 @@ void Company::removeBuilding(Building* building)
             }
         }
     }
+    // Tear down the building
+    building->tearDown();
     // Remove from the list of buildings
     mBuildings.erase(std::find(mBuildings.begin(), mBuildings.end(), building));
 }
@@ -286,13 +285,13 @@ void Company::setRetailMargin(Good good, double margin)
 void Company::addToMarket(Lease& lease)
 {
     const Market<Lease>* market = static_cast<const Market<Lease>*>(mCity->getMarket(VMarket::Type::RENT));
-    sMessageBus->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, &lease, lease.getRent())));
+    sMessageBus->send(Message::create(lease.getHousing()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, &lease, lease.getRent())));
 }
 
 void Company::addToMarket(Work& work)
 {
     const Market<Work>* market = static_cast<const Market<Work>*>(mCity->getMarket(VMarket::Type::WORK));
-    sMessageBus->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, &work, work.getSalary())));
+    sMessageBus->send(Message::create(work.getWorkplace()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, &work, work.getSalary())));
 }
 
 void Company::onNewMonth()

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <set>
 #include "city/Building.h"
 #include "city/Work.h"
 
@@ -11,7 +12,8 @@ public:
     virtual ~Service();
 
     virtual std::unique_ptr<Tile> clone() const override;
-
+    virtual void update() override;
+    virtual void tearDown() override;
     virtual void setOwner(Company* owner) override;
 
     std::vector<Work>& getEmployees();
@@ -19,4 +21,5 @@ public:
 
 protected:
     std::vector<Work> mEmployees;
+    std::set<Id> mWorksInMarket;
 };

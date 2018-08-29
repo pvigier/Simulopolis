@@ -21,6 +21,61 @@ std::unique_ptr<Tile> Industry::clone() const
     return std::unique_ptr<Tile>(new Industry(mTextureName, mType, mNbStairs, mGood, mEmployeeProductivity, mEmployees.size() - 1, mEmployees.back().getType()));
 }
 
+void Industry::update()
+{
+    // Read messages
+    while (!mMailbox.isEmpty())
+    {
+        Message message = mMailbox.get();
+        if (message.type == MessageType::MARKET)
+        {
+            const VMarket::EventBase& eventBase = message.getInfo<VMarket::EventBase>();
+            if (eventBase.marketType == VMarket::Type::WORK)
+            {
+                const Market<Work>::Event& event = static_cast<const Market<Work>::Event&>(eventBase);
+                switch (event.type)
+                {
+                    case Market<Work>::Event::Type::ITEM_ADDED:
+                        mWorksInMarket.insert(event.itemId);
+                        break;
+                    case Market<Work>::Event::Type::SALE:
+                        mWorksInMarket.erase(event.sale.itemId);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                const Market<const Building>::Event& event = static_cast<const Market<const Building>::Event&>(eventBase);
+                switch (event.type)
+                {
+                    case Market<const Building>::Event::Type::ITEM_ADDED:
+                        mGoodsInMarket.insert(event.itemId);
+                        break;
+                    case Market<const Building>::Event::Type::SALE:
+                        mGoodsInMarket.erase(event.sale.itemId);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+}
+
+void Industry::tearDown()
+{
+    update();
+    // Remove everything from markets
+    const Market<Work>* laborMarket = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(VMarket::Type::WORK));
+    for (Id id : mWorksInMarket)
+        mOwner->getMessageBus()->send(Message::create(laborMarket->getMailboxId(), MessageType::MARKET, laborMarket->createRemoveItemEvent(id)));
+    const Market<const Building>* goodsMarket = getMarket();
+    for (Id id : mGoodsInMarket)
+        mOwner->getMessageBus()->send(Message::create(goodsMarket->getMailboxId(), MessageType::MARKET, goodsMarket->createRemoveItemEvent(id)));
+}
+
 void Industry::setOwner(Company* owner)
 {
     Building::setOwner(owner);
