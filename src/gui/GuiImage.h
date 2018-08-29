@@ -12,11 +12,11 @@ public:
     GuiImage(const PropertyList& properties);
     virtual ~GuiImage();
 
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
     void setSprite(sf::Sprite sprite);
 
 protected:
-    virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
-
     virtual void onOutsidePositionChanged() override;
     virtual void onInsideSizeFixed() override;
 

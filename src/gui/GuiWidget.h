@@ -17,6 +17,7 @@ public:
     GuiWidget(const PropertyList& properties);
     virtual ~GuiWidget();
 
+    virtual void render(sf::RenderTarget& target, sf::RenderStates states, const sf::FloatRect& viewport) const;
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     virtual void setUp();
@@ -88,8 +89,6 @@ protected:
     void setDirty();
     void updateAlignment();
     void resetDirty();
-
-    virtual void render(sf::RenderTarget& target, sf::RenderStates states) const;
 
     // Events
     virtual void onOutsidePositionChanged();

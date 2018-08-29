@@ -125,10 +125,7 @@ std::unique_ptr<GuiWidget> GuiManager::createWidget(const XmlDocument& node)
     else if (type == "tabwidget")
         widget = std::make_unique<GuiTabWidget>(node.getAttributes());
     else if (type == "input")
-    {
         widget = std::make_unique<GuiInput>(node.getAttributes());
-        std::cout << "oK" << std::endl;
-    }
     else if (type == "scrollarea")
         widget = std::make_unique<GuiScrollArea>(node.getAttributes());
     return std::move(widget);

@@ -22,15 +22,29 @@ GuiScrollArea::GuiScrollArea(const PropertyList& properties) :
     applyStyle();
 }
 
-void GuiScrollArea::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void GuiScrollArea::render(sf::RenderTarget& target, sf::RenderStates states, const sf::FloatRect& viewport) const
 {
-    if (mVisible)
+    // Culling
+    if (mVisible && getOutsideRect().intersects(viewport))
     {
         mRenderTexture.clear();
+        sf::FloatRect newViewport(mInsidePosition.x, mInsidePosition.y + mOffset, mInsideSize.x, mInsideSize.y);
         for (const GuiWidget* widget : mChildren)
-            mRenderTexture.draw(*widget);
+            widget->render(mRenderTexture, states, newViewport);
         mRenderTexture.display();
-        render(target, states);
+        draw(target, states);
+    }
+}
+
+void GuiScrollArea::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    GuiWidget::draw(target, states);
+    target.draw(mSprite, states);
+    // Scrollbar
+    if (mScrollbarVisible)
+    {
+        target.draw(mLine.data(), 2, sf::Lines);
+        target.draw(mScrollButton);
     }
 }
 
@@ -68,17 +82,6 @@ bool GuiScrollArea::updateMouseButtonReleased(sf::Vector2f position, bool proces
         processed = onRelease(position, processed) || processed;
     }
     return processed;
-}
-
-void GuiScrollArea::render(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    target.draw(mSprite, states);
-    // Scrollbar
-    if (mScrollbarVisible)
-    {
-        target.draw(mLine.data(), 2, sf::Lines);
-        target.draw(mScrollButton);
-    }
 }
 
 void GuiScrollArea::onOutsidePositionChanged()

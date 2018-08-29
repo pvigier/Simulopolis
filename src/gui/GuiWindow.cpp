@@ -16,6 +16,14 @@ GuiWindow::GuiWindow(const PropertyList& properties) :
     setTitle(properties.get("title"));
 }
 
+void GuiWindow::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    GuiWidget::draw(target, states);
+    target.draw(mBar, states);
+    target.draw(mCloseButton, states);
+    target.draw(mTitle, states);
+}
+
 void GuiWindow::setTitle(const std::string& title)
 {
     mTitle.setString(title);
@@ -24,14 +32,6 @@ void GuiWindow::setTitle(const std::string& title)
 bool GuiWindow::hasGuiEvents() const
 {
     return true;
-}
-
-void GuiWindow::render(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    GuiWidget::render(target, states);
-    target.draw(mBar, states);
-    target.draw(mCloseButton, states);
-    target.draw(mTitle, states);
 }
 
 void GuiWindow::onOutsidePositionChanged()

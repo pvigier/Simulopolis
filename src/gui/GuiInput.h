@@ -15,6 +15,8 @@ public:
     GuiInput(const PropertyList& properties);
     virtual ~GuiInput();
 
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
     virtual void setUp() override;
 
     const sf::String& getString() const;
@@ -22,7 +24,6 @@ public:
     void setRegex(const std::string& s);
 
 protected:
-    virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     virtual void onOutsidePositionChanged() override;
     virtual bool onPress(sf::Vector2f position, bool processed) override;

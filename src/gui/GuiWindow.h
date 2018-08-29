@@ -10,13 +10,13 @@ public:
     GuiWindow(const std::string& title, const XmlDocument* style);
     GuiWindow(const PropertyList& properties);
 
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
     void setTitle(const std::string& title);
 
     virtual bool hasGuiEvents() const override;
 
 protected:
-    virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
-
     virtual void onOutsidePositionChanged() override;
     virtual void onContentSizeChanged(sf::Vector2f contentSize) override;
     virtual bool onHover(sf::Vector2f position, bool processed) override;

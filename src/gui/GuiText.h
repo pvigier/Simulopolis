@@ -13,6 +13,8 @@ public:
     GuiText(const PropertyList& properties);
     virtual ~GuiText();
 
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
     void setCharacterSize(unsigned int characterSize);
     const sf::Text& getText() const;
     const sf::String& getString() const;
@@ -21,8 +23,6 @@ public:
 
 protected:
     sf::Text mText;
-
-    virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     virtual void onOutsidePositionChanged() override;
 

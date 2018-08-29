@@ -24,6 +24,12 @@ GuiText::~GuiText()
     //dtor
 }
 
+void GuiText::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    GuiWidget::draw(target, states);
+    target.draw(mText, states);
+}
+
 void GuiText::setCharacterSize(unsigned int characterSize)
 {
     mText.setCharacterSize(characterSize);
@@ -52,12 +58,6 @@ void GuiText::setString(const sf::String& text)
 void GuiText::setColor(sf::Color color)
 {
     mText.setFillColor(color);
-}
-
-void GuiText::render(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    GuiWidget::render(target, states);
-    target.draw(mText, states);
 }
 
 void GuiText::onOutsidePositionChanged()

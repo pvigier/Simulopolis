@@ -28,15 +28,17 @@ GuiImage::~GuiImage()
     //dtor
 }
 
+
+void GuiImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    GuiWidget::draw(target, states);
+    target.draw(mSprite, states);
+}
+
 void GuiImage::setSprite(sf::Sprite sprite)
 {
     mSprite = sprite;
     setDirty();
-}
-
-void GuiImage::render(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    target.draw(mSprite, states);
 }
 
 void GuiImage::onOutsidePositionChanged()

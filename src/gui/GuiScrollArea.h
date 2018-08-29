@@ -12,6 +12,7 @@ public:
     GuiScrollArea(sf::Vector2i maxVisibleSize, const XmlDocument* style = nullptr);
     GuiScrollArea(const PropertyList& properties);
 
+    virtual void render(sf::RenderTarget& target, sf::RenderStates states, const sf::FloatRect& viewport) const override;
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     virtual bool updateMouseMoved(sf::Vector2f position, bool processed) override;
@@ -19,8 +20,6 @@ public:
     virtual bool updateMouseButtonReleased(sf::Vector2f position, bool processed) override;
 
 protected:
-    virtual void render(sf::RenderTarget& target, sf::RenderStates states) const override;
-
     virtual void onOutsidePositionChanged() override;
     virtual void onContentSizeChanged(sf::Vector2f contentSize) override;
     virtual bool onPress(sf::Vector2f position, bool processed) override;

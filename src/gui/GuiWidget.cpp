@@ -27,14 +27,20 @@ GuiWidget::~GuiWidget()
 
 }
 
+void GuiWidget::render(sf::RenderTarget& target, sf::RenderStates states, const sf::FloatRect& viewport) const
+{
+    // Culling
+    if (mVisible && getOutsideRect().intersects(viewport))
+    {
+        draw(target, states);
+        for (const GuiWidget* widget : mChildren)
+            widget->render(target, states, viewport);
+    }
+}
+
 void GuiWidget::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    if (mVisible)
-    {
-        render(target, states);
-        for (const GuiWidget* widget : mChildren)
-            target.draw(*widget, states);
-    }
+    target.draw(mBackground, states);
 }
 
 void GuiWidget::setUp()
@@ -303,11 +309,6 @@ void GuiWidget::resetDirty()
     mDirty = false;
     for (GuiWidget* widget : mChildren)
         widget->resetDirty();
-}
-
-void GuiWidget::render(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    target.draw(mBackground, states);
 }
 
 void GuiWidget::onOutsidePositionChanged()

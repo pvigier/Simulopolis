@@ -45,7 +45,7 @@ void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
     // Draw each button of the menu
     for (GuiWidget* widget : mRootWidgets)
-        target.draw(*widget, states);
+        widget->render(target, states, sf::FloatRect(sf::Vector2f(), mView.getSize()));
 }
 
 void Gui::add(const std::string& name, std::unique_ptr<GuiWidget> widget)

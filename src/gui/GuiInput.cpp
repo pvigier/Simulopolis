@@ -35,6 +35,14 @@ GuiInput::~GuiInput()
     //dtor
 }
 
+void GuiInput::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    GuiWidget::draw(target, states);
+    mElapsedTime = (mElapsedTime + mClock.restart().asMilliseconds()) % 2000;
+    if (mFocus && mElapsedTime < 1000)
+        target.draw(mCursorShape, states);
+}
+
 void GuiInput::setUp()
 {
     mText = mGui->createWithDefaultName<GuiText>("", mCharacterSize, mTextStyle);
@@ -61,14 +69,6 @@ bool GuiInput::setString(const sf::String& text)
 void GuiInput::setRegex(const std::string& s)
 {
     mRegex.assign(s);
-}
-
-void GuiInput::render(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    GuiWidget::render(target, states);
-    mElapsedTime = (mElapsedTime + mClock.restart().asMilliseconds()) % 2000;
-    if (mFocus && mElapsedTime < 1000)
-        target.draw(mCursorShape, states);
 }
 
 void GuiInput::onOutsidePositionChanged()
