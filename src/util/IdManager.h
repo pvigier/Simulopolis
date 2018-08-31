@@ -62,6 +62,18 @@ public:
     }
 
     /**
+     * \brief Check if an id is present in the container
+     *
+     * \param id Id to check
+     *
+     * \return True if the id is present and false otherwise
+     */
+     inline bool has(Id id)
+     {
+        return id < mIdToIndex.size() && mIdToIndex[id] != UNDEFINED;
+     }
+
+    /**
      * \brief Get an element
      *
      * \param id Id of the element
@@ -138,7 +150,7 @@ public:
 
 private:
     std::vector<std::size_t> mIdToIndex; /**< std::vector that maps the Id of an element to the index of its index in mObjects */
-    std::vector<std::size_t> mFreeIds; /**< std::vector that contains free Ids */
+    std::vector<Id> mFreeIds; /**< std::vector that contains free Ids */
     std::vector<T> mObjects; /**< std::vector which contains the elements */
     std::vector<Id> mIndexToId; /**< std::vector that maps the index of an element to its Id */
 };
