@@ -61,9 +61,6 @@ Person::~Person()
 
 void Person::update(float dt)
 {
-    // AI
-    mShortTermBrain.process();
-
     // Messages
     while (!mMailbox.isEmpty())
     {
@@ -110,6 +107,9 @@ void Person::update(float dt)
             }
         }
     }
+
+    // AI
+    mShortTermBrain.process();
 
     // Update the car if necessary
     if (mState == State::MOVING)
