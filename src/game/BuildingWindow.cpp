@@ -109,6 +109,11 @@ void BuildingWindow::update()
     }
 }
 
+const Building& BuildingWindow::getBuilding() const
+{
+    return mBuilding;
+}
+
 sf::RenderTexture& BuildingWindow::getRenderTexture()
 {
     return mRenderTexture;

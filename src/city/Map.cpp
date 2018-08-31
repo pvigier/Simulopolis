@@ -136,7 +136,7 @@ void Map::deselect()
     mNbSelected = 0;
 }
 
-void Map::bulldoze(Tile::Type type, Company& owner, IdManager<Building*>& buildings)
+void Map::bulldoze(Tile::Type type, Company& owner, IdManager<Building*>& buildings, std::vector<Id>& buildingsToRemove)
 {
     for (unsigned int i = 0; i < mHeight; ++i)
     {
@@ -151,7 +151,7 @@ void Map::bulldoze(Tile::Type type, Company& owner, IdManager<Building*>& buildi
                 {
                     Building* building = static_cast<Building*>(mTiles.get(i, j).get());
                     building->getOwner()->removeBuilding(building);
-                    buildings.erase(building->getId());
+                    buildingsToRemove.push_back(building->getId());
                 }
                 // Add the new tile
                 mTiles.set(i, j, createTile(type));

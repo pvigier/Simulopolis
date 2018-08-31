@@ -273,6 +273,21 @@ void GameStateEditor::handleMessages()
                     break;
                 case City::Event::Type::NEW_YEAR:
                     break;
+                case City::Event::Type::BUILDING_DESTROYED:
+                {
+                    std::vector<GuiWindow*>& windows = mWindowManagers[1].getWindows();
+                    for (std::size_t i = 0; i < windows.size(); ++i)
+                    {
+                        std::cout << &static_cast<BuildingWindow*>(windows[i])->getBuilding() << std::endl;
+                        if (&static_cast<BuildingWindow*>(windows[i])->getBuilding() == event.building)
+                        {
+                            mGui->remove(windows[i]);
+                            mWindowManagers[1].removeWindow(i);
+                            break;
+                        }
+                    }
+                    break;
+                }
                 default:
                     break;
             }

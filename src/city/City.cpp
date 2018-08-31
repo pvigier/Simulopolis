@@ -34,6 +34,11 @@ City::Event::Event(Money minimumWage) : type(Type::NEW_MINIMUM_WAGE), minimumWag
 
 }
 
+City::Event::Event(Building* building) : type(Type::BUILDING_DESTROYED), building(building)
+{
+
+}
+
 City::City() :
     mCurrentTime(0.0), mTimePerMonth(10.0f), mMonth(0), mYear(0), mCityCompany("City", 0),
     mWeeklyStandardWorkingHours(0), mMinimumWage(0.0), mIncomeTax(0.0f), mCorporateTax(0.0f)
@@ -229,7 +234,15 @@ void City::update(float dt)
 
 void City::bulldoze(Tile::Type type)
 {
-    mMap.bulldoze(type, mCityCompany, mBuildings);
+    // Bulldoze the map
+    std::vector<Id> buildingsToRemove;
+    mMap.bulldoze(type, mCityCompany, mBuildings, buildingsToRemove);
+    // Notify the changes
+    for (Id id : buildingsToRemove)
+        notify(Message::create(MessageType::CITY, Event(getBuilding(id))));
+    // Destroy the buildings
+    for (Id id : buildingsToRemove)
+        mBuildings.erase(id);
 }
 
 City::Intersection City::intersect(const sf::Vector2f& position)

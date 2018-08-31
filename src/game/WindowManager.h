@@ -23,14 +23,19 @@ public:
         mWindows.emplace_back(window);
     }
 
+    void removeWindow(std::size_t i)
+    {
+        mWindows[i] = mWindows.back();
+        mWindows.pop_back();
+    }
+
     bool removeWindow(GuiWidget* window)
     {
         for (std::size_t i = 0; i < mWindows.size(); ++i)
         {
             if (mWindows[i] == window)
             {
-                std::swap(mWindows[i], mWindows.back());
-                mWindows.pop_back();
+                removeWindow(i);
                 return true;
             }
         }

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include "util/Id.h"
 #include "ai/Path.h"
 #include "city/Tile.h"
 #include "city/Network.h"
@@ -29,7 +30,7 @@ public:
     // Modifying the map
     void select(sf::Vector2i start, sf::Vector2i end, Tile::Category mask);
     void deselect();
-    void bulldoze(Tile::Type type, Company& owner, IdManager<Building*>& buildings);
+    void bulldoze(Tile::Type type, Company& owner, IdManager<Building*>& buildings, std::vector<Id>& buildingsToRemove);
 
     // Network
     const Network& getNetwork() const;

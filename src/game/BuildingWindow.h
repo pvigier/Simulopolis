@@ -19,6 +19,7 @@ public:
 
     void update();
 
+    const Building& getBuilding() const;
     sf::RenderTexture& getRenderTexture();
     sf::View getView();
 

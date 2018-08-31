@@ -34,7 +34,7 @@ public:
 
     struct Event
     {
-        enum class Type{NEW_MONTH, NEW_YEAR, NEW_IMMIGRANT, NEW_MINIMUM_WAGE};
+        enum class Type{NEW_MONTH, NEW_YEAR, NEW_IMMIGRANT, NEW_MINIMUM_WAGE, BUILDING_DESTROYED};
 
         Type type;
         union
@@ -43,11 +43,13 @@ public:
             unsigned int year;
             Person* person;
             Money minimumWage;
+            Building* building;
         };
 
         Event(Type type, unsigned int data);
         Event(Person* person);
         Event(Money minimumWage);
+        Event(Building* building);
     };
 
     City();
