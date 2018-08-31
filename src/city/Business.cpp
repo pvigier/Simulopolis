@@ -117,11 +117,12 @@ void Business::tearDown()
 {
     update();
     // Remove everything from markets
-    const Market<Work>* market = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(VMarket::Type::WORK));
+    const Market<Work>* laborMarket = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(VMarket::Type::WORK));
     for (Id id : mWorksInMarket)
-        mOwner->getMessageBus()->send(Message::create(market->getMailboxId(), MessageType::MARKET, market->createRemoveItemEvent(id)));
+        mOwner->getMessageBus()->send(Message::create(laborMarket->getMailboxId(), MessageType::MARKET, laborMarket->createRemoveItemEvent(id)));
     // Remove bids for market
-    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createSetQuantityEvent(0)));
+    const Market<const Building>* goodsMarket = getMarket();
+    mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), goodsMarket->getMailboxId(), MessageType::MARKET, goodsMarket->createSetQuantityEvent(0)));
 }
 
 Good Business::getGood() const
