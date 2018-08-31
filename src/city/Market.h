@@ -125,8 +125,7 @@ public:
         mAuctions.get(id).item.id = id;
         mDirty = true;
         // Notify
-        Event event(mType, Event::Type::ITEM_ADDED);
-        event.itemId = id;
+        Event event = createItemAddedEvent(id);
         sMessageBus->send(Message::create(sellerId, MessageType::MARKET, event));
         notify(Message::create(MessageType::MARKET, event));
         return id;
@@ -221,10 +220,8 @@ public:
                 Item& item = auction->item;
                 if (bid.value >= item.reservePrice && mDesiredQuantities[bid.bidderId] > 0)
                 {
-                    Event event(mType, Event::Type::PURCHASE);
-                    event.sale = typename Event::SaleEvent{item.id, item.sellerAccount, item.good, bid.value};
-                    sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, event));
-                    sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, event));
+                    sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, createPurchaseEvent(item, bid.value)));
+                    sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, createSaleEvent(item, bid.value)));
                     --mDesiredQuantities[bid.bidderId];
                     soldItems.push_back(item.id);
                 }
@@ -272,6 +269,27 @@ public:
     {
         Event event(mType, Event::Type::SET_QUANTITY);
         event.desiredQuantity = desiredQuantity;
+        return event;
+    }
+
+    Event createPurchaseEvent(Item& item, Money value) const
+    {
+        Event event(mType, Event::Type::PURCHASE);
+        event.sale = typename Event::SaleEvent{item.id, item.sellerAccount, item.good, value};
+        return event;
+    }
+
+    Event createSaleEvent(Item& item, Money value) const
+    {
+        Event event(mType, Event::Type::SALE);
+        event.sale = typename Event::SaleEvent{item.id, item.sellerAccount, item.good, value};
+        return event;
+    }
+
+    Event createItemAddedEvent(Id itemId) const
+    {
+        Event event(mType, Event::Type::ITEM_ADDED);
+        event.itemId = itemId;
         return event;
     }
 
