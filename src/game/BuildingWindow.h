@@ -27,6 +27,7 @@ private:
     StylesheetManager* mStylesheetManager;
     const Building& mBuilding;
     GuiImage* mImage;
+    GuiText* mStockText;
     GuiTable* mTable;
     sf::RenderTexture mRenderTexture;
 };

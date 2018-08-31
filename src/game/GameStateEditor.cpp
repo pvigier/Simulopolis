@@ -278,7 +278,6 @@ void GameStateEditor::handleMessages()
                     std::vector<GuiWindow*>& windows = mWindowManagers[1].getWindows();
                     for (std::size_t i = 0; i < windows.size(); ++i)
                     {
-                        std::cout << &static_cast<BuildingWindow*>(windows[i])->getBuilding() << std::endl;
                         if (&static_cast<BuildingWindow*>(windows[i])->getBuilding() == event.building)
                         {
                             mGui->remove(windows[i]);

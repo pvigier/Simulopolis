@@ -114,6 +114,8 @@ public:
         // Erase the last object and its index
         mObjects.pop_back();
         mIndexToId.pop_back();
+        // Assign UNDEFINED to the id
+        mIdToIndex[id] = UNDEFINED;
         // Add the deleted Id to the free Ids
         mFreeIds.push_back(id);
     }

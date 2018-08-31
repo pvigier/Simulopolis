@@ -16,7 +16,7 @@
 
 BuildingWindow::BuildingWindow(StylesheetManager* stylesheetManager, const Building& building) :
     GuiWindow(format("%s %d", Tile::typeToString(building.getType()).c_str(), building.getId()), stylesheetManager->getStylesheet("window")),
-    mStylesheetManager(stylesheetManager), mBuilding(building), mImage(nullptr)
+    mStylesheetManager(stylesheetManager), mBuilding(building), mImage(nullptr), mStockText(nullptr), mTable(nullptr)
 {
 
 }
@@ -54,6 +54,7 @@ void BuildingWindow::setUp()
     // Cases
     if (mBuilding.isHousing())
     {
+        // Table
         std::vector<std::string> names = {"Tenant", "Rent"};
         mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
         for (std::size_t i = 0; i < static_cast<const Housing&>(mBuilding).getLeases().size(); ++i)
@@ -66,6 +67,12 @@ void BuildingWindow::setUp()
     }
     else
     {
+        if (mBuilding.isBusiness())
+        {
+            mStockText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
+            infoWidget->add(mStockText);
+        }
+        // Table
         std::vector<std::string> names = {"Employee", "Work", "Salary"};
         mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
         for (std::size_t i = 0; i < Company::getEmployees(&mBuilding)->size(); ++i)
@@ -90,6 +97,7 @@ void BuildingWindow::update()
 {
     if (mBuilding.isHousing())
     {
+        // Table
         const std::vector<Lease>& leases = static_cast<const Housing&>(mBuilding).getLeases();
         for (std::size_t i = 0; i < leases.size(); ++i)
         {
@@ -99,6 +107,10 @@ void BuildingWindow::update()
     }
     else
     {
+        // Info
+        if (mBuilding.isBusiness())
+            mStockText->setString(format("Stock: %d", static_cast<const Business&>(mBuilding).getStock()));
+        // Table
         const std::vector<Work>* employees = Company::getEmployees(&mBuilding);
         for (std::size_t i = 0; i < employees->size(); ++i)
         {

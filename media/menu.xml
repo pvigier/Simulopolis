@@ -9,19 +9,19 @@
         </widget>
         <widget name="menu">
             <button name="resumeGameButton" size="192 36" style="button">
-                <text name="resumeGameText" text="Resume game" characterSize="24" style="darkText" />
+                <text name="resumeGameText" text="Resume game" characterSize="24" style="menuText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="newGameButton" size="192 36" style="button">
-                <text text="New game" characterSize="24" style="darkText" />
+                <text text="New game" characterSize="24" style="menuText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="loadGameButton" size="192 36" style="button">
-                <text text="Load game" characterSize="24" style="darkText" />
+                <text text="Load game" characterSize="24" style="menuText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="exitButton" size="192 36" style="button">
-                <text text="Exit" characterSize="24" style="darkText" />
+                <text text="Exit" characterSize="24" style="menuText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <vboxlayout hAlignment="center" vAlignment="center" spacing="16" />

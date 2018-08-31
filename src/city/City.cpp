@@ -120,7 +120,7 @@ void City::load(const std::string& name)
     mCitizens.back()->setState(Person::State::MOVING);*/
 
     // tmp
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < 100; ++i)
         generateImmigrant();
 }
 

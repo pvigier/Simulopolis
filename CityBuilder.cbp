@@ -28,13 +28,9 @@
 					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
-					<Add option="-pg" />
 					<Add option="-g" />
 					<Add directory="include" />
 				</Compiler>
-				<Linker>
-					<Add option="-pg" />
-				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
