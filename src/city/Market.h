@@ -185,16 +185,37 @@ public:
                 switch (event.type)
                 {
                     case Event::Type::ADD_ITEM:
-                        addItem(message.sender, event.item.sellerAccount, event.item.good, event.item.reservePrice);
+                        if (message.sender == UNDEFINED)
+                            std::cout << static_cast<int>(mType) << " Add item: sender undefined" << std::endl;
+                        else
+                            addItem(message.sender, event.item.sellerAccount, event.item.good, event.item.reservePrice);
                         break;
                     case Event::Type::REMOVE_ITEM:
-                        removeItem(event.itemId);
+                        if (!mAuctions.has(event.itemId))
+                        {
+                            std::cout << static_cast<int>(mType) << " Remove item: " << event.itemId << " is not a valid item id" << std::endl;
+                            std::cout << "items: ";
+                            for (const Auction& auction : mAuctions.getObjects())
+                                std::cout << auction.item.id << " ";
+                            std::cout << std::endl;
+                        }
+                        else
+                            removeItem(event.itemId);
                         break;
                     case Event::Type::BID:
-                        addBid(event.bid.itemId, message.sender, event.bid.value);
+                        if (message.sender == UNDEFINED)
+                            std::cout << static_cast<int>(mType) << " Bid: sender undefined" << std::endl;
+                        else if (!mAuctions.has(event.bid.itemId))
+                            std::cout << static_cast<int>(mType) << " Bid: " << event.bid.itemId << " is not a valid item id" << std::endl;
+                        else
+                            addBid(event.bid.itemId, message.sender, event.bid.value);
                         break;
                     case Event::Type::SET_QUANTITY:
-                        setDesiredQuantity(message.sender, event.desiredQuantity);
+                        if (message.sender == UNDEFINED)
+                            std::cout << static_cast<int>(mType) << " Set quantity: sender undefined" << std::endl;
+                        else
+                            setDesiredQuantity(message.sender, event.desiredQuantity);
+                        break;
                     default:
                         break;
                 }

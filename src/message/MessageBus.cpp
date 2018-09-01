@@ -12,7 +12,10 @@ MessageBus::~MessageBus()
 
 void MessageBus::send(Message message)
 {
-    mMailboxes.get(message.receiver)->put(message);
+    if (mMailboxes.has(message.receiver))
+        mMailboxes.get(message.receiver)->put(message);
+    else
+        std::cout << message << " can't be sent." << std::endl;
 }
 
 void MessageBus::addMailbox(Mailbox& mailbox)
