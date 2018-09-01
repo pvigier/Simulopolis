@@ -1,8 +1,7 @@
 #include "PersonGenerator.h"
 #include <fstream>
-#include <chrono>
 
-PersonGenerator::PersonGenerator() : mGenerator(std::chrono::system_clock::now().time_since_epoch().count())
+PersonGenerator::PersonGenerator(RandomGenerator& generator) : mGenerator(generator)
 {
 
 }

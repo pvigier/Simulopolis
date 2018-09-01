@@ -1,9 +1,8 @@
 #include "CompanyGenerator.h"
 #include <fstream>
-#include <chrono>
 #include "city/Person.h"
 
-CompanyGenerator::CompanyGenerator()
+CompanyGenerator::CompanyGenerator(RandomGenerator& generator) : mGenerator(generator)
 {
     //ctor
 }

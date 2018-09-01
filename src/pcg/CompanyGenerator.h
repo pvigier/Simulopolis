@@ -1,6 +1,6 @@
 #pragma once
 
-#include <random>
+#include "pcg/RandomGenerator.h"
 #include "city/Company.h"
 
 class Person;
@@ -8,7 +8,7 @@ class Person;
 class CompanyGenerator
 {
 public:
-    CompanyGenerator();
+    CompanyGenerator(RandomGenerator& generator);
 
     void setUp();
 
@@ -16,7 +16,7 @@ public:
 
 
 private:
-    std::default_random_engine mGenerator;
+    RandomGenerator& mGenerator;
     std::vector<std::string> mFruits;
     std::vector<std::string> mPrefixes;
     std::vector<std::string> mSuffixes;
