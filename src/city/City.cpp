@@ -522,7 +522,7 @@ float City::computeAttractiveness() const
 {
     float attractiveness = 0.0f;
     // Ease to obtain a home
-    float nbHomesAvailable = static_cast<const Market<Lease>*>(getMarket(VMarket::Type::Rent))->getItems().size();
+    float nbHomesAvailable = static_cast<const Market<Lease>*>(getMarket(VMarket::Type::RENT))->getItems().size();
     attractiveness *= 1 - std::exp(-nbHomesAvailable);
     // Ease to obtain a job
     float nbWorksAvailable = static_cast<const Market<Work>*>(getMarket(VMarket::Type::WORK))->getItems().size();
