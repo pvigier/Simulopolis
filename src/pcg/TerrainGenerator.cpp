@@ -1,14 +1,12 @@
 #include "TerrainGenerator.h"
-#include <random>
+#include "noise.h"
 
-#include <iostream>
-
-TerrainGenerator::TerrainGenerator()
+TerrainGenerator::TerrainGenerator(RandomGenerator& generator) : mGenerator(generator)
 {
     //ctor
 }
 
-Array2<Tile::Type> TerrainGenerator::generate(uint64_t seed) const
+Array2<Tile::Type> TerrainGenerator::generate() const
 {
     unsigned int n = 64;
     double delta = 1.0f / n;
@@ -17,7 +15,7 @@ Array2<Tile::Type> TerrainGenerator::generate(uint64_t seed) const
     for (unsigned int i = 0; i < n; ++i)
     {
         for (unsigned int j = 0; j < n; ++j)
-            z.set(i, j, fractal_noise_2d(seed, i * delta, j * delta, 6));
+            z.set(i, j, fractal_noise_2d(mGenerator.getSeed(), i * delta, j * delta, 6));
     }
     // Normalize
     double minZ = *std::min_element(z.getData().begin(), z.getData().end());
@@ -28,7 +26,6 @@ Array2<Tile::Type> TerrainGenerator::generate(uint64_t seed) const
             z.set(i, j, (z.get(i, j) - minZ) / (maxZ - minZ));
     }
     // Set tiles
-    std::default_random_engine generator(seed);
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     double waterThreshold = 0.3;
     double forestThreshold = 0.7;
@@ -46,10 +43,10 @@ Array2<Tile::Type> TerrainGenerator::generate(uint64_t seed) const
                 // Forest
                 double p = (z.get(i, j) - waterThreshold) / (1.0 - waterThreshold);
                 p = forestThreshold * p * p * p * p;
-                if (distribution(generator) < p)
+                if (distribution(mGenerator) < p)
                     tiles.set(i, j, Tile::Type::FOREST);
                 // Dirt
-                else if (distribution(generator) < dirtThreshold)
+                else if (distribution(mGenerator) < dirtThreshold)
                     tiles.set(i, j, Tile::Type::DIRT);
             }
         }

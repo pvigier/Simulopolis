@@ -1,13 +1,16 @@
 #pragma once
 
 #include "util/Array2.h"
+#include "pcg/RandomGenerator.h"
 #include "city/Tile.h"
-#include "noise.h"
 
 class TerrainGenerator
 {
 public:
-    TerrainGenerator();
+    TerrainGenerator(RandomGenerator& generator);
 
-    Array2<Tile::Type> generate(uint64_t seed) const;
+    Array2<Tile::Type> generate() const;
+
+private:
+    RandomGenerator& mGenerator;
 };
