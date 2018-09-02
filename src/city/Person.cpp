@@ -318,7 +318,7 @@ float Person::getHappiness() const
 
 void Person::increaseHappiness(float delta)
 {
-    mHappiness = std::max(0.0f, mHappiness + delta);
+    mHappiness = clamp(mHappiness + delta, 0.0f, 100.0f);
 }
 
 Work::Qualification Person::getQualification() const

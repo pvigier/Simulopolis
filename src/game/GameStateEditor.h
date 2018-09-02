@@ -4,7 +4,6 @@
 #include "game/GameState.h"
 #include "city/City.h"
 #include "gui/Gui.h"
-#include "pcg/TerrainGenerator.h"
 #include "game/WindowManager.h"
 
 class ImmigrantsWindow;
@@ -44,7 +43,6 @@ private:
     sf::Vector2i mSelectionStart;
     sf::Vector2i mSelectionEnd;
     Tile::Type mCurrentTile;
-    TerrainGenerator mTerrainGenerator;
     // Gui
     std::unique_ptr<Gui> mGui;
     sf::View mGuiView;

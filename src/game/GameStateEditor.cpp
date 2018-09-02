@@ -303,7 +303,7 @@ void GameStateEditor::update(float dt)
     mGui->get<GuiText>("dateText")->setString(format("%s %d", mCity.getFormattedMonth().c_str(), 2000 + mCity.getYear()));
     mGui->get<GuiText>("fundsText")->setString(format("$%.2f", mCity.getFunds()));
     mGui->get<GuiText>("populationText")->setString(format("Population: %d", mCity.getPopulation()));
-    mGui->get<GuiText>("employmentText")->setString(format("Unemployment: %d", 0));
+    mGui->get<GuiText>("happinessText")->setString(format("Happiness: %.2f", mCity.getAverageHappiness()));
     mGui->get<GuiText>("currentTileText")->setString(Tile::typeToString(mCurrentTile));
 
     // Update the windows
@@ -333,7 +333,7 @@ void GameStateEditor::exit()
 
 void GameStateEditor::newGame()
 {
-    mCity.createMap(mTerrainGenerator.generate(std::chrono::system_clock::now().time_since_epoch().count()));
+    mCity.createMap(std::chrono::system_clock::now().time_since_epoch().count());
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
         mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
     zoom(8.0f);

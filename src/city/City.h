@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include "message/Subject.h"
+#include "pcg/TerrainGenerator.h"
 #include "pcg/PersonGenerator.h"
 #include "pcg/CompanyGenerator.h"
 #include "city/Map.h"
@@ -15,6 +16,8 @@ class City : public sf::Drawable, public Subject
 {
 public:
     static constexpr float NB_HOURS_PER_MONTH = 30.0f * 24.0f;
+    static constexpr float MAX_NB_IMMIGRANTS_PER_MONTH = 10.0f;
+    static constexpr float MAX_NB_MONTHS_WAITING = 6.0f;
 
     struct Intersection
     {
@@ -56,7 +59,7 @@ public:
 
     void load(const std::string& name);
     void save(const std::string& name);
-    void createMap(const Array2<Tile::Type>& tiles);
+    void createMap(uint64_t seed);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -101,6 +104,9 @@ public:
     const std::vector<Person*>& getImmigrants() const;
     Building* getBuilding(Id id);
 
+    // Happiness
+    float getAverageHappiness() const;
+
     // Util
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
     float getTimePerMonth() const;
@@ -110,6 +116,8 @@ public:
 
 private:
     // Generators
+    RandomGenerator mRandomGenerator;
+    TerrainGenerator mTerrainGenerator;
     PersonGenerator mPersonGenerator;
     CompanyGenerator mCompanyGenerator;
 
@@ -144,8 +152,17 @@ private:
     IdManager<Building*> mBuildings;
     Array2<std::vector<const Car*>> mCarsByTile;
 
+    // Immigration
+    std::vector<sf::Clock> mArrivalTimes;
+    sf::Clock mTimeSinceLastImmigrant;
+    float mTimeUntilNextImmigrant;
+
+    void updateImmigrants();
     void generateImmigrant();
     void removeCitizen(Person* person);
+
+    // Statistics
+    float computeAttractiveness() const;
 
     // Events
     void onNewMonth();

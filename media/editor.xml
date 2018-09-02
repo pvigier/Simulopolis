@@ -261,8 +261,8 @@
             <text name="populationText" characterSize="12" style="darkText" />
             <hboxlayout hAlignment="center" vAlignment="center" />
         </widget>
-        <widget name="employmentButton" size="160 16" style="button">
-            <text name="employmentText" characterSize="12" style="darkText" />
+        <widget name="happinessButton" size="160 16" style="button">
+            <text name="happinessText" characterSize="12" style="darkText" />
             <hboxlayout hAlignment="center" vAlignment="center" />
         </widget>
         <widget name="currentTileButton" size="160 16" style="button">

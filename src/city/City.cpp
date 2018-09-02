@@ -40,6 +40,7 @@ City::Event::Event(Building* building) : type(Type::BUILDING_DESTROYED), buildin
 }
 
 City::City() :
+    mTerrainGenerator(mRandomGenerator), mPersonGenerator(mRandomGenerator), mCompanyGenerator(mRandomGenerator),
     mCurrentTime(0.0), mTimePerMonth(10.0f), mMonth(0), mYear(0), mCityCompany("City", 0),
     mWeeklyStandardWorkingHours(0), mMinimumWage(0.0), mIncomeTax(0.0f), mCorporateTax(0.0f)
 {
@@ -122,6 +123,8 @@ void City::load(const std::string& name)
     // tmp
     for (int i = 0; i < 100; ++i)
         generateImmigrant();
+    for (std::unique_ptr<Person>& person : mPersons.getObjects())
+        welcome(person.get());
 }
 
 void City::save(const std::string& name)
@@ -140,9 +143,10 @@ void City::save(const std::string& name)
     mMap.save(name + "_map.dat");
 }
 
-void City::createMap(const Array2<Tile::Type>& tiles)
+void City::createMap(uint64_t seed)
 {
-    mMap.fromArray(tiles);
+    mRandomGenerator.setSeed(seed);
+    mMap.fromArray(mTerrainGenerator.generate());
     mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
 }
 
@@ -401,13 +405,17 @@ void City::setCorporateTax(float corporateTax)
 
 void City::eject(Person* person)
 {
-    mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
+    std::size_t i = std::find(mImmigrants.begin(), mImmigrants.end(), person) - mImmigrants.begin();
+    mImmigrants.erase(mImmigrants.begin() + i);
+    mArrivalTimes.erase(mArrivalTimes.begin() + i);
     mPersons.erase(person->getId());
 }
 
 void City::welcome(Person* person)
 {
-    mImmigrants.erase(std::find(mImmigrants.begin(), mImmigrants.end(), person));
+    std::size_t i = std::find(mImmigrants.begin(), mImmigrants.end(), person) - mImmigrants.begin();
+    mImmigrants.erase(mImmigrants.begin() + i);
+    mArrivalTimes.erase(mArrivalTimes.begin() + i);
     mCitizens.push_back(person);
     person->setCity(this);
 }
@@ -437,6 +445,17 @@ Building* City::getBuilding(Id id)
     return mBuildings.get(id);
 }
 
+float City::getAverageHappiness() const
+{
+    if (mCitizens.empty())
+        return 0.0f;
+    else
+    {
+        float sumAverage = std::accumulate(mCitizens.begin(), mCitizens.end(), 0.0f, [](float lhs, Person* rhs){ return lhs + rhs->getHappiness(); });
+        return sumAverage / mCitizens.size();
+    }
+}
+
 sf::Vector2i City::toTileIndices(const sf::Vector2f& position) const
 {
     int x = position.y / Tile::SIZE + 0.5f * (position.x / Tile::SIZE - mMap.getWidth() - 1);
@@ -464,10 +483,31 @@ float City::toCityTime(float humanTime) const
     return humanTime / mTimePerMonth * NB_HOURS_PER_MONTH;
 }
 
+void City::updateImmigrants()
+{
+    // Add an immigrant
+    if (mTimeSinceLastImmigrant.getElapsedTime().asSeconds() > mTimeUntilNextImmigrant)
+    {
+        generateImmigrant();
+        // Restart the clock
+        mTimeSinceLastImmigrant.restart();
+        // Compute the time until next immigrant
+        std::exponential_distribution<float> distribution(mTimePerMonth * computeAttractiveness() / MAX_NB_IMMIGRANTS_PER_MONTH);
+        mTimeUntilNextImmigrant = distribution(mRandomGenerator);
+    }
+    // Update immigrants
+    for (std::size_t i = mImmigrants.size() - 1; i >= 0; --i)
+    {
+        if (mArrivalTimes[i].getElapsedTime().asSeconds() > MAX_NB_MONTHS_WAITING * mTimePerMonth)
+            eject(mImmigrants[i]); // Could be optimized
+    }
+}
+
 void City::generateImmigrant()
 {
     std::unique_ptr<Person> person = mPersonGenerator.generate(getYear());
     mImmigrants.push_back(person.get());
+    mArrivalTimes.emplace_back();
     Id id = mPersons.add(std::move(person));
     mImmigrants.back()->setId(id);
 }
@@ -476,6 +516,21 @@ void City::removeCitizen(Person* person)
 {
     mCitizens.erase(std::find(mCitizens.begin(), mCitizens.end(), person));
     mPersons.erase(person->getId());
+}
+
+float City::computeAttractiveness() const
+{
+    float attractiveness = 0.0f;
+    // Ease to obtain a home
+    float nbHomesAvailable = static_cast<const Market<Lease>*>(getMarket(VMarket::Type::Rent))->getItems().size();
+    attractiveness *= 1 - std::exp(-nbHomesAvailable);
+    // Ease to obtain a job
+    float nbWorksAvailable = static_cast<const Market<Work>*>(getMarket(VMarket::Type::WORK))->getItems().size();
+    attractiveness *= 1 - std::exp(-nbWorksAvailable);
+    // Happiness
+    attractiveness *= getAverageHappiness() / 100.0f;
+    // Return
+    return attractiveness;
 }
 
 void City::onNewMonth()
