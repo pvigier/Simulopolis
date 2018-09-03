@@ -72,8 +72,8 @@ private:
     std::array<double, 3> mWholesaleMargins;
     std::array<double, 3> mRetailMargins;
 
-    void addToMarket(Lease& lease);
-    void addToMarket(Work& work);
+    void addToMarket(Lease* lease);
+    void addToMarket(Work* work);
 
     // Events
     void onNewMonth();

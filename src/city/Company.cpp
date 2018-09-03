@@ -94,11 +94,11 @@ void Company::update(float dt)
             switch (event.type)
             {
                 case Person::Event::Type::LEAVE_HOUSING:
-                    event.lease.setTenant(nullptr);
+                    event.lease->setTenant(nullptr);
                     addToMarket(event.lease);
                     break;
                 case Person::Event::Type::QUIT_WORK:
-                    event.work.setEmployee(nullptr);
+                    event.work->setEmployee(nullptr);
                     addToMarket(event.work);
                     break;
                 default:
@@ -178,7 +178,7 @@ void Company::addBuilding(Building* building)
         for (Lease& lease : housing->getLeases())
         {
             if (!lease.getTenant())
-                addToMarket(lease);
+                addToMarket(&lease);
         }
     }
     else
@@ -186,7 +186,7 @@ void Company::addBuilding(Building* building)
         for (Work& work : *getEmployees(building))
         {
             if (!work.getEmployee())
-                addToMarket(work);
+                addToMarket(&work);
         }
     }
 }
@@ -282,16 +282,16 @@ void Company::setRetailMargin(Good good, double margin)
     mRetailMargins[static_cast<int>(good)] = margin;
 }
 
-void Company::addToMarket(Lease& lease)
+void Company::addToMarket(Lease* lease)
 {
     const Market<Lease>* market = static_cast<const Market<Lease>*>(mCity->getMarket(VMarket::Type::RENT));
-    sMessageBus->send(Message::create(lease.getHousing()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, &lease, lease.getRent())));
+    sMessageBus->send(Message::create(lease->getHousing()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, lease, lease->getRent())));
 }
 
-void Company::addToMarket(Work& work)
+void Company::addToMarket(Work* work)
 {
     const Market<Work>* market = static_cast<const Market<Work>*>(mCity->getMarket(VMarket::Type::WORK));
-    sMessageBus->send(Message::create(work.getWorkplace()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, &work, work.getSalary())));
+    sMessageBus->send(Message::create(work->getWorkplace()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, work, work->getSalary())));
 }
 
 void Company::onNewMonth()

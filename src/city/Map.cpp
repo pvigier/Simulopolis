@@ -56,11 +56,12 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
 {
     std::ifstream inputFile;
     inputFile.open(filename, std::ios::in | std::ios::binary);
-
+    // Reshape map
     mWidth = width;
     mHeight = height;
     mTiles.reshape(mHeight, mWidth);
-
+    mNetwork.reshape(mWidth, mHeight);
+    // Load tiles
     for (unsigned int i = 0; i < mHeight; ++i)
     {
         for (unsigned int j = 0; j < mWidth; ++j)
@@ -69,23 +70,20 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
             inputFile.read((char*)&type, sizeof(type));
             mTiles.set(i, j, createTile(type));
             mTiles.get(i, j)->setPosition(sf::Vector2i(j, i), computePosition(i, j));
-            char tmp[4];
+            char tmp[8];
             inputFile.read(tmp, sizeof(unsigned int));
             inputFile.read(tmp, sizeof(unsigned int));
             inputFile.read(tmp, sizeof(double));
             inputFile.read(tmp, sizeof(float));
         }
     }
-
     inputFile.close();
-
+    // Update tiles
     for (unsigned int i = 0; i < mHeight; ++i)
     {
         for (unsigned int j = 0; j < mWidth; ++j)
             updateTile(i, j);
     }
-
-    mNetwork.reshape(mWidth, mHeight);
 }
 
 void Map::save(const std::string& filename)
@@ -108,9 +106,12 @@ void Map::save(const std::string& filename)
 
 void Map::fromArray(const Array2<Tile::Type>& tiles)
 {
+    // Reshape map
     mHeight = tiles.getHeight();
     mWidth = tiles.getWidth();
     mTiles.reshape(mHeight, mWidth);
+    mNetwork.reshape(mWidth, mHeight);
+    // Create tiles
     for (unsigned int i = 0; i < mHeight; ++i)
     {
         for (unsigned int j = 0; j < mWidth; ++j)
@@ -119,14 +120,12 @@ void Map::fromArray(const Array2<Tile::Type>& tiles)
             mTiles.get(i, j)->setPosition(sf::Vector2i(j, i), computePosition(i, j));
         }
     }
-
+    // Update tiles
     for (unsigned int i = 0; i < mHeight; ++i)
     {
         for (unsigned int j = 0; j < mWidth; ++j)
             updateTile(i, j);
     }
-
-    mNetwork.reshape(mWidth, mHeight);
 }
 
 void Map::deselect()

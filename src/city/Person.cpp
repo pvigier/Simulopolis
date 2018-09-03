@@ -14,12 +14,12 @@ Person::Event::Event(Type type) : type(type)
 
 }
 
-Person::Event::Event(Type type, Lease& lease) : type(type), lease(lease)
+Person::Event::Event(Type type, Lease* lease) : type(type), lease(lease)
 {
 
 }
 
-Person::Event::Event(Type type, Work& work) : type(type), work(work)
+Person::Event::Event(Type type, Work* work) : type(type), work(work)
 {
 
 }
@@ -201,7 +201,7 @@ void Person::leaveHome()
 {
     if (mHome)
     {
-        sMessageBus->send(Message::create(mHome->getOwner()->getMailboxId(), MessageType::PERSON, Event(Event::Type::LEAVE_HOUSING, *mHome)));
+        sMessageBus->send(Message::create(mHome->getOwner()->getMailboxId(), MessageType::PERSON, Event(Event::Type::LEAVE_HOUSING, mHome)));
         mHome = nullptr;
     }
 }
@@ -221,7 +221,7 @@ void Person::quitWork()
 {
     if (mWork)
     {
-        sMessageBus->send(Message::create(mWork->getEmployer()->getMailboxId(), MessageType::PERSON, Event(Event::Type::QUIT_WORK, *mWork)));
+        sMessageBus->send(Message::create(mWork->getEmployer()->getMailboxId(), MessageType::PERSON, Event(Event::Type::QUIT_WORK, mWork)));
         mWork = nullptr;
     }
 }

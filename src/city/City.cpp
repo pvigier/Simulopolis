@@ -496,7 +496,7 @@ void City::updateImmigrants()
         mTimeUntilNextImmigrant = distribution(mRandomGenerator);
     }
     // Update immigrants
-    for (std::size_t i = mImmigrants.size() - 1; i >= 0; --i)
+    for (int i = mImmigrants.size() - 1; i >= 0; --i)
     {
         if (mArrivalTimes[i].getElapsedTime().asSeconds() > MAX_NB_MONTHS_WAITING * mTimePerMonth)
             eject(mImmigrants[i]); // Could be optimized

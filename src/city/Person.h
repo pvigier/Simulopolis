@@ -24,13 +24,13 @@ public:
         Type type;
         union
         {
-            Lease& lease;
-            Work& work;
+            Lease* lease;
+            Work* work;
         };
 
         Event(Type type);
-        Event(Type type, Lease& lease);
-        Event(Type type, Work& work);
+        Event(Type type, Lease* lease);
+        Event(Type type, Work* work);
     };
 
     static void setMessageBus(MessageBus* messageBus);
