@@ -7,22 +7,27 @@
 #include "gui/GuiScrollArea.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
+#include "city/City.h"
 #include "city/Person.h"
 #include "city/Market.h"
 #include "util/format.h"
 
-ImmigrantsWindow::ImmigrantsWindow(Id listenerId, StylesheetManager* stylesheetManager,
-    std::vector<Person*> immigrants, int year, const Market<Lease>* market) :
+ImmigrantsWindow::ImmigrantsWindow(Id listenerId, MessageBus* messageBus, StylesheetManager* stylesheetManager, const City& city) :
     GuiWindow("Immigrants", stylesheetManager->getStylesheet("window")), mListenerId(listenerId),
-    mStylesheetManager(stylesheetManager), mImmigrants(std::move(immigrants)), mYear(year), mMarket(market),
-    mTable(nullptr), mText(nullptr)
+    mMessageBus(messageBus), mStylesheetManager(stylesheetManager),
+    mCity(city), mImmigrants(mCity.getImmigrants()), mYear(mCity.getYear()),
+    mRentalMarket(static_cast<const Market<Lease>*>(mCity.getMarket(VMarket::Type::RENT))),
+    mLaborMarket(static_cast<const Market<Work>*>(mCity.getMarket(VMarket::Type::WORK))),
+    mTable(nullptr), mRentalMarketText(nullptr), mLaborMarketText(nullptr), mAttractivenessText(nullptr)
 {
-
+    mMessageBus->addMailbox(mMailbox);
+    //mMarket->subscribe(mMailbox.getId());
 }
 
 ImmigrantsWindow::~ImmigrantsWindow()
 {
-    //dtor
+    //mMarket->unsubscribe(mMailbox.getId());
+    mMessageBus->removeMailbox(mMailbox);
 }
 
 void ImmigrantsWindow::setUp()
@@ -32,8 +37,9 @@ void ImmigrantsWindow::setUp()
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
     // Text
-    mText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    onNewMonth();
+    mRentalMarketText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mLaborMarketText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mAttractivenessText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
 
     // Scroll area
     GuiScrollArea* scrollArea = mGui->createWithDefaultName<GuiScrollArea>(sf::Vector2i(400, 200), mStylesheetManager->getStylesheet("scrollarea"));
@@ -42,7 +48,9 @@ void ImmigrantsWindow::setUp()
 
     // Window
     add(scrollArea);
-    add(mText);
+    add(mRentalMarketText);
+    add(mLaborMarketText);
+    add(mAttractivenessText);
     setOutsidePosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
@@ -51,6 +59,13 @@ void ImmigrantsWindow::setUp()
         addImmigrant(immigrant, true);
 
     subscribe(mListenerId);
+}
+
+void ImmigrantsWindow::update()
+{
+    mRentalMarketText->setString(format("Homes available: %d", mRentalMarket->getItems().size()));
+    mLaborMarketText->setString(format("Works available: %d", mLaborMarket->getItems().size()));
+    mAttractivenessText->setString(format("Attractiveness: %.2f", mCity.getAttractiveness()));
 }
 
 void ImmigrantsWindow::addImmigrant(Person* person, bool alreadyAdded)
@@ -88,11 +103,6 @@ void ImmigrantsWindow::removeImmigrant(Person* person)
     std::size_t i = std::find(mImmigrants.begin(), mImmigrants.end(), person) - mImmigrants.begin();
     mTable->removeRow(i);
     mImmigrants.erase(mImmigrants.begin() + i);
-}
-
-void ImmigrantsWindow::onNewMonth()
-{
-    mText->setString(format("Housing available: %d", mMarket->getItems().size()));
 }
 
 void ImmigrantsWindow::onNewYear()

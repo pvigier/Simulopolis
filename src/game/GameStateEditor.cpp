@@ -272,6 +272,7 @@ void GameStateEditor::handleMessages()
                     onNewMonth();
                     break;
                 case City::Event::Type::NEW_YEAR:
+                    onNewYear();
                     break;
                 case City::Event::Type::BUILDING_DESTROYED:
                 {
@@ -446,7 +447,7 @@ void GameStateEditor::openBuildingWindow(const Building& building)
 void GameStateEditor::openImmigrantsWindow()
 {
     if (!mImmigrantsWindow)
-        mImmigrantsWindow = mGui->createRootWithDefaultName<ImmigrantsWindow>(mMailbox.getId(), sStylesheetManager, mCity.getImmigrants(), mCity.getYear(), static_cast<const Market<Lease>*>(mCity.getMarket(VMarket::Type::RENT)));
+        mImmigrantsWindow = mGui->createRootWithDefaultName<ImmigrantsWindow>(mMailbox.getId(), sMessageBus, sStylesheetManager, mCity);
 }
 
 void GameStateEditor::openCitizensWindow()
@@ -499,6 +500,8 @@ void GameStateEditor::openPoliciesWindow()
 
 void GameStateEditor::updateWindows()
 {
+    if (mImmigrantsWindow)
+        mImmigrantsWindow->update();
     if (mCitizensWindow)
         mCitizensWindow->update();
     if (mRentalMarketWindow)
@@ -588,8 +591,7 @@ void GameStateEditor::onNewImmigrant(Person* person)
 
 void GameStateEditor::onNewMonth()
 {
-    if (mImmigrantsWindow)
-        mImmigrantsWindow->onNewMonth();
+
 }
 
 void GameStateEditor::onNewYear()

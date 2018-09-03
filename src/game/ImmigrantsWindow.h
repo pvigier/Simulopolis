@@ -1,35 +1,44 @@
 #pragma once
 
+#include "message/Mailbox.h"
 #include "gui/GuiWindow.h"
 
 class StylesheetManager;
 class GuiTable;
 class GuiText;
+class City;
 class Person;
 class Lease;
+class Work;
 template<typename T> class Market;
 
 class ImmigrantsWindow : public GuiWindow
 {
 public:
-    ImmigrantsWindow(Id listenerId, StylesheetManager* stylesheetManager,
-        std::vector<Person*> immigrants, int year, const Market<Lease>* market);
+    ImmigrantsWindow(Id listenerId, MessageBus* messageBus, StylesheetManager* stylesheetManager, const City& city);
     ~ImmigrantsWindow();
 
     virtual void setUp() override;
 
+    void update();
+
     void addImmigrant(Person* person, bool alreadyAdded = false);
     void removeImmigrant(Person* person);
 
-    void onNewMonth();
     void onNewYear();
 
 private:
     Id mListenerId;
+    MessageBus* mMessageBus;
     StylesheetManager* mStylesheetManager;
+    Mailbox mMailbox;
+    const City& mCity;
     std::vector<Person*> mImmigrants;
     int mYear;
-    const Market<Lease>* mMarket;
+    const Market<Lease>* mRentalMarket;
+    const Market<Work>* mLaborMarket;
     GuiTable* mTable;
-    GuiText* mText;
+    GuiText* mRentalMarketText;
+    GuiText* mLaborMarketText;
+    GuiText* mAttractivenessText;
 };
