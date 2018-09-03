@@ -234,6 +234,9 @@ void City::update(float dt)
         for (unsigned int j = 0; j < mMap.getWidth(); ++j)
             std::sort(mCarsByTile.get(i, j).begin(), mCarsByTile.get(i, j).end(), [](const Car* car1, const Car* car2) { return car1->getBounds().top < car2->getBounds().top; });
     }
+
+    // Update statistics
+    updateStatistics();
 }
 
 void City::bulldoze(Tile::Type type)
@@ -447,13 +450,12 @@ Building* City::getBuilding(Id id)
 
 float City::getAverageHappiness() const
 {
-    if (mCitizens.empty())
-        return 0.0f;
-    else
-    {
-        float sumAverage = std::accumulate(mCitizens.begin(), mCitizens.end(), 0.0f, [](float lhs, Person* rhs){ return lhs + rhs->getHappiness(); });
-        return sumAverage / mCitizens.size();
-    }
+    return mHappiness;
+}
+
+float City::getAttractiveness() const
+{
+    return mAttractiveness;
 }
 
 sf::Vector2i City::toTileIndices(const sf::Vector2f& position) const
@@ -518,19 +520,34 @@ void City::removeCitizen(Person* person)
     mPersons.erase(person->getId());
 }
 
-float City::computeAttractiveness() const
+void City::updateStatistics()
 {
-    float attractiveness = 0.0f;
+    computeHappiness();
+    computeAttractiveness();
+}
+
+void City::computeHappiness()
+{
+    if (mCitizens.empty())
+        mHappiness = 100.0f;
+    else
+    {
+        float sumAverage = std::accumulate(mCitizens.begin(), mCitizens.end(), 0.0f, [](float lhs, Person* rhs){ return lhs + rhs->getHappiness(); });
+        mHappiness = sumAverage / mCitizens.size();
+    }
+}
+
+void City::computeAttractiveness()
+{
+    mAttractiveness = 1.0f;
     // Ease to obtain a home
     float nbHomesAvailable = static_cast<const Market<Lease>*>(getMarket(VMarket::Type::RENT))->getItems().size();
-    attractiveness *= 1 - std::exp(-nbHomesAvailable);
+    mAttractiveness *= 1 - std::exp(-nbHomesAvailable);
     // Ease to obtain a job
     float nbWorksAvailable = static_cast<const Market<Work>*>(getMarket(VMarket::Type::WORK))->getItems().size();
-    attractiveness *= 1 - std::exp(-nbWorksAvailable);
+    mAttractiveness *= 1 - std::exp(-nbWorksAvailable);
     // Happiness
-    attractiveness *= getAverageHappiness() / 100.0f;
-    // Return
-    return attractiveness;
+    mAttractiveness *= getAverageHappiness() / 100.0f;
 }
 
 void City::onNewMonth()

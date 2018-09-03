@@ -104,8 +104,9 @@ public:
     const std::vector<Person*>& getImmigrants() const;
     Building* getBuilding(Id id);
 
-    // Happiness
+    // Statistics
     float getAverageHappiness() const;
+    float getAttractiveness() const;
 
     // Util
     sf::Vector2i toTileIndices(const sf::Vector2f& position) const;
@@ -157,12 +158,18 @@ private:
     sf::Clock mTimeSinceLastImmigrant;
     float mTimeUntilNextImmigrant;
 
+    // Statistics
+    float mHappiness;
+    float mAttractiveness;
+
     void updateImmigrants();
     void generateImmigrant();
     void removeCitizen(Person* person);
 
     // Statistics
-    float computeAttractiveness() const;
+    void updateStatistics();
+    void computeHappiness();
+    void computeAttractiveness();
 
     // Events
     void onNewMonth();
