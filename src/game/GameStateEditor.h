@@ -80,7 +80,5 @@ private:
     Id extractId(const std::string& name, const std::string& prefix) const;
 
     // Events
-    void onNewImmigrant(Person* person);
-    void onNewMonth();
     void onNewYear();
 };

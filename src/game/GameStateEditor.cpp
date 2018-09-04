@@ -215,17 +215,11 @@ void GameStateEditor::handleMessages()
                     {
                         Person* person = mCity.getPerson(extractId(name, "Accepted"));
                         mCity.welcome(person);
-                        if (mImmigrantsWindow)
-                            mImmigrantsWindow->removeImmigrant(person);
-                        if (mCitizensWindow)
-                            mCitizensWindow->addCitizen(person);
                     }
                     else if (name.substr(0, 8) == "Rejected")
                     {
                         Person* person = mCity.getPerson(extractId(name, "Rejected"));
                         mCity.eject(person);
-                        if (mImmigrantsWindow)
-                            mImmigrantsWindow->removeImmigrant(person);
                     }
                     else if (!updateTabs(name))
                         updateTile(name);
@@ -265,12 +259,6 @@ void GameStateEditor::handleMessages()
             const City::Event& event = message.getInfo<City::Event>();
             switch (event.type)
             {
-                case City::Event::Type::NEW_IMMIGRANT:
-                    onNewImmigrant(event.person);
-                    break;
-                case City::Event::Type::NEW_MONTH:
-                    onNewMonth();
-                    break;
                 case City::Event::Type::NEW_YEAR:
                     onNewYear();
                     break;
@@ -453,7 +441,7 @@ void GameStateEditor::openImmigrantsWindow()
 void GameStateEditor::openCitizensWindow()
 {
     if (!mCitizensWindow)
-        mCitizensWindow = mGui->createRootWithDefaultName<CitizensWindow>(mMailbox.getId(), sStylesheetManager, mCity.getCitizens(), mCity.getYear());
+        mCitizensWindow = mGui->createRootWithDefaultName<CitizensWindow>(mMailbox.getId(), sMessageBus, sStylesheetManager, mCity);
 }
 
 void GameStateEditor::openRentalMarketWindow()
@@ -583,23 +571,8 @@ Id GameStateEditor::extractId(const std::string& name, const std::string& prefix
     return std::atoi(name.substr(prefix.size(), name.find("|", prefix.size()) - prefix.size()).c_str());
 }
 
-void GameStateEditor::onNewImmigrant(Person* person)
-{
-    if (mImmigrantsWindow)
-        mImmigrantsWindow->addImmigrant(person);
-}
-
-void GameStateEditor::onNewMonth()
-{
-
-}
-
 void GameStateEditor::onNewYear()
 {
-    if (mImmigrantsWindow)
-        mImmigrantsWindow->onNewYear();
-    if (mCitizensWindow)
-        mCitizensWindow->onNewYear();
     for (GuiWindow* window : mWindowManagers[0].getWindows())
         static_cast<PersonWindow*>(window)->onNewYear();
 }

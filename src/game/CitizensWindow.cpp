@@ -7,20 +7,22 @@
 #include "gui/GuiScrollArea.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
+#include "city/City.h"
 #include "city/Person.h"
 #include "util/format.h"
 
-CitizensWindow::CitizensWindow(Id listenerId, StylesheetManager* stylesheetManager,
-    std::vector<Person*> citizens, int year) :
+CitizensWindow::CitizensWindow(Id listenerId, MessageBus* messageBus, StylesheetManager* stylesheetManager, City& city) :
     GuiWindow("Citizens", stylesheetManager->getStylesheet("window")), mListenerId(listenerId),
-    mStylesheetManager(stylesheetManager), mCitizens(std::move(citizens)), mYear(year), mTable(nullptr)
+    mMessageBus(messageBus), mStylesheetManager(stylesheetManager), mCity(city), mTable(nullptr)
 {
-
+    mMessageBus->addMailbox(mMailbox);
+    mCity.subscribe(mMailbox.getId());
 }
 
 CitizensWindow::~CitizensWindow()
 {
-    //dtor
+    mCity.unsubscribe(mMailbox.getId());
+    mMessageBus->removeMailbox(mMailbox);
 }
 
 void CitizensWindow::setUp()
@@ -40,17 +42,42 @@ void CitizensWindow::setUp()
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
     // Add rows
-    for (Person* citizen : mCitizens)
-        addCitizen(citizen, true);
+    for (Person* citizen : mCity.getCitizens())
+        addCitizen(citizen);
 
     subscribe(mListenerId);
 }
 
-void CitizensWindow::addCitizen(Person* person, bool alreadyAdded)
+void CitizensWindow::update()
 {
-    if (!alreadyAdded)
-        mCitizens.push_back(person);
+    // Read messages
+    while (!mMailbox.isEmpty())
+    {
+        Message message = mMailbox.get();
+        if (message.type == MessageType::CITY)
+        {
+            const City::Event& event = message.getInfo<City::Event>();
+            switch (event.type)
+            {
+                case City::Event::Type::NEW_CITIZEN:
+                    addCitizen(event.person);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
+    for (std::size_t i = 0; i < mCitizens.size(); ++i)
+    {
+        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("%d", mCitizens[i]->getAge(mCity.getYear())));
+        static_cast<GuiText*>(mTable->getCellContent(i, 2))->setString(mCitizens[i]->getWorkStatus());
+    }
+}
+
+void CitizensWindow::addCitizen(Person* person)
+{
+    mCitizens.push_back(person);
     std::string fullName = person->getFullName();
 
     // Person button
@@ -72,18 +99,4 @@ void CitizensWindow::removeCitizen(Person* person)
     std::size_t i = std::find(mCitizens.begin(), mCitizens.end(), person) - mCitizens.begin();
     mTable->removeRow(i);
     mCitizens.erase(mCitizens.begin() + i);
-}
-
-void CitizensWindow::update()
-{
-    for (std::size_t i = 0; i < mCitizens.size(); ++i)
-    {
-        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("%d", mCitizens[i]->getAge(mYear)));
-        static_cast<GuiText*>(mTable->getCellContent(i, 2))->setString(mCitizens[i]->getWorkStatus());
-    }
-}
-
-void CitizensWindow::onNewYear()
-{
-    ++mYear;
 }
