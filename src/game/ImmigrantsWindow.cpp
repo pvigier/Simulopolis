@@ -12,21 +12,20 @@
 #include "city/Market.h"
 #include "util/format.h"
 
-ImmigrantsWindow::ImmigrantsWindow(Id listenerId, MessageBus* messageBus, StylesheetManager* stylesheetManager, const City& city) :
+ImmigrantsWindow::ImmigrantsWindow(Id listenerId, MessageBus* messageBus, StylesheetManager* stylesheetManager, City& city) :
     GuiWindow("Immigrants", stylesheetManager->getStylesheet("window")), mListenerId(listenerId),
-    mMessageBus(messageBus), mStylesheetManager(stylesheetManager),
-    mCity(city), mImmigrants(mCity.getImmigrants()), mYear(mCity.getYear()),
+    mMessageBus(messageBus), mStylesheetManager(stylesheetManager), mCity(city),
     mRentalMarket(static_cast<const Market<Lease>*>(mCity.getMarket(VMarket::Type::RENT))),
     mLaborMarket(static_cast<const Market<Work>*>(mCity.getMarket(VMarket::Type::WORK))),
     mTable(nullptr), mRentalMarketText(nullptr), mLaborMarketText(nullptr), mAttractivenessText(nullptr)
 {
     mMessageBus->addMailbox(mMailbox);
-    //mMarket->subscribe(mMailbox.getId());
+    mCity.subscribe(mMailbox.getId());
 }
 
 ImmigrantsWindow::~ImmigrantsWindow()
 {
-    //mMarket->unsubscribe(mMailbox.getId());
+    mCity.unsubscribe(mMailbox.getId());
     mMessageBus->removeMailbox(mMailbox);
 }
 
@@ -55,24 +54,49 @@ void ImmigrantsWindow::setUp()
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
     // Add rows
-    for (Person* immigrant : mImmigrants)
-        addImmigrant(immigrant, true);
+    for (Person* immigrant : mCity.getImmigrants())
+        addImmigrant(immigrant);
 
     subscribe(mListenerId);
 }
 
 void ImmigrantsWindow::update()
 {
+    // Read messages
+    while (!mMailbox.isEmpty())
+    {
+        Message message = mMailbox.get();
+        if (message.type == MessageType::CITY)
+        {
+            const City::Event& event = message.getInfo<City::Event>();
+            switch (event.type)
+            {
+                case City::Event::Type::NEW_IMMIGRANT:
+                    addImmigrant(event.person);
+                    break;
+                case City::Event::Type::IMMIGRANT_EJECTED:
+                case City::Event::Type::NEW_CITIZEN:
+                    removeImmigrant(event.person);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    // Update texts
     mRentalMarketText->setString(format("Homes available: %d", mRentalMarket->getItems().size()));
     mLaborMarketText->setString(format("Works available: %d", mLaborMarket->getItems().size()));
     mAttractivenessText->setString(format("Attractiveness: %.2f", mCity.getAttractiveness()));
+
+    // Update ages
+    for (std::size_t i = 0; i < mImmigrants.size(); ++i)
+        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("%d", mImmigrants[i]->getAge(mCity.getYear())));
 }
 
-void ImmigrantsWindow::addImmigrant(Person* person, bool alreadyAdded)
+void ImmigrantsWindow::addImmigrant(Person* person)
 {
-    if (!alreadyAdded)
-        mImmigrants.push_back(person);
-
+    mImmigrants.push_back(person);
     std::string fullName = person->getFullName();
 
     // Visa
@@ -92,7 +116,7 @@ void ImmigrantsWindow::addImmigrant(Person* person, bool alreadyAdded)
     // Add row
     mTable->addRow({
         mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>(format("%d", person->getAge(mYear)), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(format("%d", person->getAge(mCity.getYear())), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("$%.2f", person->getAccountBalance()), 12, mStylesheetManager->getStylesheet("darkText")),
         visaButtons
     });
@@ -103,11 +127,4 @@ void ImmigrantsWindow::removeImmigrant(Person* person)
     std::size_t i = std::find(mImmigrants.begin(), mImmigrants.end(), person) - mImmigrants.begin();
     mTable->removeRow(i);
     mImmigrants.erase(mImmigrants.begin() + i);
-}
-
-void ImmigrantsWindow::onNewYear()
-{
-    ++mYear;
-    for (std::size_t i = 0; i < mImmigrants.size(); ++i)
-        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("%d", mImmigrants[i]->getAge(mYear)));
 }

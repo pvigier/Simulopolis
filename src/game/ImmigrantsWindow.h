@@ -15,30 +15,27 @@ template<typename T> class Market;
 class ImmigrantsWindow : public GuiWindow
 {
 public:
-    ImmigrantsWindow(Id listenerId, MessageBus* messageBus, StylesheetManager* stylesheetManager, const City& city);
+    ImmigrantsWindow(Id listenerId, MessageBus* messageBus, StylesheetManager* stylesheetManager, City& city);
     ~ImmigrantsWindow();
 
     virtual void setUp() override;
 
     void update();
 
-    void addImmigrant(Person* person, bool alreadyAdded = false);
-    void removeImmigrant(Person* person);
-
-    void onNewYear();
-
 private:
     Id mListenerId;
     MessageBus* mMessageBus;
     StylesheetManager* mStylesheetManager;
     Mailbox mMailbox;
-    const City& mCity;
+    City& mCity;
     std::vector<Person*> mImmigrants;
-    int mYear;
     const Market<Lease>* mRentalMarket;
     const Market<Work>* mLaborMarket;
     GuiTable* mTable;
     GuiText* mRentalMarketText;
     GuiText* mLaborMarketText;
     GuiText* mAttractivenessText;
+
+    void addImmigrant(Person* person);
+    void removeImmigrant(Person* person);
 };

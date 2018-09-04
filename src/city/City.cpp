@@ -24,7 +24,7 @@ City::Event::Event(Type type, unsigned int data) : type(type), month(data)
 
 }
 
-City::Event::Event(Person* person) : type(Type::NEW_IMMIGRANT), person(person)
+City::Event::Event(Type type, Person* person) : type(type), person(person)
 {
 
 }
@@ -185,6 +185,9 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void City::update(float dt)
 {
+    // Update immigrants
+    updateImmigrants();
+
     // Update the citizens
     for (Person* citizen : mCitizens)
         citizen->update(dt);
@@ -412,6 +415,8 @@ void City::eject(Person* person)
     mImmigrants.erase(mImmigrants.begin() + i);
     mArrivalTimes.erase(mArrivalTimes.begin() + i);
     mPersons.erase(person->getId());
+    // Notify
+    notify(Message::create(MessageType::CITY, Event(Event::Type::IMMIGRANT_EJECTED, person)));
 }
 
 void City::welcome(Person* person)
@@ -421,6 +426,8 @@ void City::welcome(Person* person)
     mArrivalTimes.erase(mArrivalTimes.begin() + i);
     mCitizens.push_back(person);
     person->setCity(this);
+    // Notify
+    notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_CITIZEN, person)));
 }
 
 unsigned int City::getPopulation() const
@@ -512,12 +519,15 @@ void City::generateImmigrant()
     mArrivalTimes.emplace_back();
     Id id = mPersons.add(std::move(person));
     mImmigrants.back()->setId(id);
+    // Notify
+    notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_IMMIGRANT, mImmigrants.back())));
 }
 
 void City::removeCitizen(Person* person)
 {
     mCitizens.erase(std::find(mCitizens.begin(), mCitizens.end(), person));
     mPersons.erase(person->getId());
+    // Should send a message
 }
 
 void City::updateStatistics()
