@@ -1,6 +1,5 @@
 #include "game/GameStateEditor.h"
 #include <utility>
-#include <chrono>
 #include "util/format.h"
 #include "render/RenderEngine.h"
 #include "input/InputEngine.h"
@@ -320,9 +319,9 @@ void GameStateEditor::exit()
     mGui->unsubscribe(mMailbox.getId());
 }
 
-void GameStateEditor::newGame()
+void GameStateEditor::newGame(uint64_t seed)
 {
-    mCity.createMap(std::chrono::system_clock::now().time_since_epoch().count());
+    mCity.createMap(seed);
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
         mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
     zoom(8.0f);

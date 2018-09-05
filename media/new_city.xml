@@ -1,0 +1,27 @@
+<gui>
+	<image name="background" texture="background" />
+    <image name="city" />
+    <widget size="800 600">
+        <widget style="tabs" size="600 400">
+            <widget size="500 200">
+                <widget>
+                    <text text="City name: " characterSize="18" style="darkText" />
+                    <input characterSize="18" style="input" />
+                    <hboxlayout />
+                </widget>
+                <widget>
+                    <text text="Seed: " characterSize="18" style="darkText" />
+                    <input name="seedInput" characterSize="18" style="input" />
+                    <hboxlayout />
+                </widget>
+                <vboxlayout />
+            </widget>
+            <button name="createCityButton" size="192 36" style="button">
+                <text text="Create" characterSize="24" style="darkText" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <vboxlayout hAlignment="center" vAlignment="center" spacing="16" />
+        </widget>
+        <vboxlayout hAlignment="center" vAlignment="center" spacing="16" />
+    </widget>
+</gui>

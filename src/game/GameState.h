@@ -18,9 +18,18 @@ class GameState : public NonCopyable, public NonMovable
 public:
     struct Event
     {
-        enum class Type{RESUME_GAME, NEW_GAME, LOAD_GAME, PAUSE_GAME, DISPLAY_MENU};
+        enum class Type{OPEN_MENU, OPEN_NEW_CITY_SCREEN, OPEN_CITY_LOADING_SCREEN, NEW_GAME, LOAD_GAME,
+            PAUSE_GAME, RESUME_GAME};
 
         Type type;
+
+        union
+        {
+            uint64_t seed;
+        };
+
+        Event(Type type);
+        Event(uint64_t seed);
     };
 
     GameState();

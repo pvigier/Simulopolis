@@ -1,7 +1,6 @@
 #include "game/GameStateStart.h"
 #include "message/MessageBus.h"
 #include "render/RenderEngine.h"
-#include "input/InputEngine.h"
 #include "audio/AudioEngine.h"
 #include "resource/TextureManager.h"
 #include "resource/StylesheetManager.h"
@@ -65,11 +64,11 @@ void GameStateStart::handleMessages()
                 {
                     const std::string& name = event.widget->getName();
                     if (name == "resumeGameButton")
-                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event{Event::Type::RESUME_GAME}));
+                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::RESUME_GAME)));
                     else if (name == "newGameButton")
-                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event{Event::Type::NEW_GAME}));
+                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::OPEN_NEW_CITY_SCREEN)));
                     else if (name == "loadGameButton")
-                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event{Event::Type::LOAD_GAME}));
+                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::LOAD_GAME)));
                     else if (name == "exitButton")
                         sRenderEngine->getWindow().close();
                 }

@@ -127,13 +127,25 @@ void Game::handleMessages()
             const GameState::Event& event = message.getInfo<GameState::Event>();
             switch (event.type)
             {
-                case GameState::Event::Type::RESUME_GAME:
-                    popState();
+                case GameState::Event::Type::OPEN_MENU:
+                {
+                    clearStates();
+                    std::unique_ptr<GameStateStart> state(new GameStateStart(false));
+                    pushState(std::move(state));
+                    break;
+                }
+                case GameState::Event::Type::OPEN_NEW_CITY_SCREEN:
+                {
+                    std::unique_ptr<GameStateNewCity> state(new GameStateNewCity());
+                    changeState(std::move(state));
+                    break;
+                }
+                case GameState::Event::Type::OPEN_CITY_LOADING_SCREEN:
                     break;
                 case GameState::Event::Type::NEW_GAME:
                 {
-                    std::unique_ptr<GameStateNewCity> state(new GameStateNewCity());
-                    //state->newGame();
+                    std::unique_ptr<GameStateEditor> state(new GameStateEditor());
+                    state->newGame(event.seed);
                     changeState(std::move(state));
                     break;
                 }
@@ -152,13 +164,9 @@ void Game::handleMessages()
                     pushState(std::move(state));
                     break;
                 }
-                case GameState::Event::Type::DISPLAY_MENU:
-                {
-                    clearStates();
-                    std::unique_ptr<GameStateStart> state(new GameStateStart(false));
-                     changeState(std::move(state));
+                case GameState::Event::Type::RESUME_GAME:
+                    popState();
                     break;
-                }
                 default:
                     break;
             }

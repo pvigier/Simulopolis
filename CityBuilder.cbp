@@ -130,6 +130,8 @@
 		<Unit filename="src/game/GameState.h" />
 		<Unit filename="src/game/GameStateEditor.cpp" />
 		<Unit filename="src/game/GameStateEditor.h" />
+		<Unit filename="src/game/GameStateNewCity.cpp" />
+		<Unit filename="src/game/GameStateNewCity.h" />
 		<Unit filename="src/game/GameStateStart.cpp" />
 		<Unit filename="src/game/GameStateStart.h" />
 		<Unit filename="src/game/GoodsMarketWindow.cpp" />
