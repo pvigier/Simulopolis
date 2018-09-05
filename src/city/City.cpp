@@ -185,9 +185,6 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void City::update(float dt)
 {
-    // Update immigrants
-    updateImmigrants();
-
     // Update the citizens
     for (Person* citizen : mCitizens)
         citizen->update(dt);
@@ -413,7 +410,7 @@ void City::eject(Person* person)
 {
     std::size_t i = std::find(mImmigrants.begin(), mImmigrants.end(), person) - mImmigrants.begin();
     mImmigrants.erase(mImmigrants.begin() + i);
-    mArrivalTimes.erase(mArrivalTimes.begin() + i);
+    mTimeBeforeLeaving.erase(mTimeBeforeLeaving.begin() + i);
     mPersons.erase(person->getId());
     // Notify
     notify(Message::create(MessageType::CITY, Event(Event::Type::IMMIGRANT_EJECTED, person)));
@@ -423,7 +420,7 @@ void City::welcome(Person* person)
 {
     std::size_t i = std::find(mImmigrants.begin(), mImmigrants.end(), person) - mImmigrants.begin();
     mImmigrants.erase(mImmigrants.begin() + i);
-    mArrivalTimes.erase(mArrivalTimes.begin() + i);
+    mTimeBeforeLeaving.erase(mTimeBeforeLeaving.begin() + i);
     mCitizens.push_back(person);
     person->setCity(this);
     // Notify
@@ -494,29 +491,25 @@ float City::toCityTime(float humanTime) const
 
 void City::updateImmigrants()
 {
-    // Add an immigrant
-    if (mTimeSinceLastImmigrant.getElapsedTime().asSeconds() > mTimeUntilNextImmigrant)
-    {
-        generateImmigrant();
-        // Restart the clock
-        mTimeSinceLastImmigrant.restart();
-        // Compute the time until next immigrant
-        std::exponential_distribution<float> distribution(mTimePerMonth * computeAttractiveness() / MAX_NB_IMMIGRANTS_PER_MONTH);
-        mTimeUntilNextImmigrant = distribution(mRandomGenerator);
-    }
     // Update immigrants
     for (int i = mImmigrants.size() - 1; i >= 0; --i)
     {
-        if (mArrivalTimes[i].getElapsedTime().asSeconds() > MAX_NB_MONTHS_WAITING * mTimePerMonth)
+        --mTimeBeforeLeaving[i];
+        if (mTimeBeforeLeaving[i] == 0)
             eject(mImmigrants[i]); // Could be optimized
     }
+
+    // Add immigrants
+    std::poisson_distribution<unsigned int> distribution(mAttractiveness * MAX_NB_IMMIGRANTS_PER_MONTH);
+    unsigned int nbNewImmigrants = distribution(mRandomGenerator);
+        generateImmigrant();
 }
 
 void City::generateImmigrant()
 {
     std::unique_ptr<Person> person = mPersonGenerator.generate(getYear());
     mImmigrants.push_back(person.get());
-    mArrivalTimes.emplace_back();
+    mTimeBeforeLeaving.push_back(MAX_NB_MONTHS_WAITING);
     Id id = mPersons.add(std::move(person));
     mImmigrants.back()->setId(id);
     // Notify
@@ -552,10 +545,10 @@ void City::computeAttractiveness()
     mAttractiveness = 1.0f;
     // Ease to obtain a home
     float nbHomesAvailable = static_cast<const Market<Lease>*>(getMarket(VMarket::Type::RENT))->getItems().size();
-    mAttractiveness *= 1 - std::exp(-nbHomesAvailable);
+    mAttractiveness *= 1 - 1 / (1.0f + nbHomesAvailable);
     // Ease to obtain a job
     float nbWorksAvailable = static_cast<const Market<Work>*>(getMarket(VMarket::Type::WORK))->getItems().size();
-    mAttractiveness *= 1 - std::exp(-nbWorksAvailable);
+    mAttractiveness *= 1 -  1 / (1.0f + nbWorksAvailable);
     // Happiness
     mAttractiveness *= getAverageHappiness() / 100.0f;
 }
@@ -569,6 +562,9 @@ void City::onNewMonth()
         ++mYear;
         onNewYear();
     }
+
+    // Update immigrants
+    updateImmigrants();
 
     // Update markets
     for (std::unique_ptr<VMarket>& market : mMarkets)

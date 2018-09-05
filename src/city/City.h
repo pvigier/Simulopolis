@@ -17,7 +17,7 @@ class City : public sf::Drawable, public Subject
 public:
     static constexpr float NB_HOURS_PER_MONTH = 30.0f * 24.0f;
     static constexpr float MAX_NB_IMMIGRANTS_PER_MONTH = 10.0f;
-    static constexpr float MAX_NB_MONTHS_WAITING = 6.0f;
+    static constexpr float MAX_NB_MONTHS_WAITING = 3.0f;
 
     struct Intersection
     {
@@ -155,9 +155,7 @@ private:
     Array2<std::vector<const Car*>> mCarsByTile;
 
     // Immigration
-    std::vector<sf::Clock> mArrivalTimes;
-    sf::Clock mTimeSinceLastImmigrant;
-    float mTimeUntilNextImmigrant;
+    std::vector<unsigned int> mTimeBeforeLeaving;
 
     // Statistics
     float mHappiness;
