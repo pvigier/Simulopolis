@@ -1,6 +1,6 @@
 #include "resource/ImageManager.h"
+#include "util/debug.h"
 #include "resource/XmlManager.h"
-#include <iostream>
 
 ImageManager::ImageManager() : mXmlManager(nullptr), mPrefixPath("media/")
 {
@@ -42,5 +42,6 @@ void ImageManager::addImage(const std::string& name, sf::Image image)
 
 const sf::Image& ImageManager::getImage(const std::string& name) const
 {
+    DEBUG_IF(mImages.find(name) == mImages.end(), name << " is an invalid image name.\n");
     return mImages.at(name);
 }

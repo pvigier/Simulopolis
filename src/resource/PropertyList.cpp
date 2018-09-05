@@ -1,4 +1,5 @@
 #include "PropertyList.h"
+#include "util/debug.h"
 #include "resource/TextureManager.h"
 #include "resource/FontManager.h"
 #include "resource/StylesheetManager.h"
@@ -44,6 +45,7 @@ bool PropertyList::has(const std::string& name) const
 
 std::string PropertyList::get(const std::string& name) const
 {
+    DEBUG_IF(!has(name), name << " is not a key of this property list.\n");
     return mProperties.at(name);
 }
 

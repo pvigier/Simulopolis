@@ -1,7 +1,6 @@
 #include "City.h"
 #include <fstream>
 #include <sstream>
-#include <iostream>
 #include "city/Building.h"
 
 City::Intersection::Intersection() : type(City::Intersection::Type::NONE), car(nullptr)

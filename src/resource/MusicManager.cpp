@@ -1,6 +1,6 @@
 #include "resource/MusicManager.h"
+#include "util/debug.h"
 #include "resource/XmlManager.h"
-#include <iostream>
 
 MusicManager::MusicManager() : mXmlManager(nullptr), mPrefixPath("media/")
 {
@@ -41,5 +41,6 @@ void MusicManager::addMusic(const std::string& name, std::string music)
 
 const std::string& MusicManager::getMusic(const std::string& name) const
 {
+    DEBUG_IF(mMusics.find(name) == mMusics.end(), name << " is an invalid music name.\n");
     return mMusics.at(name);
 }

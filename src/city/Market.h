@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include "util/IdManager.h"
+#include "util/debug.h"
 #include "message/MessageBus.h"
 #include "message/Subject.h"
 #include "city/Money.h"
@@ -186,33 +187,33 @@ public:
                 {
                     case Event::Type::ADD_ITEM:
                         if (message.sender == UNDEFINED)
-                            std::cout << static_cast<int>(mType) << " Add item: sender undefined" << std::endl;
+                            DEBUG(static_cast<int>(mType) << " Add item: sender undefined\n");
                         else
                             addItem(message.sender, event.item.sellerAccount, event.item.good, event.item.reservePrice);
                         break;
                     case Event::Type::REMOVE_ITEM:
                         if (!mAuctions.has(event.itemId))
                         {
-                            std::cout << static_cast<int>(mType) << " Remove item: " << event.itemId << " is not a valid item id" << std::endl;
-                            std::cout << "items: ";
+                            DEBUG(static_cast<int>(mType) << " Remove item: " << event.itemId << " is not a valid item id\n");
+                            DEBUG("items: ");
                             for (const Auction& auction : mAuctions.getObjects())
-                                std::cout << auction.item.id << " ";
-                            std::cout << std::endl;
+                                DEBUG(auction.item.id << " ");
+                            DEBUG("\n");
                         }
                         else
                             removeItem(event.itemId);
                         break;
                     case Event::Type::BID:
                         if (message.sender == UNDEFINED)
-                            std::cout << static_cast<int>(mType) << " Bid: sender undefined" << std::endl;
+                            DEBUG(static_cast<int>(mType) << " Bid: sender undefined\n");
                         else if (!mAuctions.has(event.bid.itemId))
-                            std::cout << static_cast<int>(mType) << " Bid: " << event.bid.itemId << " is not a valid item id" << std::endl;
+                            DEBUG(static_cast<int>(mType) << " Bid: " << event.bid.itemId << " is not a valid item id\n");
                         else
                             addBid(event.bid.itemId, message.sender, event.bid.value);
                         break;
                     case Event::Type::SET_QUANTITY:
                         if (message.sender == UNDEFINED)
-                            std::cout << static_cast<int>(mType) << " Set quantity: sender undefined" << std::endl;
+                            DEBUG(static_cast<int>(mType) << " Set quantity: sender undefined\n");
                         else
                             setDesiredQuantity(message.sender, event.desiredQuantity);
                         break;

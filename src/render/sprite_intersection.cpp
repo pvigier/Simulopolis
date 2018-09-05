@@ -1,7 +1,5 @@
 #include "sprite_intersection.h"
 
-#include <iostream>
-
 bool sprite_intersect(const sf::Sprite& sprite, const sf::Image& mask, const sf::Vector2f& position)
 {
     if (sprite.getGlobalBounds().contains(position))

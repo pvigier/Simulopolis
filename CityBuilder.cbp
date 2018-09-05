@@ -237,6 +237,7 @@
 		<Unit filename="src/util/Vector.h" />
 		<Unit filename="src/util/common.cpp" />
 		<Unit filename="src/util/common.h" />
+		<Unit filename="src/util/debug.h" />
 		<Unit filename="src/util/enum.h" />
 		<Unit filename="src/util/format.h" />
 		<Unit filename="src/util/strong_typedef.h" />

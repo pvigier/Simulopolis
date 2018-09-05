@@ -1,4 +1,5 @@
 #include "message/MessageBus.h"
+#include "util/debug.h"
 
 MessageBus::MessageBus()
 {
@@ -15,7 +16,7 @@ void MessageBus::send(Message message)
     if (mMailboxes.has(message.receiver))
         mMailboxes.get(message.receiver)->put(message);
     else
-        std::cout << message << " can't be sent." << std::endl;
+        DEBUG(message << " can't be sent.\n");
 }
 
 void MessageBus::addMailbox(Mailbox& mailbox)

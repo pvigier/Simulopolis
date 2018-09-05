@@ -1,5 +1,5 @@
 #include "resource/XmlManager.h"
-#include <iostream>
+#include "util/debug.h"
 #include <sstream>
 
 using namespace tinyxml2;
@@ -33,7 +33,7 @@ XmlDocument XmlManager::loadDocument(const std::string& path)
 
     if (root == nullptr)
     {
-        std::cout << path << " has not been loaded correctly." << std::endl;
+        DEBUG(path << " has not been loaded correctly.\n");
         return XmlDocument("", PropertyList(), {});
     }
 

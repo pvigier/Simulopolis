@@ -1,6 +1,6 @@
 #include "resource/TextureManager.h"
+#include "util/debug.h"
 #include "resource/XmlManager.h"
-#include <iostream>
 
 TextureManager::TextureManager() : mXmlManager(nullptr), mPrefixPath("media/")
 {
@@ -42,5 +42,6 @@ void TextureManager::addTexture(const std::string& name, sf::Texture texture)
 
 const sf::Texture& TextureManager::getTexture(const std::string& name) const
 {
+    DEBUG_IF(mTextures.find(name) == mTextures.end(), name << " is an invalid texture name.\n");
     return mTextures.at(name);
 }

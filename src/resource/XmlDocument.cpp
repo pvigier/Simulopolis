@@ -1,4 +1,5 @@
 #include "XmlDocument.h"
+#include "util/debug.h"
 
 XmlDocument::XmlDocument(std::string name, PropertyList attributes, std::vector<XmlDocument> children) :
     mName(std::move(name)), mAttributes(std::move(attributes)), mChildren(std::move(children))
@@ -24,12 +25,13 @@ const std::vector<XmlDocument>& XmlDocument::getChildren() const
 
 const std::vector<std::size_t>& XmlDocument::getChildrenByName(const std::string& name) const
 {
+    DEBUG_IF(!hasChildren(name), name << " is not a child of this xml document (" << mName << ").\n");
     return mChildrenByName.at(name);
 }
 
 const XmlDocument& XmlDocument::getFirstChildByName(const std::string& name) const
 {
-    return mChildren.at(mChildrenByName.at(name).front());
+    return mChildren.at(getChildrenByName(name).front());
 }
 
 bool XmlDocument::hasChildren(const std::string& name) const

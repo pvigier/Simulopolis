@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 enum class MessageType
 {
     INPUT,

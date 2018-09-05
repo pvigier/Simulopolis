@@ -1,7 +1,6 @@
 #pragma once
 
 // STL
-#include <iostream>
 #include <memory>
 // My includes
 #include "util/Id.h"

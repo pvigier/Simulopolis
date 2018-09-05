@@ -1,6 +1,5 @@
 #include "resource/StylesheetManager.h"
-#include <iostream>
-#include <sstream>
+#include "util/debug.h"
 #include "resource/XmlManager.h"
 
 using namespace tinyxml2;
@@ -44,5 +43,6 @@ void StylesheetManager::addStylesheet(const std::string& name, XmlDocument style
 
 const XmlDocument* StylesheetManager::getStylesheet(const std::string& name) const
 {
+    DEBUG_IF(mStylesheets.find(name) == mStylesheets.end(), name << " is an invalid stylesheet name.\n");
     return mStylesheets.at(name).get();
 }

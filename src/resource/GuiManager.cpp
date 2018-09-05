@@ -1,6 +1,5 @@
 #include "resource/GuiManager.h"
-#include <iostream>
-#include <sstream>
+#include "util/debug.h"
 #include "resource/XmlManager.h"
 #include "resource/PropertyList.h"
 #include "gui/GuiWidget.h"
@@ -50,6 +49,7 @@ void GuiManager::addGui(const std::string& name, XmlDocument gui)
 
 std::unique_ptr<Gui> GuiManager::getGui(const std::string& name)
 {
+    DEBUG_IF(mGuis.find(name) == mGuis.end(), name << " is an invalid gui name.\n");
     std::unique_ptr<Gui> gui(new Gui());
     loadRootWidgets(gui.get(), *mGuis[name]);
     return std::move(gui);
