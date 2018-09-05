@@ -3,6 +3,7 @@
 #include "game/GameStateStart.h"
 #include "game/GameStateEditor.h"
 #include "game/GameStateNewCity.h"
+#include "game/GameStateLoadCity.h"
 
 Game::Game()
 {
@@ -141,7 +142,11 @@ void Game::handleMessages()
                     break;
                 }
                 case GameState::Event::Type::OPEN_CITY_LOADING_SCREEN:
+                {
+                    std::unique_ptr<GameStateLoadCity> state(new GameStateLoadCity());
+                    changeState(std::move(state));
                     break;
+                }
                 case GameState::Event::Type::NEW_GAME:
                 {
                     std::unique_ptr<GameStateEditor> state(new GameStateEditor());

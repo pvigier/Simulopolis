@@ -68,7 +68,7 @@ void GameStateStart::handleMessages()
                     else if (name == "newGameButton")
                         sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::OPEN_NEW_CITY_SCREEN)));
                     else if (name == "loadGameButton")
-                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::LOAD_GAME)));
+                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::OPEN_CITY_LOADING_SCREEN)));
                     else if (name == "exitButton")
                         sRenderEngine->getWindow().close();
                 }

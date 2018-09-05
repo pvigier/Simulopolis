@@ -1,0 +1,17 @@
+<gui>
+	<image name="background" texture="background" />
+    <image name="city" />
+    <widget size="800 600">
+        <widget style="tabs" size="600 400">
+            <widget size="500 200">
+                <vboxlayout />
+            </widget>
+            <button name="loadCityButton" size="192 36" style="button">
+                <text text="Load" characterSize="24" style="darkText" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
+            <vboxlayout hAlignment="center" vAlignment="center" spacing="16" />
+        </widget>
+        <vboxlayout hAlignment="center" vAlignment="center" spacing="16" />
+    </widget>
+</gui>
