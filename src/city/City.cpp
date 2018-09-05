@@ -502,6 +502,7 @@ void City::updateImmigrants()
     // Add immigrants
     std::poisson_distribution<unsigned int> distribution(mAttractiveness * MAX_NB_IMMIGRANTS_PER_MONTH);
     unsigned int nbNewImmigrants = distribution(mRandomGenerator);
+    for (unsigned int i = 0; i < nbNewImmigrants; ++i)
         generateImmigrant();
 }
 

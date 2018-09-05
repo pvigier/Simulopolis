@@ -194,6 +194,8 @@
 		<Unit filename="src/pcg/CompanyGenerator.h" />
 		<Unit filename="src/pcg/PersonGenerator.cpp" />
 		<Unit filename="src/pcg/PersonGenerator.h" />
+		<Unit filename="src/pcg/RandomGenerator.cpp" />
+		<Unit filename="src/pcg/RandomGenerator.h" />
 		<Unit filename="src/pcg/TerrainGenerator.cpp" />
 		<Unit filename="src/pcg/TerrainGenerator.h" />
 		<Unit filename="src/pcg/noise.cpp" />
