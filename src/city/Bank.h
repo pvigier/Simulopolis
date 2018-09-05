@@ -11,8 +11,12 @@ class Bank
 public:
     struct Account
     {
+        enum Type{PERSON, COMPANY, WORLD};
+        Id id;
         Id owner;
+        Type type;
         Money balance;
+        Money previousBalance;
     };
 
     struct Event
@@ -30,8 +34,9 @@ public:
 
         union
         {
-            Id account;
+            Account::Type accountType;
             TransferMoneyEvent transfer;
+            Id account;
         };
     };
 
@@ -45,16 +50,22 @@ public:
     Id getMailboxId() const;
 
     // Account management
-    void createAccount(Id owner);
-    Id createAccount();
+    void createAccount(Id owner, Account::Type type);
+    Id createWorldAccount();
     void closeAccount(Id account);
     Money getBalance(Id account) const;
 
     // Transfer
     void transferMoney(Id issuer, Id receiver, Money amount);
 
+    // Taxes
+    void collectTaxes(Id cityAccount, double incomeTax, double corporateTax);
+
     // Events
+    Event createCreateAccountEvent(Account::Type type) const;
+    Event createCloseAccountEvent(Id account) const;
     Event createTransferMoneyEvent(Id issuer, Id receiver, Money amount) const;
+    Event createAccountCreatedEvent(Id account) const;
 
 private:
     static MessageBus* sMessageBus;

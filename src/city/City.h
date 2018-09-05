@@ -91,10 +91,10 @@ public:
     void setWeeklyStandardWorkingHours(unsigned int weeklyStandardWorkingHours);
     Money getMinimumWage() const;
     void setMinimumWage(Money minimumWage);
-    float getIncomeTax() const;
-    void setIncomeTax(float incomeTax);
-    float getCorporateTax() const;
-    void setCorporateTax(float corporateTax);
+    double getIncomeTax() const;
+    void setIncomeTax(double incomeTax);
+    double getCorporateTax() const;
+    void setCorporateTax(double corporateTax);
 
     // Agents
     void eject(Person* person);
@@ -143,8 +143,8 @@ private:
     // Policy
     unsigned int mWeeklyStandardWorkingHours;
     Money mMinimumWage;
-    float mIncomeTax;
-    float mCorporateTax;
+    double mIncomeTax;
+    double mCorporateTax;
 
     // Agents
     IdManager<std::unique_ptr<Person>> mPersons;

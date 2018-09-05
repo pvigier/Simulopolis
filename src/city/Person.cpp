@@ -54,7 +54,7 @@ Person::~Person()
 {
     // Close bank account
     if (mAccount != UNDEFINED)
-        sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CLOSE_ACCOUNT, mAccount}));
+        sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCloseAccountEvent(mAccount)));
     // Unregister mailbox
     sMessageBus->removeMailbox(mMailbox);
 }
@@ -163,7 +163,7 @@ void Person::setCity(const City* city)
 {
     mCity = city;
     // Create bank account
-    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, Bank::Event{Bank::Event::Type::CREATE_ACCOUNT, {}}));
+    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCreateAccountEvent(Bank::Account::Type::PERSON)));
 }
 
 Id Person::getMailboxId() const

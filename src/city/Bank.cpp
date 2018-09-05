@@ -29,7 +29,7 @@ void Bank::update()
             switch (event.type)
             {
                 case Event::Type::CREATE_ACCOUNT:
-                    createAccount(message.sender);
+                    createAccount(message.sender, event.accountType);
                     break;
                 case Event::Type::CLOSE_ACCOUNT:
                     closeAccount(event.account);
@@ -49,15 +49,18 @@ Id Bank::getMailboxId() const
     return mMailbox.getId();
 }
 
-void Bank::createAccount(Id owner)
+void Bank::createAccount(Id owner, Account::Type type)
 {
-    Id account = mAccounts.add(Account{owner, Money(0.0)});
-    sMessageBus->send(Message::create(owner, MessageType::BANK, Event{Event::Type::ACCOUNT_CREATED, account}));
+    Id account = mAccounts.add(Account{UNDEFINED, owner, type, Money(0.0), Money(0.0)});
+    mAccounts.get(account).id = account;
+    sMessageBus->send(Message::create(owner, MessageType::BANK, createAccountCreatedEvent(account)));
 }
 
-Id Bank::createAccount()
+Id Bank::createWorldAccount()
 {
-    return mAccounts.add(Account{UNDEFINED, Money(0.0)});
+    Id account = mAccounts.add(Account{UNDEFINED, UNDEFINED, Account::Type::WORLD, Money(0.0), Money(0.0)});
+    mAccounts.get(account).id = account;
+    return account;
 }
 
 void Bank::closeAccount(Id account)
@@ -76,9 +79,54 @@ void Bank::transferMoney(Id issuer, Id receiver, Money amount)
     mAccounts.get(receiver).balance += amount;
 }
 
+void Bank::collectTaxes(Id cityAccount, double incomeTax, double corporateTax)
+{
+    for (Account& account : mAccounts.getObjects())
+    {
+        double rate = 0.0;
+        switch (account.type)
+        {
+            case Account::Type::PERSON:
+                rate = incomeTax;
+                break;
+            case Account::Type::COMPANY:
+                rate = corporateTax;
+                break;
+            default:
+                break;
+        }
+        Money income(account.previousBalance - account.balance); // Maybe change to really tax the income
+        if (income > 0.0)
+            transferMoney(account.id, cityAccount, Money(rate * income));
+        // Update previousBalance
+        account.previousBalance = account.balance;
+    }
+}
+
+Bank::Event Bank::createCreateAccountEvent(Account::Type type) const
+{
+    Event event{Event::Type::CREATE_ACCOUNT, {}};
+    event.accountType = type;
+    return event;
+}
+
+Bank::Event Bank::createCloseAccountEvent(Id account) const
+{
+    Event event{Event::Type::CLOSE_ACCOUNT, {}};
+    event.account = account;
+    return event;
+}
+
 Bank::Event Bank::createTransferMoneyEvent(Id issuer, Id receiver, Money amount) const
 {
     Event event{Event::Type::TRANSFER_MONEY, {}};
     event.transfer = Event::TransferMoneyEvent{issuer, receiver, amount};
+    return event;
+}
+
+Bank::Event Bank::createAccountCreatedEvent(Id account) const
+{
+    Event event{Event::Type::TRANSFER_MONEY, {}};
+    event.account = account;
     return event;
 }

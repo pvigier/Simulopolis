@@ -56,7 +56,7 @@ City::City() :
     mMarkets.emplace_back(new Market<Work>(VMarket::Type::WORK));
 
     // Economy
-    mWorldAccount = mBank.createAccount();
+    mWorldAccount = mBank.createWorldAccount();
 
     // Company
     mCityCompany.setCity(this);
@@ -386,22 +386,22 @@ void City::setMinimumWage(Money minimumWage)
         sMessageBus->send(Message::create(company->getMailboxId(), MessageType::CITY, Event(mMinimumWage)));
 }
 
-float City::getIncomeTax() const
+double City::getIncomeTax() const
 {
     return mIncomeTax;
 }
 
-void City::setIncomeTax(float incomeTax)
+void City::setIncomeTax(double incomeTax)
 {
     mIncomeTax = incomeTax;
 }
 
-float City::getCorporateTax() const
+double City::getCorporateTax() const
 {
     return mCorporateTax;
 }
 
-void City::setCorporateTax(float corporateTax)
+void City::setCorporateTax(double corporateTax)
 {
     mCorporateTax = corporateTax;
 }
@@ -570,6 +570,9 @@ void City::onNewMonth()
     // Update markets
     for (std::unique_ptr<VMarket>& market : mMarkets)
         market->sellItems();
+
+    // Collect taxes
+    mBank.collectTaxes(mCityCompany.getMailboxId(), mIncomeTax, mCorporateTax);
 
     // Send messages
     notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
