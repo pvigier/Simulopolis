@@ -1,4 +1,4 @@
 <fonts>
-	<font name="font" path="Cabin-Regular.ttf" />
-    <font name="titleFont" path="BebasNeue-Regular.ttf" />
+	<font name="font" path="fonts/Cabin-Regular.ttf" />
+    <font name="titleFont" path="fonts/BebasNeue-Regular.ttf" />
 </fonts>

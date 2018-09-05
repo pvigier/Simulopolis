@@ -1,5 +1,5 @@
 <guis>
-	<gui name="menu" path="menu.xml" />
-	<gui name="editor" path="editor.xml" />
-    <gui name="new_city" path="new_city.xml" />
+	<gui name="menu" path="guis/menu.xml" />
+	<gui name="editor" path="guis/editor.xml" />
+    <gui name="new_city" path="guis/new_city.xml" />
 </guis>
