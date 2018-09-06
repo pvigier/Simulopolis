@@ -45,7 +45,7 @@ void GameStateStart::handleMessages()
             switch (event.type)
             {
                 case sf::Event::Closed:
-                    sRenderEngine->getWindow().close();
+                    sRenderEngine->closeWindow();
                     break;
                 /*case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
@@ -70,7 +70,7 @@ void GameStateStart::handleMessages()
                     else if (name == "loadGameButton")
                         sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::OPEN_CITY_LOADING_SCREEN)));
                     else if (name == "exitButton")
-                        sRenderEngine->getWindow().close();
+                        sRenderEngine->closeWindow();
                 }
                 default:
                     break;
@@ -103,7 +103,7 @@ void GameStateStart::setCityTexture(const sf::Texture& texture)
 
 void GameStateStart::createGui(bool resume)
 {
-    mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
+    mGui->setViewportSize(sRenderEngine->getViewportSize());
     //mGui->get("menu")->setFixedInsideSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
 
     // Resume button

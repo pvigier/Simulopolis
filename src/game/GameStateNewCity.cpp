@@ -41,7 +41,7 @@ void GameStateNewCity::handleMessages()
             switch (event.type)
             {
                 case sf::Event::Closed:
-                    sRenderEngine->getWindow().close();
+                    sRenderEngine->closeWindow();
                     break;
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
@@ -91,7 +91,7 @@ void GameStateNewCity::exit()
 
 void GameStateNewCity::createGui()
 {
-    mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
+    mGui->setViewportSize(sRenderEngine->getViewportSize());
 
     // Seed
     uint64_t seed = integer_noise(std::chrono::system_clock::now().time_since_epoch().count());

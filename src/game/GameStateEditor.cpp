@@ -30,13 +30,11 @@ GameStateEditor::GameStateEditor() :
     mPoliciesWindow(nullptr)
 {
     // Views
-    sf::Vector2f windowSize = sf::Vector2f(sRenderEngine->getWindow().getSize());
-    mGuiView.setSize(windowSize);
-    mGameView.setSize(windowSize);
-    mGuiView.setCenter(windowSize * 0.5f);
+    sf::Vector2i viewportSize = sRenderEngine->getViewportSize();
+    mGameView.setSize(sf::Vector2f(viewportSize));
 
     // Render texture
-    mRenderTexture.create(windowSize.x, windowSize.y);
+    mRenderTexture.create(viewportSize.x, viewportSize.y);
 
     // Background
     mBackground.setTexture(sTextureManager->getTexture("background"));
@@ -76,7 +74,7 @@ void GameStateEditor::handleMessages()
     mGui->handleMessages();
 
     sf::Vector2i mousePosition = sInputEngine->getMousePosition();
-    sf::Vector2f gamePos = sRenderEngine->getWindow().mapPixelToCoords(mousePosition, mGameView);
+    sf::Vector2f gamePos = sRenderEngine->mapPixelToCoords(mousePosition, mGameView);
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();
@@ -86,7 +84,7 @@ void GameStateEditor::handleMessages()
             switch (event.type)
             {
                 case sf::Event::Closed:
-                    sRenderEngine->getWindow().close();
+                    sRenderEngine->closeWindow();
                     break;
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
@@ -129,7 +127,7 @@ void GameStateEditor::handleMessages()
                         if (mActionState != ActionState::PANNING)
                         {
                             mActionState = ActionState::PANNING;
-                            mPanningAnchor = sf::Mouse::getPosition(sRenderEngine->getWindow());
+                            mPanningAnchor = mousePosition;
                         }
                         stopSelecting();
                     }
@@ -302,13 +300,11 @@ void GameStateEditor::update(float dt)
 
 void GameStateEditor::draw()
 {
-    sRenderEngine->clear();
-
     // City
     drawCity(mRenderTexture, mGameView);
 
     // GUI
-    sRenderEngine->setView(mGuiView);
+    sRenderEngine->setView(mGui->getView());
     sRenderEngine->draw(sf::Sprite(mRenderTexture.getTexture()));
     sRenderEngine->draw(*mGui);
 }
@@ -343,7 +339,7 @@ const sf::Texture& GameStateEditor::getCityTexture() const
 void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View& view)
 {
     renderTexture.clear(sf::Color::Transparent);
-    renderTexture.setView(mGuiView);
+    renderTexture.setView(mGui->getView());
     renderTexture.draw(mBackground);
     renderTexture.setView(view);
     renderTexture.draw(mCity);
@@ -352,7 +348,7 @@ void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View&
 
 void GameStateEditor::createGui()
 {
-    mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
+    mGui->setViewportSize(sRenderEngine->getViewportSize());
 
     // Tab buttons
     GuiWidget* buttonsWidget = mGui->get("tabButtons");

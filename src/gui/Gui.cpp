@@ -128,9 +128,9 @@ void Gui::handleMessages()
             bool processed = false;
             switch (event.type)
             {
-                case sf::Event::Resized:
+                /*case sf::Event::Resized:
                     mView.setSize(event.size.width, event.size.height);
-                    break;
+                    break;*/
                 case sf::Event::MouseMoved:
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
                         processed = mRootWidgets[i]->updateMouseMoved(mousePosition, processed) || processed;
@@ -175,10 +175,14 @@ void Gui::handleMessages()
     }
 }
 
-void Gui::setWindowSize(sf::Vector2f windowSize)
+const sf::View& Gui::getView()
 {
-    mView.setCenter(windowSize * 0.5f);
-    mView.setSize(windowSize);
+    return mView;
+}
+
+void Gui::setViewportSize(sf::Vector2i viewportSize)
+{
+    mView = sf::View(sf::FloatRect(sf::Vector2f(), sf::Vector2f(viewportSize)));
 }
 
 void Gui::setVisible(bool visible)

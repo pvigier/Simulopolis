@@ -45,7 +45,6 @@ private:
     Tile::Type mCurrentTile;
     // Gui
     std::unique_ptr<Gui> mGui;
-    sf::View mGuiView;
     std::vector<WindowManager> mWindowManagers;
     ImmigrantsWindow* mImmigrantsWindow;
     CitizensWindow* mCitizensWindow;

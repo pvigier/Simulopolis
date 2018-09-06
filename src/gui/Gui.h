@@ -74,7 +74,8 @@ public:
     void update();
     void handleMessages();
 
-    void setWindowSize(sf::Vector2f windowSize);
+    const sf::View& getView();
+    void setViewportSize(sf::Vector2i viewportSize);
     void setVisible(bool visible);
     bool isVisible() const;
 

@@ -1,9 +1,8 @@
 #pragma once
 
-// SFML
-#include <SFML/Window.hpp>
-// My includes
+#include <SFML/Window/Event.hpp>
 #include "message/Subject.h"
+#include "render/RenderEngine.h"
 
 /**
  * \brief Engine that manages inputs
@@ -26,11 +25,11 @@ public:
     ~InputEngine();
 
     /**
-     * \brief Set the window
+     * \brief Set the render engine
      *
-     * \param window Window created by the render engine
+     * \param renderEngine Render engine from which the events are polled
      */
-    void setWindow(sf::Window* window);
+    void setRenderEngine(RenderEngine* renderEngine);
 
     /**
      * \brief Poll events
@@ -65,5 +64,5 @@ public:
     sf::Vector2i getMousePosition() const;
 
 private:
-    sf::Window* mWindow; /**< Window from which the inputs are polled */
+    RenderEngine* mRenderEngine; /**< Render engine from which the inputs are polled */
 };

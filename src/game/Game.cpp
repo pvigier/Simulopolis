@@ -11,7 +11,7 @@ Game::Game()
     mMessageBus.addMailbox(mMailbox);
 
     // Initialize the input engine
-    mInputEngine.setWindow(&mRenderEngine.getWindow());
+    mInputEngine.setRenderEngine(&mRenderEngine);
 
     // Push dependencies
     Subject::setMessageBus(&mMessageBus);
@@ -111,6 +111,7 @@ void Game::run()
             mInputEngine.pollEvents();
             curState->handleMessages();
             curState->update(dt);
+            mRenderEngine.clear();
             curState->draw();
             mRenderEngine.display();
             handleMessages();

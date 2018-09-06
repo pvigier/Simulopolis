@@ -38,7 +38,7 @@ void GameStateLoadCity::handleMessages()
             switch (event.type)
             {
                 case sf::Event::Closed:
-                    sRenderEngine->getWindow().close();
+                    sRenderEngine->closeWindow();
                     break;
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
@@ -87,7 +87,7 @@ void GameStateLoadCity::exit()
 
 void GameStateLoadCity::createGui()
 {
-    mGui->setWindowSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
+    mGui->setViewportSize(sRenderEngine->getViewportSize());
 
     // Register to events
     mGui->get("loadCityButton")->subscribe(mMailbox.getId());

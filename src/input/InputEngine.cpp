@@ -1,6 +1,6 @@
 #include "input/InputEngine.h"
 
-InputEngine::InputEngine() : mWindow(nullptr)
+InputEngine::InputEngine() : mRenderEngine(nullptr)
 {
     //ctor
 }
@@ -10,16 +10,36 @@ InputEngine::~InputEngine()
     //dtor
 }
 
-void InputEngine::setWindow(sf::Window* window)
+void InputEngine::setRenderEngine(RenderEngine* renderEngine)
 {
-    mWindow = window;
+    mRenderEngine = renderEngine;
 }
 
 void InputEngine::pollEvents()
 {
     sf::Event event;
-    while (mWindow->pollEvent(event))
-        notify(Message(UNDEFINED, UNDEFINED, MessageType::INPUT, std::make_shared<sf::Event>(event)));
+    while (mRenderEngine->getWindow().pollEvent(event))
+    {
+        switch (event.type)
+        {
+            case sf::Event::MouseButtonPressed:
+            case sf::Event::MouseButtonReleased:
+                event.mouseButton.x -= mRenderEngine->getViewportOffset().x;
+                event.mouseButton.y -= mRenderEngine->getViewportOffset().y;
+                break;
+            case sf::Event::MouseMoved:
+                event.mouseMove.x -= mRenderEngine->getViewportOffset().x;
+                event.mouseMove.y -= mRenderEngine->getViewportOffset().y;
+                break;
+            case sf::Event::MouseWheelMoved:
+                event.mouseWheel.x -= mRenderEngine->getViewportOffset().x;
+                event.mouseWheel.y -= mRenderEngine->getViewportOffset().y;
+                break;
+            default:
+                break;
+        }
+        notify(Message::create(MessageType::INPUT, event));
+    }
 }
 
 bool InputEngine::isKeyPressed(sf::Keyboard::Key key) const
@@ -34,5 +54,5 @@ bool InputEngine::isButtonPressed(sf::Mouse::Button button) const
 
 sf::Vector2i InputEngine::getMousePosition() const
 {
-    return sf::Mouse::getPosition(*mWindow);
+    return sf::Mouse::getPosition(mRenderEngine->getWindow()) - mRenderEngine->getViewportOffset();
 }
