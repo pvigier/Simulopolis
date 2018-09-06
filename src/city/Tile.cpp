@@ -157,7 +157,7 @@ bool Tile::intersect(const sf::Vector2f& position) const
 
 std::unique_ptr<Tile> Tile::clone() const
 {
-    return std::unique_ptr<Tile>(new Tile(*this));
+    return std::make_unique<Tile>(mTextureName, mType, mCategory);
 }
 
 void Tile::updateVariant(const Tile* neighbors[3][3])

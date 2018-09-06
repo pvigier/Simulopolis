@@ -22,8 +22,8 @@ void GoalWork::activate()
     // Add subgoals
     clearSubgoals();
     const Work* work = mOwner->getWork();
-    pushBack(new GoalMoveTo(mOwner, work->getWorkplace()));
-    pushBack(new GoalWait(mOwner, mOwner->getCity()->computeNbHoursInAmonth(mOwner->getCity()->getWeeklyStandardWorkingHours())));
+    pushBack(std::make_unique<GoalMoveTo>(mOwner, work->getWorkplace()));
+    pushBack(std::make_unique<GoalWait>(mOwner, mOwner->getCity()->computeNbHoursInAmonth(mOwner->getCity()->getWeeklyStandardWorkingHours())));
 }
 
 Goal::State GoalWork::process()

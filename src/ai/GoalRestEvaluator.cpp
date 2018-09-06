@@ -16,5 +16,5 @@ float GoalRestEvaluator::computeDesirability(Person* person) const
 
 void GoalRestEvaluator::setGoal(Person* person) const
 {
-    person->getShortTermBrain().pushFront(new GoalRest(person));
+    person->getShortTermBrain().pushFront(std::make_unique<GoalRest>(person));
 }

@@ -85,7 +85,7 @@ void GoodsMarketWindow::addItem(VMarket::Type type, Id itemId)
     std::size_t i = getRow(mItems[id]);
     if (i == mCounts.size())
     {
-        mCounts.push_back(std::make_pair(mItems[id], 1));
+        mCounts.emplace_back(mItems[id], 1);
         addRow(item.good, good, item.reservePrice, 1);
     }
     else

@@ -43,11 +43,11 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     sMessageBus->addMailbox(mMailbox);
 
     // Add evaluators to the brains
-    mShortTermBrain.addEvaluator(new GoalRestEvaluator(1.0f));
-    mShortTermBrain.addEvaluator(new GoalWorkEvaluator(1.0f));
-    mShortTermBrain.addEvaluator(new GoalShopEvaluator(1.0f));
-    mLongTermBrain.addEvaluator(new GoalEnterCityEvaluator(1.0f));
-    mLongTermBrain.addEvaluator(new GoalGetBetterWorkEvaluator(1.0f));
+    mShortTermBrain.addEvaluator(std::make_unique<GoalRestEvaluator>(1.0f));
+    mShortTermBrain.addEvaluator(std::make_unique<GoalWorkEvaluator>(1.0f));
+    mShortTermBrain.addEvaluator(std::make_unique<GoalShopEvaluator>(1.0f));
+    mLongTermBrain.addEvaluator(std::make_unique<GoalEnterCityEvaluator>(1.0f));
+    mLongTermBrain.addEvaluator(std::make_unique<GoalGetBetterWorkEvaluator>(1.0f));
 }
 
 Person::~Person()

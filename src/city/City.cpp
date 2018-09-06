@@ -48,11 +48,11 @@ City::City() :
     mCompanyGenerator.setUp();
 
     // Markets
-    mMarkets.emplace_back(new Market<const Building>(VMarket::Type::NECESSARY_GOOD));
-    mMarkets.emplace_back(new Market<const Building>(VMarket::Type::NORMAL_GOOD));
-    mMarkets.emplace_back(new Market<const Building>(VMarket::Type::LUXURY_GOOD));
-    mMarkets.emplace_back(new Market<Lease>(VMarket::Type::RENT));
-    mMarkets.emplace_back(new Market<Work>(VMarket::Type::WORK));
+    mMarkets.emplace_back(std::make_unique<Market<const Building>>(VMarket::Type::NECESSARY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<const Building>>(VMarket::Type::NORMAL_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<const Building>>(VMarket::Type::LUXURY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Lease>>(VMarket::Type::RENT));
+    mMarkets.emplace_back(std::make_unique<Market<Work>>(VMarket::Type::WORK));
 
     // Economy
     mWorldAccount = mBank.createWorldAccount();

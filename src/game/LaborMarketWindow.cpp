@@ -78,7 +78,7 @@ void LaborMarketWindow::addItem(Id itemId)
     std::size_t i = getRow(mItems[itemId]);
     if (i == mCounts.size())
     {
-        mCounts.push_back(std::make_pair(mItems[itemId], 1));
+        mCounts.emplace_back(mItems[itemId], 1);
         addRow(item.good->getWorkplace(), item.good->getType(), item.reservePrice, 1);
     }
     else

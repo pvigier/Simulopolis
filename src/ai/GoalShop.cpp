@@ -74,13 +74,15 @@ bool GoalShop::handle(Message message)
         {
             mGoodReserved = true;
             mOwner->getMessageBus()->send(Message::create(mOwner->getCity()->getBank().getMailboxId(), MessageType::BANK, mOwner->getCity()->getBank().createTransferMoneyEvent(mOwner->getAccount(), event.accountId, event.price)));
-            pushBack(new GoalMoveTo(mOwner, mSelectedShop));
-            //pushBack(new GoalWait(mOwner, mOwner->getCity()->toHumanTime(4.0f * 1.0f)));
+            pushBack(std::make_unique<GoalMoveTo>(mOwner, mSelectedShop));
+            //pushBack(std::make_unique<GoalWait>(mOwner, mOwner->getCity()->toHumanTime(4.0f * 1.0f)));
             return true;
         }
         else if (event.type == Business::Event::Type::RESERVATION_REFUSED)
+        {
             mState = State::FAILED;
             return true;
+        }
     }
     return false;
 }

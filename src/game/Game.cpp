@@ -129,34 +129,25 @@ void Game::handleMessages()
             switch (event.type)
             {
                 case GameState::Event::Type::OPEN_MENU:
-                {
                     clearStates();
-                    std::unique_ptr<GameStateStart> state(new GameStateStart(false));
-                    pushState(std::move(state));
+                    pushState(std::make_unique<GameStateStart>(false));
                     break;
-                }
                 case GameState::Event::Type::OPEN_NEW_CITY_SCREEN:
-                {
-                    std::unique_ptr<GameStateNewCity> state(new GameStateNewCity());
-                    changeState(std::move(state));
+                    changeState(std::make_unique<GameStateNewCity>());
                     break;
-                }
                 case GameState::Event::Type::OPEN_CITY_LOADING_SCREEN:
-                {
-                    std::unique_ptr<GameStateLoadCity> state(new GameStateLoadCity());
-                    changeState(std::move(state));
+                    changeState(std::make_unique<GameStateLoadCity>());
                     break;
-                }
                 case GameState::Event::Type::NEW_GAME:
                 {
-                    std::unique_ptr<GameStateEditor> state(new GameStateEditor());
+                    std::unique_ptr<GameStateEditor> state = std::make_unique<GameStateEditor>();
                     state->newGame(event.seed);
                     changeState(std::move(state));
                     break;
                 }
                 case GameState::Event::Type::LOAD_GAME:
                 {
-                    std::unique_ptr<GameStateEditor> state(new GameStateEditor());
+                    std::unique_ptr<GameStateEditor> state = std::make_unique<GameStateEditor>();
                     state->loadGame("saves/city");
                     changeState(std::move(state));
                     break;
@@ -164,7 +155,7 @@ void Game::handleMessages()
                 case GameState::Event::Type::PAUSE_GAME:
                 {
                     const sf::Texture& texture = static_cast<GameStateEditor*>(peekState())->getCityTexture();
-                    std::unique_ptr<GameStateStart> state(new GameStateStart(true));
+                    std::unique_ptr<GameStateStart> state = std::make_unique<GameStateStart>(true);
                     state->setCityTexture(texture);
                     pushState(std::move(state));
                     break;

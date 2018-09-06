@@ -25,8 +25,8 @@ public:
     bool isCompleted() const;
     bool hasFailed() const;
 
-    void pushFront(Goal* goal);
-    void pushBack(Goal* goal);
+    void pushFront(std::unique_ptr<Goal> goal);
+    void pushBack(std::unique_ptr<Goal> goal);
     void clearSubgoals();
 
     virtual std::string toString() const;

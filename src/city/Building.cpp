@@ -48,7 +48,7 @@ bool Building::intersect(const sf::Vector2f& position) const
 
 std::unique_ptr<Tile> Building::clone() const
 {
-    return std::unique_ptr<Tile>(new Building(*this));
+    return std::make_unique<Building>(mTextureName, mType, mNbStairs);
 }
 
 void Building::updateVariant(const Tile* neighbors[3][3])

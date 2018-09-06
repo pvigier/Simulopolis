@@ -40,14 +40,14 @@ bool Goal::hasFailed() const
     return mState == State::FAILED;
 }
 
-void Goal::pushFront(Goal* goal)
+void Goal::pushFront(std::unique_ptr<Goal> goal)
 {
-    mSubgoals.emplace_front(goal);
+    mSubgoals.emplace_front(std::move(goal));
 }
 
-void Goal::pushBack(Goal* goal)
+void Goal::pushBack(std::unique_ptr<Goal> goal)
 {
-    mSubgoals.emplace_back(goal);
+    mSubgoals.emplace_back(std::move(goal));
 }
 
 void Goal::clearSubgoals()

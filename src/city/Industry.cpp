@@ -7,7 +7,7 @@ Industry::Industry(const std::string& name, Type type, unsigned int nbStairs, Go
     double employeeProductivity, std::size_t nbEmployees, Work::Type employeeType) :
     Building(name, type, nbStairs), mGood(good), mEmployeeProductivity(employeeProductivity)
 {
-    mEmployees.push_back(Work(Work::Type::MANAGER, this));
+    mEmployees.emplace_back(Work::Type::MANAGER, this);
     mEmployees.resize(nbEmployees + 1, Work(employeeType, this));
 }
 
@@ -18,7 +18,7 @@ Industry::~Industry()
 
 std::unique_ptr<Tile> Industry::clone() const
 {
-    return std::unique_ptr<Tile>(new Industry(mTextureName, mType, mNbStairs, mGood, mEmployeeProductivity, mEmployees.size() - 1, mEmployees.back().getType()));
+    return std::make_unique<Industry>(mTextureName, mType, mNbStairs, mGood, mEmployeeProductivity, mEmployees.size() - 1, mEmployees.back().getType());
 }
 
 void Industry::update()

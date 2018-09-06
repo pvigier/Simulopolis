@@ -21,7 +21,7 @@ Road::~Road()
 
 std::unique_ptr<Tile> Road::clone() const
 {
-    return std::unique_ptr<Tile>(new Road(*this));
+    return std::make_unique<Road>(mTextureName, mType);
 }
 
 void Road::updateVariant(const Tile* neighbors[3][3])

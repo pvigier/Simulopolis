@@ -21,7 +21,7 @@ void GoalRest::activate()
 
     // Add subgoals
     clearSubgoals();
-    pushBack(new GoalMoveTo(mOwner, mOwner->getHome()->getHousing()));
+    pushBack(std::make_unique<GoalMoveTo>(mOwner, mOwner->getHome()->getHousing()));
 }
 
 Goal::State GoalRest::process()
@@ -55,7 +55,7 @@ Goal::State GoalRest::process()
             nbMonths = std::max(0.1f, nbMonths);
             float nbHours =  nbMonths * City::NB_HOURS_PER_MONTH;
             // Add subgoal
-            pushBack(new GoalWait(mOwner, nbHours));
+            pushBack(std::make_unique<GoalWait>(mOwner, nbHours));
         }
     }
 

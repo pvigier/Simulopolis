@@ -150,7 +150,7 @@ void Network::floodFill(int i, int j, int c)
     frontier.push(sf::Vector2i(j, i));
     mComponents.set(i, j, c);
     if (isEntryPoint(i, j))
-        mEntryPoints[c].push_back(sf::Vector2i(j, i));
+        mEntryPoints[c].emplace_back(j, i);
     while (!frontier.empty())
     {
         sf::Vector2i position = frontier.top();

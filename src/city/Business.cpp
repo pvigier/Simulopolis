@@ -24,7 +24,7 @@ Business::Business(const std::string& name, Type type, unsigned int nbStairs, Go
     Building(name, type, nbStairs), mGood(good), mMaxSizeStock(maxSizeStock), mStock(0), mStockCost(0.0),
     mPrice(0.0)
 {
-    mEmployees.push_back(Work(Work::Type::MANAGER, this));
+    mEmployees.emplace_back(Work::Type::MANAGER, this);
     mEmployees.resize(nbEmployees + 1, Work(employeeType, this));
 }
 
@@ -35,7 +35,7 @@ Business::~Business()
 
 std::unique_ptr<Tile> Business::clone() const
 {
-    return std::unique_ptr<Tile>(new Business(mTextureName, mType, mNbStairs, mGood, mMaxSizeStock, mEmployees.size() - 1, mEmployees.back().getType()));
+    return std::make_unique<Business>(mTextureName, mType, mNbStairs, mGood, mMaxSizeStock, mEmployees.size() - 1, mEmployees.back().getType());
 }
 
 void Business::setOwner(Company* owner)

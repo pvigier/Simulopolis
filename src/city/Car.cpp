@@ -37,7 +37,7 @@ void Car::draw(sf::RenderTarget& target, sf::RenderStates states) const
     /*const Path& path = mSteering.getPath();
     std::vector<sf::Vertex> lines;
     for (const Vector2f& point : path.getPoints())
-        lines.push_back(sf::Vertex(point));
+        lines.emplace_back(point);
     target.draw(lines.data(), lines.size(), sf::LinesStrip);*/
     // Draw car
     target.draw(mSprite, states);

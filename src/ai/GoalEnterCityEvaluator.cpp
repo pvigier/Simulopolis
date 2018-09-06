@@ -16,5 +16,5 @@ float GoalEnterCityEvaluator::computeDesirability(Person* person) const
 
 void GoalEnterCityEvaluator::setGoal(Person* person) const
 {
-    person->getLongTermBrain().pushFront(new GoalEnterCity(person));
+    person->getLongTermBrain().pushFront(std::make_unique<GoalEnterCity>(person));
 }

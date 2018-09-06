@@ -35,5 +35,5 @@ float GoalShopEvaluator::computeDesirability(Person* person) const
 
 void GoalShopEvaluator::setGoal(Person* person) const
 {
-    person->getShortTermBrain().pushFront(new GoalShop(person));
+    person->getShortTermBrain().pushFront(std::make_unique<GoalShop>(person));
 }

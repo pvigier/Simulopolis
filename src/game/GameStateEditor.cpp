@@ -407,7 +407,7 @@ void GameStateEditor::generateMenuTextures()
     {
         tile->setPosition(sf::Vector2i(), sf::Vector2f());
         tile->updateVariant(neighbors);
-        std::unique_ptr<sf::RenderTexture> texture(new sf::RenderTexture);
+        std::unique_ptr<sf::RenderTexture> texture = std::make_unique<sf::RenderTexture>();
         texture->create(26, 26);
         sf::FloatRect bounds = tile->getBounds();
         sf::Vector2f center = sf::Vector2f(bounds.left, bounds.top) + 0.5f * sf::Vector2f(bounds.width, bounds.height);

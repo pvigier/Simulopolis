@@ -16,5 +16,5 @@ float GoalWorkEvaluator::computeDesirability(Person* person) const
 
 void GoalWorkEvaluator::setGoal(Person* person) const
 {
-    person->getShortTermBrain().pushFront(new GoalWork(person));
+    person->getShortTermBrain().pushFront(std::make_unique<GoalWork>(person));
 }

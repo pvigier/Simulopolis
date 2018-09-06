@@ -16,5 +16,5 @@ float GoalGetBetterWorkEvaluator::computeDesirability(Person* person) const
 
 void GoalGetBetterWorkEvaluator::setGoal(Person* person) const
 {
-    person->getLongTermBrain().pushFront(new GoalGetBetterWork(person, 3));
+    person->getLongTermBrain().pushFront(std::make_unique<GoalGetBetterWork>(person, 3));
 }

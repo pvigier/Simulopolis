@@ -21,7 +21,7 @@ void CallForBids::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 std::unique_ptr<Tile> CallForBids::clone() const
 {
-    return std::unique_ptr<Tile>(new CallForBids(*this));
+    return std::make_unique<CallForBids>(mTextureName, mType, mSprite.getColor());
 }
 
 void CallForBids::setPosition(sf::Vector2i coordinates, sf::Vector2f position)

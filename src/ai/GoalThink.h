@@ -14,7 +14,7 @@ public:
     virtual State process() override;
     virtual void terminate() override;
 
-    void addEvaluator(GoalEvaluator* evaluator);
+    void addEvaluator(std::unique_ptr<GoalEvaluator> evaluator);
 
     virtual bool handle(Message message) override;
 

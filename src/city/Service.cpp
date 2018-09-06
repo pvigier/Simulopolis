@@ -17,7 +17,7 @@ Service::~Service()
 
 std::unique_ptr<Tile> Service::clone() const
 {
-    return std::unique_ptr<Tile>(new Service(mTextureName, mType, mNbStairs, mEmployees.size(), mEmployees.back().getType()));
+    return std::make_unique<Service>(mTextureName, mType, mNbStairs, mEmployees.size(), mEmployees.back().getType());
 }
 
 void Service::update()
