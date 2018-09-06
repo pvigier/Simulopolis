@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <limits>
+#include <algorithm>
 
 // Types
 constexpr float EPSILON = 1e-5;

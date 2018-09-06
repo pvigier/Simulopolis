@@ -1,6 +1,6 @@
 <gui>
 	<image name="background" texture="background" />
-    <image name="city" />
+    <image size="800 600" name="city" />
     <widget size="800 600">
         <widget>
             <text text="Welcome to" characterSize="32" style="titleText" />
