@@ -11,7 +11,7 @@ GoalShopEvaluator::GoalShopEvaluator(float bias) : GoalEvaluator(bias)
     //ctor
 }
 
-float GoalShopEvaluator::computeDesirability(Person* person) const
+float GoalShopEvaluator::computeDesirability(Person* person)
 {
     if (person->getHome() && person->getAccountBalance() >= 0.0)
     {
@@ -33,7 +33,7 @@ float GoalShopEvaluator::computeDesirability(Person* person) const
     return 0.0f;
 }
 
-void GoalShopEvaluator::setGoal(Person* person) const
+void GoalShopEvaluator::setGoal(Person* person)
 {
     person->getShortTermBrain().pushFront(std::make_unique<GoalShop>(person));
 }

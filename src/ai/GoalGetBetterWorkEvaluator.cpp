@@ -7,14 +7,14 @@ GoalGetBetterWorkEvaluator::GoalGetBetterWorkEvaluator(float bias) : GoalEvaluat
     //ctor
 }
 
-float GoalGetBetterWorkEvaluator::computeDesirability(Person* person) const
+float GoalGetBetterWorkEvaluator::computeDesirability(Person* person)
 {
     if (person->getHome())
         return mBias * std::exp(-person->getLastMonthOutcome());
     return 0.0f;
 }
 
-void GoalGetBetterWorkEvaluator::setGoal(Person* person) const
+void GoalGetBetterWorkEvaluator::setGoal(Person* person)
 {
     person->getLongTermBrain().pushFront(std::make_unique<GoalGetBetterWork>(person, 3));
 }

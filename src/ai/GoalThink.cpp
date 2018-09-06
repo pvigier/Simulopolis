@@ -46,8 +46,8 @@ bool GoalThink::handle(Message message)
 void GoalThink::arbitrate()
 {
     float maxDesirability = std::numeric_limits<float>::lowest();
-    const GoalEvaluator* bestEvaluator = nullptr;
-    for (const std::unique_ptr<GoalEvaluator>& evaluator : mEvaluators)
+    GoalEvaluator* bestEvaluator = nullptr;
+    for (std::unique_ptr<GoalEvaluator>& evaluator : mEvaluators)
     {
         float desirability = evaluator->computeDesirability(mOwner);
         if (desirability > maxDesirability)

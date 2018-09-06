@@ -7,9 +7,9 @@ class GoalWorkEvaluator : public GoalEvaluator
 public:
     GoalWorkEvaluator(float bias);
 
-    virtual float computeDesirability(Person* person) const override;
+    virtual float computeDesirability(Person* person) override;
 
-    virtual void setGoal(Person* person) const override;
+    virtual void setGoal(Person* person) override;
 
 private:
 };
