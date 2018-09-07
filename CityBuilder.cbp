@@ -55,6 +55,10 @@
 		<Unit filename="src/ai/GoalGetBetterWork.h" />
 		<Unit filename="src/ai/GoalGetBetterWorkEvaluator.cpp" />
 		<Unit filename="src/ai/GoalGetBetterWorkEvaluator.h" />
+		<Unit filename="src/ai/GoalLeaveCity.cpp" />
+		<Unit filename="src/ai/GoalLeaveCity.h" />
+		<Unit filename="src/ai/GoalLeaveCityEvaluator.cpp" />
+		<Unit filename="src/ai/GoalLeaveCityEvaluator.h" />
 		<Unit filename="src/ai/GoalMoveTo.cpp" />
 		<Unit filename="src/ai/GoalMoveTo.h" />
 		<Unit filename="src/ai/GoalRest.cpp" />

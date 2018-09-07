@@ -59,6 +59,15 @@ City::City() :
 
     // Company
     mCityCompany.setCity(this);
+
+    // Register mailbox
+    sMessageBus->addMailbox(mMailbox);
+}
+
+City::~City()
+{
+    // Unregister mailbox
+    sMessageBus->removeMailbox(mMailbox);
 }
 
 void City::load(const std::string& name)
@@ -184,6 +193,24 @@ void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void City::update(float dt)
 {
+    // Read messages
+    while (!mMailbox.isEmpty())
+    {
+        Message message = mMailbox.get();
+        if (message.type == MessageType::CITY)
+        {
+            const City::Event& event = message.getInfo<City::Event>();
+            switch (event.type)
+            {
+                case City::Event::Type::REMOVE_CITIZEN:
+                    removeCitizen(event.person);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     // Update the citizens
     for (Person* citizen : mCitizens)
         citizen->update(dt);
@@ -236,6 +263,11 @@ void City::update(float dt)
 
     // Update statistics
     updateStatistics();
+}
+
+Id City::getMailboxId() const
+{
+    return mMailbox.getId();
 }
 
 void City::bulldoze(Tile::Type type)
@@ -520,7 +552,8 @@ void City::removeCitizen(Person* person)
 {
     mCitizens.erase(std::find(mCitizens.begin(), mCitizens.end(), person));
     mPersons.erase(person->getId());
-    // Should send a message
+    // Notify
+    notify(Message::create(MessageType::CITY, Event(Event::Type::CITIZEN_LEFT, person)));
 }
 
 void City::updateStatistics()

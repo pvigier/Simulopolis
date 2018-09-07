@@ -7,6 +7,7 @@
 #include "ai/GoalWorkEvaluator.h"
 #include "ai/GoalShopEvaluator.h"
 #include "ai/GoalEnterCityEvaluator.h"
+#include "ai/GoalLeaveCityEvaluator.h"
 #include "ai/GoalGetBetterWorkEvaluator.h"
 
 Person::Event::Event(Type type) : type(type)
@@ -35,8 +36,8 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
     mState(State::WAITING), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::NECESSARY), mCar(car),
     mAccount(UNDEFINED), mLastMonthBalance(0.0), mMonthBalance(0.0),
-    mEnergyDecayRate(0.1f), mSatietyDecayRate(0.1f), mHealthDecayRate(0.01f), mSafetyDecayRate(0.01f), mHappinessDecayRate(0.01f),
-    mEnergy(1.0f), mSatiety(1.0f), mHealth(1.0f), mSafety(1.0f), mHappiness(0.0f),
+    mEnergyDecayRate(0.1f), mSatietyDecayRate(0.1f), mHealthDecayRate(0.01f), mSafetyDecayRate(0.01f), mHappinessDecayRate(10.0f),
+    mEnergy(1.0f), mSatiety(1.0f), mHealth(1.0f), mSafety(1.0f), mHappiness(100.0f),
     mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
@@ -47,6 +48,7 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mShortTermBrain.addEvaluator(std::make_unique<GoalWorkEvaluator>(1.0f));
     mShortTermBrain.addEvaluator(std::make_unique<GoalShopEvaluator>(1.0f));
     mLongTermBrain.addEvaluator(std::make_unique<GoalEnterCityEvaluator>(1.0f));
+    mLongTermBrain.addEvaluator(std::make_unique<GoalLeaveCityEvaluator>(1.0f));
     mLongTermBrain.addEvaluator(std::make_unique<GoalGetBetterWorkEvaluator>(1.0f));
 }
 

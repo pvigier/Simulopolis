@@ -93,6 +93,11 @@ void PersonWindow::onNewYear()
     ++mYear;
 }
 
+const Person& PersonWindow::getPerson() const
+{
+    return mPerson;
+}
+
 sf::RenderTexture& PersonWindow::getRenderTexture()
 {
     return mRenderTexture;

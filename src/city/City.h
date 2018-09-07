@@ -37,8 +37,8 @@ public:
 
     struct Event
     {
-        enum class Type{NEW_MONTH, NEW_YEAR, NEW_IMMIGRANT, IMMIGRANT_EJECTED, NEW_CITIZEN, NEW_MINIMUM_WAGE,
-            BUILDING_DESTROYED};
+        enum class Type{NEW_MONTH, NEW_YEAR, NEW_IMMIGRANT, IMMIGRANT_EJECTED, NEW_CITIZEN, CITIZEN_LEFT,
+            NEW_MINIMUM_WAGE, BUILDING_DESTROYED, REMOVE_CITIZEN};
 
         Type type;
         union
@@ -57,15 +57,21 @@ public:
     };
 
     City();
+    ~City();
 
+    // IO
     void load(const std::string& name);
     void save(const std::string& name);
     void createMap(uint64_t seed);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    // Map
     void update(float dt);
+
+    // Mailbox
+    Id getMailboxId() const;
+
+    // Map
     void bulldoze(Tile::Type type);
     Intersection intersect(const sf::Vector2f& position);
     Map& getMap();
@@ -117,6 +123,9 @@ public:
     float toCityTime(float humanTime) const;
 
 private:
+    // Mailbox
+    Mailbox mMailbox;
+
     // Generators
     RandomGenerator mRandomGenerator;
     TerrainGenerator mTerrainGenerator;

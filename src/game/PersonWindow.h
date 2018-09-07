@@ -19,6 +19,7 @@ public:
     void update();
     void onNewYear();
 
+    const Person& getPerson() const;
     sf::RenderTexture& getRenderTexture();
     sf::View getView();
 

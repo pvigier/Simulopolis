@@ -62,6 +62,9 @@ void CitizensWindow::update()
                 case City::Event::Type::NEW_CITIZEN:
                     addCitizen(event.person);
                     break;
+                case City::Event::Type::CITIZEN_LEFT:
+                    removeCitizen(event.person);
+                    break;
                 default:
                     break;
             }

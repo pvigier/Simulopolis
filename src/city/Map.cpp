@@ -278,6 +278,11 @@ unsigned int Map::getHeight() const
     return mHeight;
 }
 
+const Tile* Map::getTile(std::size_t i, std::size_t j) const
+{
+    return mTiles.get(i, j).get();
+}
+
 const Array2<std::unique_ptr<Tile>>& Map::getTiles() const
 {
     return mTiles;

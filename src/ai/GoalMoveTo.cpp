@@ -4,7 +4,7 @@
 #include "city/Building.h"
 #include "util/format.h"
 
-GoalMoveTo::GoalMoveTo(Person* owner, const Building* target) : Goal(owner), mTarget(target)
+GoalMoveTo::GoalMoveTo(Person* owner, const Tile* target) : Goal(owner), mTarget(target)
 {
     //ctor
 }
@@ -56,5 +56,8 @@ void GoalMoveTo::terminate()
 
 std::string GoalMoveTo::toString() const
 {
-    return format("Move to building %d", mTarget->getId());
+    if (mTarget->isBuilding())
+        return format("Move to building %d", static_cast<const Building*>(mTarget)->getId());
+    else
+        return "Move to the frontier";
 }

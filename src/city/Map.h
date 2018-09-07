@@ -41,6 +41,7 @@ public:
     // Data
     unsigned int getWidth() const;
     unsigned int getHeight() const;
+    const Tile* getTile(std::size_t i, std::size_t j) const;
     const Array2<std::unique_ptr<Tile>>& getTiles() const;
     unsigned int getNbSelected() const;
 

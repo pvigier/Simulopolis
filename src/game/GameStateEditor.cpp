@@ -273,6 +273,20 @@ void GameStateEditor::handleMessages()
                     }
                     break;
                 }
+                case City::Event::Type::CITIZEN_LEFT:
+                {
+                    std::vector<GuiWindow*>& windows = mWindowManagers[0].getWindows();
+                    for (std::size_t i = 0; i < windows.size(); ++i)
+                    {
+                        if (&static_cast<PersonWindow*>(windows[i])->getPerson() == event.person)
+                        {
+                            mGui->remove(windows[i]);
+                            mWindowManagers[0].removeWindow(i);
+                            break;
+                        }
+                    }
+                    break;
+                }
                 default:
                     break;
             }
