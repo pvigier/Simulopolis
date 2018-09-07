@@ -4,7 +4,7 @@
     <widget size="800 600">
         <widget style="tabs" size="600 400">
             <widget size="500 200">
-                <vboxlayout />
+                <vboxlayout spacing="16" />
             </widget>
             <button name="loadCityButton" size="192 36" style="button">
                 <text text="Load" characterSize="24" style="darkText" />

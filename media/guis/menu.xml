@@ -4,8 +4,8 @@
     <widget size="800 600">
         <widget>
             <text text="Welcome to" characterSize="32" style="titleText" />
-            <text text="Simulopolis" characterSize="96" style="titleText" />
-            <vboxlayout hAlignment="center" vAlignment="center" spacing="-32" />
+            <text text="Simulopolis" characterSize="110" style="titleText" />
+            <vboxlayout hAlignment="center" vAlignment="center" spacing="-36" />
         </widget>
         <widget name="menu">
             <button name="resumeGameButton" size="192 36" style="button">
@@ -20,12 +20,16 @@
                 <text text="Load game" characterSize="24" style="menuText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
+			<button name="settingsButton" size="192 36" style="button">
+                <text text="Settings" characterSize="24" style="menuText" />
+                <hboxlayout hAlignment="center" vAlignment="center" />
+            </button>
             <button name="exitButton" size="192 36" style="button">
                 <text text="Exit" characterSize="24" style="menuText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <vboxlayout hAlignment="center" vAlignment="center" spacing="16" />
         </widget>
-        <vboxlayout hAlignment="center" vAlignment="center" spacing="32" />
+        <vboxlayout hAlignment="center" vAlignment="center" spacing="48" />
     </widget>
 </gui>

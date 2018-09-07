@@ -14,7 +14,7 @@
                     <input name="seedInput" characterSize="18" style="input" />
                     <hboxlayout />
                 </widget>
-                <vboxlayout />
+                <vboxlayout spacing="16" />
             </widget>
             <button name="createCityButton" size="192 36" style="button">
                 <text text="Create" characterSize="24" style="darkText" />
