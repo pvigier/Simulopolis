@@ -4,6 +4,7 @@
 #include "game/GameStateEditor.h"
 #include "game/GameStateNewCity.h"
 #include "game/GameStateLoadCity.h"
+#include "game/GameStateSettings.h"
 
 Game::Game()
 {
@@ -138,6 +139,9 @@ void Game::handleMessages()
                     break;
                 case GameState::Event::Type::OPEN_CITY_LOADING_SCREEN:
                     changeState(std::make_unique<GameStateLoadCity>());
+                    break;
+                case GameState::Event::Type::OPEN_SETTINGS:
+                    changeState(std::make_unique<GameStateSettings>());
                     break;
                 case GameState::Event::Type::NEW_GAME:
                 {

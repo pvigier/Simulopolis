@@ -1,0 +1,22 @@
+<gui>
+	<image name="background" texture="background" />
+    <image name="city" />
+    <widget size="800 600">
+        <widget style="tabs" size="600 400">
+			<text text="Settings" characterSize="32" style="darkText" />
+			<widget size="500 220">
+                <button name="fullscreenButton" size="192 36" style="button">
+					<text name="fullscreenText" text="Fullscreen: off" characterSize="24" style="darkText" />
+					<hboxlayout hAlignment="center" vAlignment="center" />
+				</button>
+				<button name="musicButton" size="192 36" style="button">
+					<text name="musicText" text="Music: on" characterSize="24" style="darkText" />
+					<hboxlayout hAlignment="center" vAlignment="center" />
+				</button>
+                <vboxlayout hAlignment="center" spacing="16" margins="0 16 0 16" />
+            </widget>
+            <vboxlayout hAlignment="center" vAlignment="top" spacing="16" margins="32 32 32 32" />
+        </widget>
+        <vboxlayout hAlignment="center" vAlignment="center" />
+    </widget>
+</gui>

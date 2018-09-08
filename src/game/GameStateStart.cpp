@@ -24,6 +24,7 @@ GameStateStart::~GameStateStart()
     mGui->get("resumeGameButton")->unsubscribe(mMailbox.getId());
     mGui->get("newGameButton")->unsubscribe(mMailbox.getId());
     mGui->get("loadGameButton")->unsubscribe(mMailbox.getId());
+    mGui->get("settingsButton")->unsubscribe(mMailbox.getId());
     mGui->get("exitButton")->unsubscribe(mMailbox.getId());
 }
 
@@ -70,6 +71,8 @@ void GameStateStart::handleMessages()
                         sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::OPEN_NEW_CITY_SCREEN)));
                     else if (name == "loadGameButton")
                         sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::OPEN_CITY_LOADING_SCREEN)));
+                    else if (name == "settingsButton")
+                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::OPEN_SETTINGS)));
                     else if (name == "exitButton")
                         sRenderEngine->closeWindow();
                 }
@@ -123,5 +126,6 @@ void GameStateStart::createGui(bool resume)
     mGui->get("resumeGameButton")->subscribe(mMailbox.getId());
     mGui->get("newGameButton")->subscribe(mMailbox.getId());
     mGui->get("loadGameButton")->subscribe(mMailbox.getId());
+    mGui->get("settingsButton")->subscribe(mMailbox.getId());
     mGui->get("exitButton")->subscribe(mMailbox.getId());
 }

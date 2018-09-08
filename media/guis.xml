@@ -3,4 +3,5 @@
 	<gui name="editor" path="guis/editor.xml" />
     <gui name="new_city" path="guis/new_city.xml" />
     <gui name="load_city" path="guis/load_city.xml" />
+    <gui name="settings" path="guis/settings.xml" />
 </guis>

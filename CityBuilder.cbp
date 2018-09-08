@@ -138,6 +138,8 @@
 		<Unit filename="src/game/GameStateLoadCity.h" />
 		<Unit filename="src/game/GameStateNewCity.cpp" />
 		<Unit filename="src/game/GameStateNewCity.h" />
+		<Unit filename="src/game/GameStateSettings.cpp" />
+		<Unit filename="src/game/GameStateSettings.h" />
 		<Unit filename="src/game/GameStateStart.cpp" />
 		<Unit filename="src/game/GameStateStart.h" />
 		<Unit filename="src/game/GoodsMarketWindow.cpp" />
