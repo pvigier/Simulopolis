@@ -24,3 +24,13 @@ void AudioEngine::addMusic(const std::string& path)
 {
     mPlaylist.push_back(path);
 }
+
+float AudioEngine::getVolume() const
+{
+    return mMusic.getVolume();
+}
+
+void AudioEngine::setVolume(float volume)
+{
+    mMusic.setVolume(volume);
+}

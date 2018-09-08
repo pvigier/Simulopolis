@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-RenderEngine::RenderEngine() : mWindow(sf::VideoMode(800, 600), "City Builder",
+RenderEngine::RenderEngine() : mWindow(sf::VideoMode(800, 600), "Simulopolis",
     sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 4))
 {
     mWindow.setFramerateLimit(60);
@@ -23,6 +23,17 @@ sf::RenderWindow& RenderEngine::getWindow()
 bool RenderEngine::isWindowOpen() const
 {
     return mWindow.isOpen();
+}
+
+void RenderEngine::setFullscreen(bool fullscreen)
+{
+    mWindow.close();
+    if (fullscreen)
+        mWindow.create(sf::VideoMode::getFullscreenModes()[0], "Simulopolis",
+            sf::Style::Fullscreen, sf::ContextSettings(0, 0, 4));
+    else
+        mWindow.create(sf::VideoMode(800, 600), "Simulopolis",
+            sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 4));
 }
 
 void RenderEngine::closeWindow()

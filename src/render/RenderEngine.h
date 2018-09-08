@@ -38,6 +38,13 @@ public:
     bool isWindowOpen() const;
 
     /**
+     * \brief Create a new window with the specified video mode
+     *
+     * \param fullscreen Whether the new window is fullscreen or not
+     */
+    void setFullscreen(bool fullscreen);
+
+    /**
      * \brief Close the window
      */
     void closeWindow();
@@ -74,7 +81,7 @@ public:
      * \brief Convert a point from target coordinates to world coordinates
      *
      * \param point Pixel to convert
-     * \param view	The view to use for converting the point
+     * \param view The view to use for converting the point
      *
      * \return The converted point, in "world" units
      */
