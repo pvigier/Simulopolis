@@ -3,15 +3,16 @@
     <image name="city" />
     <widget size="800 600">
         <widget style="tabs" size="600 400">
-            <widget size="500 200">
-                <vboxlayout spacing="16" />
+			<text text="Select city" characterSize="32" style="darkText" />
+            <widget size="500 220">
+                <vboxlayout spacing="16" margins="0 16 0 16" />
             </widget>
             <button name="loadCityButton" size="192 36" style="button">
                 <text text="Load" characterSize="24" style="darkText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
-            <vboxlayout hAlignment="center" vAlignment="center" spacing="16" />
+            <vboxlayout hAlignment="center" vAlignment="top" spacing="16" margins="32 32 32 32" />
         </widget>
-        <vboxlayout hAlignment="center" vAlignment="center" spacing="16" />
+        <vboxlayout hAlignment="center" vAlignment="center" />
     </widget>
 </gui>
