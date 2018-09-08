@@ -80,7 +80,7 @@ void GameStateEditor::handleMessages()
         Message message = mMailbox.get();
         if (message.type == MessageType::INPUT)
         {
-            const sf::Event& event = message.getInfo<sf::Event>();
+            const InputEvent& event = message.getInfo<InputEvent>();
             switch (event.type)
             {
                 case sf::Event::Closed:
@@ -122,7 +122,7 @@ void GameStateEditor::handleMessages()
                     break;
                 case sf::Event::MouseButtonPressed:
                     // Start panning
-                    if (event.mouseButton.button == sf::Mouse::Middle)
+                    if (!event.processed && event.mouseButton.button == sf::Mouse::Middle)
                     {
                         if (mActionState != ActionState::PANNING)
                         {
@@ -137,7 +137,7 @@ void GameStateEditor::handleMessages()
                         mActionState = ActionState::NONE;
                         stopSelecting();
                     }
-                    else if (event.mouseButton.button == sf::Mouse::Left)
+                    else if (!event.processed && event.mouseButton.button == sf::Mouse::Left)
                     {
                         // Select map tile
                         if (mActionState != ActionState::SELECTING)
@@ -161,7 +161,7 @@ void GameStateEditor::handleMessages()
                             }
                         }
                     }
-                    else if (event.mouseButton.button == sf::Mouse::Right)
+                    else if (!event.processed && event.mouseButton.button == sf::Mouse::Right)
                     {
                         City::Intersection intersection = mCity.intersect(gamePos);
                         if (intersection.type == City::Intersection::Type::CAR)
@@ -174,11 +174,14 @@ void GameStateEditor::handleMessages()
                     stopSelecting();
                     break;
                 case sf::Event::MouseWheelMoved:
-                    // Zoom the view
-                    if (event.mouseWheel.delta < 0)
-                        zoom(2.0f);
-                    else
-                        zoom(0.5f);
+                    if (!event.processed)
+                    {
+                        // Zoom the view
+                        if (event.mouseWheel.delta < 0)
+                            zoom(2.0f);
+                        else
+                            zoom(0.5f);
+                    }
                     break;
                 default:
                     break;

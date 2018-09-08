@@ -124,7 +124,7 @@ void Gui::handleMessages()
         Message message = mMailbox.get();
         if (message.type == MessageType::INPUT)
         {
-            sf::Event event = message.getInfo<sf::Event>();
+            InputEvent& event = message.getInfo<InputEvent>();
             bool processed = false;
             switch (event.type)
             {
@@ -146,6 +146,7 @@ void Gui::handleMessages()
                 case sf::Event::MouseWheelMoved:
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
                         processed = mRootWidgets[i]->updateMouseWheelScrolled(event.mouseWheel.delta, processed) || processed;
+                    break;
                 case sf::Event::TextEntered:
                     for (int i = mRootWidgets.size() - 1; i >= 0; --i)
                         processed = mRootWidgets[i]->updateTextEntered(event.text.unicode, processed) || processed;
@@ -157,12 +158,12 @@ void Gui::handleMessages()
                 default:
                     break;
             }
-            if (!processed)
-                notify(message);
+            event.processed = processed;
+            notify(message);
         }
         else if (message.type == MessageType::GUI)
         {
-            GuiEvent event = message.getInfo<GuiEvent>();
+            const GuiEvent& event = message.getInfo<GuiEvent>();
             switch (event.type)
             {
                 case GuiEvent::Type::WINDOW_CLOSED:

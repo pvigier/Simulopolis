@@ -38,7 +38,7 @@ void InputEngine::pollEvents()
             default:
                 break;
         }
-        notify(Message::create(MessageType::INPUT, event));
+        notify(Message::create(MessageType::INPUT, InputEvent(event)));
     }
 }
 

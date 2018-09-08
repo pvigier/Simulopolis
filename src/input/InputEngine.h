@@ -1,8 +1,8 @@
 #pragma once
 
-#include <SFML/Window/Event.hpp>
 #include "message/Subject.h"
 #include "render/RenderEngine.h"
+#include "input/InputEvent.h"
 
 /**
  * \brief Engine that manages inputs

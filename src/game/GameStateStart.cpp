@@ -1,6 +1,7 @@
 #include "game/GameStateStart.h"
 #include "message/MessageBus.h"
 #include "render/RenderEngine.h"
+#include "input/InputEvent.h"
 #include "audio/AudioEngine.h"
 #include "resource/TextureManager.h"
 #include "resource/StylesheetManager.h"
@@ -41,7 +42,7 @@ void GameStateStart::handleMessages()
         Message message = mMailbox.get();
         if (message.type == MessageType::INPUT)
         {
-            sf::Event event = message.getInfo<sf::Event>();
+            const InputEvent& event = message.getInfo<InputEvent>();
             switch (event.type)
             {
                 case sf::Event::Closed:
@@ -57,7 +58,7 @@ void GameStateStart::handleMessages()
         }
         if (message.type == MessageType::GUI)
         {
-            GuiEvent event = message.getInfo<GuiEvent>();
+            const GuiEvent& event = message.getInfo<GuiEvent>();
             switch (event.type)
             {
                 case GuiEvent::Type::BUTTON_RELEASED:

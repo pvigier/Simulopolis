@@ -1,6 +1,7 @@
 #include "game/GameStateLoadCity.h"
 #include "message/MessageBus.h"
 #include "render/RenderEngine.h"
+#include "input/InputEvent.h"
 #include "audio/AudioEngine.h"
 #include "resource/GuiManager.h"
 #include "gui/Gui.h"
@@ -34,7 +35,7 @@ void GameStateLoadCity::handleMessages()
         Message message = mMailbox.get();
         if (message.type == MessageType::INPUT)
         {
-            sf::Event event = message.getInfo<sf::Event>();
+            const InputEvent& event = message.getInfo<InputEvent>();
             switch (event.type)
             {
                 case sf::Event::Closed:
@@ -50,7 +51,7 @@ void GameStateLoadCity::handleMessages()
         }
         if (message.type == MessageType::GUI)
         {
-            GuiEvent event = message.getInfo<GuiEvent>();
+            const GuiEvent& event = message.getInfo<GuiEvent>();
             switch (event.type)
             {
                 case GuiEvent::Type::BUTTON_RELEASED:
