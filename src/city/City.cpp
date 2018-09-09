@@ -565,10 +565,10 @@ void City::updateStatistics()
 void City::computeHappiness()
 {
     if (mCitizens.empty())
-        mHappiness = 100.0f;
+        mHappiness = 1.0f;
     else
     {
-        float sumAverage = std::accumulate(mCitizens.begin(), mCitizens.end(), 0.0f, [](float lhs, Person* rhs){ return lhs + rhs->getHappiness(); });
+        float sumAverage = std::accumulate(mCitizens.begin(), mCitizens.end(), 0.0f, [](float lhs, Person* rhs){ return lhs + rhs->getNeed(Person::Need::HAPPINESS); });
         mHappiness = sumAverage / mCitizens.size();
     }
 }
@@ -581,9 +581,9 @@ void City::computeAttractiveness()
     mAttractiveness *= 1 - 1 / (1.0f + nbHomesAvailable);
     // Ease to obtain a job
     float nbWorksAvailable = static_cast<const Market<Work>*>(getMarket(VMarket::Type::WORK))->getItems().size();
-    mAttractiveness *= 1 -  1 / (1.0f + nbWorksAvailable);
+    mAttractiveness *= 1 - 1 / (1.0f + nbWorksAvailable);
     // Happiness
-    mAttractiveness *= getAverageHappiness() / 100.0f;
+    mAttractiveness *= getAverageHappiness();
 }
 
 void City::onNewMonth()

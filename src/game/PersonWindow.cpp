@@ -81,11 +81,11 @@ void PersonWindow::update()
     mBankAccountText->setString(format("Bank account: $%.2f", mPerson.getAccountBalance()));
     mShortTermGoalText->setString("Short term goal: " + mPerson.getShortTermBrain().toString());
     mLongTermGoalText->setString("Long term goal: " + mPerson.getLongTermBrain().toString());
-    mEnergyText->setString(format("Energy: %.2f", mPerson.getEnergy()));
-    mSatietyText->setString(format("Satiety: %.2f", mPerson.getSatiety()));
-    mHealthText->setString(format("Health: %.2f", mPerson.getHealth()));
-    mSafetyText->setString(format("Safety: %.2f", mPerson.getSafety()));
-    mHappinessText->setString(format("Happiness: %.2f", mPerson.getHappiness()));
+    mEnergyText->setString(format("Energy: %.2f", mPerson.getNeed(Person::Need::ENERGY)));
+    mSatietyText->setString(format("Satiety: %.2f", mPerson.getNeed(Person::Need::SATIETY)));
+    mHealthText->setString(format("Health: %.2f", mPerson.getNeed(Person::Need::HEALTH)));
+    mSafetyText->setString(format("Safety: %.2f", mPerson.getNeed(Person::Need::SAFETY)));
+    mHappinessText->setString(format("Happiness: %.0f", 100.0f * mPerson.getNeed(Person::Need::HAPPINESS)));
 }
 
 void PersonWindow::onNewYear()

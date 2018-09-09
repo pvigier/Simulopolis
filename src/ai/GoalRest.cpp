@@ -38,8 +38,8 @@ Goal::State GoalRest::process()
             if (mSubgoals.size() == 1)
             {
                 float dmonth = dt / mOwner->getCity()->getTimePerMonth();
-                mOwner->increaseEnergy(Housing::ENERGY_GROWTH_RATE * dmonth);
-                mOwner->increaseHappiness(mOwner->getHome()->getHousing()->getComfort() * dmonth);
+                mOwner->increaseNeed(Person::Need::ENERGY, Housing::ENERGY_GROWTH_RATE * dmonth);
+                mOwner->increaseNeed(Person::Need::HAPPINESS, mOwner->getHome()->getHousing()->getComfort() * dmonth);
             }
         }
 
@@ -51,7 +51,7 @@ Goal::State GoalRest::process()
             mAtHome = true;
             mOwner->setState(Person::State::WAITING);
             // Compute the number of hours needed to be rested
-            float nbMonths = (1.0f - mOwner->getEnergy()) / (Housing::ENERGY_GROWTH_RATE - mOwner->getEnergyDecayRate());
+            float nbMonths = (1.0f - mOwner->getNeed(Person::Need::ENERGY)) / (Housing::ENERGY_GROWTH_RATE - mOwner->getDecayRate(Person::Need::ENERGY));
             nbMonths = std::max(0.1f, nbMonths);
             float nbHours =  nbMonths * City::NB_HOURS_PER_MONTH;
             // Add subgoal

@@ -28,7 +28,7 @@ float GoalShopEvaluator::computeDesirability(Person* person)
                 break;
             }
         }
-        return mShopAvailable * mBias * (1.0f - person->getSatiety());
+        return mShopAvailable * mBias * (1.0f - person->getNeed(Person::Need::SATIETY));
     }
     return 0.0f;
 }

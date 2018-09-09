@@ -10,7 +10,7 @@ GoalRestEvaluator::GoalRestEvaluator(float bias) : GoalEvaluator(bias)
 float GoalRestEvaluator::computeDesirability(Person* person)
 {
     if (person->getHome())
-        return mBias * (1.0f - person->getEnergy());
+        return mBias * (1.0f - person->getNeed(Person::Need::ENERGY));
     return 0.0f;
 }
 

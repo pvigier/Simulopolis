@@ -16,6 +16,7 @@ class Person
 public:
     enum class Gender{MALE = 0, FEMALE = 1};
     enum class State{WAITING, MOVING};
+    enum class Need : int {ENERGY = 0, SATIETY, HEALTH, SAFETY, HAPPINESS, COUNT};
 
     struct Event
     {
@@ -78,21 +79,11 @@ public:
     Money getLastMonthOutcome() const;
 
     // Physiology
-    float getEnergyDecayRate() const;
+    float getDecayRate(Need need) const;
 
     // Needs
-    float getEnergy() const;
-    void increaseEnergy(float delta);
-    float getSatiety() const;
-    void increaseSatiety(float delta);
-    float getHealth() const;
-    void increaseHealth(float delta);
-    float getSafety() const;
-    void increaseSafety(float delta);
-
-    // Happiness
-    float getHappiness() const;
-    void increaseHappiness(float delta);
+    float getNeed(Need need) const;
+    void increaseNeed(Need need, float delta);
 
     // Abilities
     Work::Qualification getQualification() const;
@@ -132,20 +123,11 @@ private:
     Money mMonthBalance;
 
     // Physiology
-    float mEnergyDecayRate;
-    float mSatietyDecayRate;
-    float mHealthDecayRate;
-    float mSafetyDecayRate;
-    float mHappinessDecayRate;
+    std::array<float, static_cast<int>(Need::COUNT)> mDecayRates;
 
     // Needs (Physiological and security)
-    float mEnergy;
-    float mSatiety;
-    float mHealth;
-    float mSafety;
-
-    // Happiness
-    float mHappiness;
+    std::array<float, static_cast<int>(Need::COUNT)> mNeeds;
+    std::array<float, static_cast<int>(Need::COUNT)> mAverageNeeds;
 
     // Abilities
     Work::Qualification mQualification;

@@ -306,7 +306,7 @@ void GameStateEditor::update(float dt)
     mGui->get<GuiText>("dateText")->setString(format("%s %d", mCity.getFormattedMonth().c_str(), 2000 + mCity.getYear()));
     mGui->get<GuiText>("fundsText")->setString(format("$%.2f", mCity.getFunds()));
     mGui->get<GuiText>("populationText")->setString(format("Population: %d", mCity.getPopulation()));
-    mGui->get<GuiText>("happinessText")->setString(format("Happiness: %.2f", mCity.getAverageHappiness()));
+    mGui->get<GuiText>("happinessText")->setString(format("Happiness: %.0f", 100.0f * mCity.getAverageHappiness()));
     mGui->get<GuiText>("currentTileText")->setString(Tile::typeToString(mCurrentTile));
 
     // Update the windows

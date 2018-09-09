@@ -9,7 +9,7 @@ GoalLeaveCityEvaluator::GoalLeaveCityEvaluator(float bias) : GoalEvaluator(bias)
 
 float GoalLeaveCityEvaluator::computeDesirability(Person* person)
 {
-    return mBias * (1.0f - person->getHappiness() / 100.0f);
+    return mBias * (1.0f - person->getNeed(Person::Need::HAPPINESS));
 }
 
 void GoalLeaveCityEvaluator::setGoal(Person* person)

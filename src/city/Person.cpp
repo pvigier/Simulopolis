@@ -36,8 +36,8 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
     mState(State::WAITING), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::NECESSARY), mCar(car),
     mAccount(UNDEFINED), mLastMonthBalance(0.0), mMonthBalance(0.0),
-    mEnergyDecayRate(0.1f), mSatietyDecayRate(0.1f), mHealthDecayRate(0.01f), mSafetyDecayRate(0.01f), mHappinessDecayRate(10.0f),
-    mEnergy(1.0f), mSatiety(1.0f), mHealth(1.0f), mSafety(1.0f), mHappiness(100.0f),
+    mDecayRates{0.1f, 0.1f, 0.01f, 0.01f, 0.1f},
+    mNeeds{1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, mAverageNeeds{0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
     mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
@@ -268,59 +268,19 @@ Money Person::getLastMonthOutcome() const
     return Money(mMonthBalance - mLastMonthBalance);
 }
 
-float Person::getEnergyDecayRate() const
+float Person::getDecayRate(Need need) const
 {
-    return mEnergyDecayRate;
+    return mDecayRates[static_cast<int>(need)];
 }
 
-float Person::getEnergy() const
+float Person::getNeed(Need need) const
 {
-    return mEnergy;
+    return mNeeds[static_cast<int>(need)];
 }
 
-void Person::increaseEnergy(float delta)
+void Person::increaseNeed(Need need, float delta)
 {
-    mEnergy = clamp(mEnergy + delta, 0.0f, 1.0f);
-}
-
-float Person::getSatiety() const
-{
-    return mSatiety;
-}
-
-void Person::increaseSatiety(float delta)
-{
-    mSatiety = clamp(mSatiety + delta, 0.0f, 1.0f);
-}
-
-float Person::getHealth() const
-{
-    return mHealth;
-}
-
-void Person::increaseHealth(float delta)
-{
-    mHealth = clamp(mHealth + delta, 0.0f, 1.0f);
-}
-
-float Person::getSafety() const
-{
-    return mSafety;
-}
-
-void Person::increaseSafety(float delta)
-{
-    mSafety = clamp(mSafety + delta, 0.0f, 1.0f);
-}
-
-float Person::getHappiness() const
-{
-    return mHappiness;
-}
-
-void Person::increaseHappiness(float delta)
-{
-    mHappiness = clamp(mHappiness + delta, 0.0f, 100.0f);
+    mNeeds[static_cast<int>(need)] = clamp(mNeeds[static_cast<int>(need)] + delta, 0.0f, 1.0f);
 }
 
 Work::Qualification Person::getQualification() const
@@ -351,11 +311,11 @@ const GoalThink& Person::getLongTermBrain() const
 void Person::updateNeeds(float dt)
 {
     float dmonth = dt / mCity->getTimePerMonth();
-    increaseEnergy(-dmonth * mEnergyDecayRate);
-    increaseSatiety(-dmonth * mSatietyDecayRate);
-    increaseHealth(-dmonth * mHealthDecayRate);
-    increaseSafety(-dmonth * mSafetyDecayRate);
-    increaseHappiness(-dmonth * mHappinessDecayRate);
+    for (int i = 0; i < static_cast<int>(Need::COUNT); ++i)
+    {
+        increaseNeed(static_cast<Need>(i), -dmonth * mDecayRates[i]);
+        mAverageNeeds[i] += dmonth * mNeeds[i];
+    }
 }
 
 void Person::onNewMonth()
@@ -363,4 +323,6 @@ void Person::onNewMonth()
     mLastMonthBalance = mMonthBalance;
     mMonthBalance = mCity->getBank().getBalance(mAccount);
     mLongTermBrain.process();
+    // Reset averages
+    mAverageNeeds.fill(0.0f);
 }
