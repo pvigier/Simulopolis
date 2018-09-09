@@ -1,4 +1,5 @@
 #include "city/Bank.h"
+#include "util/debug.h"
 #include "message/MessageBus.h"
 
 MessageBus* Bank::sMessageBus = nullptr;
@@ -75,8 +76,16 @@ Money Bank::getBalance(Id account) const
 
 void Bank::transferMoney(Id issuer, Id receiver, Money amount)
 {
-    mAccounts.get(issuer).balance -= amount;
-    mAccounts.get(receiver).balance += amount;
+    if (mAccounts.has(issuer) && mAccounts.has(receiver))
+    {
+        mAccounts.get(issuer).balance -= amount;
+        mAccounts.get(receiver).balance += amount;
+    }
+    else
+    {
+        DEBUG_IF(!mAccounts.has(issuer), "Transfer money: invalid issuer (" << issuer << ")\n");
+        DEBUG_IF(!mAccounts.has(receiver), "Transfer money: invalid receiver (" << receiver << ")\n");
+    }
 }
 
 void Bank::collectTaxes(Id cityAccount, double incomeTax, double corporateTax)
@@ -126,7 +135,7 @@ Bank::Event Bank::createTransferMoneyEvent(Id issuer, Id receiver, Money amount)
 
 Bank::Event Bank::createAccountCreatedEvent(Id account) const
 {
-    Event event{Event::Type::TRANSFER_MONEY, {}};
+    Event event{Event::Type::ACCOUNT_CREATED, {}};
     event.account = account;
     return event;
 }
