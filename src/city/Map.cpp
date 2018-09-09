@@ -209,7 +209,7 @@ const Network& Map::getNetwork() const
     return mNetwork;
 }
 
-bool Map::isReachableFrom(const Building* start, const Building* end) const
+bool Map::isReachableFrom(const Tile* start, const Tile* end) const
 {
     sf::Vector2i startRoad, endRoad;
     mNetwork.getAdjacentRoad(start->getCoordinates().y, start->getCoordinates().x, startRoad);
@@ -249,7 +249,7 @@ Path Map::getPath(sf::Vector2i start, sf::Vector2i end) const
     return Path(points);
 }
 
-std::vector<const Building*> Map::getReachableBuildingsAround(const Building* origin, int radius, Tile::Type type) const
+std::vector<const Building*> Map::getReachableBuildingsAround(const Tile* origin, int radius, Tile::Type type) const
 {
     std::vector<const Building*> buildings;
     sf::Vector2i center = origin->getCoordinates();

@@ -3,13 +3,13 @@
 #include "ai/Goal.h"
 
 template <typename T> class Market;
-class Work;
+class Lease;
 
-class GoalGetBetterWork : public Goal
+class GoalGetBetterHome : public Goal
 {
 public:
-    GoalGetBetterWork(Person* owner, unsigned int nbMonthsBeforeFailing);
-    virtual ~GoalGetBetterWork();
+    GoalGetBetterHome(Person* owner, unsigned int nbMonthsBeforeFailing);
+    virtual ~GoalGetBetterHome();
 
     virtual void activate() override;
     virtual State process() override;
@@ -21,5 +21,5 @@ public:
 
 private:
     unsigned int mNbMonthsBeforeFailing;
-    const Market<Work>* mMarket;
+    const Market<Lease>* mMarket;
 };

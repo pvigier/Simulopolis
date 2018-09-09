@@ -84,6 +84,7 @@ public:
     // Needs
     float getNeed(Need need) const;
     void increaseNeed(Need need, float delta);
+    float getAverageNeed(Need need) const;
 
     // Abilities
     Work::Qualification getQualification() const;

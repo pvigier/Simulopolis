@@ -8,6 +8,7 @@
 #include "ai/GoalShopEvaluator.h"
 #include "ai/GoalEnterCityEvaluator.h"
 #include "ai/GoalLeaveCityEvaluator.h"
+#include "ai/GoalGetBetterHomeEvaluator.h"
 #include "ai/GoalGetBetterWorkEvaluator.h"
 
 Person::Event::Event(Type type) : type(type)
@@ -49,6 +50,7 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mShortTermBrain.addEvaluator(std::make_unique<GoalShopEvaluator>(1.0f));
     mLongTermBrain.addEvaluator(std::make_unique<GoalEnterCityEvaluator>(1.0f));
     mLongTermBrain.addEvaluator(std::make_unique<GoalLeaveCityEvaluator>(1.0f));
+    mLongTermBrain.addEvaluator(std::make_unique<GoalGetBetterHomeEvaluator>(1.0f));
     mLongTermBrain.addEvaluator(std::make_unique<GoalGetBetterWorkEvaluator>(1.0f));
 }
 
@@ -281,6 +283,11 @@ float Person::getNeed(Need need) const
 void Person::increaseNeed(Need need, float delta)
 {
     mNeeds[static_cast<int>(need)] = clamp(mNeeds[static_cast<int>(need)] + delta, 0.0f, 1.0f);
+}
+
+float Person::getAverageNeed(Need need) const
+{
+    return mAverageNeeds[static_cast<int>(need)];
 }
 
 Work::Qualification Person::getQualification() const

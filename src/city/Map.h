@@ -34,9 +34,9 @@ public:
 
     // Network
     const Network& getNetwork() const;
-    bool isReachableFrom(const Building* start, const Building* end) const;
+    bool isReachableFrom(const Tile* start, const Tile* end) const;
     Path getPath(sf::Vector2i start, sf::Vector2i end) const;
-    std::vector<const Building*> getReachableBuildingsAround(const Building* origin, int radius, Tile::Type type) const;
+    std::vector<const Building*> getReachableBuildingsAround(const Tile* origin, int radius, Tile::Type type) const;
 
     // Data
     unsigned int getWidth() const;
