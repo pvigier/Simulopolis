@@ -24,7 +24,9 @@ Goal::State GoalThink::process()
 
     mState = processSubgoals();
     if (mState == State::COMPLETED || mState == State::FAILED)
-        mState = State::INACTIVE;
+        //mState = State::INACTIVE;
+        activate();
+
     return mState;
 }
 
