@@ -1,4 +1,5 @@
 #include "ai/GoalGetBetterWorkEvaluator.h"
+#include "util/common.h"
 #include "city/Person.h"
 #include "ai/GoalGetBetterWork.h"
 
@@ -10,7 +11,7 @@ GoalGetBetterWorkEvaluator::GoalGetBetterWorkEvaluator(float bias) : GoalEvaluat
 float GoalGetBetterWorkEvaluator::computeDesirability(Person* person)
 {
     if (person->getHome())
-        return mBias * std::exp(-person->getLastMonthOutcome());
+        return mBias * sigmoid(-person->getLastMonthOutcome());
     return 0.0f;
 }
 
