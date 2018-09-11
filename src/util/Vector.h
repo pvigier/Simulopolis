@@ -1,8 +1,9 @@
 #pragma once
 
-#include "common.h"
-#include <SFML/System/Vector2.hpp>
 #include <ostream>
+#include <boost/serialization/access.hpp>
+#include <SFML/System/Vector2.hpp>
+#include "common.h"
 
 // Benchmark with and without inlining
 
@@ -40,6 +41,16 @@ public:
     float dot(const Vector2f& u) const;
     Vector2f orthogonal() const;
     float angle() const;
+
+private:
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & x & y;
+    }
 };
 
 Vector2f operator*(const Vector2f& u, double t);

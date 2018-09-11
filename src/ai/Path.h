@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <boost/serialization/vector.hpp>
 #include "util/Vector.h"
 
 class Path
@@ -19,4 +20,13 @@ private:
     std::vector<Vector2f> mPoints;
     std::size_t mCurPoint;
     bool mLoop;
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mPoints & mCurPoint & mLoop;
+    }
 };

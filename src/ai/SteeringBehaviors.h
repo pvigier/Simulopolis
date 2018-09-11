@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Kinematic.h"
 #include "Path.h"
+
+class Kinematic;
 
 class SteeringBehaviors
 {
 public:
-    SteeringBehaviors(Kinematic& owner);
+    SteeringBehaviors(Kinematic* owner = nullptr);
     ~SteeringBehaviors();
 
     Vector2f compute(float dt);
@@ -19,7 +20,7 @@ public:
     void setSeekDistance(float distance);
 
 private:
-    Kinematic& mOwner;
+    Kinematic* mOwner;
     Vector2f mTarget;
     Path mPath;
     float mPanicDistance;
@@ -32,4 +33,13 @@ private:
     Vector2f followPath();
 
     inline Vector2f velocityToForce(const Vector2f& desiredVelocity, float dt) const;
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mOwner & mTarget & mPath & mPanicDistance & mArriveDistance & mSeekDistance;
+    }
 };

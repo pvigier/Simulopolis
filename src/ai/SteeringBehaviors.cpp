@@ -1,6 +1,7 @@
 #include "SteeringBehaviors.h"
+#include "Kinematic.h"
 
-SteeringBehaviors::SteeringBehaviors(Kinematic& owner) :
+SteeringBehaviors::SteeringBehaviors(Kinematic* owner) :
     mOwner(owner), mPanicDistance(FLOAT_INFINITY), mArriveDistance(EPSILON), mSeekDistance(EPSILON)
 {
     //ctor
@@ -49,35 +50,35 @@ void SteeringBehaviors::setSeekDistance(float distance)
 
 Vector2f SteeringBehaviors::seek(Vector2f target) const
 {
-    Vector2f positionToTarget = target - mOwner.getPosition();
+    Vector2f positionToTarget = target - mOwner->getPosition();
     float distance = positionToTarget.norm();
     if (!isAlmostZero(distance))
-        return (mOwner.getMaxSpeed() / distance) * positionToTarget;
+        return (mOwner->getMaxSpeed() / distance) * positionToTarget;
     return Vector2f(0.0f, 0.0f);
 }
 
 Vector2f SteeringBehaviors::flee(Vector2f target) const
 {
-    Vector2f targetToPosition = mOwner.getPosition() - target;
+    Vector2f targetToPosition = mOwner->getPosition() - target;
     float distance = targetToPosition.norm();
     if (distance < mPanicDistance)
     {
         if (isAlmostZero(distance))
             // Should return a random direction ...
-            return Vector2f(1.0f, 0.0f) * mOwner.getMaxSpeed();
+            return Vector2f(1.0f, 0.0f) * mOwner->getMaxSpeed();
         else
-            return (mOwner.getMaxSpeed() / distance) * targetToPosition;
+            return (mOwner->getMaxSpeed() / distance) * targetToPosition;
     }
     return Vector2f(0.0f, 0.0f);
 }
 
 Vector2f SteeringBehaviors::arrive(Vector2f target) const
 {
-    Vector2f positionToTarget = target - mOwner.getPosition();
+    Vector2f positionToTarget = target - mOwner->getPosition();
     float distance = positionToTarget.norm();
     if (!isAlmostZero(distance))
     {
-        float speed = std::min(1.0f, distance / mArriveDistance) * mOwner.getMaxSpeed();
+        float speed = std::min(1.0f, distance / mArriveDistance) * mOwner->getMaxSpeed();
         return (speed / distance) * positionToTarget;
     }
     return Vector2f(0.0f, 0.0f);
@@ -89,7 +90,7 @@ Vector2f SteeringBehaviors::followPath()
         return sf::Vector2f();
     if (!mPath.isFinished())
     {
-        if (mOwner.getPosition().squaredDistanceTo(mPath.getCurrentPoint()) < mSeekDistance * mSeekDistance)
+        if (mOwner->getPosition().squaredDistanceTo(mPath.getCurrentPoint()) < mSeekDistance * mSeekDistance)
             mPath.setNextPoint();
         return seek(mPath.getCurrentPoint());
     }
@@ -99,5 +100,5 @@ Vector2f SteeringBehaviors::followPath()
 
 Vector2f SteeringBehaviors::velocityToForce(const Vector2f& desiredVelocity, float dt) const
 {
-    return (desiredVelocity - mOwner.getVelocity()) * mOwner.getMass() / dt;
+    return (desiredVelocity - mOwner->getVelocity()) * mOwner->getMass() / dt;
 }
