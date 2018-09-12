@@ -1,5 +1,7 @@
 #pragma once
 
+#include <boost/serialization/access.hpp>
+
 class Person;
 
 class GoalEvaluator
@@ -14,4 +16,14 @@ public:
 
 protected:
     float mBias;
+
+private:
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mBias;
+    }
 };
