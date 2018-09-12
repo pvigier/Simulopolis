@@ -28,7 +28,19 @@ public:
     {
         VMarket::Type marketType;
 
+        EventBase();
         EventBase(VMarket::Type marketType);
+        virtual ~EventBase();
+
+    private:
+        // Serialization
+        friend class boost::serialization::access;
+
+        template <typename Archive>
+        void serialize(Archive &ar, const unsigned int version)
+        {
+            ar & marketType;
+        }
     };
 
     VMarket(Type type);
@@ -107,9 +119,47 @@ public:
             Id itemId;
         };
 
+        Event()
+        {
+
+        }
+
         Event(VMarket::Type marketType, Type type) : EventBase(marketType), type(type)
         {
 
+        }
+
+    private:
+        // Serialization
+        // I'm forced to put the code here because external serialization doesn't work with depdent types.
+        friend class boost::serialization::access;
+
+        template <typename Archive>
+        void serialize(Archive &ar, const unsigned int version)
+        {
+            boost::serialization::base_object<VMarket::EventBase>(*this);
+            ar & type;
+            switch (type)
+            {
+                case Market<T>::Event::Type::ADD_ITEM:
+                    ar & item.sellerAccount & /*item.good &*/ item.reservePrice;
+                    break;
+                case Market<T>::Event::Type::REMOVE_ITEM:
+                case Market<T>::Event::Type::ITEM_ADDED:
+                case Market<T>::Event::Type::ITEM_REMOVED:
+                    ar & itemId;
+                    break;
+                case Market<T>::Event::Type::BID:
+                    ar & bid.itemId & bid.value;
+                    break;
+                case Market<T>::Event::Type::SET_QUANTITY:
+                    ar & desiredQuantity;
+                    break;
+                case Market<T>::Event::Type::PURCHASE:
+                case Market<T>::Event::Type::SALE:
+                    ar & sale.itemId & sale.sellerAccount & /*sale.good &*/ sale.value;
+                    break;
+            }
         }
     };
 

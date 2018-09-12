@@ -18,6 +18,11 @@ City::Intersection::Intersection(const Building* building) : type(City::Intersec
 
 }
 
+City::Event::Event()
+{
+
+}
+
 City::Event::Event(Type type, unsigned int data) : type(type), month(data)
 {
 

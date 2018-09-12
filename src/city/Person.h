@@ -29,6 +29,7 @@ public:
             Work* work;
         };
 
+        Event();
         Event(Type type);
         Event(Type type, Lease* lease);
         Event(Type type, Work* work);

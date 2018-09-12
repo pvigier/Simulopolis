@@ -42,6 +42,7 @@
 		<Linker>
 			<Add option="-ltinyxml2" />
 			<Add option="-lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system" />
+			<Add option="-lboost_serialization" />
 		</Linker>
 		<Unit filename="src/ai/Goal.cpp" />
 		<Unit filename="src/ai/Goal.h" />
@@ -236,6 +237,7 @@
 		<Unit filename="src/resource/XmlDocument.h" />
 		<Unit filename="src/resource/XmlManager.cpp" />
 		<Unit filename="src/resource/XmlManager.h" />
+		<Unit filename="src/serialize/serialize_message.h" />
 		<Unit filename="src/util/Array2.h" />
 		<Unit filename="src/util/Id.h" />
 		<Unit filename="src/util/IdManager.h" />

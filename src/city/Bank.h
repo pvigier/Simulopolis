@@ -38,6 +38,9 @@ public:
             TransferMoneyEvent transfer;
             Id account;
         };
+
+        Event();
+        Event(Type type);
     };
 
     static void setMessageBus(MessageBus* messageBus);

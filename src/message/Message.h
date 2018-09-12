@@ -31,7 +31,7 @@ public:
      * \param receiver Id of the receiver
      * \param type Type of the message
      */
-    Message(Id sender, Id receiver, MessageType type) :
+    Message(Id sender = UNDEFINED, Id receiver = UNDEFINED, MessageType type = MessageType::UNKNOWN) :
         sender(sender), receiver(receiver), type(type), info()
     {
 
@@ -106,7 +106,6 @@ public:
      * \param receiver Id of the receiver
      * \param type Type of the message
      */
-    template<typename T>
     static Message create(Id sender, Id receiver, MessageType type)
     {
         return Message(sender, receiver, type);

@@ -11,6 +11,11 @@
 #include "ai/GoalGetBetterHomeEvaluator.h"
 #include "ai/GoalGetBetterWorkEvaluator.h"
 
+Person::Event::Event()
+{
+
+}
+
 Person::Event::Event(Type type) : type(type)
 {
 

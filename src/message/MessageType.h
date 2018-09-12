@@ -4,6 +4,7 @@
 
 enum class MessageType
 {
+    UNKNOWN,
     INPUT,
     GUI,
     GAME,

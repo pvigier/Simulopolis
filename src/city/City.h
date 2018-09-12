@@ -50,6 +50,7 @@ public:
             Building* building;
         };
 
+        Event();
         Event(Type type, unsigned int data);
         Event(Type type, Person* person);
         Event(Money minimumWage);

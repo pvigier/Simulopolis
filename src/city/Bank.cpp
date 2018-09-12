@@ -2,6 +2,16 @@
 #include "util/debug.h"
 #include "message/MessageBus.h"
 
+Bank::Event::Event()
+{
+
+}
+
+Bank::Event::Event(Event::Type type) : type(type)
+{
+
+}
+
 MessageBus* Bank::sMessageBus = nullptr;
 
 void Bank::setMessageBus(MessageBus* messageBus)
@@ -114,28 +124,28 @@ void Bank::collectTaxes(Id cityAccount, double incomeTax, double corporateTax)
 
 Bank::Event Bank::createCreateAccountEvent(Account::Type type) const
 {
-    Event event{Event::Type::CREATE_ACCOUNT, {}};
+    Event event(Event::Type::CREATE_ACCOUNT);
     event.accountType = type;
     return event;
 }
 
 Bank::Event Bank::createCloseAccountEvent(Id account) const
 {
-    Event event{Event::Type::CLOSE_ACCOUNT, {}};
+    Event event(Event::Type::CLOSE_ACCOUNT);
     event.account = account;
     return event;
 }
 
 Bank::Event Bank::createTransferMoneyEvent(Id issuer, Id receiver, Money amount) const
 {
-    Event event{Event::Type::TRANSFER_MONEY, {}};
+    Event event(Event::Type::TRANSFER_MONEY);
     event.transfer = Event::TransferMoneyEvent{issuer, receiver, amount};
     return event;
 }
 
 Bank::Event Bank::createAccountCreatedEvent(Id account) const
 {
-    Event event{Event::Type::ACCOUNT_CREATED, {}};
+    Event event(Event::Type::ACCOUNT_CREATED);
     event.account = account;
     return event;
 }

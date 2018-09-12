@@ -1,6 +1,16 @@
 #include "city/Market.h"
 
+VMarket::EventBase::EventBase()
+{
+
+}
+
 VMarket::EventBase::EventBase(VMarket::Type marketType) : marketType(marketType)
+{
+
+}
+
+VMarket::EventBase::~EventBase()
 {
 
 }
