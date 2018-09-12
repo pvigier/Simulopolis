@@ -54,4 +54,13 @@ public:
 
 private:
     IdManager<Mailbox*> mMailboxes; /**< IdManager that manages the mailboxes */
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mMailboxes;
+    }
 };

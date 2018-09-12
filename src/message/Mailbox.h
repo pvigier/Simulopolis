@@ -2,7 +2,8 @@
 
 // STL
 #include <deque>
-#include <memory>
+// Boost
+#include <boost/serialization/deque.hpp>
 // Message
 #include "message/Message.h"
 
@@ -73,4 +74,13 @@ public:
 private:
     Id mId; /**< Id */
     std::deque<Message> mMessages; /**< Queue of messages */
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mId & mMessages;
+    }
 };

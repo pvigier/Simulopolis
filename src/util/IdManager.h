@@ -2,6 +2,8 @@
 
 // STL
 #include <vector>
+// Boost
+#include <boost/serialization/vector.hpp>
 // My includes
 #include "util/Id.h"
 
@@ -155,4 +157,13 @@ private:
     std::vector<Id> mFreeIds; /**< std::vector that contains free Ids */
     std::vector<T> mObjects; /**< std::vector which contains the elements */
     std::vector<Id> mIndexToId; /**< std::vector that maps the index of an element to its Id */
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mIdToIndex & mFreeIds & mObjects & mIndexToId;
+    }
 };
