@@ -2,6 +2,8 @@
 
 // STL
 #include <vector>
+// Boost
+#include <boost/serialization/access.hpp>
 
 /**
  * \brief 2D Array that stores the elements in 1D under the hood
@@ -169,6 +171,15 @@ private:
     std::size_t mHeight; /**< Height or number of rows of the array */
     std::size_t mWidth; /**< Width or number of columns of the array */
     std::vector<T> mData; /**< std::vector where the elements are stored in */
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mHeight & mWidth & mData;
+    }
 };
 
 template<>
@@ -243,5 +254,14 @@ private:
     std::size_t mHeight;
     std::size_t mWidth;
     std::vector<bool> mData;
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mHeight & mWidth & mData;
+    }
 };
 
