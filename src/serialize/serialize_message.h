@@ -1,7 +1,5 @@
 #pragma once
 
-// Boost
-#include <boost/serialization/shared_ptr.hpp>
 // City
 #include "city/Bank.h"
 #include "city/Business.h"

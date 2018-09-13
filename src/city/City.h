@@ -62,7 +62,7 @@ public:
 
     // IO
     void load(const std::string& name);
-    void save(const std::string& name);
+    void save();
     void createMap(uint64_t seed);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -187,5 +187,44 @@ private:
     // Events
     void onNewMonth();
     void onNewYear();
+
+    // Set up
+    void setUp(bool loading);
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void save(Archive &ar, const unsigned int version) const
+    {
+        ar & mMailbox;
+        ar & mMap;
+        ar & mTotalTime & mCurrentTime & mTimePerMonth & mMonth & mYear;
+        ar & mBank & mMarkets & mWorldAccount;
+        ar & mCityCompany;
+        ar & mWeeklyStandardWorkingHours & mMinimumWage & mIncomeTax & mCorporateTax;
+        ar & mPersons & mCitizens & mImmigrants & mCompanies & mBuildings;
+        ar & mTimeBeforeLeaving;
+        ar & mHappiness & mAttractiveness;
+        ar & mCityMessageBus;
+    }
+
+    template <typename Archive>
+    void load(Archive &ar, const unsigned int version)
+    {
+        ar & mMailbox;
+        ar & mMap;
+        ar & mTotalTime & mCurrentTime & mTimePerMonth & mMonth & mYear;
+        ar & mBank & mMarkets & mWorldAccount;
+        ar & mCityCompany;
+        ar & mWeeklyStandardWorkingHours & mMinimumWage & mIncomeTax & mCorporateTax;
+        ar & mPersons & mCitizens & mImmigrants & mCompanies & mBuildings;
+        ar & mTimeBeforeLeaving;
+        ar & mHappiness & mAttractiveness;
+        ar & mCityMessageBus;
+        setUp(true);
+    }
+
+    BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 

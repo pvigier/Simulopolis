@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/serialization/base_object.hpp>
 #include "ai/Goal.h"
 #include "ai/Path.h"
 

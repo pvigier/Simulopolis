@@ -2,7 +2,6 @@
 
 #include <queue>
 #include <set>
-#include <boost/serialization/set.hpp>
 #include "city/Building.h"
 #include "city/Good.h"
 #include "city/Work.h"
@@ -70,6 +69,6 @@ private:
     void serialize(Archive &ar, const unsigned int version)
     {
         ar & boost::serialization::base_object<Building>(*this);
-        ar & mGood & mMaxSizeStock & mStock & mStockCost & mPreparedGoods & mPrice /*& mEmployees*/ & mWorksInMarket;
+        ar & mGood & mMaxSizeStock & mStock & mStockCost & mPreparedGoods & mPrice & mEmployees & mWorksInMarket;
     }
 };

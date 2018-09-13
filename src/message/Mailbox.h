@@ -3,7 +3,7 @@
 // STL
 #include <deque>
 // Boost
-#include <boost/serialization/deque.hpp>
+#include <boost/serialization/access.hpp>
 // Message
 #include "message/Message.h"
 

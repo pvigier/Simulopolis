@@ -50,6 +50,6 @@ private:
     void serialize(Archive &ar, const unsigned int version)
     {
         ar & boost::serialization::base_object<Tile>(*this);
-        ar & mId & mNbStairs /*& mOwner*/ & mMailbox;
+        ar & mId & mNbStairs & mOwner & mMailbox;
     }
 };

@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include <algorithm>
-#include <boost/serialization/unordered_map.hpp>
+#include <boost/serialization/base_object.hpp>
 #include "util/IdManager.h"
 #include "util/debug.h"
 #include "message/MessageBus.h"
@@ -92,7 +92,7 @@ public:
         template <typename Archive>
         void serialize(Archive &ar, const unsigned int version)
         {
-            ar & id & sellerId & sellerAccount /*& good*/ & reservePrice;
+            ar & id & sellerId & sellerAccount & good & reservePrice;
         }
     };
 
@@ -188,7 +188,7 @@ public:
             switch (type)
             {
                 case Market<T>::Event::Type::ADD_ITEM:
-                    ar & item.sellerAccount & /*item.good &*/ item.reservePrice;
+                    ar & item.sellerAccount & item.good & item.reservePrice;
                     break;
                 case Market<T>::Event::Type::REMOVE_ITEM:
                 case Market<T>::Event::Type::ITEM_ADDED:
@@ -203,7 +203,7 @@ public:
                     break;
                 case Market<T>::Event::Type::PURCHASE:
                 case Market<T>::Event::Type::SALE:
-                    ar & sale.itemId & sale.sellerAccount & /*sale.good &*/ sale.value;
+                    ar & sale.itemId & sale.sellerAccount & sale.good & sale.value;
                     break;
             }
         }

@@ -3,7 +3,7 @@
 // STL
 #include <vector>
 // Boost
-#include <boost/serialization/vector.hpp>
+#include <boost/serialization/access.hpp>
 // My includes
 #include "util/Id.h"
 

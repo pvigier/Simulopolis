@@ -1,6 +1,5 @@
 #pragma once
 
-#include <boost/serialization/array.hpp>
 #include "message/Mailbox.h"
 #include "ai/GoalThink.h"
 #include "city/Car.h"
@@ -150,7 +149,7 @@ private:
     {
         ar & mId & mFirstName & mLastName & mGender & mBirth & mMailbox;
         ar & mState;
-        ar /*& mHome & mWork*/ & mConsumptionHabit;
+        ar & mHome & mWork & mConsumptionHabit;
         ar & mCar;
         ar & mAccount & mLastMonthBalance & mMonthBalance;
         ar & mDecayRates & mNeeds & mAverageNeeds;

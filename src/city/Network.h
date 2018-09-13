@@ -4,7 +4,6 @@
 #include <vector>
 #include <map>
 #include <random>
-#include <boost/serialization/map.hpp>
 #include <SFML/System/Vector2.hpp>
 #include "util/Array2.h"
 #include "serialize/serialize_sfml.h"

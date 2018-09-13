@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <boost/serialization/vector.hpp>
 #include "util/Vector.h"
 
 class Path

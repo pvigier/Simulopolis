@@ -1,7 +1,6 @@
 #pragma once
 
 #include <set>
-#include <boost/serialization/set.hpp>
 #include "city/Building.h"
 #include "city/Lease.h"
 
@@ -37,6 +36,6 @@ private:
     void serialize(Archive &ar, const unsigned int version)
     {
         ar & boost::serialization::base_object<Building>(*this);
-        ar /*& mLeases*/ & mLeasesInMarket & mComfort;
+        ar & mLeases & mLeasesInMarket & mComfort;
     }
 };

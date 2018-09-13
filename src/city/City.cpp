@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include "city/Building.h"
+#include "serialize/serialize_city.h"
 
 City::Intersection::Intersection() : type(City::Intersection::Type::NONE), car(nullptr)
 {
@@ -48,15 +49,8 @@ City::City() :
     mCurrentTime(0.0), mTimePerMonth(10.0f), mMonth(0), mYear(0), mCityCompany("City", 0),
     mWeeklyStandardWorkingHours(0), mMinimumWage(0.0), mIncomeTax(0.0f), mCorporateTax(0.0f)
 {
-    // Generators
-    mPersonGenerator.setUp();
-    mCompanyGenerator.setUp();
-
     // Register mailbox
     mCityMessageBus.addMailbox(mMailbox);
-
-    // Bank
-    mBank.setMessageBus(&mCityMessageBus);
 
     // Markets
     mMarkets.emplace_back(std::make_unique<Market<const Building>>(VMarket::Type::NECESSARY_GOOD));
@@ -64,101 +58,29 @@ City::City() :
     mMarkets.emplace_back(std::make_unique<Market<const Building>>(VMarket::Type::LUXURY_GOOD));
     mMarkets.emplace_back(std::make_unique<Market<Lease>>(VMarket::Type::RENT));
     mMarkets.emplace_back(std::make_unique<Market<Work>>(VMarket::Type::WORK));
-    for (std::unique_ptr<VMarket>& market : mMarkets)
-        market->setMessageBus(&mCityMessageBus);
 
     // Economy
     mWorldAccount = mBank.createWorldAccount();
 
-    // Company
-    mCityCompany.setCity(this, &mCityMessageBus);
+    setUp(false);
 }
 
 City::~City()
 {
+    save();
+
     // Unregister mailbox
     mCityMessageBus.removeMailbox(mMailbox);
 }
 
 void City::load(const std::string& name)
 {
-    int width = 0;
-    int height = 0;
-
-    std::ifstream inputFile(name + "_cfg.dat", std::ios::in);
-    std::string line;
-    while (std::getline(inputFile, line))
-    {
-        std::istringstream lineStream(line);
-        std::string key;
-        if(std::getline(lineStream, key, '='))
-        {
-            std::string value;
-            if(std::getline(lineStream, value))
-            {
-                if(key == "width")
-                    width = std::stoi(value);
-                else if(key == "height")
-                    height = std::stoi(value);
-                else if(key == "month")
-                    mMonth = std::stoi(value);
-                else if(key == "unemployed")
-                    break;
-                else if(key == "funds")
-                    break;
-            }
-            else
-                std::cerr << "Error, no value for key " << key << std::endl;
-        }
-    }
-
-    inputFile.close();
-
-    mMap.load(name + "_map.dat", width, height);
-    mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
-
-    // Tests
-    mMap.select(sf::Vector2i(0, 0), sf::Vector2i(0, 10), all<Tile::Category>);
-    mMap.select(sf::Vector2i(1, 10), sf::Vector2i(10, 10), all<Tile::Category>);
-    mMap.select(sf::Vector2i(10, 9), sf::Vector2i(10, 0), all<Tile::Category>);
-    mMap.select(sf::Vector2i(9, 0), sf::Vector2i(2, 0), all<Tile::Category>);
-    bulldoze(Tile::Type::ROAD_GRASS);
-
-    /*generateImmigrant();
-    welcome(mImmigrants.back());
-    Path path = mMap.getPath(sf::Vector2i(0, 0), sf::Vector2i(2, 0));
-    mCitizens.back()->getCar().getKinematic().setPosition(path.getCurrentPoint());
-    mCitizens.back()->getCar().getSteering().setPath(path);
-    mCitizens.back()->setState(Person::State::MOVING);
-
-    generateImmigrant();
-    welcome(mImmigrants.back());
-    Path otherPath = mMap.getPath(sf::Vector2i(2, 0), sf::Vector2i(0, 0));
-    mCitizens.back()->getCar().getKinematic().setPosition(otherPath.getCurrentPoint());
-    mCitizens.back()->getCar().getSteering().setPath(otherPath);
-    mCitizens.back()->setState(Person::State::MOVING);*/
-
-    // tmp
-    for (int i = 0; i < 100; ++i)
-        generateImmigrant();
-    for (std::unique_ptr<Person>& person : mPersons.getObjects())
-        welcome(person.get());
+    load_city(*this);
 }
 
-void City::save(const std::string& name)
+void City::save()
 {
-    std::ofstream outputFile(name + "_cfg.dat", std::ios::out);
-
-    outputFile << "width=" << mMap.getWidth() << std::endl;
-    outputFile << "height=" << mMap.getHeight() << std::endl;
-    outputFile << "month=" << mMonth << std::endl;
-    outputFile << "population=" << 0 << std::endl;
-    outputFile << "unemployed=" << 0 << std::endl;
-    outputFile << "funds=" << 0 << std::endl;
-
-    outputFile.close();
-
-    mMap.save(name + "_map.dat");
+    save_city(*this);
 }
 
 void City::createMap(uint64_t seed)
@@ -642,4 +564,30 @@ void City::onNewYear()
 {
     // Send messages
     notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_YEAR, mYear)));
+}
+
+void City::setUp(bool loading)
+{
+    // Generators
+    mPersonGenerator.setUp();
+    mCompanyGenerator.setUp();
+
+    // Bank
+    mBank.setMessageBus(&mCityMessageBus, loading);
+
+    // Markets
+    for (std::unique_ptr<VMarket>& market : mMarkets)
+        market->setMessageBus(&mCityMessageBus, loading);
+
+    // Citizens
+    for (Person* citizen : mCitizens)
+        citizen->setCity(this, &mCityMessageBus, loading);
+
+    // Companies
+    mCityCompany.setCity(this, &mCityMessageBus, loading);
+    for (std::unique_ptr<Company>& company : mCompanies)
+        company->setCity(this, &mCityMessageBus, loading);
+
+    // Rendering
+    mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
 }
