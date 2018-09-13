@@ -75,4 +75,16 @@ private:
     // Events
     void onNewMonth();
     void onNewMinimumWage(Money minimumWage);
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    Company() = default;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mName & mCreationYear & mOwner & mMailbox & mAccount;
+        ar & mRents & mSalaries & mWholesaleMargins & mRetailMargins;
+    }
 };
