@@ -198,10 +198,10 @@ private:
     void save(Archive &ar, const unsigned int version) const
     {
         ar & mMailbox;
+        ar & mCityCompany;
         ar & mMap;
         ar & mTotalTime & mCurrentTime & mTimePerMonth & mMonth & mYear;
         ar & mBank & mMarkets & mWorldAccount;
-        ar & mCityCompany;
         ar & mWeeklyStandardWorkingHours & mMinimumWage & mIncomeTax & mCorporateTax;
         ar & mPersons & mCitizens & mImmigrants & mCompanies & mBuildings;
         ar & mTimeBeforeLeaving;
@@ -213,10 +213,10 @@ private:
     void load(Archive &ar, const unsigned int version)
     {
         ar & mMailbox;
+        ar & mCityCompany;
         ar & mMap;
         ar & mTotalTime & mCurrentTime & mTimePerMonth & mMonth & mYear;
         ar & mBank & mMarkets & mWorldAccount;
-        ar & mCityCompany;
         ar & mWeeklyStandardWorkingHours & mMinimumWage & mIncomeTax & mCorporateTax;
         ar & mPersons & mCitizens & mImmigrants & mCompanies & mBuildings;
         ar & mTimeBeforeLeaving;
