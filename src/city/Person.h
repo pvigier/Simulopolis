@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/serialization/array.hpp>
 #include "message/Mailbox.h"
 #include "ai/GoalThink.h"
 #include "city/Car.h"
@@ -138,4 +139,22 @@ private:
 
     // Events
     void onNewMonth();
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    Person() = default;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mId & mFirstName & mLastName & mGender & mBirth & mMailbox;
+        ar & mState;
+        ar /*& mHome & mWork*/ & mConsumptionHabit;
+        ar & mCar;
+        ar & mAccount & mLastMonthBalance & mMonthBalance;
+        ar & mDecayRates & mNeeds & mAverageNeeds;
+        ar & mQualification;
+        ar & mShortTermBrain & mLongTermBrain;
+    }
 };

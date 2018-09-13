@@ -5,22 +5,6 @@
 TextureManager* Car::sTextureManager = nullptr;
 ImageManager* Car::sImageManager = nullptr;
 
-Car::Car(const std::string& model) :
-    mKinematic(1.0f, 150.0f), mSteering(mKinematic), mMask(sImageManager->getImage(model)),
-    mDriver(nullptr)
-{
-    const sf::Texture& texture = sTextureManager->getTexture(model);
-    mWidth = texture.getSize().x / 8;
-    mHeight = texture.getSize().y;
-
-    mSprite.setTexture(texture);
-    mSprite.setTextureRect(sf::IntRect(0, 0, mWidth, mHeight));
-    mSprite.setOrigin(sf::Vector2f(mWidth * 0.5f, mHeight * 0.5f));
-
-    mSteering.setSeekDistance(4.0f);
-    mSteering.setArriveDistance(4.0f);
-}
-
 void Car::setTextureManager(TextureManager* textureManager)
 {
     sTextureManager = textureManager;
@@ -29,6 +13,16 @@ void Car::setTextureManager(TextureManager* textureManager)
 void Car::setImageManager(ImageManager* imageManager)
 {
     sImageManager = imageManager;
+}
+
+Car::Car(std::string model) :
+    mModel(std::move(model)), mKinematic(1.0f, 150.0f), mSteering(&mKinematic),
+    mMask(nullptr), mDriver(nullptr)
+{
+    mSteering.setSeekDistance(4.0f);
+    mSteering.setArriveDistance(4.0f);
+
+    setUp();
 }
 
 void Car::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -61,7 +55,7 @@ void Car::update(float dt)
 
 bool Car::intersect(const sf::Vector2f& position) const
 {
-    return sprite_intersect(mSprite, mMask, position);
+    return sprite_intersect(mSprite, *mMask, position);
 }
 
 Kinematic& Car::getKinematic()
@@ -98,3 +92,17 @@ void Car::setDriver(Person* owner)
 {
     mDriver = owner;
 }
+
+void Car::setUp()
+{
+    mMask = &sImageManager->getImage(mModel);
+
+    const sf::Texture& texture = sTextureManager->getTexture(mModel);
+    mWidth = texture.getSize().x / 8;
+    mHeight = texture.getSize().y;
+
+    mSprite.setTexture(texture);
+    mSprite.setTextureRect(sf::IntRect(0, 0, mWidth, mHeight));
+    mSprite.setOrigin(sf::Vector2f(mWidth * 0.5f, mHeight * 0.5f));
+}
+
