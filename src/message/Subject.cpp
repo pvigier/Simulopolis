@@ -1,9 +1,7 @@
 #include "message/Subject.h"
 #include "message/MessageBus.h"
 
-MessageBus* Subject::sMessageBus = nullptr;
-
-Subject::Subject()
+Subject::Subject() : mSubjectMessageBus(nullptr)
 {
 
 }
@@ -13,9 +11,9 @@ Subject::~Subject()
 
 }
 
-void Subject::setMessageBus(MessageBus* messageBus)
+void Subject::setSubjectMessageBus(MessageBus* messageBus)
 {
-    sMessageBus = messageBus;
+    mSubjectMessageBus = messageBus;
 }
 
 void Subject::subscribe(Id id)
@@ -34,6 +32,6 @@ void Subject::notify(Message message)
     for (const Id& subscriberId : mSubscribers)
     {
         message.receiver = subscriberId;
-        sMessageBus->send(message);
+        mSubjectMessageBus->send(message);
     }
 }

@@ -5,13 +5,6 @@
 #include "city/Business.h"
 #include "city/Service.h"
 
-MessageBus* Company::sMessageBus = nullptr;
-
-void Company::setMessageBus(MessageBus* messageBus)
-{
-    sMessageBus = messageBus;
-}
-
 std::vector<Work>* Company::getEmployees(Building* building)
 {
     if (building->isIndustry())
@@ -37,22 +30,23 @@ const std::vector<Work>* Company::getEmployees(const Building* building)
 }
 
 Company::Company(std::string name, int creationYear, Person* owner) :
-    mName(std::move(name)), mCreationYear(creationYear), mOwner(owner), mAccount(UNDEFINED)
+    mName(std::move(name)), mCreationYear(creationYear),
+    mCity(nullptr), mMessageBus(nullptr), mOwner(owner), mAccount(UNDEFINED)
 {
     mRents.fill(Money(0.0));
     mSalaries.fill(Money(0.0));
     mWholesaleMargins.fill(0.0);
     mRetailMargins.fill(0.0);
-    sMessageBus->addMailbox(mMailbox);
 }
 
 Company::~Company()
 {
     // Close bank account
     if (mAccount != UNDEFINED)
-        sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCloseAccountEvent(mAccount)));
+        mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCloseAccountEvent(mAccount)));
     // Unregister mailbox
-    sMessageBus->removeMailbox(mMailbox);
+    if (mMailbox.getId() != UNDEFINED)
+        mMessageBus->removeMailbox(mMailbox);
 }
 
 void Company::update(float dt)
@@ -112,11 +106,6 @@ void Company::update(float dt)
         building->update();
 }
 
-MessageBus* Company::getMessageBus()
-{
-    return sMessageBus;
-}
-
 const std::string& Company::getName() const
 {
     return mName;
@@ -127,12 +116,23 @@ const City* Company::getCity()
     return mCity;
 }
 
-void Company::setCity(const City* city)
+void Company::setCity(const City* city, MessageBus* messageBus, bool alreadyAdded)
 {
     mCity = city;
-    // Create bank account
-    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCreateAccountEvent(Bank::Account::Type::COMPANY)));
+    mMessageBus = messageBus;
+    if (!alreadyAdded)
+    {
+        mMessageBus->addMailbox(mMailbox);
+        // Create bank account
+        mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCreateAccountEvent(Bank::Account::Type::COMPANY)));
+    }
 }
+
+MessageBus* Company::getMessageBus()
+{
+    return mMessageBus;
+}
+
 
 const Person* Company::getOwner() const
 {
@@ -200,7 +200,7 @@ void Company::removeBuilding(Building* building)
         for (Lease& lease : housing->getLeases())
         {
             if (lease.getTenant())
-                sMessageBus->send(Message::create(lease.getTenant()->getMailboxId(), MessageType::PERSON, Person::Event{Person::Event::Type::EXPELLED}));
+                mMessageBus->send(Message::create(lease.getTenant()->getMailboxId(), MessageType::PERSON, Person::Event{Person::Event::Type::EXPELLED}));
         }
     }
     // Alert the employees
@@ -212,8 +212,8 @@ void Company::removeBuilding(Building* building)
             {
                 // Pay the employee if necessary
                 if (work.hasWorkedThisMonth())
-                    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createTransferMoneyEvent(mAccount, work.getEmployee()->getAccount(), work.getSalary())));
-                sMessageBus->send(Message::create(work.getEmployee()->getMailboxId(), MessageType::PERSON, Person::Event{Person::Event::Type::FIRED}));
+                    mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createTransferMoneyEvent(mAccount, work.getEmployee()->getAccount(), work.getSalary())));
+                mMessageBus->send(Message::create(work.getEmployee()->getMailboxId(), MessageType::PERSON, Person::Event{Person::Event::Type::FIRED}));
             }
         }
     }
@@ -285,13 +285,13 @@ void Company::setRetailMargin(Good good, double margin)
 void Company::addToMarket(Lease* lease)
 {
     const Market<Lease>* market = static_cast<const Market<Lease>*>(mCity->getMarket(VMarket::Type::RENT));
-    sMessageBus->send(Message::create(lease->getHousing()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, lease, lease->getRent())));
+    mMessageBus->send(Message::create(lease->getHousing()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, lease, lease->getRent())));
 }
 
 void Company::addToMarket(Work* work)
 {
     const Market<Work>* market = static_cast<const Market<Work>*>(mCity->getMarket(VMarket::Type::WORK));
-    sMessageBus->send(Message::create(work->getWorkplace()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, work, work->getSalary())));
+    mMessageBus->send(Message::create(work->getWorkplace()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, work, work->getSalary())));
 }
 
 void Company::onNewMonth()
@@ -313,7 +313,7 @@ void Company::onNewMonth()
             for (Work& work : *getEmployees(building))
             {
                 if (work.hasWorkedThisMonth())
-                    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createTransferMoneyEvent(mAccount, work.getEmployee()->getAccount(), work.getSalary())));
+                    mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createTransferMoneyEvent(mAccount, work.getEmployee()->getAccount(), work.getSalary())));
                 work.setWorkedThisMonth(false);
             }
         }

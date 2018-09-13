@@ -69,7 +69,8 @@ public:
 
     void update(float dt);
 
-    // Mailbox
+    // Messaging
+    void setGameMessageBus(MessageBus* messageBus);
     Id getMailboxId() const;
 
     // Map
@@ -124,7 +125,8 @@ public:
     float toCityTime(float humanTime) const;
 
 private:
-    // Mailbox
+    // Messaging
+    MessageBus mCityMessageBus;
     Mailbox mMailbox;
 
     // Generators

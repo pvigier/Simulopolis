@@ -15,14 +15,22 @@ VMarket::EventBase::~EventBase()
 
 }
 
-VMarket::VMarket(Type type) : mTime(0), mType(type)
+VMarket::VMarket(Type type) : mMessageBus(nullptr), mTime(0), mType(type)
 {
-    sMessageBus->addMailbox(mMailbox);
+
 }
 
 VMarket::~VMarket()
 {
+    if (mMailbox.getId() != UNDEFINED)
+        mMessageBus->removeMailbox(mMailbox);
+}
 
+void VMarket::setMessageBus(MessageBus* messageBus, bool alreadyAdded)
+{
+    mMessageBus = messageBus;
+    if (!alreadyAdded)
+        mMessageBus->addMailbox(mMailbox);
 }
 
 Id VMarket::getMailboxId() const

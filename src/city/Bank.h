@@ -43,10 +43,10 @@ public:
         Event(Type type);
     };
 
-    static void setMessageBus(MessageBus* messageBus);
-
     Bank();
     ~Bank();
+
+    void setMessageBus(MessageBus* messageBus, bool alreadyAdded = false);
 
     void update();
 
@@ -71,8 +71,7 @@ public:
     Event createAccountCreatedEvent(Id account) const;
 
 private:
-    static MessageBus* sMessageBus;
-
+    MessageBus* mMessageBus;
     Mailbox mMailbox;
     IdManager<Account> mAccounts;
 };

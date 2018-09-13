@@ -12,21 +12,22 @@ Bank::Event::Event(Event::Type type) : type(type)
 
 }
 
-MessageBus* Bank::sMessageBus = nullptr;
-
-void Bank::setMessageBus(MessageBus* messageBus)
+Bank::Bank() : mMessageBus(nullptr)
 {
-    sMessageBus = messageBus;
-}
 
-Bank::Bank()
-{
-    sMessageBus->addMailbox(mMailbox);
 }
 
 Bank::~Bank()
 {
-    sMessageBus->removeMailbox(mMailbox);
+    if (mMailbox.getId() != UNDEFINED)
+        mMessageBus->removeMailbox(mMailbox);
+}
+
+void Bank::setMessageBus(MessageBus* messageBus, bool alreadyAdded)
+{
+    mMessageBus = messageBus;
+    if (!alreadyAdded)
+        mMessageBus->addMailbox(mMailbox);
 }
 
 void Bank::update()
@@ -64,7 +65,7 @@ void Bank::createAccount(Id owner, Account::Type type)
 {
     Id account = mAccounts.add(Account{UNDEFINED, owner, type, Money(0.0), Money(0.0)});
     mAccounts.get(account).id = account;
-    sMessageBus->send(Message::create(owner, MessageType::BANK, createAccountCreatedEvent(account)));
+    mMessageBus->send(Message::create(owner, MessageType::BANK, createAccountCreatedEvent(account)));
 }
 
 Id Bank::createWorldAccount()

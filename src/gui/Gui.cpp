@@ -13,6 +13,7 @@ Gui::Gui() : mVisible(true), mCounter(0)
     // Register the mailbox
     sMessageBus->addMailbox(mMailbox);
     sInputEngine->subscribe(mMailbox.getId());
+    setSubjectMessageBus(sMessageBus);
 }
 
 Gui::~Gui()
@@ -55,6 +56,7 @@ void Gui::add(const std::string& name, std::unique_ptr<GuiWidget> widget)
     widget->setGui(this);
     widget->setName(name);
     widget->setRoot(false);
+    widget->setSubjectMessageBus(sMessageBus);
     mWidgets[name] = std::move(widget);
     mWidgets[name]->setUp();
 }
@@ -66,6 +68,7 @@ void Gui::addRoot(const std::string& name, std::unique_ptr<GuiWidget> widget)
     widget->setGui(this);
     widget->setName(name);
     widget->setRoot(true);
+    widget->setSubjectMessageBus(sMessageBus);
     mRootWidgets.push_back(widget.get());
     mWidgets[name] = std::move(widget);
     mWidgets[name]->setUp();

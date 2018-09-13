@@ -31,15 +31,9 @@ Person::Event::Event(Type type, Work* work) : type(type), work(work)
 
 }
 
-MessageBus* Person::sMessageBus = nullptr;
-
-void Person::setMessageBus(MessageBus* messageBus)
-{
-    sMessageBus = messageBus;
-}
-
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
-    mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth), mCity(nullptr),
+    mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth),
+    mCity(nullptr), mMessageBus(nullptr),
     mState(State::WAITING), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::NECESSARY), mCar(car),
     mAccount(UNDEFINED), mLastMonthBalance(0.0), mMonthBalance(0.0),
     mDecayRates{0.1f, 0.1f, 0.01f, 0.01f, 0.1f},
@@ -47,7 +41,6 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
-    sMessageBus->addMailbox(mMailbox);
 
     // Add evaluators to the brains
     mShortTermBrain.addEvaluator(std::make_unique<GoalRestEvaluator>(1.0f));
@@ -63,9 +56,10 @@ Person::~Person()
 {
     // Close bank account
     if (mAccount != UNDEFINED)
-        sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCloseAccountEvent(mAccount)));
+        mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCloseAccountEvent(mAccount)));
     // Unregister mailbox
-    sMessageBus->removeMailbox(mMailbox);
+    if (mMailbox.getId() != UNDEFINED)
+        mMessageBus->removeMailbox(mMailbox);
 }
 
 void Person::update(float dt)
@@ -128,11 +122,6 @@ void Person::update(float dt)
     updateNeeds(dt);
 }
 
-MessageBus* Person::getMessageBus()
-{
-    return sMessageBus;
-}
-
 Id Person::getId() const
 {
     return mId;
@@ -168,11 +157,21 @@ const City* Person::getCity() const
     return mCity;
 }
 
-void Person::setCity(const City* city)
+void Person::setCity(const City* city, MessageBus* messageBus, bool alreadyAdded)
 {
     mCity = city;
-    // Create bank account
-    sMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCreateAccountEvent(Bank::Account::Type::PERSON)));
+    mMessageBus = messageBus;
+    if (!alreadyAdded)
+    {
+        mMessageBus->addMailbox(mMailbox);
+        // Create bank account
+        mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCreateAccountEvent(Bank::Account::Type::PERSON)));
+    }
+}
+
+MessageBus* Person::getMessageBus()
+{
+    return mMessageBus;
 }
 
 Id Person::getMailboxId() const
@@ -210,7 +209,7 @@ void Person::leaveHome()
 {
     if (mHome)
     {
-        sMessageBus->send(Message::create(mHome->getOwner()->getMailboxId(), MessageType::PERSON, Event(Event::Type::LEAVE_HOUSING, mHome)));
+        mMessageBus->send(Message::create(mHome->getOwner()->getMailboxId(), MessageType::PERSON, Event(Event::Type::LEAVE_HOUSING, mHome)));
         mHome = nullptr;
     }
 }
@@ -230,7 +229,7 @@ void Person::quitWork()
 {
     if (mWork)
     {
-        sMessageBus->send(Message::create(mWork->getEmployer()->getMailboxId(), MessageType::PERSON, Event(Event::Type::QUIT_WORK, mWork)));
+        mMessageBus->send(Message::create(mWork->getEmployer()->getMailboxId(), MessageType::PERSON, Event(Event::Type::QUIT_WORK, mWork)));
         mWork = nullptr;
     }
 }

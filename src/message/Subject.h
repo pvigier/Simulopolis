@@ -3,8 +3,6 @@
 // STL
 #include <vector>
 #include <algorithm>
-// Boost
-#include <boost/serialization/vector.hpp>
 // My includes
 #include "message/Message.h"
 
@@ -31,7 +29,7 @@ public:
     /**
      * \brief Set the message bus
      */
-    static void setMessageBus(MessageBus* messageBus);
+    void setSubjectMessageBus(MessageBus* messageBus);
 
     /**
      * \brief Subscribe a mailbox
@@ -55,15 +53,6 @@ public:
     void notify(Message message);
 
 protected:
-    static MessageBus* sMessageBus; /**< Message bus */
+    MessageBus* mSubjectMessageBus; /**< Message bus */
     std::vector<Id> mSubscribers; /**< Ids of the subscribed mailboxes */
-
-    // Serialization
-    friend class boost::serialization::access;
-
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version)
-    {
-        ar & mSubscribers;
-    }
 };

@@ -35,14 +35,10 @@ public:
         Event(Type type, Work* work);
     };
 
-    static void setMessageBus(MessageBus* messageBus);
-
     Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car);
     ~Person();
 
     void update(float dt);
-
-    MessageBus* getMessageBus();
 
     // Personal data
     Id getId() const;
@@ -53,7 +49,8 @@ public:
     Gender getGender() const;
     int getAge(int year) const;
     const City* getCity() const;
-    void setCity(const City* city);
+    void setCity(const City* city, MessageBus* messageBus, bool alreadyAdded = false);
+    MessageBus* getMessageBus();
     Id getMailboxId() const;
 
     // State
@@ -97,8 +94,6 @@ public:
     const GoalThink& getLongTermBrain() const;
 
 private:
-    static MessageBus* sMessageBus;
-
     // Personal data
     Id mId;
     std::string mFirstName;
@@ -106,6 +101,7 @@ private:
     Gender mGender;
     int mBirth;
     const City* mCity;
+    MessageBus* mMessageBus;
     Mailbox mMailbox;
 
     // State

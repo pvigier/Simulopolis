@@ -43,6 +43,7 @@ GameStateEditor::GameStateEditor() :
     createGui();
 
     // Subscribe to the city
+    mCity.setGameMessageBus(sMessageBus);
     mCity.subscribe(mMailbox.getId());
 }
 

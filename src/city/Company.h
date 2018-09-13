@@ -16,7 +16,6 @@ class Lease;
 class Company
 {
 public:
-    static void setMessageBus(MessageBus* messageBus);
     static std::vector<Work>* getEmployees(Building* building);
     static const std::vector<Work>* getEmployees(const Building* building);
 
@@ -25,12 +24,11 @@ public:
 
     void update(float dt);
 
-    MessageBus* getMessageBus();
-
     // Data
     const std::string& getName() const;
     const City* getCity();
-    void setCity(const City* city);
+    void setCity(const City* city, MessageBus* messageBus, bool alreadyAdded = false);
+    MessageBus* getMessageBus();
     const Person* getOwner() const;
     void setOwner(const Person* owner);
     Id getMailboxId() const;
@@ -53,12 +51,11 @@ public:
     void setRetailMargin(Good good, double margin);
 
 private:
-    static MessageBus* sMessageBus;
-
     // Data
     std::string mName;
     int mCreationYear;
     const City* mCity;
+    MessageBus* mMessageBus;
     const Person* mOwner;
     Mailbox mMailbox;
     Id mAccount;

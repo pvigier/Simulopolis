@@ -52,27 +52,32 @@ City::City() :
     mPersonGenerator.setUp();
     mCompanyGenerator.setUp();
 
+    // Register mailbox
+    mCityMessageBus.addMailbox(mMailbox);
+
+    // Bank
+    mBank.setMessageBus(&mCityMessageBus);
+
     // Markets
     mMarkets.emplace_back(std::make_unique<Market<const Building>>(VMarket::Type::NECESSARY_GOOD));
     mMarkets.emplace_back(std::make_unique<Market<const Building>>(VMarket::Type::NORMAL_GOOD));
     mMarkets.emplace_back(std::make_unique<Market<const Building>>(VMarket::Type::LUXURY_GOOD));
     mMarkets.emplace_back(std::make_unique<Market<Lease>>(VMarket::Type::RENT));
     mMarkets.emplace_back(std::make_unique<Market<Work>>(VMarket::Type::WORK));
+    for (std::unique_ptr<VMarket>& market : mMarkets)
+        market->setMessageBus(&mCityMessageBus);
 
     // Economy
     mWorldAccount = mBank.createWorldAccount();
 
     // Company
-    mCityCompany.setCity(this);
-
-    // Register mailbox
-    sMessageBus->addMailbox(mMailbox);
+    mCityCompany.setCity(this, &mCityMessageBus);
 }
 
 City::~City()
 {
     // Unregister mailbox
-    sMessageBus->removeMailbox(mMailbox);
+    mCityMessageBus.removeMailbox(mMailbox);
 }
 
 void City::load(const std::string& name)
@@ -270,6 +275,13 @@ void City::update(float dt)
     updateStatistics();
 }
 
+void City::setGameMessageBus(MessageBus* messageBus)
+{
+    setSubjectMessageBus(messageBus);
+    for (std::unique_ptr<VMarket>& market : mMarkets)
+        market->setSubjectMessageBus(messageBus);
+}
+
 Id City::getMailboxId() const
 {
     return mMailbox.getId();
@@ -417,9 +429,9 @@ void City::setMinimumWage(Money minimumWage)
 {
     mMinimumWage = minimumWage;
     // Send messages
-    sMessageBus->send(Message::create(mCityCompany.getMailboxId(), MessageType::CITY, Event(mMinimumWage)));
+    mCityMessageBus.send(Message::create(mCityCompany.getMailboxId(), MessageType::CITY, Event(mMinimumWage)));
     for (std::unique_ptr<Company>& company : mCompanies)
-        sMessageBus->send(Message::create(company->getMailboxId(), MessageType::CITY, Event(mMinimumWage)));
+        mCityMessageBus.send(Message::create(company->getMailboxId(), MessageType::CITY, Event(mMinimumWage)));
 }
 
 double City::getIncomeTax() const
@@ -458,7 +470,7 @@ void City::welcome(Person* person)
     mImmigrants.erase(mImmigrants.begin() + i);
     mTimeBeforeLeaving.erase(mTimeBeforeLeaving.begin() + i);
     mCitizens.push_back(person);
-    person->setCity(this);
+    person->setCity(this, &mCityMessageBus);
     // Notify
     notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_CITIZEN, person)));
 }
@@ -614,10 +626,10 @@ void City::onNewMonth()
     // Send messages
     notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
     for (Person* citizen : mCitizens)
-        sMessageBus->send(Message::create(citizen->getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
-    sMessageBus->send(Message::create(mCityCompany.getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
+        mCityMessageBus.send(Message::create(citizen->getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
+    mCityMessageBus.send(Message::create(mCityCompany.getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
     for (std::unique_ptr<Company>& company : mCompanies)
-        sMessageBus->send(Message::create(company->getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
+        mCityMessageBus.send(Message::create(company->getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
 }
 
 void City::onNewYear()

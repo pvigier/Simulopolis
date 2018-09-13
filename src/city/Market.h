@@ -46,12 +46,15 @@ public:
     VMarket(Type type);
     virtual ~VMarket();
 
+    void setMessageBus(MessageBus* messageBus, bool alreadyAdded = false);
+
     virtual void update() = 0;
     virtual void sellItems() = 0;
 
     Id getMailboxId() const;
 
 protected:
+    MessageBus* mMessageBus;
     Mailbox mMailbox;
     unsigned int mTime;
     Type mType;
@@ -177,7 +180,7 @@ public:
         mDirty = true;
         // Notify
         Event event = createItemAddedEvent(id);
-        sMessageBus->send(Message::create(sellerId, MessageType::MARKET, event));
+        mMessageBus->send(Message::create(sellerId, MessageType::MARKET, event));
         notify(Message::create(MessageType::MARKET, event));
         return id;
     }
@@ -292,8 +295,8 @@ public:
                 Item& item = auction->item;
                 if (bid.value >= item.reservePrice && mDesiredQuantities[bid.bidderId] > 0)
                 {
-                    sMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, createPurchaseEvent(item, bid.value)));
-                    sMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, createSaleEvent(item, bid.value)));
+                    mMessageBus->send(Message::create(bid.bidderId, MessageType::MARKET, createPurchaseEvent(item, bid.value)));
+                    mMessageBus->send(Message::create(item.sellerId, MessageType::MARKET, createSaleEvent(item, bid.value)));
                     --mDesiredQuantities[bid.bidderId];
                     soldItems.push_back(item.id);
                 }

@@ -13,9 +13,9 @@ Game::Game()
 
     // Initialize the input engine
     mInputEngine.setRenderEngine(&mRenderEngine);
+    mInputEngine.setSubjectMessageBus(&mMessageBus);
 
     // Push dependencies
-    Subject::setMessageBus(&mMessageBus);
     Gui::setMessageBus(&mMessageBus);
     Gui::setInputEngine(&mInputEngine);
     GameState::setMessageBus(&mMessageBus);
@@ -31,9 +31,6 @@ Game::Game()
     Car::setImageManager(&mResourceManager.getImageManager());
     Tile::setTextureManager(&mResourceManager.getTextureManager());
     Tile::setImageManager(&mResourceManager.getImageManager());
-    Person::setMessageBus(&mMessageBus);
-    Company::setMessageBus(&mMessageBus);
-    Bank::setMessageBus(&mMessageBus);
 
     // Load resources
     mResourceManager.setUp();

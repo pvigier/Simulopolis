@@ -38,13 +38,6 @@ std::unique_ptr<Tile> Business::clone() const
     return std::make_unique<Business>(mTextureName, mType, mNbStairs, mGood, mMaxSizeStock, mEmployees.size() - 1, mEmployees.back().getType());
 }
 
-void Business::setOwner(Company* owner)
-{
-    Building::setOwner(owner);
-    for (Work& employee : mEmployees)
-        employee.setEmployer(mOwner);
-}
-
 void Business::update()
 {
     // Read messages
@@ -123,6 +116,13 @@ void Business::tearDown()
     // Remove bids for market
     const Market<const Building>* goodsMarket = getMarket();
     mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), goodsMarket->getMailboxId(), MessageType::MARKET, goodsMarket->createSetQuantityEvent(0)));
+}
+
+void Business::setOwner(Company* owner)
+{
+    Building::setOwner(owner);
+    for (Work& employee : mEmployees)
+        employee.setEmployer(mOwner);
 }
 
 Good Business::getGood() const
