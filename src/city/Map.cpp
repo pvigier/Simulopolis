@@ -115,17 +115,11 @@ void Map::fromArray(const Array2<Tile::Type>& tiles)
     for (unsigned int i = 0; i < mHeight; ++i)
     {
         for (unsigned int j = 0; j < mWidth; ++j)
-        {
             mTiles.set(i, j, createTile(tiles.get(i, j)));
-            mTiles.get(i, j)->setPosition(sf::Vector2i(j, i), computePosition(i, j));
-        }
+
     }
     // Update tiles
-    for (unsigned int i = 0; i < mHeight; ++i)
-    {
-        for (unsigned int j = 0; j < mWidth; ++j)
-            updateTile(i, j);
-    }
+    updateTiles();
 }
 
 void Map::deselect()
@@ -332,6 +326,18 @@ void Map::updateNeighborhood(int i, int j)
             if (i + di >= 0 && i + di < static_cast<int>(mHeight) &&
                 j + dj >= 0 && j + dj < static_cast<int>(mWidth))
                 updateTile(i + di, j + dj);
+        }
+    }
+}
+
+void Map::updateTiles()
+{
+    for (unsigned int i = 0; i < mHeight; ++i)
+    {
+        for (unsigned int j = 0; j < mWidth; ++j)
+        {
+            mTiles.get(i, j)->setPosition(sf::Vector2i(j, i), computePosition(i, j));
+            updateTile(i, j);
         }
     }
 }

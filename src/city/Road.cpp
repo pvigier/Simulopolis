@@ -3,15 +3,7 @@
 Road::Road(const std::string& name, Type type) :
     Tile(name, type, Category::ROAD)
 {
-    sf::IntRect rect(0, 0, 132, 101);
-    if (type == Type::ROAD_SIDEWALK)
-        rect.left = 132;
-    else if (type == Type::BRIDGE)
-    {
-        rect.left = 264;
-        mCategory = Category::BRIDGE;
-    }
-    mSprite.setTextureRect(rect);
+
 }
 
 Road::~Road()
@@ -26,8 +18,20 @@ std::unique_ptr<Tile> Road::clone() const
 
 void Road::updateVariant(const Tile* neighbors[3][3])
 {
-    sf::IntRect rect = mSprite.getTextureRect();
-
+    sf::IntRect rect(0, 0, 132, 101);
+    // Choose the right column
+    switch (mType)
+    {
+        case Type::ROAD_SIDEWALK:
+            rect.left = 132;
+            break;
+        case Type::BRIDGE:
+            rect.left = 264;
+            break;
+        default:
+            break;
+    }
+    // Choose the right row
     if (neighbors[0][1]->isRoad() && neighbors[1][0]->isRoad() &&
         neighbors[2][1]->isRoad() && neighbors[1][2]->isRoad())
         rect.top = 202;
