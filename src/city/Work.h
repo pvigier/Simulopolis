@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <boost/serialization/access.hpp>
 #include "city/Money.h"
 
 class Person;
@@ -15,6 +16,7 @@ public:
 
     static std::string typeToString(Type type);
 
+    Work();
     Work(Type type, Building* workplace);
 
     Type getType() const;
@@ -38,4 +40,13 @@ private:
     Building* mWorkplace;
     Money mSalary;
     bool mWorkedThisMonth;
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mType & mQualification & mEmployee & mEmployer & mWorkplace & mSalary & mWorkedThisMonth;
+    }
 };

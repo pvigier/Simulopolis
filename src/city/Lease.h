@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <boost/serialization/access.hpp>
 #include "city/Money.h"
 
 class Person;
@@ -10,7 +11,7 @@ class Company;
 class Lease
 {
 public:
-    Lease(Housing* housing);
+    Lease(Housing* housing = nullptr);
 
     const Person* getTenant() const;
     std::string getTenantName() const;
@@ -27,4 +28,13 @@ private:
     Housing* mHousing;
     Company* mOwner;
     Money mRent;
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mTenant & mHousing & mOwner & mRent;
+    }
 };

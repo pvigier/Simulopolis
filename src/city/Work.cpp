@@ -30,6 +30,12 @@ std::string Work::typeToString(Type type)
     }
 }
 
+Work::Work() : mType(Type::FARMER), mEmployee(nullptr), mEmployer(nullptr), mWorkplace(nullptr), mSalary(0.0),
+    mWorkedThisMonth(false)
+{
+
+}
+
 Work::Work(Type type, Building* workplace) :
     mType(type), mEmployee(nullptr), mEmployer(nullptr), mWorkplace(workplace), mSalary(0.0),
     mWorkedThisMonth(false)
