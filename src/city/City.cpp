@@ -238,6 +238,7 @@ void City::update(float dt)
     mBank.update();
 
     // Update the date
+    mTotalTime += dt;
     mCurrentTime += dt;
     while (mCurrentTime >= mTimePerMonth)
     {
@@ -515,6 +516,11 @@ sf::Vector2i City::toTileIndices(const sf::Vector2f& position) const
     int x = position.y / Tile::SIZE + 0.5f * (position.x / Tile::SIZE - mMap.getWidth() - 1);
     int y = position.y / Tile::SIZE - 0.5f * (position.x / Tile::SIZE - mMap.getWidth() - 1);
     return sf::Vector2i(x, y);
+}
+
+float City::getHumanTime() const
+{
+    return mTotalTime;
 }
 
 float City::getTimePerMonth() const

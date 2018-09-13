@@ -34,6 +34,6 @@ private:
     void serialize(Archive &ar, const unsigned int version)
     {
         ar & boost::serialization::base_object<Goal>(*this);
-        ar /*& mSelectedShop*/ & mGoodReserved;
+        ar & mSelectedShop & mGoodReserved;
     }
 };
