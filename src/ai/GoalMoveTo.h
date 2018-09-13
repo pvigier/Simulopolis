@@ -21,4 +21,16 @@ private:
     static constexpr float ARRIVE_DISTANCE = 1.0f;
 
     const Tile* mTarget;
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    GoalMoveTo() = default;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<Goal>(*this);
+        //ar & mTarget;
+    }
 };

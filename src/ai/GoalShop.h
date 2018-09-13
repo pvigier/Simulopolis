@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/serialization/base_object.hpp>
 #include "ai/Goal.h"
 
 class Business;
@@ -23,4 +24,16 @@ public:
 private:
     const Business* mSelectedShop;
     bool mGoodReserved;
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    GoalShop() = default;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<Goal>(*this);
+        ar /*& mSelectedShop*/ & mGoodReserved;
+    }
 };

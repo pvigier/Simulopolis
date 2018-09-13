@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/serialization/base_object.hpp>
 #include "ai/Goal.h"
 
 class GoalWait : public Goal
@@ -17,4 +18,16 @@ public:
 private:
     float mDuration;
     float mEndTime;
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    GoalWait() = default;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<Goal>(*this);
+        ar & mDuration & mEndTime;
+    }
 };

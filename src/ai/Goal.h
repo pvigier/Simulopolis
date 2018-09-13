@@ -1,6 +1,7 @@
  #pragma once
 
  #include <deque>
+ #include <boost/serialization/access.hpp>
  #include "message/Message.h"
 
 class Person;
@@ -10,7 +11,7 @@ class Goal
 public:
     enum class State{ACTIVE, INACTIVE, COMPLETED, FAILED};
 
-    Goal(Person* owner);
+    Goal(Person* owner = nullptr);
     virtual ~Goal();
 
     virtual void activate() = 0;
@@ -41,4 +42,14 @@ protected:
 
     State processSubgoals();
     bool forward(Message message);
+
+private:
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar /*& mOwner*/ & mState & mSubgoals;
+    }
 };

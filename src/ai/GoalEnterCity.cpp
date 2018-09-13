@@ -3,6 +3,7 @@
 #include "city/Person.h"
 #include "city/City.h"
 #include "city/Market.h"
+#include "city/Housing.h"
 
 GoalEnterCity::GoalEnterCity(Person* owner) : Goal(owner), mMarket(nullptr), mHomeFound(false)
 {

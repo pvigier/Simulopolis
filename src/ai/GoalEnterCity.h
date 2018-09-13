@@ -1,9 +1,10 @@
 #pragma once
 
-#include "city/Housing.h"
+#include <boost/serialization/base_object.hpp>
 #include "ai/Goal.h"
 
 template<typename T> class Market;
+class Lease;
 
 class GoalEnterCity : public Goal
 {
@@ -22,4 +23,16 @@ public:
 private:
     const Market<Lease>* mMarket;
     bool mHomeFound;
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    GoalEnterCity() = default;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<Goal>(*this);
+        ar & mMarket & mHomeFound;
+    }
 };
