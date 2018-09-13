@@ -60,4 +60,13 @@ private:
 
     void updateTile(int i, int j);
     void updateNeighborhood(int i, int j);
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mWidth & mHeight & mTiles & mNbSelected & mNetwork;
+    }
 };
