@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <boost/serialization/base_object.hpp>
 #include "message/Mailbox.h"
 #include "city/Tile.h"
 
@@ -38,4 +39,17 @@ protected:
     unsigned int mNbStairs;
     Company* mOwner;
     Mailbox mMailbox;
+
+    Building() = default;
+
+private:
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<Tile>(*this);
+        ar & mId & mNbStairs /*& mOwner*/ & mMailbox;
+    }
 };

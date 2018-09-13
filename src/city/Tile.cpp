@@ -6,18 +6,6 @@
 TextureManager* Tile::sTextureManager = nullptr;
 ImageManager* Tile::sImageManager = nullptr;
 
-Tile::Tile(const std::string& name, Tile::Type type, Tile::Category category) :
-    mTextureName(name), mSprite(sTextureManager->getTexture(name)), mMask(sImageManager->getImage(name)),
-    mType(type), mCategory(category), mState(Tile::State::DESELECTED)
-{
-
-}
-
-Tile::~Tile()
-{
-
-}
-
 void Tile::setTextureManager(TextureManager* textureManager)
 {
     sTextureManager = textureManager;
@@ -145,6 +133,17 @@ std::string Tile::typeToString(Tile::Type type)
     }
 }
 
+Tile::Tile(const std::string& name, Tile::Type type, Tile::Category category) :
+    mTextureName(std::move(name)), mMask(nullptr), mType(type), mCategory(category), mState(Tile::State::DESELECTED)
+{
+    setUp();
+}
+
+Tile::~Tile()
+{
+
+}
+
 void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite, states);
@@ -152,7 +151,7 @@ void Tile::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 bool Tile::intersect(const sf::Vector2f& position) const
 {
-    return sprite_intersect(mSprite, mMask, position);
+    return sprite_intersect(mSprite, *mMask, position);
 }
 
 std::unique_ptr<Tile> Tile::clone() const
@@ -283,4 +282,10 @@ void Tile::setState(Tile::State state)
 sf::FloatRect Tile::getBounds() const
 {
     return mSprite.getGlobalBounds();
+}
+
+void Tile::setUp()
+{
+    mSprite.setTexture(sTextureManager->getTexture(mTextureName));
+    mMask = &sImageManager->getImage(mTextureName);
 }

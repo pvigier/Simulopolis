@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/serialization/base_object.hpp>
 #include "city/Tile.h"
 
 class Road : public Tile
@@ -12,5 +13,15 @@ public:
 
     virtual void updateVariant(const Tile* neighbors[3][3]) override;
 
-protected:
+private:
+    // Serialization
+    friend class boost::serialization::access;
+
+    Road() = default;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<Tile>(*this);
+    }
 };

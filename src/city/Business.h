@@ -2,6 +2,7 @@
 
 #include <queue>
 #include <set>
+#include <boost/serialization/set.hpp>
 #include "city/Building.h"
 #include "city/Good.h"
 #include "city/Work.h"
@@ -58,4 +59,17 @@ protected:
     const Market<const Building>* getMarket();
     void updatePrice();
     void updateDesiredQuantity();
+
+private:
+    // Serialization
+    friend class boost::serialization::access;
+
+    Business() = default;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<Building>(*this);
+        ar & mGood & mMaxSizeStock & mStock & mStockCost & mPreparedGoods & mPrice /*& mEmployees*/ & mWorksInMarket;
+    }
 };

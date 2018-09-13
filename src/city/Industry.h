@@ -2,6 +2,7 @@
 
 #include <deque>
 #include <set>
+#include <boost/serialization/set.hpp>
 #include "city/Building.h"
 #include "city/Good.h"
 #include "city/Work.h"
@@ -37,6 +38,16 @@ protected:
         Money cost;
 
         Money getCostPerUnit();
+
+    private:
+        // Serialization
+        friend class boost::serialization::access;
+
+        template <typename Archive>
+        void serialize(Archive &ar, const unsigned int version)
+        {
+            ar & quantity & cost;
+        }
     };
 
     Good mGood;
@@ -49,4 +60,17 @@ protected:
     void updateStock();
     void sellGoods();
     const Market<const Building>* getMarket();
+
+private:
+    // Serialization
+    friend class boost::serialization::access;
+
+    Industry() = default;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<Building>(*this);
+        ar & mGood & mStock & mGoodsInMarket & mEmployeeProductivity /*& mEmployees*/ & mWorksInMarket;
+    }
 };

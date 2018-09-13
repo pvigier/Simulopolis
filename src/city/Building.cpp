@@ -32,7 +32,7 @@ void Building::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 bool Building::intersect(const sf::Vector2f& position) const
 {
-    if (sprite_intersect(mSprite, mMask, position))
+    if (sprite_intersect(mSprite, *mMask, position))
         return true;
     // Stairs
     sf::Sprite sprite(mSprite);
@@ -40,7 +40,7 @@ bool Building::intersect(const sf::Vector2f& position) const
     for (unsigned int i = 0; i < mNbStairs - 1; ++i)
     {
         sprite.move(0, -STAIR_HEIGHT);
-        if (sprite_intersect(sprite, mMask, position))
+        if (sprite_intersect(sprite, *mMask, position))
             return true;
     }
     return false;

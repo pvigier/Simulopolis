@@ -1,6 +1,7 @@
 #pragma once
 
 #include <set>
+#include <boost/serialization/set.hpp>
 #include "city/Building.h"
 #include "city/Work.h"
 
@@ -22,4 +23,17 @@ public:
 protected:
     std::vector<Work> mEmployees;
     std::set<Id> mWorksInMarket;
+
+private:
+    // Serialization
+    friend class boost::serialization::access;
+
+    Service() = default;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<Building>(*this);
+        ar /*& mEmployees*/ & mWorksInMarket;
+    }
 };

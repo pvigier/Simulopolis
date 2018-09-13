@@ -1,5 +1,7 @@
 #pragma once
 
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/split_member.hpp>
 #include <SFML/Graphics.hpp>
 #include "util/enum.h"
 
@@ -62,10 +64,33 @@ protected:
     std::string mTextureName;
     sf::Sprite mSprite;
     sf::Vector2i mCoordinates;
-    const sf::Image& mMask;
+    const sf::Image* mMask;
     Type mType;
     Category mCategory;
     State mState;
+
+    Tile() = default;
+
+private:
+    void setUp();
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void save(Archive &ar, const unsigned int version) const
+    {
+        ar & mTextureName & mCoordinates & mType & mCategory & mState;
+    }
+
+    template <typename Archive>
+    void load(Archive &ar, const unsigned int version)
+    {
+        ar & mTextureName & mCoordinates & mType & mCategory & mState;
+        setUp();
+    }
+
+    BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 
 ENABLE_BITMASK_OPERATORS(Tile::Category)
