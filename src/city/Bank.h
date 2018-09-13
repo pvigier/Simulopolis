@@ -17,6 +17,16 @@ public:
         Type type;
         Money balance;
         Money previousBalance;
+
+    private:
+        // Serialization
+        friend class boost::serialization::access;
+
+        template <typename Archive>
+        void serialize(Archive &ar, const unsigned int version)
+        {
+            ar & id & owner & type & balance & previousBalance;
+        }
     };
 
     struct Event
@@ -74,5 +84,14 @@ private:
     MessageBus* mMessageBus;
     Mailbox mMailbox;
     IdManager<Account> mAccounts;
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mMailbox & mAccounts;
+    }
 };
 

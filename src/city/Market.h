@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <algorithm>
+#include <boost/serialization/unordered_map.hpp>
 #include "util/IdManager.h"
 #include "util/debug.h"
 #include "message/MessageBus.h"
@@ -58,6 +59,18 @@ protected:
     Mailbox mMailbox;
     unsigned int mTime;
     Type mType;
+
+    VMarket() = default;
+
+private:
+    // Serialization
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & mMailbox & mTime & mType;
+    }
 };
 
 template<typename T>
@@ -71,12 +84,32 @@ public:
         Id sellerAccount;
         T* good;
         Money reservePrice;
+
+    private:
+        // Serialization
+        friend class boost::serialization::access;
+
+        template <typename Archive>
+        void serialize(Archive &ar, const unsigned int version)
+        {
+            ar & id & sellerId & sellerAccount /*& good*/ & reservePrice;
+        }
     };
 
     struct Bid
     {
         Id bidderId;
         Money value;
+
+    private:
+        // Serialization
+        friend class boost::serialization::access;
+
+        template <typename Archive>
+        void serialize(Archive &ar, const unsigned int version)
+        {
+            ar & bidderId & value;
+        }
     };
 
     struct Auction
@@ -84,6 +117,16 @@ public:
         unsigned int timestamp;
         Item item;
         std::vector<Bid> bids;
+
+    private:
+        // Serialization
+        friend class boost::serialization::access;
+
+        template <typename Archive>
+        void serialize(Archive &ar, const unsigned int version)
+        {
+            ar & timestamp & item & bids;
+        }
     };
 
     struct Event : public EventBase
@@ -140,7 +183,7 @@ public:
         template <typename Archive>
         void serialize(Archive &ar, const unsigned int version)
         {
-            boost::serialization::base_object<VMarket::EventBase>(*this);
+            ar & boost::serialization::base_object<VMarket::EventBase>(*this);
             ar & type;
             switch (type)
             {
@@ -380,4 +423,16 @@ private:
     std::unordered_map<Id, unsigned int> mDesiredQuantities;
     mutable std::vector<const Item*> mItems;
     mutable bool mDirty;
+
+    // Serialization
+    friend class boost::serialization::access;
+
+    Market() = default;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & boost::serialization::base_object<VMarket>(*this);
+        ar & mAuctions & mDesiredQuantities & mItems & mDirty;
+    }
 };
