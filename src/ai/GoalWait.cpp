@@ -20,15 +20,15 @@ void GoalWait::activate()
     // Update the state of the Owner
     mOwner->setState(Person::State::WAITING);
 
-    // Start the clock
-    mClock.restart();
+    // Compute the end time
+    mEndTime = mOwner->getCity()->getHumanTime() + mDuration;
 }
 
 Goal::State GoalWait::process()
 {
     activateIfInactive();
 
-    if (mClock.getElapsedTime().asSeconds() >= mDuration)
+    if (mOwner->getCity()->getHumanTime() >= mEndTime)
         mState = State::COMPLETED;
 
     return mState;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/System/Clock.hpp>
+#include <boost/serialization/base_object.hpp>
 #include "ai/Goal.h"
 
 class GoalRest : public Goal
@@ -18,6 +18,6 @@ public:
     virtual std::string toString() const override;
 
 private:
-    sf::Clock mClock;
     bool mAtHome;
+    float mLastUpdate;
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ai/Goal.h"
-#include <SFML/System/Clock.hpp>
 
 class GoalWait : public Goal
 {
@@ -17,5 +16,5 @@ public:
 
 private:
     float mDuration;
-    sf::Clock mClock;
+    float mEndTime;
 };
