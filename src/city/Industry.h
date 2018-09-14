@@ -12,7 +12,7 @@ template<typename T> class Market;
 class Industry : public Building
 {
 public:
-    Industry(const std::string& name, Type type, unsigned int nbStairs, Good good, double employeeProductivity,
+    Industry(const std::string& name, Type type, unsigned int nbStairs, Good::Type goodType, double employeeProductivity,
         std::size_t nbEmployees, Work::Type employeeType);
     virtual ~Industry();
 
@@ -21,7 +21,7 @@ public:
     virtual void tearDown() override;
     virtual void setOwner(Company* owner) override;
 
-    Good getGood() const;
+    Good::Type getGoodType() const;
     std::unique_ptr<Work>& getManager();
     const std::unique_ptr<Work>& getManager() const;
     std::vector<std::unique_ptr<Work>>& getEmployees();
@@ -49,7 +49,7 @@ protected:
         }
     };
 
-    Good mGood;
+    Good::Type mGoodType;
     std::deque<Batch> mStock;
     std::set<Id> mGoodsInMarket;
     double mEmployeeProductivity;
@@ -70,6 +70,6 @@ private:
     void serialize(Archive &ar, const unsigned int version)
     {
         ar & boost::serialization::base_object<Building>(*this);
-        ar & mGood & mStock & mGoodsInMarket & mEmployeeProductivity & mEmployees & mWorksInMarket;
+        ar & mGoodType & mStock & mGoodsInMarket & mEmployeeProductivity & mEmployees & mWorksInMarket;
     }
 };

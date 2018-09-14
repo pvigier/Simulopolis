@@ -262,24 +262,24 @@ void Company::setSalary(Work::Qualification qualification, Money salary)
     }
 }
 
-double Company::getWholesaleMargin(Good good) const
+double Company::getWholesaleMargin(Good::Type goodType) const
 {
-    return mWholesaleMargins[static_cast<int>(good)];
+    return mWholesaleMargins[static_cast<int>(goodType)];
 }
 
-void Company::setWholesaleMargin(Good good, double margin)
+void Company::setWholesaleMargin(Good::Type goodType, double margin)
 {
-    mWholesaleMargins[static_cast<int>(good)] = margin;
+    mWholesaleMargins[static_cast<int>(goodType)] = margin;
 }
 
-double Company::getRetailMargin(Good good) const
+double Company::getRetailMargin(Good::Type goodType) const
 {
-     return mRetailMargins[static_cast<int>(good)];
+     return mRetailMargins[static_cast<int>(goodType)];
 }
 
-void Company::setRetailMargin(Good good, double margin)
+void Company::setRetailMargin(Good::Type goodType, double margin)
 {
-    mRetailMargins[static_cast<int>(good)] = margin;
+    mRetailMargins[static_cast<int>(goodType)] = margin;
 }
 
 void Company::addToMarket(Lease* lease)

@@ -65,7 +65,7 @@ public:
     void setWork(Work* work);
     void quitWork();
     std::string getWorkStatus() const;
-    Good getConsumptionHabit() const;
+    Good::Type getConsumptionHabit() const;
 
     // Car
     Car& getCar();
@@ -110,7 +110,7 @@ private:
     // Daily life
     Lease* mHome;
     Work* mWork;
-    Good mConsumptionHabit;
+    Good::Type mConsumptionHabit;
 
     // Car
     Car mCar;

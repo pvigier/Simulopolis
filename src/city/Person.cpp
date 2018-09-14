@@ -34,7 +34,7 @@ Person::Event::Event(Type type, Work* work) : type(type), work(work)
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth),
     mCity(nullptr), mMessageBus(nullptr),
-    mState(State::WAITING), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::NECESSARY), mCar(car),
+    mState(State::WAITING), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::Type::NECESSARY), mCar(car),
     mAccount(UNDEFINED), mLastMonthBalance(0.0), mMonthBalance(0.0),
     mDecayRates{0.1f, 0.1f, 0.01f, 0.01f, 0.1f},
     mNeeds{1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, mAverageNeeds{0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
@@ -242,7 +242,7 @@ std::string Person::getWorkStatus() const
         return "Unemployed";
 }
 
-Good Person::getConsumptionHabit() const
+Good::Type Person::getConsumptionHabit() const
 {
     return mConsumptionHabit;
 }

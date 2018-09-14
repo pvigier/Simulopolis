@@ -61,7 +61,7 @@ Goal::State GoalShop::process()
 void GoalShop::terminate()
 {
     mOwner->increaseNeed(Person::Need::SATIETY, 1.0f);
-    mOwner->increaseNeed(Person::Need::HAPPINESS, goodToHappiness(mOwner->getConsumptionHabit()));
+    mOwner->increaseNeed(Person::Need::HAPPINESS, Good::typeToHappiness(mOwner->getConsumptionHabit()));
 }
 
 bool GoalShop::handle(Message message)

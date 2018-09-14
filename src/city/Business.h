@@ -20,9 +20,9 @@ public:
         Money price;
     };
 
-    static Type getBusinessType(Good good);
+    static Type getBusinessType(Good::Type goodType);
 
-    Business(const std::string& name, Type type, unsigned int nbStairs, Good good, unsigned int maxSizeStock,
+    Business(const std::string& name, Type type, unsigned int nbStairs, Good::Type goodType, unsigned int maxSizeStock,
         std::size_t nbEmployees, Work::Type employeeType);
     virtual ~Business();
 
@@ -31,7 +31,7 @@ public:
     virtual void tearDown() override;
     virtual void setOwner(Company* owner) override;
 
-    Good getGood() const;
+    Good::Type getGoodType() const;
     unsigned int getStock() const;
     bool hasPreparedGoods() const;
     Money getPrice() const;
@@ -44,7 +44,7 @@ public:
     void onNewMonth();
 
 protected:
-    Good mGood;
+    Good::Type mGoodType;
     unsigned int mMaxSizeStock;
     unsigned int mStock;
     Money mStockCost;
@@ -69,6 +69,6 @@ private:
     void serialize(Archive &ar, const unsigned int version)
     {
         ar & boost::serialization::base_object<Building>(*this);
-        ar & mGood & mMaxSizeStock & mStock & mStockCost & mPreparedGoods & mPrice & mEmployees & mWorksInMarket;
+        ar & mGoodType & mMaxSizeStock & mStock & mStockCost & mPreparedGoods & mPrice & mEmployees & mWorksInMarket;
     }
 };

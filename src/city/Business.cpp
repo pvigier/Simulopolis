@@ -4,24 +4,24 @@
 #include "city/Company.h"
 #include "city/Market.h"
 
-Tile::Type Business::getBusinessType(Good good)
+Tile::Type Business::getBusinessType(Good::Type goodType)
 {
-    switch (good)
+    switch (goodType)
     {
-        case Good::NECESSARY:
+        case Good::Type::NECESSARY:
             return Tile::Type::GROCERY;
-        case Good::NORMAL:
+        case Good::Type::NORMAL:
             return Tile::Type::MALL;
-        case Good::LUXURY:
+        case Good::Type::LUXURY:
             return Tile::Type::BOUTIQUE;
         default:
             return Tile::Type::GROCERY;
     }
 }
 
-Business::Business(const std::string& name, Type type, unsigned int nbStairs, Good good, unsigned int maxSizeStock,
+Business::Business(const std::string& name, Type type, unsigned int nbStairs, Good::Type goodType, unsigned int maxSizeStock,
     std::size_t nbEmployees, Work::Type employeeType) :
-    Building(name, type, nbStairs), mGood(good), mMaxSizeStock(maxSizeStock), mStock(0), mStockCost(0.0),
+    Building(name, type, nbStairs), mGoodType(goodType), mMaxSizeStock(maxSizeStock), mStock(0), mStockCost(0.0),
     mPrice(0.0)
 {
     mEmployees.emplace_back(std::make_unique<Work>(Work::Type::MANAGER, this));
@@ -36,7 +36,7 @@ Business::~Business()
 
 std::unique_ptr<Tile> Business::clone() const
 {
-    return std::make_unique<Business>(mTextureName, mType, mNbStairs, mGood, mMaxSizeStock, mEmployees.size() - 1, mEmployees.back()->getType());
+    return std::make_unique<Business>(mTextureName, mType, mNbStairs, mGoodType, mMaxSizeStock, mEmployees.size() - 1, mEmployees.back()->getType());
 }
 
 void Business::update()
@@ -126,9 +126,9 @@ void Business::setOwner(Company* owner)
         employee->setEmployer(mOwner);
 }
 
-Good Business::getGood() const
+Good::Type Business::getGoodType() const
 {
-    return mGood;
+    return mGoodType;
 }
 
 unsigned int Business::getStock() const
@@ -198,13 +198,13 @@ void Business::buyGoods()
 
 const Market<const Building>* Business::getMarket()
 {
-    switch (mGood)
+    switch (mGoodType)
     {
-        case Good::NECESSARY:
+        case Good::Type::NECESSARY:
             return static_cast<const Market<const Building>*>(mOwner->getCity()->getMarket(VMarket::Type::NECESSARY_GOOD));
-        case Good::NORMAL:
+        case Good::Type::NORMAL:
             return static_cast<const Market<const Building>*>(mOwner->getCity()->getMarket(VMarket::Type::NORMAL_GOOD));
-        case Good::LUXURY:
+        case Good::Type::LUXURY:
             return static_cast<const Market<const Building>*>(mOwner->getCity()->getMarket(VMarket::Type::LUXURY_GOOD));
         default:
             return nullptr;
@@ -221,7 +221,7 @@ void Business::updatePrice()
             payroll += employee->getSalary();
     }
     // Update price
-    mPrice = (mStockCost + payroll) / mStock * mOwner->getRetailMargin(mGood);
+    mPrice = (mStockCost + payroll) / mStock * mOwner->getRetailMargin(mGoodType);
 }
 
 void Business::updateDesiredQuantity()

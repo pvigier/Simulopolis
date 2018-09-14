@@ -21,7 +21,7 @@ public:
     void update();
 
 private:
-    using Key = std::tuple<const Building*, Good, Money>;
+    using Key = std::tuple<const Building*, Good::Type, Money>;
 
     MessageBus* mMessageBus;
     StylesheetManager* mStylesheetManager;
@@ -37,10 +37,10 @@ private:
 
     // Rows
     std::size_t getRow(const Key& key) const;
-    void addRow(const Building* building, Good good, Money price, int count);
+    void addRow(const Building* building, Good::Type goodType, Money price, int count);
     void updateRow(std::size_t i, int count);
 
     // Util
     Market<const Building>* getMarket(VMarket::Type type);
-    Good getGood(VMarket::Type type) const;
+    Good::Type getGood(VMarket::Type type) const;
 };

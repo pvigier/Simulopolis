@@ -45,10 +45,10 @@ public:
     void setRent(Tile::Type housingType, Money rent);
     Money getSalary(Work::Qualification qualification) const;
     void setSalary(Work::Qualification qualification, Money salary);
-    double getWholesaleMargin(Good good) const;
-    void setWholesaleMargin(Good good, double margin);
-    double getRetailMargin(Good good) const;
-    void setRetailMargin(Good good, double margin);
+    double getWholesaleMargin(Good::Type goodType) const;
+    void setWholesaleMargin(Good::Type goodType, double margin);
+    double getRetailMargin(Good::Type goodType) const;
+    void setRetailMargin(Good::Type goodType, double margin);
 
 private:
     // Data

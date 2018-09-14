@@ -80,13 +80,13 @@ void GoodsMarketWindow::addItem(VMarket::Type type, Id itemId)
 {
     const Market<const Building>::Item& item = getMarket(type)->getItem(itemId);
     std::tuple<VMarket::Type, Id> id(type, itemId);
-    Good good = getGood(type);
-    mItems[id] = std::make_tuple(item.good, good, item.reservePrice);
+    Good::Type goodType = getGood(type);
+    mItems[id] = std::make_tuple(item.good, goodType, item.reservePrice);
     std::size_t i = getRow(mItems[id]);
     if (i == mCounts.size())
     {
         mCounts.emplace_back(mItems[id], 1);
-        addRow(item.good, good, item.reservePrice, 1);
+        addRow(item.good, goodType, item.reservePrice, 1);
     }
     else
         updateRow(i, ++mCounts[i].second);
@@ -112,13 +112,13 @@ std::size_t GoodsMarketWindow::getRow(const Key& key) const
     return std::find_if(mCounts.begin(), mCounts.end(), [&key](const std::pair<Key, int>& x){ return x.first == key; }) - mCounts.begin();
 }
 
-void GoodsMarketWindow::addRow(const Building* building, Good good, Money price, int count)
+void GoodsMarketWindow::addRow(const Building* building, Good::Type goodType, Money price, int count)
 {
     // Add row
     mTable->addRow({
         mGui->createWithDefaultName<GuiText>(building->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("%d", building->getId()), 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>(goodToString(good), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>(Good::typeToString(goodType), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("$%.2f", price), 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>(format("%d", count), 12, mStylesheetManager->getStylesheet("darkText")),
     });
@@ -144,7 +144,7 @@ Market<const Building>* GoodsMarketWindow::getMarket(VMarket::Type type)
     }
 }
 
-Good GoodsMarketWindow::getGood(VMarket::Type type) const
+Good::Type GoodsMarketWindow::getGood(VMarket::Type type) const
 {
-    return static_cast<Good>(type);
+    return static_cast<Good::Type>(type);
 }
