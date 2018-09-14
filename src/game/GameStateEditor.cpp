@@ -41,10 +41,6 @@ GameStateEditor::GameStateEditor() :
 
     // Gui
     createGui();
-
-    // Subscribe to the city
-    mCity.setGameMessageBus(sMessageBus);
-    mCity.subscribe(mMailbox.getId());
 }
 
 GameStateEditor::~GameStateEditor()
@@ -339,6 +335,10 @@ void GameStateEditor::newGame(uint64_t seed)
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
         mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
     zoom(8.0f);
+
+    // Subscribe to the city
+    mCity.setGameMessageBus(sMessageBus);
+    mCity.subscribe(mMailbox.getId());
 }
 
 void GameStateEditor::loadGame(const std::string& path)
@@ -347,6 +347,10 @@ void GameStateEditor::loadGame(const std::string& path)
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
         mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
     zoom(8.0f);
+
+    // Subscribe to the city
+    mCity.setGameMessageBus(sMessageBus);
+    mCity.subscribe(mMailbox.getId());
 }
 
 const sf::Texture& GameStateEditor::getCityTexture() const
