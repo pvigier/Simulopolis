@@ -4,9 +4,10 @@
 #include "city/Market.h"
 
 Housing::Housing(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbInhabitants, float comfort) :
-    Building(name, type, nbStairs), mLeases(nbInhabitants, Lease(this)), mComfort(comfort)
+    Building(name, type, nbStairs), mComfort(comfort)
 {
-    //ctor
+    for (std::size_t i = 0; i < nbInhabitants; ++i)
+        mLeases.emplace_back(std::make_unique<Lease>(this));
 }
 
 Housing::~Housing()
@@ -55,16 +56,16 @@ void Housing::tearDown()
 void Housing::setOwner(Company* owner)
 {
     Building::setOwner(owner);
-    for (Lease& lease : mLeases)
-        lease.setOwner(mOwner);
+    for (std::unique_ptr<Lease>& lease : mLeases)
+        lease->setOwner(mOwner);
 }
 
-std::vector<Lease>& Housing::getLeases()
+std::vector<std::unique_ptr<Lease>>& Housing::getLeases()
 {
     return mLeases;
 }
 
-const std::vector<Lease>& Housing::getLeases() const
+const std::vector<std::unique_ptr<Lease>>& Housing::getLeases() const
 {
     return mLeases;
 }

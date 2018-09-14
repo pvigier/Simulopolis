@@ -5,9 +5,10 @@
 
 Service::Service(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbEmployees,
         Work::Type employeeType) :
-    Building(name, type, nbStairs), mEmployees(nbEmployees, Work(employeeType, this))
+    Building(name, type, nbStairs)
 {
-    //ctor
+    for (std::size_t i = 0; i < nbEmployees; ++i)
+        mEmployees.emplace_back(std::make_unique<Work>(employeeType, this));
 }
 
 Service::~Service()
@@ -17,7 +18,7 @@ Service::~Service()
 
 std::unique_ptr<Tile> Service::clone() const
 {
-    return std::make_unique<Service>(mTextureName, mType, mNbStairs, mEmployees.size(), mEmployees.back().getType());
+    return std::make_unique<Service>(mTextureName, mType, mNbStairs, mEmployees.size(), mEmployees.back()->getType());
 }
 
 void Service::update()
@@ -56,16 +57,16 @@ void Service::tearDown()
 void Service::setOwner(Company* owner)
 {
     Building::setOwner(owner);
-    for (Work& employee : mEmployees)
-        employee.setEmployer(mOwner);
+    for (std::unique_ptr<Work>& employee : mEmployees)
+        employee->setEmployer(mOwner);
 }
 
-std::vector<Work>& Service::getEmployees()
+std::vector<std::unique_ptr<Work>>& Service::getEmployees()
 {
     return mEmployees;
 }
 
-const std::vector<Work>& Service::getEmployees() const
+const std::vector<std::unique_ptr<Work>>& Service::getEmployees() const
 {
     return mEmployees;
 }

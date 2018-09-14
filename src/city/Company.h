@@ -16,8 +16,8 @@ class Lease;
 class Company
 {
 public:
-    static std::vector<Work>* getEmployees(Building* building);
-    static const std::vector<Work>* getEmployees(const Building* building);
+    static std::vector<std::unique_ptr<Work>>* getEmployees(Building* building);
+    static const std::vector<std::unique_ptr<Work>>* getEmployees(const Building* building);
 
     Company(std::string name, int creationYear, Person* owner = nullptr);
     ~Company();
@@ -85,6 +85,7 @@ private:
     void serialize(Archive &ar, const unsigned int version)
     {
         ar & mName & mCreationYear & mOwner & mMailbox & mAccount;
+        ar & mBuildings;
         ar & mRents & mSalaries & mWholesaleMargins & mRetailMargins;
     }
 };

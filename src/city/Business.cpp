@@ -24,8 +24,9 @@ Business::Business(const std::string& name, Type type, unsigned int nbStairs, Go
     Building(name, type, nbStairs), mGood(good), mMaxSizeStock(maxSizeStock), mStock(0), mStockCost(0.0),
     mPrice(0.0)
 {
-    mEmployees.emplace_back(Work::Type::MANAGER, this);
-    mEmployees.resize(nbEmployees + 1, Work(employeeType, this));
+    mEmployees.emplace_back(std::make_unique<Work>(Work::Type::MANAGER, this));
+    for (std::size_t i = 0; i < nbEmployees; ++i)
+        mEmployees.emplace_back(std::make_unique<Work>(employeeType, this));
 }
 
 Business::~Business()
@@ -35,7 +36,7 @@ Business::~Business()
 
 std::unique_ptr<Tile> Business::clone() const
 {
-    return std::make_unique<Business>(mTextureName, mType, mNbStairs, mGood, mMaxSizeStock, mEmployees.size() - 1, mEmployees.back().getType());
+    return std::make_unique<Business>(mTextureName, mType, mNbStairs, mGood, mMaxSizeStock, mEmployees.size() - 1, mEmployees.back()->getType());
 }
 
 void Business::update()
@@ -121,8 +122,8 @@ void Business::tearDown()
 void Business::setOwner(Company* owner)
 {
     Building::setOwner(owner);
-    for (Work& employee : mEmployees)
-        employee.setEmployer(mOwner);
+    for (std::unique_ptr<Work>& employee : mEmployees)
+        employee->setEmployer(mOwner);
 }
 
 Good Business::getGood() const
@@ -145,22 +146,22 @@ Money Business::getPrice() const
     return mPrice;
 }
 
-Work& Business::getManager()
+std::unique_ptr<Work>& Business::getManager()
 {
     return mEmployees[0];
 }
 
-const Work& Business::getManager() const
+const std::unique_ptr<Work>& Business::getManager() const
 {
     return mEmployees[0];
 }
 
-std::vector<Work>& Business::getEmployees()
+std::vector<std::unique_ptr<Work>>& Business::getEmployees()
 {
     return mEmployees;
 }
 
-const std::vector<Work>& Business::getEmployees() const
+const std::vector<std::unique_ptr<Work>>& Business::getEmployees() const
 {
     return mEmployees;
 }
@@ -176,10 +177,10 @@ void Business::prepareGoods()
     double preparedGoods = 0.0;
     for (std::size_t i = 1; i < mEmployees.size(); ++i)
     {
-        if (mEmployees[i].hasWorkedThisMonth())
+        if (mEmployees[i]->hasWorkedThisMonth())
             preparedGoods += 1.0;
     }
-    if (getManager().hasWorkedThisMonth())
+    if (getManager()->hasWorkedThisMonth())
         preparedGoods *= 2.0;
     mPreparedGoods += preparedGoods;
 }
@@ -214,10 +215,10 @@ void Business::updatePrice()
 {
     // Compute payroll
     Money payroll(0.0);
-    for (const Work& employee : mEmployees)
+    for (const std::unique_ptr<Work>& employee : mEmployees)
     {
-        if (employee.hasWorkedThisMonth())
-            payroll += employee.getSalary();
+        if (employee->hasWorkedThisMonth())
+            payroll += employee->getSalary();
     }
     // Update price
     mPrice = (mStockCost + payroll) / mStock * mOwner->getRetailMargin(mGood);

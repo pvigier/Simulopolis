@@ -98,11 +98,11 @@ void BuildingWindow::update()
     if (mBuilding.isHousing())
     {
         // Table
-        const std::vector<Lease>& leases = static_cast<const Housing&>(mBuilding).getLeases();
+        const std::vector<std::unique_ptr<Lease>>& leases = static_cast<const Housing&>(mBuilding).getLeases();
         for (std::size_t i = 0; i < leases.size(); ++i)
         {
-            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setString(leases[i].getTenantName());
-            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("$%.2f", leases[i].getRent()));
+            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setString(leases[i]->getTenantName());
+            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("$%.2f", leases[i]->getRent()));
         }
     }
     else
@@ -111,12 +111,12 @@ void BuildingWindow::update()
         if (mBuilding.isBusiness())
             mStockText->setString(format("Stock: %d", static_cast<const Business&>(mBuilding).getStock()));
         // Table
-        const std::vector<Work>* employees = Company::getEmployees(&mBuilding);
+        const std::vector<std::unique_ptr<Work>>* employees = Company::getEmployees(&mBuilding);
         for (std::size_t i = 0; i < employees->size(); ++i)
         {
-            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setString((*employees)[i].getEmployeeName());
-            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(Work::typeToString((*employees)[i].getType()));
-            static_cast<GuiText*>(mTable->getCellContent(i, 2))->setString(format("$%.2f", (*employees)[i].getSalary()));
+            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setString((*employees)[i]->getEmployeeName());
+            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(Work::typeToString((*employees)[i]->getType()));
+            static_cast<GuiText*>(mTable->getCellContent(i, 2))->setString(format("$%.2f", (*employees)[i]->getSalary()));
         }
     }
 }

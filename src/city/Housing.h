@@ -17,12 +17,12 @@ public:
     virtual void tearDown() override;
     virtual void setOwner(Company* owner) override;
 
-    std::vector<Lease>& getLeases();
-    const std::vector<Lease>& getLeases() const;
+    std::vector<std::unique_ptr<Lease>>& getLeases();
+    const std::vector<std::unique_ptr<Lease>>& getLeases() const;
     float getComfort() const;
 
 protected:
-    std::vector<Lease> mLeases;
+    std::vector<std::unique_ptr<Lease>> mLeases;
     std::set<Id> mLeasesInMarket;
     float mComfort; // Happiness per month
 

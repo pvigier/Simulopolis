@@ -16,11 +16,11 @@ public:
     virtual void tearDown() override;
     virtual void setOwner(Company* owner) override;
 
-    std::vector<Work>& getEmployees();
-    const std::vector<Work>& getEmployees() const;
+    std::vector<std::unique_ptr<Work>>& getEmployees();
+    const std::vector<std::unique_ptr<Work>>& getEmployees() const;
 
 protected:
-    std::vector<Work> mEmployees;
+    std::vector<std::unique_ptr<Work>> mEmployees;
     std::set<Id> mWorksInMarket;
 
 private:

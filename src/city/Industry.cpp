@@ -7,8 +7,9 @@ Industry::Industry(const std::string& name, Type type, unsigned int nbStairs, Go
     double employeeProductivity, std::size_t nbEmployees, Work::Type employeeType) :
     Building(name, type, nbStairs), mGood(good), mEmployeeProductivity(employeeProductivity)
 {
-    mEmployees.emplace_back(Work::Type::MANAGER, this);
-    mEmployees.resize(nbEmployees + 1, Work(employeeType, this));
+    mEmployees.emplace_back(std::make_unique<Work>(Work::Type::MANAGER, this));
+    for (std::size_t i = 0; i < nbEmployees; ++i)
+        mEmployees.emplace_back(std::make_unique<Work>(employeeType, this));
 }
 
 Industry::~Industry()
@@ -18,7 +19,7 @@ Industry::~Industry()
 
 std::unique_ptr<Tile> Industry::clone() const
 {
-    return std::make_unique<Industry>(mTextureName, mType, mNbStairs, mGood, mEmployeeProductivity, mEmployees.size() - 1, mEmployees.back().getType());
+    return std::make_unique<Industry>(mTextureName, mType, mNbStairs, mGood, mEmployeeProductivity, mEmployees.size() - 1, mEmployees.back()->getType());
 }
 
 void Industry::update()
@@ -79,8 +80,8 @@ void Industry::tearDown()
 void Industry::setOwner(Company* owner)
 {
     Building::setOwner(owner);
-    for (Work& employee : mEmployees)
-        employee.setEmployer(mOwner);
+    for (std::unique_ptr<Work>& employee : mEmployees)
+        employee->setEmployer(mOwner);
 }
 
 Good Industry::getGood() const
@@ -88,22 +89,22 @@ Good Industry::getGood() const
     return mGood;
 }
 
-Work& Industry::getManager()
+std::unique_ptr<Work>& Industry::getManager()
 {
     return mEmployees[0];
 }
 
-const Work& Industry::getManager() const
+const std::unique_ptr<Work>& Industry::getManager() const
 {
     return mEmployees[0];
 }
 
-std::vector<Work>& Industry::getEmployees()
+std::vector<std::unique_ptr<Work>>& Industry::getEmployees()
 {
     return mEmployees;
 }
 
-const std::vector<Work>& Industry::getEmployees() const
+const std::vector<std::unique_ptr<Work>>& Industry::getEmployees() const
 {
     return mEmployees;
 }
@@ -124,16 +125,16 @@ void Industry::updateStock()
     Batch batch{0.0, Money(0.0)};
     for (std::size_t i = 1; i < mEmployees.size(); ++i)
     {
-        if (mEmployees[i].hasWorkedThisMonth())
+        if (mEmployees[i]->hasWorkedThisMonth())
         {
             batch.quantity += mEmployeeProductivity;
-            batch.cost += mEmployees[i].getSalary();
+            batch.cost += mEmployees[i]->getSalary();
         }
     }
-    if (getManager().hasWorkedThisMonth())
+    if (getManager()->hasWorkedThisMonth())
     {
         batch.quantity *= 2.0;
-        batch.cost += getManager().getSalary();
+        batch.cost += getManager()->getSalary();
     }
     if (batch.quantity > 0.0)
         mStock.push_back(batch);

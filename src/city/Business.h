@@ -35,10 +35,10 @@ public:
     unsigned int getStock() const;
     bool hasPreparedGoods() const;
     Money getPrice() const;
-    Work& getManager();
-    const Work& getManager() const;
-    std::vector<Work>& getEmployees();
-    const std::vector<Work>& getEmployees() const;
+    std::unique_ptr<Work>& getManager();
+    const std::unique_ptr<Work>& getManager() const;
+    std::vector<std::unique_ptr<Work>>& getEmployees();
+    const std::vector<std::unique_ptr<Work>>& getEmployees() const;
 
     // Events
     void onNewMonth();
@@ -50,7 +50,7 @@ protected:
     Money mStockCost;
     double mPreparedGoods;
     Money mPrice;
-    std::vector<Work> mEmployees;
+    std::vector<std::unique_ptr<Work>> mEmployees;
     std::set<Id> mWorksInMarket;
 
     void prepareGoods();

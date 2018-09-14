@@ -22,10 +22,10 @@ public:
     virtual void setOwner(Company* owner) override;
 
     Good getGood() const;
-    Work& getManager();
-    const Work& getManager() const;
-    std::vector<Work>& getEmployees();
-    const std::vector<Work>& getEmployees() const;
+    std::unique_ptr<Work>& getManager();
+    const std::unique_ptr<Work>& getManager() const;
+    std::vector<std::unique_ptr<Work>>& getEmployees();
+    const std::vector<std::unique_ptr<Work>>& getEmployees() const;
 
     // Events
     void onNewMonth();
@@ -53,7 +53,7 @@ protected:
     std::deque<Batch> mStock;
     std::set<Id> mGoodsInMarket;
     double mEmployeeProductivity;
-    std::vector<Work> mEmployees;
+    std::vector<std::unique_ptr<Work>> mEmployees;
     std::set<Id> mWorksInMarket;
 
     void updateStock();

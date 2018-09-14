@@ -5,7 +5,7 @@
 #include "city/Business.h"
 #include "city/Service.h"
 
-std::vector<Work>* Company::getEmployees(Building* building)
+std::vector<std::unique_ptr<Work>>* Company::getEmployees(Building* building)
 {
     if (building->isIndustry())
         return &static_cast<Industry*>(building)->getEmployees();
@@ -17,7 +17,7 @@ std::vector<Work>* Company::getEmployees(Building* building)
         return nullptr;
 }
 
-const std::vector<Work>* Company::getEmployees(const Building* building)
+const std::vector<std::unique_ptr<Work>>* Company::getEmployees(const Building* building)
 {
     if (building->isIndustry())
         return &static_cast<const Industry*>(building)->getEmployees();
@@ -175,18 +175,18 @@ void Company::addBuilding(Building* building)
     if (building->isHousing())
     {
         Housing* housing = static_cast<Housing*>(building);
-        for (Lease& lease : housing->getLeases())
+        for (std::unique_ptr<Lease>& lease : housing->getLeases())
         {
-            if (!lease.getTenant())
-                addToMarket(&lease);
+            if (!lease->getTenant())
+                addToMarket(lease.get());
         }
     }
     else
     {
-        for (Work& work : *getEmployees(building))
+        for (std::unique_ptr<Work>& work : *getEmployees(building))
         {
-            if (!work.getEmployee())
-                addToMarket(&work);
+            if (!work->getEmployee())
+                addToMarket(work.get());
         }
     }
 }
@@ -197,23 +197,23 @@ void Company::removeBuilding(Building* building)
     if (building->isHousing())
     {
         Housing* housing = static_cast<Housing*>(building);
-        for (Lease& lease : housing->getLeases())
+        for (std::unique_ptr<Lease>& lease : housing->getLeases())
         {
-            if (lease.getTenant())
-                mMessageBus->send(Message::create(lease.getTenant()->getMailboxId(), MessageType::PERSON, Person::Event{Person::Event::Type::EXPELLED}));
+            if (lease->getTenant())
+                mMessageBus->send(Message::create(lease->getTenant()->getMailboxId(), MessageType::PERSON, Person::Event{Person::Event::Type::EXPELLED}));
         }
     }
     // Alert the employees
     else
     {
-        for (Work& work : *getEmployees(building))
+        for (std::unique_ptr<Work>& work : *getEmployees(building))
         {
-            if (work.getEmployee())
+            if (work->getEmployee())
             {
                 // Pay the employee if necessary
-                if (work.hasWorkedThisMonth())
-                    mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createTransferMoneyEvent(mAccount, work.getEmployee()->getAccount(), work.getSalary())));
-                mMessageBus->send(Message::create(work.getEmployee()->getMailboxId(), MessageType::PERSON, Person::Event{Person::Event::Type::FIRED}));
+                if (work->hasWorkedThisMonth())
+                    mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createTransferMoneyEvent(mAccount, work->getEmployee()->getAccount(), work->getSalary())));
+                mMessageBus->send(Message::create(work->getEmployee()->getMailboxId(), MessageType::PERSON, Person::Event{Person::Event::Type::FIRED}));
             }
         }
     }
@@ -235,8 +235,8 @@ void Company::setRent(Tile::Type housingType, Money rent)
     {
         if (building->getType() == housingType)
         {
-            for (Lease& lease : static_cast<Housing*>(building)->getLeases())
-                lease.setRent(rent);
+            for (std::unique_ptr<Lease>& lease : static_cast<Housing*>(building)->getLeases())
+                lease->setRent(rent);
         }
     }
 }
@@ -253,10 +253,10 @@ void Company::setSalary(Work::Qualification qualification, Money salary)
     {
         if (!building->isHousing())
         {
-            for (Work& work : *getEmployees(building))
+            for (std::unique_ptr<Work>& work : *getEmployees(building))
             {
-                if (work.getQualification() == qualification)
-                    work.setSalary(salary);
+                if (work->getQualification() == qualification)
+                    work->setSalary(salary);
             }
         }
     }
@@ -310,11 +310,11 @@ void Company::onNewMonth()
     {
         if (!building->isHousing())
         {
-            for (Work& work : *getEmployees(building))
+            for (std::unique_ptr<Work>& work : *getEmployees(building))
             {
-                if (work.hasWorkedThisMonth())
-                    mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createTransferMoneyEvent(mAccount, work.getEmployee()->getAccount(), work.getSalary())));
-                work.setWorkedThisMonth(false);
+                if (work->hasWorkedThisMonth())
+                    mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createTransferMoneyEvent(mAccount, work->getEmployee()->getAccount(), work->getSalary())));
+                work->setWorkedThisMonth(false);
             }
         }
     }
@@ -326,8 +326,8 @@ void Company::onNewMinimumWage(Money minimumWage)
     {
         if (!building->isHousing())
         {
-            for (Work& work : *getEmployees(building))
-                work.setSalary(std::max(work.getSalary(), minimumWage));
+            for (std::unique_ptr<Work>& work : *getEmployees(building))
+                work->setSalary(std::max(work->getSalary(), minimumWage));
         }
     }
 }
