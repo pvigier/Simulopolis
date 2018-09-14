@@ -3,7 +3,7 @@
 #include "city/Person.h"
 
 GoalWait::GoalWait(Person* owner, float nbHours) :
-    Goal(owner), mDuration(mOwner->getCity()->toHumanTime(nbHours))
+    Goal(owner), mDuration(mOwner->getCity()->toHumanTime(nbHours)), mEndTime(0.0f)
 {
     //ctor
 }

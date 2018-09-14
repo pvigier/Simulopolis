@@ -5,7 +5,7 @@
 #include "ai/GoalMoveTo.h"
 #include "ai/GoalWait.h"
 
-GoalRest::GoalRest(Person* owner) : Goal(owner), mAtHome(false)
+GoalRest::GoalRest(Person* owner) : Goal(owner), mAtHome(false), mLastUpdate(0.0f)
 {
     //ctor
 }
