@@ -49,7 +49,7 @@ protected:
         }
     };
 
-    Good::Type mGoodType;
+    std::unique_ptr<Good> mGood;
     std::deque<Batch> mStock;
     std::set<Id> mGoodsInMarket;
     double mEmployeeProductivity;
@@ -58,7 +58,7 @@ protected:
 
     void updateStock();
     void sellGoods();
-    const Market<const Building>* getMarket();
+    const Market<Good>* getMarket();
 
 private:
     // Serialization
@@ -70,6 +70,6 @@ private:
     void serialize(Archive &ar, const unsigned int version)
     {
         ar & boost::serialization::base_object<Building>(*this);
-        ar & mGoodType & mStock & mGoodsInMarket & mEmployeeProductivity & mEmployees & mWorksInMarket;
+        ar & mGood & mStock & mGoodsInMarket & mEmployeeProductivity & mEmployees & mWorksInMarket;
     }
 };

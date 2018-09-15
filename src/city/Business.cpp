@@ -67,8 +67,8 @@ void Business::update()
             }
             else
             {
-                const Market<const Building>::Event& event = static_cast<const Market<const Building>::Event&>(eventBase);
-                if (event.type == Market<const Building>::Event::Type::PURCHASE)
+                const Market<Good>::Event& event = static_cast<const Market<Good>::Event&>(eventBase);
+                if (event.type == Market<Good>::Event::Type::PURCHASE)
                 {
                     // To do : save the building to fetch the good later
                     ++mStock;
@@ -115,7 +115,7 @@ void Business::tearDown()
     for (Id id : mWorksInMarket)
         mOwner->getMessageBus()->send(Message::create(laborMarket->getMailboxId(), MessageType::MARKET, laborMarket->createRemoveItemEvent(id)));
     // Remove bids for market
-    const Market<const Building>* goodsMarket = getMarket();
+    const Market<Good>* goodsMarket = getMarket();
     mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), goodsMarket->getMailboxId(), MessageType::MARKET, goodsMarket->createSetQuantityEvent(0)));
 }
 
@@ -188,24 +188,24 @@ void Business::prepareGoods()
 void Business::buyGoods()
 {
     updateDesiredQuantity();
-    const Market<const Building>* market = getMarket();
-    for (const Market<const Building>::Item* item : market->getItems())
+    const Market<Good>* market = getMarket();
+    for (const Market<Good>::Item* item : market->getItems())
     {
-        if (mOwner->getCity()->getMap().isReachableFrom(this, item->good))
+        if (mOwner->getCity()->getMap().isReachableFrom(this, item->good->getProductionPlace()))
             mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createBidEvent(item->id, item->reservePrice)));
     }
 }
 
-const Market<const Building>* Business::getMarket()
+const Market<Good>* Business::getMarket()
 {
     switch (mGoodType)
     {
         case Good::Type::NECESSARY:
-            return static_cast<const Market<const Building>*>(mOwner->getCity()->getMarket(VMarket::Type::NECESSARY_GOOD));
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(VMarket::Type::NECESSARY_GOOD));
         case Good::Type::NORMAL:
-            return static_cast<const Market<const Building>*>(mOwner->getCity()->getMarket(VMarket::Type::NORMAL_GOOD));
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(VMarket::Type::NORMAL_GOOD));
         case Good::Type::LUXURY:
-            return static_cast<const Market<const Building>*>(mOwner->getCity()->getMarket(VMarket::Type::LUXURY_GOOD));
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(VMarket::Type::LUXURY_GOOD));
         default:
             return nullptr;
     };
@@ -226,7 +226,7 @@ void Business::updatePrice()
 
 void Business::updateDesiredQuantity()
 {
-    const Market<const Building>* market = getMarket();
+    const Market<Good>* market = getMarket();
     unsigned int desiredQuantity = std::max(0, static_cast<int>(mMaxSizeStock) - static_cast<int>(mStock));
     mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createSetQuantityEvent(desiredQuantity)));
 }

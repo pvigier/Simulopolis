@@ -40,7 +40,7 @@ Good::Type Good::getType() const
     return mType;
 }
 
-const Industry* Good::getProductionPlace() const
+const Building* Good::getProductionPlace() const
 {
     return mProductionPlace;
 }

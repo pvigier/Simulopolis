@@ -3,6 +3,7 @@
 #include <string>
 #include <boost/serialization/access.hpp>
 
+class Building;
 class Industry;
 
 class Good
@@ -16,7 +17,7 @@ public:
     Good(Type type, Industry* productionPlace);
 
     Type getType() const;
-    const Industry* getProductionPlace() const;
+    const Building* getProductionPlace() const;
 
 private:
     Type mType;

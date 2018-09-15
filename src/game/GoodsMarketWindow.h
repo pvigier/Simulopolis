@@ -13,7 +13,7 @@ class Building;
 class GoodsMarketWindow : public GuiWindow
 {
 public:
-    GoodsMarketWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager, std::array<Market<const Building>*, 3> markets);
+    GoodsMarketWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager, std::array<Market<Good>*, 3> markets);
     ~GoodsMarketWindow();
 
     virtual void setUp() override;
@@ -26,7 +26,7 @@ private:
     MessageBus* mMessageBus;
     StylesheetManager* mStylesheetManager;
     Mailbox mMailbox;
-    std::array<Market<const Building>*, 3> mMarkets;
+    std::array<Market<Good>*, 3> mMarkets;
     std::map<std::tuple<VMarket::Type, Id>, Key> mItems;
     std::vector<std::pair<Key, int>> mCounts;
     GuiTable* mTable;
@@ -41,6 +41,5 @@ private:
     void updateRow(std::size_t i, int count);
 
     // Util
-    Market<const Building>* getMarket(VMarket::Type type);
-    Good::Type getGood(VMarket::Type type) const;
+    Market<Good>* getMarket(VMarket::Type type);
 };

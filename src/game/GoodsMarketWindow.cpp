@@ -13,18 +13,18 @@
 #include "util/format.h"
 
 GoodsMarketWindow::GoodsMarketWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager,
-    std::array<Market<const Building>*, 3> markets) :
+    std::array<Market<Good>*, 3> markets) :
     GuiWindow("Goods market", stylesheetManager->getStylesheet("window")),
     mMessageBus(messageBus), mStylesheetManager(stylesheetManager), mMarkets(std::move(markets)), mTable(nullptr)
 {
     mMessageBus->addMailbox(mMailbox);
-    for (Market<const Building>* market : mMarkets)
+    for (Market<Good>* market : mMarkets)
         market->subscribe(mMailbox.getId());
 }
 
 GoodsMarketWindow::~GoodsMarketWindow()
 {
-    for (Market<const Building>* market : mMarkets)
+    for (Market<Good>* market : mMarkets)
         market->unsubscribe(mMailbox.getId());
     mMessageBus->removeMailbox(mMailbox);
 }
@@ -48,7 +48,7 @@ void GoodsMarketWindow::setUp()
     // Add items
     for (int i = 0; i < 3; ++i)
     {
-        for (const Market<const Building>::Item* item : mMarkets[i]->getItems())
+        for (const Market<Good>::Item* item : mMarkets[i]->getItems())
             addItem(static_cast<VMarket::Type>(i), item->id);
     }
 }
@@ -60,13 +60,13 @@ void GoodsMarketWindow::update()
         Message message = mMailbox.get();
         if (message.type == MessageType::MARKET)
         {
-            const Market<const Building>::Event& event = message.getInfo<Market<const Building>::Event>();
+            const Market<Good>::Event& event = message.getInfo<Market<Good>::Event>();
             switch (event.type)
             {
-                case Market<const Building>::Event::Type::ITEM_ADDED:
+                case Market<Good>::Event::Type::ITEM_ADDED:
                     addItem(event.marketType, event.itemId);
                     break;
-                case Market<const Building>::Event::Type::ITEM_REMOVED:
+                case Market<Good>::Event::Type::ITEM_REMOVED:
                     removeItem(event.marketType, event.itemId);
                     break;
                 default:
@@ -78,15 +78,14 @@ void GoodsMarketWindow::update()
 
 void GoodsMarketWindow::addItem(VMarket::Type type, Id itemId)
 {
-    const Market<const Building>::Item& item = getMarket(type)->getItem(itemId);
+    const Market<Good>::Item& item = getMarket(type)->getItem(itemId);
     std::tuple<VMarket::Type, Id> id(type, itemId);
-    Good::Type goodType = getGood(type);
-    mItems[id] = std::make_tuple(item.good, goodType, item.reservePrice);
+    mItems[id] = std::make_tuple(item.good->getProductionPlace(), item.good->getType(), item.reservePrice);
     std::size_t i = getRow(mItems[id]);
     if (i == mCounts.size())
     {
         mCounts.emplace_back(mItems[id], 1);
-        addRow(item.good, goodType, item.reservePrice, 1);
+        addRow(item.good->getProductionPlace(), item.good->getType(), item.reservePrice, 1);
     }
     else
         updateRow(i, ++mCounts[i].second);
@@ -129,7 +128,7 @@ void GoodsMarketWindow::updateRow(std::size_t i, int count)
     static_cast<GuiText*>(mTable->getCellContent(i, 4))->setString(format("%d", count));
 }
 
-Market<const Building>* GoodsMarketWindow::getMarket(VMarket::Type type)
+Market<Good>* GoodsMarketWindow::getMarket(VMarket::Type type)
 {
     switch (type)
     {
@@ -142,9 +141,4 @@ Market<const Building>* GoodsMarketWindow::getMarket(VMarket::Type type)
         default:
             return nullptr;
     }
-}
-
-Good::Type GoodsMarketWindow::getGood(VMarket::Type type) const
-{
-    return static_cast<Good::Type>(type);
 }

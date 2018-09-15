@@ -1,5 +1,7 @@
 #include "serialize/serialize_city.h"
 #include <fstream>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 #include "util/debug.h"
 
 void save_city(City& city)

@@ -1,8 +1,6 @@
 #pragma once
 
 // Boost
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/deque.hpp>
 #include <boost/serialization/map.hpp>
@@ -52,8 +50,8 @@ void register_types(Archive& ar)
     ar.template register_type<Business>();
     ar.template register_type<Service>();
     // Markets
-    ar.template register_type<Market<const Building>>();
-    ar.template register_type<Market<const Building>::Event>();
+    ar.template register_type<Market<Good>>();
+    ar.template register_type<Market<Good>::Event>();
     ar.template register_type<Market<Lease>>();
     ar.template register_type<Market<Lease>::Event>();
     ar.template register_type<Market<Work>>();

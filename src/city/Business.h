@@ -55,7 +55,7 @@ protected:
 
     void prepareGoods();
     void buyGoods();
-    const Market<const Building>* getMarket();
+    const Market<Good>* getMarket();
     void updatePrice();
     void updateDesiredQuantity();
 

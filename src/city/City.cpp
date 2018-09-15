@@ -53,9 +53,9 @@ City::City() :
     mCityMessageBus.addMailbox(mMailbox);
 
     // Markets
-    mMarkets.emplace_back(std::make_unique<Market<const Building>>(VMarket::Type::NECESSARY_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<const Building>>(VMarket::Type::NORMAL_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<const Building>>(VMarket::Type::LUXURY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NECESSARY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NORMAL_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::LUXURY_GOOD));
     mMarkets.emplace_back(std::make_unique<Market<Lease>>(VMarket::Type::RENT));
     mMarkets.emplace_back(std::make_unique<Market<Work>>(VMarket::Type::WORK));
 
@@ -188,6 +188,7 @@ void City::update(float dt)
             mCarsByTile.get(indices.y, indices.x).push_back(&car);
         }
     }
+    // Sort the cars
     for (unsigned int i = 0; i < mMap.getHeight(); ++i)
     {
         for (unsigned int j = 0; j < mMap.getWidth(); ++j)

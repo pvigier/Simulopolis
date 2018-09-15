@@ -483,10 +483,10 @@ void GameStateEditor::openGoodsMarketWindow()
 {
     if (!mGoodsMarketWindow)
     {
-        std::array<Market<const Building>*, 3> markets = {
-            static_cast<Market<const Building>*>(mCity.getMarket(VMarket::Type::NECESSARY_GOOD)),
-            static_cast<Market<const Building>*>(mCity.getMarket(VMarket::Type::NORMAL_GOOD)),
-            static_cast<Market<const Building>*>(mCity.getMarket(VMarket::Type::LUXURY_GOOD))
+        std::array<Market<Good>*, 3> markets = {
+            static_cast<Market<Good>*>(mCity.getMarket(VMarket::Type::NECESSARY_GOOD)),
+            static_cast<Market<Good>*>(mCity.getMarket(VMarket::Type::NORMAL_GOOD)),
+            static_cast<Market<Good>*>(mCity.getMarket(VMarket::Type::LUXURY_GOOD))
         };
         mGoodsMarketWindow = mGui->createRootWithDefaultName<GoodsMarketWindow>(sMessageBus, sStylesheetManager, std::move(markets));
         mGoodsMarketWindow->subscribe(mMailbox.getId());

@@ -5,7 +5,8 @@
 
 Industry::Industry(const std::string& name, Type type, unsigned int nbStairs, Good::Type goodType,
     double employeeProductivity, std::size_t nbEmployees, Work::Type employeeType) :
-    Building(name, type, nbStairs), mGoodType(goodType), mEmployeeProductivity(employeeProductivity)
+    Building(name, type, nbStairs), mGood(std::make_unique<Good>(goodType, this)),
+    mEmployeeProductivity(employeeProductivity)
 {
     mEmployees.emplace_back(std::make_unique<Work>(Work::Type::MANAGER, this));
     for (std::size_t i = 0; i < nbEmployees; ++i)
@@ -19,7 +20,7 @@ Industry::~Industry()
 
 std::unique_ptr<Tile> Industry::clone() const
 {
-    return std::make_unique<Industry>(mTextureName, mType, mNbStairs, mGoodType, mEmployeeProductivity, mEmployees.size() - 1, mEmployees.back()->getType());
+    return std::make_unique<Industry>(mTextureName, mType, mNbStairs, mGood->getType(), mEmployeeProductivity, mEmployees.size() - 1, mEmployees.back()->getType());
 }
 
 void Industry::update()
@@ -48,13 +49,13 @@ void Industry::update()
             }
             else
             {
-                const Market<const Building>::Event& event = static_cast<const Market<const Building>::Event&>(eventBase);
+                const Market<Good>::Event& event = static_cast<const Market<Good>::Event&>(eventBase);
                 switch (event.type)
                 {
-                    case Market<const Building>::Event::Type::ITEM_ADDED:
+                    case Market<Good>::Event::Type::ITEM_ADDED:
                         mGoodsInMarket.insert(event.itemId);
                         break;
-                    case Market<const Building>::Event::Type::SALE:
+                    case Market<Good>::Event::Type::SALE:
                         mGoodsInMarket.erase(event.sale.itemId);
                         break;
                     default:
@@ -72,7 +73,7 @@ void Industry::tearDown()
     const Market<Work>* laborMarket = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(VMarket::Type::WORK));
     for (Id id : mWorksInMarket)
         mOwner->getMessageBus()->send(Message::create(laborMarket->getMailboxId(), MessageType::MARKET, laborMarket->createRemoveItemEvent(id)));
-    const Market<const Building>* goodsMarket = getMarket();
+    const Market<Good>* goodsMarket = getMarket();
     for (Id id : mGoodsInMarket)
         mOwner->getMessageBus()->send(Message::create(goodsMarket->getMailboxId(), MessageType::MARKET, goodsMarket->createRemoveItemEvent(id)));
 }
@@ -86,7 +87,7 @@ void Industry::setOwner(Company* owner)
 
 Good::Type Industry::getGoodType() const
 {
-    return mGoodType;
+    return mGood->getType();
 }
 
 std::unique_ptr<Work>& Industry::getManager()
@@ -142,15 +143,15 @@ void Industry::updateStock()
 
 void Industry::sellGoods()
 {
-    const Market<const Building>* market = getMarket();
+    const Market<Good>* market = getMarket();
     while (mStock.size() > 1 || mStock.front().quantity >= 1.0)
     {
         // Sell goods
         if (mStock.front().quantity >= 1.0)
         {
             Money costPerUnit = mStock.front().getCostPerUnit();
-            Money price(costPerUnit * (1.0 + mOwner->getWholesaleMargin(mGoodType)));
-            mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mOwner->getAccount(), this, price)));
+            Money price(costPerUnit * (1.0 + mOwner->getWholesaleMargin(mGood->getType())));
+            mOwner->getMessageBus()->send(Message::create(mMailbox.getId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mOwner->getAccount(), mGood.get(), price)));
             mStock.front().quantity -= 1.0;
             mStock.front().cost -= costPerUnit;
             if (mStock.front().quantity <= 0.0)
@@ -178,16 +179,16 @@ void Industry::sellGoods()
     }
 }
 
-const Market<const Building>* Industry::getMarket()
+const Market<Good>* Industry::getMarket()
 {
-    switch (mGoodType)
+    switch (mGood->getType())
     {
         case Good::Type::NECESSARY:
-            return static_cast<const Market<const Building>*>(mOwner->getCity()->getMarket(VMarket::Type::NECESSARY_GOOD));
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(VMarket::Type::NECESSARY_GOOD));
         case Good::Type::NORMAL:
-            return static_cast<const Market<const Building>*>(mOwner->getCity()->getMarket(VMarket::Type::NORMAL_GOOD));
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(VMarket::Type::NORMAL_GOOD));
         case Good::Type::LUXURY:
-            return static_cast<const Market<const Building>*>(mOwner->getCity()->getMarket(VMarket::Type::LUXURY_GOOD));
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(VMarket::Type::LUXURY_GOOD));
         default:
             return nullptr;
     };
