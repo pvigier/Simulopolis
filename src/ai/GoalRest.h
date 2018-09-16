@@ -26,8 +26,8 @@ private:
 
     GoalRest() = default;
 
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & boost::serialization::base_object<Goal>(*this);
         ar & mAtHome & mLastUpdate;

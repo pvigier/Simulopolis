@@ -38,7 +38,7 @@
 // Serialize
 #include "serialize/serialize_message.h"
 
-template <typename Archive>
+template<typename Archive>
 void register_types(Archive& ar)
 {
     // Tiles

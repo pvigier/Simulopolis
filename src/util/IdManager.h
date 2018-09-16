@@ -161,8 +161,8 @@ private:
     // Serialization
     friend class boost::serialization::access;
 
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & mIdToIndex & mFreeIds & mObjects & mIndexToId;
     }

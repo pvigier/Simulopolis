@@ -81,8 +81,8 @@ private:
 
     Company() = default;
 
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & mName & mCreationYear & mOwner & mMailbox & mAccount;
         ar & mBuildings;

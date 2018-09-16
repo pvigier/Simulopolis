@@ -52,6 +52,10 @@
 		<Unit filename="src/ai/GoalEnterCityEvaluator.h" />
 		<Unit filename="src/ai/GoalEvaluator.cpp" />
 		<Unit filename="src/ai/GoalEvaluator.h" />
+		<Unit filename="src/ai/GoalGetBetterHome.cpp" />
+		<Unit filename="src/ai/GoalGetBetterHome.h" />
+		<Unit filename="src/ai/GoalGetBetterHomeEvaluator.cpp" />
+		<Unit filename="src/ai/GoalGetBetterHomeEvaluator.h" />
 		<Unit filename="src/ai/GoalGetBetterWork.cpp" />
 		<Unit filename="src/ai/GoalGetBetterWork.h" />
 		<Unit filename="src/ai/GoalGetBetterWorkEvaluator.cpp" />
@@ -190,6 +194,7 @@
 		<Unit filename="src/gui/GuiWindow.h" />
 		<Unit filename="src/input/InputEngine.cpp" />
 		<Unit filename="src/input/InputEngine.h" />
+		<Unit filename="src/input/InputEvent.h" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/message/Mailbox.cpp" />
 		<Unit filename="src/message/Mailbox.h" />
@@ -237,7 +242,10 @@
 		<Unit filename="src/resource/XmlDocument.h" />
 		<Unit filename="src/resource/XmlManager.cpp" />
 		<Unit filename="src/resource/XmlManager.h" />
+		<Unit filename="src/serialize/serialize_city.cpp" />
+		<Unit filename="src/serialize/serialize_city.h" />
 		<Unit filename="src/serialize/serialize_message.h" />
+		<Unit filename="src/serialize/serialize_sfml.h" />
 		<Unit filename="src/util/Array2.h" />
 		<Unit filename="src/util/Id.h" />
 		<Unit filename="src/util/IdManager.h" />

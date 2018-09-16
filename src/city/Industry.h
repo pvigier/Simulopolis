@@ -42,8 +42,8 @@ protected:
         // Serialization
         friend class boost::serialization::access;
 
-        template <typename Archive>
-        void serialize(Archive &ar, const unsigned int version)
+        template<typename Archive>
+        void serialize(Archive& ar, const unsigned int /*version*/)
         {
             ar & quantity & cost;
         }
@@ -66,8 +66,8 @@ private:
 
     Industry() = default;
 
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & boost::serialization::base_object<Building>(*this);
         ar & mGood & mStock & mGoodsInMarket & mEmployeeProductivity & mEmployees & mWorksInMarket;

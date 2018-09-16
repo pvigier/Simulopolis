@@ -144,8 +144,8 @@ private:
 
     Person() = default;
 
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & mId & mFirstName & mLastName & mGender & mBirth & mMailbox;
         ar & mState;

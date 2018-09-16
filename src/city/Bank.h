@@ -22,8 +22,8 @@ public:
         // Serialization
         friend class boost::serialization::access;
 
-        template <typename Archive>
-        void serialize(Archive &ar, const unsigned int version)
+        template<typename Archive>
+        void serialize(Archive& ar, const unsigned int /*version*/)
         {
             ar & id & owner & type & balance & previousBalance;
         }
@@ -88,8 +88,8 @@ private:
     // Serialization
     friend class boost::serialization::access;
 
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & mMailbox & mAccounts;
     }

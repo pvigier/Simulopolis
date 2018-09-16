@@ -1,4 +1,5 @@
 #include "city/Good.h"
+#include "city/Industry.h"
 
 std::string Good::typeToString(Good::Type type)
 {

@@ -47,3 +47,6 @@ gmon.out
 
 # Cmake
 build/
+
+# Saves
+saves/*

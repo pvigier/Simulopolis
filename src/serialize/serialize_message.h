@@ -9,8 +9,8 @@
 
 // Events
 
-template <typename Archive>
-void serialize(Archive &ar, Bank::Event& event, const unsigned int version)
+template<typename Archive>
+void serialize(Archive& ar, Bank::Event& event, const unsigned int /*version*/)
 {
     ar & event.type;
     switch (event.type)
@@ -28,14 +28,14 @@ void serialize(Archive &ar, Bank::Event& event, const unsigned int version)
     }
 }
 
-template <typename Archive>
-void serialize(Archive &ar, Business::Event& event, const unsigned int version)
+template<typename Archive>
+void serialize(Archive& ar, Business::Event& event, const unsigned int /*version*/)
 {
     ar & event.type & event.accountId & event.price;
 }
 
-template <typename Archive>
-void serialize(Archive &ar, City::Event& event, const unsigned int version)
+template<typename Archive>
+void serialize(Archive& ar, City::Event& event, const unsigned int /*version*/)
 {
     ar & event.type;
     switch (event.type)
@@ -62,8 +62,8 @@ void serialize(Archive &ar, City::Event& event, const unsigned int version)
     }
 }
 
-template <typename Archive>
-void serialize(Archive &ar, Person::Event& event, const unsigned int version)
+template<typename Archive>
+void serialize(Archive& ar, Person::Event& event, const unsigned int /*version*/)
 {
     ar & event.type;
     switch (event.type)
@@ -84,8 +84,8 @@ void serialize(Archive &ar, Person::Event& event, const unsigned int version)
 
 BOOST_SERIALIZATION_SPLIT_FREE(Message)
 
-template <typename Archive>
-void save(Archive& ar, const Message& message, const unsigned int version)
+template<typename Archive>
+void save(Archive& ar, const Message& message, const unsigned int /*version*/)
 {
     ar & message.sender & message.receiver & message.type;
     switch (message.type)
@@ -111,8 +111,8 @@ void save(Archive& ar, const Message& message, const unsigned int version)
     }
 }
 
-template <typename Archive>
-void load(Archive& ar, Message& message, const unsigned int version)
+template<typename Archive>
+void load(Archive& ar, Message& message, const unsigned int /*version*/)
 {
     ar & message.sender & message.receiver & message.type;
     switch (message.type)

@@ -37,8 +37,8 @@ public:
         // Serialization
         friend class boost::serialization::access;
 
-        template <typename Archive>
-        void serialize(Archive &ar, const unsigned int version)
+        template<typename Archive>
+        void serialize(Archive& ar, const unsigned int /*version*/)
         {
             ar & marketType;
         }
@@ -66,8 +66,8 @@ private:
     // Serialization
     friend class boost::serialization::access;
 
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & mMailbox & mTime & mType;
     }
@@ -89,8 +89,8 @@ public:
         // Serialization
         friend class boost::serialization::access;
 
-        template <typename Archive>
-        void serialize(Archive &ar, const unsigned int version)
+        template<typename Archive>
+        void serialize(Archive& ar, const unsigned int /*version*/)
         {
             ar & id & sellerId & sellerAccount & good & reservePrice;
         }
@@ -105,8 +105,8 @@ public:
         // Serialization
         friend class boost::serialization::access;
 
-        template <typename Archive>
-        void serialize(Archive &ar, const unsigned int version)
+        template<typename Archive>
+        void serialize(Archive& ar, const unsigned int /*version*/)
         {
             ar & bidderId & value;
         }
@@ -122,8 +122,8 @@ public:
         // Serialization
         friend class boost::serialization::access;
 
-        template <typename Archive>
-        void serialize(Archive &ar, const unsigned int version)
+        template<typename Archive>
+        void serialize(Archive& ar, const unsigned int /*version*/)
         {
             ar & timestamp & item & bids;
         }
@@ -180,8 +180,8 @@ public:
         // I'm forced to put the code here because external serialization doesn't work with depdent types.
         friend class boost::serialization::access;
 
-        template <typename Archive>
-        void serialize(Archive &ar, const unsigned int version)
+        template<typename Archive>
+        void serialize(Archive& ar, const unsigned int /*version*/)
         {
             ar & boost::serialization::base_object<VMarket::EventBase>(*this);
             ar & type;
@@ -429,8 +429,8 @@ private:
 
     Market() = default;
 
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & boost::serialization::base_object<VMarket>(*this);
         ar & mAuctions & mDesiredQuantities & mItems & mDirty;

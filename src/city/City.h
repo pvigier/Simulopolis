@@ -194,8 +194,8 @@ private:
     // Serialization
     friend class boost::serialization::access;
 
-    template <typename Archive>
-    void save(Archive &ar, const unsigned int version) const
+    template<typename Archive>
+    void save(Archive& ar, const unsigned int /*version*/) const
     {
         ar & mMailbox;
         ar & mCityCompany;
@@ -209,8 +209,8 @@ private:
         ar & mCityMessageBus;
     }
 
-    template <typename Archive>
-    void load(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void load(Archive& ar, const unsigned int /*version*/)
     {
         ar & mMailbox;
         ar & mCityCompany;

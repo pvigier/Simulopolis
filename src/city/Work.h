@@ -44,8 +44,8 @@ private:
     // Serialization
     friend class boost::serialization::access;
 
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & mType & mQualification & mEmployee & mEmployer & mWorkplace & mSalary & mWorkedThisMonth;
     }

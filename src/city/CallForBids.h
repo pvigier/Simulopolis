@@ -28,15 +28,15 @@ private:
 
     CallForBids() = default;
 
-    template <typename Archive>
-    void save(Archive &ar, const unsigned int version) const
+    template<typename Archive>
+    void save(Archive& ar, const unsigned int /*version*/) const
     {
         ar & boost::serialization::base_object<Tile>(*this);
         ar & mSignColor;
     }
 
-    template <typename Archive>
-    void load(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void load(Archive& ar, const unsigned int /*version*/)
     {
         ar & boost::serialization::base_object<Tile>(*this);
         ar & mSignColor;

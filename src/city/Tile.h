@@ -77,14 +77,14 @@ private:
     // Serialization
     friend class boost::serialization::access;
 
-    template <typename Archive>
-    void save(Archive &ar, const unsigned int version) const
+    template<typename Archive>
+    void save(Archive& ar, const unsigned int /*version*/) const
     {
         ar & mTextureName & mCoordinates & mType & mCategory & mState;
     }
 
-    template <typename Archive>
-    void load(Archive &ar, const unsigned int version)
+    template<typename Archive>
+    void load(Archive& ar, const unsigned int /*version*/)
     {
         ar & mTextureName & mCoordinates & mType & mCategory & mState;
         setUp();
