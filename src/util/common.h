@@ -1,3 +1,20 @@
+/* Simulopolis
+ * Copyright (C) 2018 Pierre Vigier
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
 #pragma once
 
 #include <cmath>
@@ -7,7 +24,7 @@
 // Types
 constexpr float EPSILON = 1e-5;
 constexpr float FLOAT_MAX = std::numeric_limits<float>::max();
-constexpr float FLOAT_INFINITY = std::numeric_limits<float>::infinity();
+constexpr float FLOAT_INFINITY = std::numeric_limits<float>::max();//std::numeric_limits<float>::infinity();
 
 // Constants
 constexpr float PI = 3.1415926535f;
