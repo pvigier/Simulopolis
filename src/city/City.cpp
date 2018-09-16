@@ -49,20 +49,7 @@ City::City() :
     mCurrentTime(0.0), mTimePerMonth(10.0f), mMonth(0), mYear(0), mCityCompany("City", 0),
     mWeeklyStandardWorkingHours(0), mMinimumWage(0.0), mIncomeTax(0.0f), mCorporateTax(0.0f)
 {
-    // Register mailbox
-    mCityMessageBus.addMailbox(mMailbox);
 
-    // Markets
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NECESSARY_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NORMAL_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::LUXURY_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Lease>>(VMarket::Type::RENT));
-    mMarkets.emplace_back(std::make_unique<Market<Work>>(VMarket::Type::WORK));
-
-    // Economy
-    mWorldAccount = mBank.createWorldAccount();
-
-    setUp(false);
 }
 
 City::~City()
@@ -85,9 +72,26 @@ void City::save()
 
 void City::createMap(uint64_t seed)
 {
+    // Generate map
     mRandomGenerator.setSeed(seed);
     mMap.fromArray(mTerrainGenerator.generate());
     mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
+
+    // Register mailbox
+    mCityMessageBus.addMailbox(mMailbox);
+
+    // Markets
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NECESSARY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NORMAL_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::LUXURY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Lease>>(VMarket::Type::RENT));
+    mMarkets.emplace_back(std::make_unique<Market<Work>>(VMarket::Type::WORK));
+
+    // Economy
+    mWorldAccount = mBank.createWorldAccount();
+
+    // Set up
+    setUp(false);
 }
 
 void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
