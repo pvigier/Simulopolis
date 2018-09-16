@@ -1,4 +1,4 @@
-# CityBuilder
+# Simulopolis
 
 A simple city building game.
 
