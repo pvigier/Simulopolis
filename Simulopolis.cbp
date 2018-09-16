@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="CityBuilder" />
+		<Option title="Simulopolis" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Release">
-				<Option output="bin/CityBuilder" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Simulopolis" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -20,7 +20,7 @@
 				</Linker>
 			</Target>
 			<Target title="Debug">
-				<Option output="bin/debug/CityBuilder" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/debug/Simulopolis" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -46,12 +46,18 @@
 		</Linker>
 		<Unit filename="src/ai/Goal.cpp" />
 		<Unit filename="src/ai/Goal.h" />
+		<Unit filename="src/ai/GoalCreateCompany.cpp" />
+		<Unit filename="src/ai/GoalCreateCompany.h" />
 		<Unit filename="src/ai/GoalEnterCity.cpp" />
 		<Unit filename="src/ai/GoalEnterCity.h" />
 		<Unit filename="src/ai/GoalEnterCityEvaluator.cpp" />
 		<Unit filename="src/ai/GoalEnterCityEvaluator.h" />
 		<Unit filename="src/ai/GoalEvaluator.cpp" />
 		<Unit filename="src/ai/GoalEvaluator.h" />
+		<Unit filename="src/ai/GoalGetBetterGoods.cpp" />
+		<Unit filename="src/ai/GoalGetBetterGoods.h" />
+		<Unit filename="src/ai/GoalGetBetterGoodsEvaluator.cpp" />
+		<Unit filename="src/ai/GoalGetBetterGoodsEvaluator.h" />
 		<Unit filename="src/ai/GoalGetBetterHome.cpp" />
 		<Unit filename="src/ai/GoalGetBetterHome.h" />
 		<Unit filename="src/ai/GoalGetBetterHomeEvaluator.cpp" />
