@@ -159,8 +159,9 @@ void Game::handleMessages()
                     break;
                 case GameState::Event::Type::NEW_GAME:
                 {
+                    GameStateNewCity* newCityState = static_cast<GameStateNewCity*>(peekState());
                     std::unique_ptr<GameStateEditor> state = std::make_unique<GameStateEditor>();
-                    state->newGame(event.seed);
+                    state->newGame(newCityState->getCityName(), newCityState->getSeed());
                     clearStates();
                     pushState(std::move(state));
                     break;

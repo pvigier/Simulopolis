@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <SFML/Graphics.hpp>
@@ -44,7 +44,7 @@ public:
     virtual void draw() override;
     virtual void exit() override;
 
-    void newGame(uint64_t seed);
+    void newGame(std::string cityName, uint64_t seed);
     void loadGame(const std::string& path);
 
     const sf::Texture& getCityTexture() const;

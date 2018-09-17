@@ -23,6 +23,7 @@
 #include "input/InputEvent.h"
 #include "audio/AudioEngine.h"
 #include "resource/GuiManager.h"
+#include "resource/SaveManager.h"
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiInput.h"
@@ -78,11 +79,12 @@ void GameStateNewCity::handleMessages()
             {
                 case GuiEvent::Type::BUTTON_RELEASED:
                 {
-                    const std::string& name = event.widget->getName();
+                    std::string name = event.widget->getName();
                     if (name == "createCityButton")
                     {
-                        uint64_t seed = std::stoull(mGui->get<GuiInput>("seedInput")->getString().toAnsiString());
-                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(seed)));
+                        std::string cityName = getCityName();
+                        if (!cityName.empty() && !sSaveManager->hasSave(cityName))
+                            sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::NEW_GAME)));
                     }
                 }
                 default:
@@ -107,6 +109,16 @@ void GameStateNewCity::exit()
 {
     // Unsubscribe to inputs
     mGui->unsubscribe(mMailbox.getId());
+}
+
+uint64_t GameStateNewCity::getSeed() const
+{
+    return std::stoull(mGui->get<GuiInput>("seedInput")->getString().toAnsiString());
+}
+
+std::string GameStateNewCity::getCityName() const
+{
+    return mGui->get<GuiInput>("nameInput")->getString().toAnsiString();
 }
 
 void GameStateNewCity::createGui()

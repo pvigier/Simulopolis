@@ -41,13 +41,7 @@ public:
 
         Type type;
 
-        union
-        {
-            uint64_t seed;
-        };
-
         Event(Type type);
-        Event(uint64_t seed);
     };
 
     GameState();

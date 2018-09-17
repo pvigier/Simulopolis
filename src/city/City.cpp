@@ -87,8 +87,10 @@ void City::save()
     save_city(*this);
 }
 
-void City::createMap(uint64_t seed)
+void City::createMap(std::string name, uint64_t seed)
 {
+    mName = std::move(name);
+
     // Generate map
     mRandomGenerator.setSeed(seed);
     mMap.fromArray(mTerrainGenerator.generate());

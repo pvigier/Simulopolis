@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <vector>
@@ -80,7 +80,7 @@ public:
     // IO
     void load(const std::string& name);
     void save();
-    void createMap(uint64_t seed);
+    void createMap(std::string name, uint64_t seed);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
@@ -153,6 +153,9 @@ private:
     PersonGenerator mPersonGenerator;
     CompanyGenerator mCompanyGenerator;
 
+    // Name
+    std::string mName;
+
     // Map
     Map mMap;
 
@@ -215,6 +218,7 @@ private:
     void save(Archive& ar, const unsigned int /*version*/) const
     {
         ar & mMailbox;
+        ar & mName;
         ar & mCityCompany;
         ar & mMap;
         ar & mTotalTime & mCurrentTime & mTimePerMonth & mMonth & mYear;
@@ -230,6 +234,7 @@ private:
     void load(Archive& ar, const unsigned int /*version*/)
     {
         ar & mMailbox;
+        ar & mName;
         ar & mCityCompany;
         ar & mMap;
         ar & mTotalTime & mCurrentTime & mTimePerMonth & mMonth & mYear;

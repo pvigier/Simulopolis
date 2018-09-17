@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "game/GameStateEditor.h"
 #include <utility>
 #include "util/format.h"
@@ -348,9 +348,9 @@ void GameStateEditor::exit()
     mGui->unsubscribe(mMailbox.getId());
 }
 
-void GameStateEditor::newGame(uint64_t seed)
+void GameStateEditor::newGame(std::string cityName, uint64_t seed)
 {
-    mCity.createMap(seed);
+    mCity.createMap(std::move(cityName), seed);
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
         mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
     zoom(8.0f);

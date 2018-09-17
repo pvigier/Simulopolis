@@ -34,11 +34,6 @@ GameState::Event::Event(Type type) : type(type)
 
 }
 
-GameState::Event::Event(uint64_t seed) : type(Type::NEW_GAME), seed(seed)
-{
-
-}
-
 GameState::GameState()
 {
     // Register the mailbox

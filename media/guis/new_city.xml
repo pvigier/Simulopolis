@@ -7,12 +7,12 @@
             <widget size="500 220">
                 <widget>
                     <text text="City name: " characterSize="18" style="darkText" />
-                    <input characterSize="18" style="input" />
+                    <input name="nameInput" characterSize="18" style="input" regex="[a-zA-Z ]{0,32}" />
                     <hboxlayout />
                 </widget>
                 <widget>
                     <text text="Seed: " characterSize="18" style="darkText" />
-                    <input name="seedInput" characterSize="18" style="input" />
+                    <input name="seedInput" characterSize="18" style="input" regex="\d+" />
                     <hboxlayout />
                 </widget>
                 <vboxlayout spacing="16" margins="0 16 0 16" />
