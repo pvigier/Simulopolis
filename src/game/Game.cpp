@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "game/Game.h"
 #include "game/GameState.h"
 #include "game/GameStateStart.h"
@@ -145,30 +145,31 @@ void Game::handleMessages()
             switch (event.type)
             {
                 case GameState::Event::Type::OPEN_MENU:
-                    clearStates();
-                    pushState(std::make_unique<GameStateStart>(false));
+                    popState();
                     break;
                 case GameState::Event::Type::OPEN_NEW_CITY_SCREEN:
-                    changeState(std::make_unique<GameStateNewCity>());
+                    pushState(std::make_unique<GameStateNewCity>());
                     break;
                 case GameState::Event::Type::OPEN_CITY_LOADING_SCREEN:
-                    changeState(std::make_unique<GameStateLoadCity>());
+                    pushState(std::make_unique<GameStateLoadCity>());
                     break;
                 case GameState::Event::Type::OPEN_SETTINGS:
-                    changeState(std::make_unique<GameStateSettings>());
+                    pushState(std::make_unique<GameStateSettings>());
                     break;
                 case GameState::Event::Type::NEW_GAME:
                 {
                     std::unique_ptr<GameStateEditor> state = std::make_unique<GameStateEditor>();
                     state->newGame(event.seed);
-                    changeState(std::move(state));
+                    clearStates();
+                    pushState(std::move(state));
                     break;
                 }
                 case GameState::Event::Type::LOAD_GAME:
                 {
                     std::unique_ptr<GameStateEditor> state = std::make_unique<GameStateEditor>();
                     state->loadGame("saves/city");
-                    changeState(std::move(state));
+                    clearStates();
+                    pushState(std::move(state));
                     break;
                 }
                 case GameState::Event::Type::PAUSE_GAME:
