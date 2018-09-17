@@ -43,25 +43,28 @@ Goal::State GoalEnterCity::process()
 {
     activateIfInactive();
 
-    // Try to obtain a home
-    if (!mHomeFound)
+    if (!hasFailed())
     {
-        for (const Market<Lease>::Item* item : mMarket->getItems())
-            mOwner->getMessageBus()->send(Message::create(mOwner->getMailboxId(), mMarket->getMailboxId(), MessageType::MARKET, mMarket->createBidEvent(item->id, item->reservePrice)));
-    }
-    // Wait until the home is reachable
-    else
-    {
-        sf::Vector2i entryPoint;
-        sf::Vector2i housingCoords = mOwner->getHome()->getHousing()->getCoordinates();
-        sf::Vector2i roadCoords;
-        if (mOwner->getCity()->getMap().getNetwork().getAdjacentRoad(housingCoords.y, housingCoords.x, roadCoords) &&
-            mOwner->getCity()->getMap().getNetwork().getRandomEntryPoint(roadCoords.y, roadCoords.x, entryPoint))
+        // Try to obtain a home
+        if (!mHomeFound)
         {
-                // Set position
-                mOwner->getCar().getKinematic().setPosition(mOwner->getCity()->getMap().computePosition(entryPoint.y, entryPoint.x) + sf::Vector2f(Tile::SIZE, Tile::SIZE * 0.5f));
-                // Terminate
-                mState = State::COMPLETED;
+            for (const Market<Lease>::Item* item : mMarket->getItems())
+                mOwner->getMessageBus()->send(Message::create(mOwner->getMailboxId(), mMarket->getMailboxId(), MessageType::MARKET, mMarket->createBidEvent(item->id, item->reservePrice)));
+        }
+        // Wait until the home is reachable
+        else
+        {
+            sf::Vector2i entryPoint;
+            sf::Vector2i housingCoords = mOwner->getHome()->getHousing()->getCoordinates();
+            sf::Vector2i roadCoords;
+            if (mOwner->getCity()->getMap().getNetwork().getAdjacentRoad(housingCoords.y, housingCoords.x, roadCoords) &&
+                mOwner->getCity()->getMap().getNetwork().getRandomEntryPoint(roadCoords.y, roadCoords.x, entryPoint))
+            {
+                    // Set position
+                    mOwner->getCar().getKinematic().setPosition(mOwner->getCity()->getMap().computePosition(entryPoint.y, entryPoint.x) + sf::Vector2f(Tile::SIZE, Tile::SIZE * 0.5f));
+                    // Terminate
+                    mState = State::COMPLETED;
+            }
         }
     }
 
@@ -82,6 +85,15 @@ bool GoalEnterCity::handle(Message message)
         {
             mHomeFound = true;
             mOwner->setHome(event.sale.good);
+            return true;
+        }
+    }
+    else if (message.type == MessageType::PERSON)
+    {
+        const Person::Event& event = message.getInfo<Person::Event>();
+        if (event.type == Person::Event::Type::EXPELLED)
+        {
+            mState = State::FAILED;
             return true;
         }
     }
