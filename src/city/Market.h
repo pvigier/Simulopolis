@@ -20,6 +20,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <boost/serialization/base_object.hpp>
+#include <boost/serialization/split_member.hpp>
 #include "util/IdManager.h"
 #include "util/debug.h"
 #include "message/MessageBus.h"
@@ -447,9 +448,19 @@ private:
     Market() = default;
 
     template<typename Archive>
-    void serialize(Archive& ar, const unsigned int /*version*/)
+    void save(Archive& ar, const unsigned int /*version*/) const
     {
         ar & boost::serialization::base_object<VMarket>(*this);
-        ar & mAuctions & mDesiredQuantities & mItems & mDirty;
+        ar & mAuctions & mDesiredQuantities;
     }
+
+    template<typename Archive>
+    void load(Archive& ar, const unsigned int /*version*/)
+    {
+        ar & boost::serialization::base_object<VMarket>(*this);
+        ar & mAuctions & mDesiredQuantities;
+        mDirty = true;
+    }
+
+    BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
