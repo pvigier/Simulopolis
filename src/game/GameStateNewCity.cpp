@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "game/GameStateNewCity.h"
 #include <chrono>
+#include <limits>
 #include "message/MessageBus.h"
 #include "render/RenderEngine.h"
 #include "input/InputEvent.h"
@@ -28,6 +29,7 @@
 #include "gui/GuiEvent.h"
 #include "pcg/noise.h"
 #include "util/format.h"
+#include "util/regex.h"
 
 GameStateNewCity::GameStateNewCity() : mGui(sGuiManager->getGui("new_city"))
 {
@@ -114,6 +116,7 @@ void GameStateNewCity::createGui()
     // Seed
     uint64_t seed = integer_noise(std::chrono::system_clock::now().time_since_epoch().count());
     mGui->get<GuiInput>("seedInput")->setString(std::to_string(seed));
+    mGui->get<GuiInput>("seedInput")->setRegex(regexNumbersUntil(std::numeric_limits<uint64_t>::max()));
 
     // Register to events
     mGui->get("createCityButton")->subscribe(mMailbox.getId());

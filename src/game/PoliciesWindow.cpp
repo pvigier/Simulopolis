@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "PoliciesWindow.h"
 #include "message/MessageBus.h"
 #include "resource/StylesheetManager.h"
@@ -29,6 +29,7 @@
 #include "gui/GuiEvent.h"
 #include "city/City.h"
 #include "util/format.h"
+#include "util/regex.h"
 
 PoliciesWindow::PoliciesWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager, City& city) :
     GuiWindow("Policies", stylesheetManager->getStylesheet("window")),
@@ -64,7 +65,7 @@ void PoliciesWindow::setUp()
     laborPolicyTab->setFixedInsideSize(sf::Vector2f(400.0f, 100.0f));
     laborPolicyTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
-    createLine(laborPolicyTab, "Weekly standard working hours: ", format("%d", mCity.getWeeklyStandardWorkingHours()), "|[0-9]|[1-9][0-9]|1[0-5][0-9]|16[0-8]");
+    createLine(laborPolicyTab, "Weekly standard working hours: ", format("%d", mCity.getWeeklyStandardWorkingHours()), regexNumbersUntil(24 * 7));
     createLine(laborPolicyTab, "Minimum wage: $", format("%.2f", mCity.getMinimumWage()), "\\d{0,9}(\\.\\d{0,2})?");
 
     // Housing policy
