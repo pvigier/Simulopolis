@@ -44,6 +44,7 @@ Game::Game()
     GameState::setStylesheetManager(&mResourceManager.getStylesheetManager());
     GameState::setGuiManager(&mResourceManager.getGuiManager());
     GameState::setMusicManager(&mResourceManager.getMusicManager());
+    GameState::setSaveManager(&mResourceManager.getSaveManager());
     Car::setTextureManager(&mResourceManager.getTextureManager());
     Car::setImageManager(&mResourceManager.getImageManager());
     Tile::setTextureManager(&mResourceManager.getTextureManager());

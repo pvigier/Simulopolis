@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 // My includes
@@ -25,6 +25,7 @@
 #include "resource/GuiManager.h"
 #include "resource/MusicManager.h"
 #include "resource/ImageManager.h"
+#include "resource/SaveManager.h"
 
 /**
  * \brief Manager that manages the specific resource managers
@@ -103,6 +104,13 @@ public:
      */
     ImageManager& getImageManager();
 
+    /**
+     * \brief Get the save manager
+     *
+     * \return The save manager
+     */
+    SaveManager& getSaveManager();
+
 private:
     XmlManager mXmlManager; /**< Xml manager */
     TextureManager mTextureManager; /**< Texture manager */
@@ -111,4 +119,5 @@ private:
     GuiManager mGuiManager; /**< Gui manager */
     MusicManager mMusicManager; /**< Music manager */
     ImageManager mImageManager; /**< Image manager */
+    SaveManager mSaveManager; /**< Save manager */
 };

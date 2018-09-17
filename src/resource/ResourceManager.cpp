@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "resource/ResourceManager.h"
 #include "resource/PropertyList.h"
 
@@ -45,6 +45,8 @@ void ResourceManager::setUp()
     mMusicManager.setUp();
     mImageManager.setXmlManager(&mXmlManager);
     mImageManager.setUp();
+    mSaveManager.setXmlManager(&mXmlManager);
+    mSaveManager.setUp();
 }
 
 void ResourceManager::tearDown()
@@ -55,6 +57,7 @@ void ResourceManager::tearDown()
     mTextureManager.tearDown();
     mMusicManager.tearDown();
     mImageManager.tearDown();
+    mSaveManager.tearDown();
 }
 
 XmlManager& ResourceManager::getXmlManager()
@@ -90,4 +93,9 @@ MusicManager& ResourceManager::getMusicManager()
 ImageManager& ResourceManager::getImageManager()
 {
     return mImageManager;
+}
+
+SaveManager& ResourceManager::getSaveManager()
+{
+    return mSaveManager;
 }

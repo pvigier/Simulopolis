@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include "util/NonCopyable.h"
@@ -29,6 +29,7 @@ class TextureManager;
 class StylesheetManager;
 class GuiManager;
 class MusicManager;
+class SaveManager;
 
 class GameState : public NonCopyable, public NonMovable
 {
@@ -61,6 +62,7 @@ public:
     static void setStylesheetManager(StylesheetManager* stylesheetManager);
     static void setGuiManager(GuiManager* guiManager);
     static void setMusicManager(MusicManager* musicManager);
+    static void setSaveManager(SaveManager* saveManager);
 
     virtual void enter() = 0;
     virtual void handleMessages() = 0;
@@ -78,6 +80,7 @@ protected:
     static StylesheetManager* sStylesheetManager;
     static GuiManager* sGuiManager;
     static MusicManager* sMusicManager;
+    static SaveManager* sSaveManager;
 
     Mailbox mMailbox;
 };

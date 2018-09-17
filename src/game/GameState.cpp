@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "game/GameState.h"
 #include "message/MessageBus.h"
 
@@ -27,6 +27,7 @@ TextureManager* GameState::sTextureManager = nullptr;
 StylesheetManager* GameState::sStylesheetManager = nullptr;
 GuiManager* GameState::sGuiManager = nullptr;
 MusicManager* GameState::sMusicManager = nullptr;
+SaveManager* GameState::sSaveManager = nullptr;
 
 GameState::Event::Event(Type type) : type(type)
 {
@@ -92,4 +93,9 @@ void GameState::setGuiManager(GuiManager* guiManager)
 void GameState::setMusicManager(MusicManager* musicManager)
 {
     sMusicManager = musicManager;
+}
+
+void GameState::setSaveManager(SaveManager* saveManager)
+{
+    sSaveManager = saveManager;
 }
