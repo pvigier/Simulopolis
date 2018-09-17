@@ -103,6 +103,8 @@ void GameStateEditor::handleMessages()
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
                         sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event{Event::Type::PAUSE_GAME}));
+                    else if (event.key.code == sf::Keyboard::H)
+                        mGui->setVisible(!mGui->isVisible());
                     break;
                 case sf::Event::MouseMoved:
                     // Pan the camera
