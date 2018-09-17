@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "City.h"
 #include <fstream>
 #include <sstream>
@@ -92,7 +92,6 @@ void City::createMap(uint64_t seed)
     // Generate map
     mRandomGenerator.setSeed(seed);
     mMap.fromArray(mTerrainGenerator.generate());
-    mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
 
     // Register mailbox
     mCityMessageBus.addMailbox(mMailbox);
@@ -206,7 +205,9 @@ void City::update(float dt)
             sf::Vector2i iBottomLeft = toTileIndices(bottomLeft);
             sf::Vector2i iBottomRight = toTileIndices(bottomRight);
             sf::Vector2i indices(std::max(iBottomLeft.x, iBottomRight.x), std::max(iBottomLeft.y, iBottomRight.y));
-            mCarsByTile.get(indices.y, indices.x).push_back(&car);
+            if (indices.y >= 0 && indices.y < static_cast<int>(mCarsByTile.getHeight()) &&
+                indices.x >= 0 && indices.x < static_cast<int>(mCarsByTile.getWidth()))
+                mCarsByTile.get(indices.y, indices.x).push_back(&car);
         }
     }
     // Sort the cars

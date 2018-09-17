@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "city/Industry.h"
 #include "city/City.h"
 #include "city/Company.h"
@@ -161,7 +161,7 @@ void Industry::updateStock()
 void Industry::sellGoods()
 {
     const Market<Good>* market = getMarket();
-    while (mStock.size() > 1 || mStock.front().quantity >= 1.0)
+    while (!mStock.empty() && (mStock.size() > 1 || mStock.front().quantity >= 1.0))
     {
         // Sell goods
         if (mStock.front().quantity >= 1.0)
