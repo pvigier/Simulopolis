@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "ai/GoalEnterCityEvaluator.h"
 #include "city/Person.h"
 #include "ai/GoalEnterCity.h"
@@ -24,7 +24,7 @@ GoalEnterCityEvaluator::GoalEnterCityEvaluator(float bias) : GoalEvaluator(bias)
     //ctor
 }
 
-float GoalEnterCityEvaluator::computeDesirability(Person* person)
+float GoalEnterCityEvaluator::computeDesirability(Person* /*person*/)
 {
     if (!mAlreadySelected)
         return mBias;

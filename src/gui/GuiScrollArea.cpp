@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "GuiScrollArea.h"
 #include "resource/XmlDocument.h"
 #include "util/common.h"
@@ -137,13 +137,13 @@ bool GuiScrollArea::onPress(sf::Vector2f position, bool processed)
     return false;
 }
 
-bool GuiScrollArea::onRelease(sf::Vector2f position, bool processed)
+bool GuiScrollArea::onRelease(sf::Vector2f /*position*/, bool /*processed*/)
 {
     mScrolling = false;
     return false;
 }
 
-bool GuiScrollArea::onHover(sf::Vector2f position, bool processed)
+bool GuiScrollArea::onHover(sf::Vector2f position, bool /*processed*/)
 {
     mFocus = mBackground.getGlobalBounds().contains(position);
     if (mScrolling)
@@ -157,7 +157,7 @@ bool GuiScrollArea::onHover(sf::Vector2f position, bool processed)
     return mFocus;
 }
 
-bool GuiScrollArea::onMouseWheelScroll(float delta, bool processed)
+bool GuiScrollArea::onMouseWheelScroll(float delta, bool /*processed*/)
 {
     if (mFocus && mScrollbarVisible)
     {

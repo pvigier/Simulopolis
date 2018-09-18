@@ -94,7 +94,7 @@ void GameStateNewCity::handleMessages()
     }
 }
 
-void GameStateNewCity::update(float dt)
+void GameStateNewCity::update(float /*dt*/)
 {
     sAudioEngine->update();
     mGui->update();

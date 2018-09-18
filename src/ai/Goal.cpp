@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "ai/Goal.h"
 
 Goal::Goal(Person* owner) : mOwner(owner), mState(State::INACTIVE)
@@ -27,7 +27,7 @@ Goal::~Goal()
 
 }
 
-bool Goal::handle(Message message)
+bool Goal::handle(Message /*message*/)
 {
     return false;
 }

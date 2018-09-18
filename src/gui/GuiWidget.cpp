@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "gui/GuiWidget.h"
 #include "gui/GuiLayout.h"
 #include "resource/PropertyList.h"
@@ -347,32 +347,32 @@ void GuiWidget::onInsideSizeFixed()
     mBackground.setSize(mOutsideSize);
 }
 
-bool GuiWidget::onHover(sf::Vector2f position, bool processed)
+bool GuiWidget::onHover(sf::Vector2f /*position*/, bool /*processed*/)
 {
     return false;
 }
 
-bool GuiWidget::onPress(sf::Vector2f position, bool processed)
+bool GuiWidget::onPress(sf::Vector2f /*position*/, bool /*processed*/)
 {
     return false;
 }
 
-bool GuiWidget::onRelease(sf::Vector2f position, bool processed)
+bool GuiWidget::onRelease(sf::Vector2f /*position*/, bool /*processed*/)
 {
     return false;
 }
 
-bool GuiWidget::onMouseWheelScroll(float delta, bool processed)
+bool GuiWidget::onMouseWheelScroll(float /*delta*/, bool /*processed*/)
 {
     return false;
 }
 
-bool GuiWidget::onKey(sf::Keyboard::Key key, bool processed)
+bool GuiWidget::onKey(sf::Keyboard::Key /*key*/, bool /*processed*/)
 {
     return false;
 }
 
-bool GuiWidget::onText(sf::Uint32 unicode, bool processed)
+bool GuiWidget::onText(sf::Uint32 /*unicode*/, bool /*processed*/)
 {
     return false;
 }

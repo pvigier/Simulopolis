@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "Tile.h"
 #include "resource/TextureManager.h"
 #include "resource/ImageManager.h"
@@ -176,7 +176,7 @@ std::unique_ptr<Tile> Tile::clone() const
     return std::make_unique<Tile>(mTextureName, mType, mCategory);
 }
 
-void Tile::updateVariant(const Tile* neighbors[3][3])
+void Tile::updateVariant(const Tile* /*neighbors*/[3][3])
 {
     mSprite.setOrigin(sf::Vector2f(0.0f, mSprite.getTextureRect().height - TILE_HEIGHT));
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "game/GameStateSettings.h"
 #include "message/MessageBus.h"
 #include "render/RenderEngine.h"
@@ -103,7 +103,7 @@ void GameStateSettings::handleMessages()
     }
 }
 
-void GameStateSettings::update(float dt)
+void GameStateSettings::update(float /*dt*/)
 {
     sAudioEngine->update();
     mGui->update();

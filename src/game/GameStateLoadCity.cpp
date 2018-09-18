@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "game/GameStateLoadCity.h"
 #include "message/MessageBus.h"
 #include "render/RenderEngine.h"
@@ -86,7 +86,7 @@ void GameStateLoadCity::handleMessages()
     }
 }
 
-void GameStateLoadCity::update(float dt)
+void GameStateLoadCity::update(float /*dt*/)
 {
     sAudioEngine->update();
     mGui->update();

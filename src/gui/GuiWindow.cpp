@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "gui/GuiWindow.h"
 #include "resource/ResourceManager.h"
 #include "gui/GuiEvent.h"
@@ -75,7 +75,7 @@ void GuiWindow::onContentSizeChanged(sf::Vector2f contentSize)
     GuiWidget::onContentSizeChanged(mInsideSize); // To remove
 }
 
-bool GuiWindow::onHover(sf::Vector2f position, bool processed)
+bool GuiWindow::onHover(sf::Vector2f position, bool /*processed*/)
 {
     if (mOnMove)
     {

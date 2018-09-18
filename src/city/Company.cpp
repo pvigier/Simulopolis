@@ -66,7 +66,7 @@ Company::~Company()
         mMessageBus->removeMailbox(mMailbox);
 }
 
-void Company::update(float dt)
+void Company::update(float /*dt*/)
 {
      // Messages
     while (!mMailbox.isEmpty())
