@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "PropertyList.h"
 #include "util/debug.h"
 #include "resource/TextureManager.h"
@@ -176,4 +176,9 @@ GuiLayout::Margins PropertyList::get(const std::string& name) const
     std::string left, top, right, bottom;
     stream >> left >> top >> right >> bottom;
     return GuiLayout::Margins{std::stof(left), std::stof(top), std::stof(right), std::stof(bottom)};
+}
+
+const std::unordered_map<std::string, std::string>& PropertyList::getProperties() const
+{
+    return mProperties;
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "resource/XmlManager.h"
 #include "util/debug.h"
 #include <sstream>
@@ -41,7 +41,7 @@ void XmlManager::tearDown()
 
 }
 
-XmlDocument XmlManager::loadDocument(const std::string& path)
+XmlDocument XmlManager::loadDocument(const std::string& path) const
 {
     XMLDocument doc;
     doc.LoadFile(path.c_str());
@@ -57,7 +57,14 @@ XmlDocument XmlManager::loadDocument(const std::string& path)
     return loadDocument(root->ToElement());
 }
 
-XmlDocument XmlManager::loadDocument(XMLElement* node)
+void XmlManager::saveDocument(const XmlDocument& document, const std::string& path) const
+{
+    tinyxml2::XMLDocument doc;
+    doc.InsertEndChild(createElement(doc, document));
+    doc.SaveFile(path.c_str());
+}
+
+XmlDocument XmlManager::loadDocument(XMLElement* node) const
 {
     std::string name = node->Name();
     PropertyList attributes = createProperties(node);
@@ -68,10 +75,22 @@ XmlDocument XmlManager::loadDocument(XMLElement* node)
     return XmlDocument(name, attributes, children);
 }
 
-PropertyList XmlManager::createProperties(XMLElement* node)
+PropertyList XmlManager::createProperties(XMLElement* node) const
 {
     PropertyList properties;
     for (const XMLAttribute* attribute = node->FirstAttribute(); attribute != nullptr; attribute = attribute->Next())
         properties.add(attribute->Name(), attribute->Value());
     return std::move(properties);
+}
+
+tinyxml2::XMLElement* XmlManager::createElement(tinyxml2::XMLDocument& doc, const XmlDocument& document) const
+{
+    XMLElement* element = doc.NewElement(document.getName().c_str());
+    // Add properties
+    for (const std::pair<std::string, std::string>& property : document.getAttributes().getProperties())
+        element->SetAttribute(property.first.c_str(), property.second.c_str());
+    // Add children
+    for (const XmlDocument& child : document.getChildren())
+        element->InsertEndChild(createElement(doc, child));
+    return element;
 }

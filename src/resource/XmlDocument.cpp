@@ -14,9 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "XmlDocument.h"
 #include "util/debug.h"
+
+XmlDocument::XmlDocument()
+{
+
+}
 
 XmlDocument::XmlDocument(std::string name, PropertyList attributes, std::vector<XmlDocument> children) :
     mName(std::move(name)), mAttributes(std::move(attributes)), mChildren(std::move(children))
@@ -28,6 +33,11 @@ XmlDocument::XmlDocument(std::string name, PropertyList attributes, std::vector<
 const std::string& XmlDocument::getName() const
 {
     return mName;
+}
+
+PropertyList& XmlDocument::getAttributes()
+{
+    return mAttributes;
 }
 
 const PropertyList& XmlDocument::getAttributes() const
@@ -54,4 +64,9 @@ const XmlDocument& XmlDocument::getFirstChildByName(const std::string& name) con
 bool XmlDocument::hasChildren(const std::string& name) const
 {
     return mChildrenByName.find(name) != mChildrenByName.end();
+}
+
+void XmlDocument::addChild(XmlDocument child)
+{
+    mChildren.emplace_back(std::move(child));
 }

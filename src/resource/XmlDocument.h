@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <vector>
@@ -24,14 +24,17 @@
 class XmlDocument
 {
 public:
+    XmlDocument();
     XmlDocument(std::string name, PropertyList attributes, std::vector<XmlDocument> children);
 
     const std::string& getName() const;
+    PropertyList& getAttributes();
     const PropertyList& getAttributes() const;
     const std::vector<XmlDocument>& getChildren() const;
     const std::vector<std::size_t>& getChildrenByName(const std::string& name) const;
     const XmlDocument& getFirstChildByName(const std::string& name) const;
     bool hasChildren(const std::string& name) const;
+    void addChild(XmlDocument child);
 
 private:
     std::string mName;

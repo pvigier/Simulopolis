@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 // STL
@@ -53,16 +53,25 @@ public:
     void tearDown();
 
     /**
-     * \brief Load and add a document
+     * \brief Load a document
      *
-     * \param name Name of the document
      * \param path Path of the document
      *
      * \return The loaded document
      */
-    XmlDocument loadDocument(const std::string& path);
+    XmlDocument loadDocument(const std::string& path) const;
+
+    /**
+     * \brief Save a document
+     *
+     * \param document Document to save
+     * \param path Path of the document
+     *
+     */
+    void saveDocument(const XmlDocument& document, const std::string& path) const;
 
 private:
-    XmlDocument loadDocument(tinyxml2::XMLElement* node);
-    PropertyList createProperties(tinyxml2::XMLElement* node);
+    XmlDocument loadDocument(tinyxml2::XMLElement* node) const;
+    PropertyList createProperties(tinyxml2::XMLElement* node) const;
+    tinyxml2::XMLElement* createElement(tinyxml2::XMLDocument& doc, const XmlDocument& document) const;
 };
