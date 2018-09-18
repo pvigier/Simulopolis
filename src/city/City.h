@@ -77,11 +77,6 @@ public:
     City();
     ~City();
 
-    // IO
-    void load(const std::string& name);
-    void save();
-    void createMap(std::string name, uint64_t seed);
-
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     void update(float dt);
@@ -90,7 +85,11 @@ public:
     void setGameMessageBus(MessageBus* messageBus);
     Id getMailboxId() const;
 
+    // Name
+    const std::string& getName() const;
+
     // Map
+    void createMap(std::string name, uint64_t seed);
     void bulldoze(Tile::Type type);
     Intersection intersect(const sf::Vector2f& position);
     Map& getMap();

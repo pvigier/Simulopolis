@@ -20,6 +20,8 @@
 // STL
 #include <string>
 #include <unordered_map>
+// XmlDocument
+#include "resource/XmlDocument.h"
 
 class XmlManager;
 
@@ -87,6 +89,7 @@ public:
 
 private:
     XmlManager* mXmlManager;
+    XmlDocument mDocument; /**< Document where the saves are stored on the disk */
     std::string mPrefixPath; /**< Path of the folder in which is located "saves.xml" */
     std::unordered_map<std::string, std::string> mSaves; /**< Hash map that contains the saves */
 

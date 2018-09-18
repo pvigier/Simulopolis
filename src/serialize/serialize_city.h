@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 // Boost
@@ -94,5 +94,5 @@ void register_types(Archive& ar)
     ar.template register_type<GoalWork>();
 }
 
-void save_city(City& city);
-void load_city(City& city);
+void save_city(City& city, const std::string& path);
+void load_city(City& city, const std::string& path);

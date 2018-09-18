@@ -37,9 +37,9 @@ void SaveManager::setXmlManager(XmlManager* xmlManager)
 void SaveManager::setUp()
 {
     std::string path = mPrefixPath + "saves.xml";
-    XmlDocument doc = mXmlManager->loadDocument(path);
+    mDocument = mXmlManager->loadDocument(path);
 
-    for (const XmlDocument& child : doc.getChildren())
+    for (const XmlDocument& child : mDocument.getChildren())
     {
         const std::string& name = child.getAttributes().get("name");
         mSaves[name] = mPrefixPath + child.getAttributes().get("path");
@@ -48,12 +48,18 @@ void SaveManager::setUp()
 
 void SaveManager::tearDown()
 {
-
+    mXmlManager->saveDocument(mDocument, mPrefixPath + "saves.xml");
 }
 
 void SaveManager::addSave(const std::string& name)
 {
-    mSaves[name] = mPrefixPath + name + ".city";
+    std::string path = mPrefixPath + name + ".city";
+    mSaves[name] = path;
+    // Edit the document
+    PropertyList attributes;
+    attributes.add("name", name);
+    attributes.add("path", name + ".city");
+    mDocument.addChild(XmlDocument("save", attributes, {}));
 }
 
 const std::string& SaveManager::getSave(const std::string& name) const

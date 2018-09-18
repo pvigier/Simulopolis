@@ -25,6 +25,7 @@
 #include "resource/TextureManager.h"
 #include "resource/StylesheetManager.h"
 #include "resource/GuiManager.h"
+#include "resource/SaveManager.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiText.h"
 #include "gui/GuiImage.h"
@@ -38,6 +39,7 @@
 #include "game/LaborMarketWindow.h"
 #include "game/GoodsMarketWindow.h"
 #include "game/PoliciesWindow.h"
+#include "serialize/serialize_city.h"
 
 GameStateEditor::GameStateEditor() :
     mActionState(ActionState::NONE), mZoomLevel(1.0f),
@@ -62,6 +64,8 @@ GameStateEditor::GameStateEditor() :
 
 GameStateEditor::~GameStateEditor()
 {
+    // Save city
+    save_city(mCity, sSaveManager->getSave(mCity.getName()));
     // Tab buttons
     GuiWidget* buttonsWidget = mGui->get("tabButtons");
     for (GuiWidget* widget : buttonsWidget->getChildren())
@@ -350,6 +354,10 @@ void GameStateEditor::exit()
 
 void GameStateEditor::newGame(std::string cityName, uint64_t seed)
 {
+    // Create a new save
+    sSaveManager->addSave(cityName);
+
+    // Create a new city
     mCity.createMap(std::move(cityName), seed);
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
         mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
@@ -362,7 +370,7 @@ void GameStateEditor::newGame(std::string cityName, uint64_t seed)
 
 void GameStateEditor::loadGame(const std::string& path)
 {
-    mCity.load(path);
+    load_city(mCity, path);
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
         mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
     zoom(8.0f);

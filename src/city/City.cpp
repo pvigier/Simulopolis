@@ -19,7 +19,6 @@
 #include <fstream>
 #include <sstream>
 #include "city/Building.h"
-#include "serialize/serialize_city.h"
 
 City::Intersection::Intersection() : type(City::Intersection::Type::NONE), car(nullptr)
 {
@@ -71,45 +70,8 @@ City::City() :
 
 City::~City()
 {
-    save();
-
     // Unregister mailbox
     mCityMessageBus.removeMailbox(mMailbox);
-}
-
-void City::load(const std::string& name)
-{
-    load_city(*this);
-}
-
-void City::save()
-{
-    save_city(*this);
-}
-
-void City::createMap(std::string name, uint64_t seed)
-{
-    mName = std::move(name);
-
-    // Generate map
-    mRandomGenerator.setSeed(seed);
-    mMap.fromArray(mTerrainGenerator.generate());
-
-    // Register mailbox
-    mCityMessageBus.addMailbox(mMailbox);
-
-    // Markets
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NECESSARY_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NORMAL_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::LUXURY_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Lease>>(VMarket::Type::RENT));
-    mMarkets.emplace_back(std::make_unique<Market<Work>>(VMarket::Type::WORK));
-
-    // Economy
-    mWorldAccount = mBank.createWorldAccount();
-
-    // Set up
-    setUp(false);
 }
 
 void City::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -233,6 +195,36 @@ void City::setGameMessageBus(MessageBus* messageBus)
 Id City::getMailboxId() const
 {
     return mMailbox.getId();
+}
+
+const std::string& City::getName() const
+{
+    return mName;
+}
+
+void City::createMap(std::string name, uint64_t seed)
+{
+    mName = std::move(name);
+
+    // Generate map
+    mRandomGenerator.setSeed(seed);
+    mMap.fromArray(mTerrainGenerator.generate());
+
+    // Register mailbox
+    mCityMessageBus.addMailbox(mMailbox);
+
+    // Markets
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NECESSARY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NORMAL_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::LUXURY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Lease>>(VMarket::Type::RENT));
+    mMarkets.emplace_back(std::make_unique<Market<Work>>(VMarket::Type::WORK));
+
+    // Economy
+    mWorldAccount = mBank.createWorldAccount();
+
+    // Set up
+    setUp(false);
 }
 
 void City::bulldoze(Tile::Type type)

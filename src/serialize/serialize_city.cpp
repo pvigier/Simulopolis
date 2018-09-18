@@ -14,16 +14,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "serialize/serialize_city.h"
 #include <fstream>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include "util/debug.h"
 
-void save_city(City& city)
+void save_city(City& city, const std::string& path)
 {
-    std::ofstream file("saves/test.city");
+    DEBUG("Save " << city.getName() << " at " << path << "\n");
+    std::ofstream file(path);
     if (file)
     {
         boost::archive::text_oarchive oa(file);
@@ -32,12 +33,13 @@ void save_city(City& city)
         file.close();
     }
     else
-        DEBUG("Fail to save the city");
+        DEBUG("Fail to save the city\n");
 }
 
-void load_city(City& city)
+void load_city(City& city, const std::string& path)
 {
-    std::ifstream file("saves/test.city");
+    DEBUG("Load " << city.getName() << " from " << path << "\n");
+    std::ifstream file(path);
     if (file)
     {
         boost::archive::text_iarchive ia(file);
@@ -46,5 +48,5 @@ void load_city(City& city)
         file.close();
     }
     else
-        DEBUG("Fail to load the city");
+        DEBUG("Fail to load the city\n");
 }
