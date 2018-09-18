@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "city/Business.h"
 #include "message/MessageBus.h"
 #include "city/City.h"
@@ -66,8 +66,8 @@ void Business::update()
         Message message = mMailbox.get();
         if (message.type == MessageType::MARKET)
         {
-            const VMarket::EventBase& eventBase = message.getInfo<VMarket::EventBase>();
-            if (eventBase.marketType == VMarket::Type::WORK)
+            const MarketBase::EventBase& eventBase = message.getInfo<MarketBase::EventBase>();
+            if (eventBase.marketType == MarketBase::Type::WORK)
             {
                 const Market<Work>::Event& event = static_cast<const Market<Work>::Event&>(eventBase);
                 switch (event.type)
@@ -128,7 +128,7 @@ void Business::tearDown()
 {
     update();
     // Remove everything from markets
-    const Market<Work>* laborMarket = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(VMarket::Type::WORK));
+    const Market<Work>* laborMarket = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(MarketBase::Type::WORK));
     for (Id id : mWorksInMarket)
         mOwner->getMessageBus()->send(Message::create(laborMarket->getMailboxId(), MessageType::MARKET, laborMarket->createRemoveItemEvent(id)));
     // Remove bids for market
@@ -218,11 +218,11 @@ const Market<Good>* Business::getMarket()
     switch (mGoodType)
     {
         case Good::Type::NECESSARY:
-            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(VMarket::Type::NECESSARY_GOOD));
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(MarketBase::Type::NECESSARY_GOOD));
         case Good::Type::NORMAL:
-            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(VMarket::Type::NORMAL_GOOD));
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(MarketBase::Type::NORMAL_GOOD));
         case Good::Type::LUXURY:
-            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(VMarket::Type::LUXURY_GOOD));
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(MarketBase::Type::LUXURY_GOOD));
         default:
             return nullptr;
     };

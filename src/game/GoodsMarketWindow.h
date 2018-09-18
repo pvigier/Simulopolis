@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include "message/Mailbox.h"
@@ -44,13 +44,13 @@ private:
     StylesheetManager* mStylesheetManager;
     Mailbox mMailbox;
     std::array<Market<Good>*, 3> mMarkets;
-    std::map<std::tuple<VMarket::Type, Id>, Key> mItems;
+    std::map<std::tuple<MarketBase::Type, Id>, Key> mItems;
     std::vector<std::pair<Key, int>> mCounts;
     GuiTable* mTable;
 
     // Items
-    void addItem(VMarket::Type type, Id itemId);
-    void removeItem(VMarket::Type type, Id itemId);
+    void addItem(MarketBase::Type type, Id itemId);
+    void removeItem(MarketBase::Type type, Id itemId);
 
     // Rows
     std::size_t getRow(const Key& key) const;
@@ -58,5 +58,5 @@ private:
     void updateRow(std::size_t i, int count);
 
     // Util
-    Market<Good>* getMarket(VMarket::Type type);
+    Market<Good>* getMarket(MarketBase::Type type);
 };

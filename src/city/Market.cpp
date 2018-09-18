@@ -14,43 +14,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "city/Market.h"
 
-VMarket::EventBase::EventBase()
+MarketBase::EventBase::EventBase()
 {
 
 }
 
-VMarket::EventBase::EventBase(VMarket::Type marketType) : marketType(marketType)
+MarketBase::EventBase::EventBase(MarketBase::Type marketType) : marketType(marketType)
 {
 
 }
 
-VMarket::EventBase::~EventBase()
+MarketBase::EventBase::~EventBase()
 {
 
 }
 
-VMarket::VMarket(Type type) : mMessageBus(nullptr), mTime(0), mType(type)
+MarketBase::MarketBase(Type type) : mMessageBus(nullptr), mTime(0), mType(type)
 {
 
 }
 
-VMarket::~VMarket()
+MarketBase::~MarketBase()
 {
     if (mMailbox.getId() != UNDEFINED)
         mMessageBus->removeMailbox(mMailbox);
 }
 
-void VMarket::setMessageBus(MessageBus* messageBus, bool alreadyAdded)
+void MarketBase::setMessageBus(MessageBus* messageBus, bool alreadyAdded)
 {
     mMessageBus = messageBus;
     if (!alreadyAdded)
         mMessageBus->addMailbox(mMailbox);
 }
 
-Id VMarket::getMailboxId() const
+Id MarketBase::getMailboxId() const
 {
     return mMailbox.getId();
 }

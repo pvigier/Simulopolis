@@ -137,7 +137,7 @@ void City::update(float dt)
         company->update(dt);
 
     // Update markets
-    for (std::unique_ptr<VMarket>& market : mMarkets)
+    for (std::unique_ptr<MarketBase>& market : mMarkets)
         market->update();
 
     // Update bank
@@ -188,7 +188,7 @@ void City::update(float dt)
 void City::setGameMessageBus(MessageBus* messageBus)
 {
     setSubjectMessageBus(messageBus);
-    for (std::unique_ptr<VMarket>& market : mMarkets)
+    for (std::unique_ptr<MarketBase>& market : mMarkets)
         market->setSubjectMessageBus(messageBus);
 }
 
@@ -214,11 +214,11 @@ void City::createMap(std::string name, uint64_t seed)
     mCityMessageBus.addMailbox(mMailbox);
 
     // Markets
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NECESSARY_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::NORMAL_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(VMarket::Type::LUXURY_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Lease>>(VMarket::Type::RENT));
-    mMarkets.emplace_back(std::make_unique<Market<Work>>(VMarket::Type::WORK));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(MarketBase::Type::NECESSARY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(MarketBase::Type::NORMAL_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(MarketBase::Type::LUXURY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Lease>>(MarketBase::Type::RENT));
+    mMarkets.emplace_back(std::make_unique<Market<Work>>(MarketBase::Type::WORK));
 
     // Economy
     mWorldAccount = mBank.createWorldAccount();
@@ -325,12 +325,12 @@ const Bank& City::getBank() const
     return mBank;
 }
 
-VMarket* City::getMarket(VMarket::Type type)
+MarketBase* City::getMarket(MarketBase::Type type)
 {
     return mMarkets[static_cast<int>(type)].get();
 }
 
-const VMarket* City::getMarket(VMarket::Type type) const
+const MarketBase* City::getMarket(MarketBase::Type type) const
 {
     return mMarkets[static_cast<int>(type)].get();
 }
@@ -539,10 +539,10 @@ void City::computeAttractiveness()
 {
     mAttractiveness = 1.0f;
     // Ease to obtain a home
-    float nbHomesAvailable = static_cast<const Market<Lease>*>(getMarket(VMarket::Type::RENT))->getItems().size();
+    float nbHomesAvailable = static_cast<const Market<Lease>*>(getMarket(MarketBase::Type::RENT))->getItems().size();
     mAttractiveness *= 1 - 1 / (1.0f + nbHomesAvailable);
     // Ease to obtain a job
-    float nbWorksAvailable = static_cast<const Market<Work>*>(getMarket(VMarket::Type::WORK))->getItems().size();
+    float nbWorksAvailable = static_cast<const Market<Work>*>(getMarket(MarketBase::Type::WORK))->getItems().size();
     mAttractiveness *= 1 - 1 / (1.0f + nbWorksAvailable);
     // Happiness
     mAttractiveness *= getAverageHappiness();
@@ -562,7 +562,7 @@ void City::onNewMonth()
     updateImmigrants();
 
     // Update markets
-    for (std::unique_ptr<VMarket>& market : mMarkets)
+    for (std::unique_ptr<MarketBase>& market : mMarkets)
         market->sellItems();
 
     // Collect taxes
@@ -593,7 +593,7 @@ void City::setUp(bool loading)
     mBank.setMessageBus(&mCityMessageBus, loading);
 
     // Markets
-    for (std::unique_ptr<VMarket>& market : mMarkets)
+    for (std::unique_ptr<MarketBase>& market : mMarkets)
         market->setMessageBus(&mCityMessageBus, loading);
 
     // Citizens

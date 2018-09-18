@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "ImmigrantsWindow.h"
 #include "resource/StylesheetManager.h"
 #include "gui/Gui.h"
@@ -32,8 +32,8 @@
 ImmigrantsWindow::ImmigrantsWindow(Id listenerId, MessageBus* messageBus, StylesheetManager* stylesheetManager, City& city) :
     GuiWindow("Immigrants", stylesheetManager->getStylesheet("window")), mListenerId(listenerId),
     mMessageBus(messageBus), mStylesheetManager(stylesheetManager), mCity(city),
-    mRentalMarket(static_cast<const Market<Lease>*>(mCity.getMarket(VMarket::Type::RENT))),
-    mLaborMarket(static_cast<const Market<Work>*>(mCity.getMarket(VMarket::Type::WORK))),
+    mRentalMarket(static_cast<const Market<Lease>*>(mCity.getMarket(MarketBase::Type::RENT))),
+    mLaborMarket(static_cast<const Market<Work>*>(mCity.getMarket(MarketBase::Type::WORK))),
     mTable(nullptr), mRentalMarketText(nullptr), mLaborMarketText(nullptr), mAttractivenessText(nullptr)
 {
     mMessageBus->addMailbox(mMailbox);

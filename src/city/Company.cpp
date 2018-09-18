@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "city/Company.h"
 #include "city/City.h"
 #include "city/Housing.h"
@@ -301,13 +301,13 @@ void Company::setRetailMargin(Good::Type goodType, double margin)
 
 void Company::addToMarket(Lease* lease)
 {
-    const Market<Lease>* market = static_cast<const Market<Lease>*>(mCity->getMarket(VMarket::Type::RENT));
+    const Market<Lease>* market = static_cast<const Market<Lease>*>(mCity->getMarket(MarketBase::Type::RENT));
     mMessageBus->send(Message::create(lease->getHousing()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, lease, lease->getRent())));
 }
 
 void Company::addToMarket(Work* work)
 {
-    const Market<Work>* market = static_cast<const Market<Work>*>(mCity->getMarket(VMarket::Type::WORK));
+    const Market<Work>* market = static_cast<const Market<Work>*>(mCity->getMarket(MarketBase::Type::WORK));
     mMessageBus->send(Message::create(work->getWorkplace()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, work, work->getSalary())));
 }
 

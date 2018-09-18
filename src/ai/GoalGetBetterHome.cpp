@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "GoalGetBetterHome.h"
 #include "city/City.h"
 #include "city/Person.h"
@@ -37,7 +37,7 @@ void GoalGetBetterHome::activate()
 {
     mState = State::ACTIVE;
     // Choose the right market
-    mMarket = static_cast<const Market<Lease>*>(mOwner->getCity()->getMarket(VMarket::Type::RENT));
+    mMarket = static_cast<const Market<Lease>*>(mOwner->getCity()->getMarket(MarketBase::Type::RENT));
 }
 
 Goal::State GoalGetBetterHome::process()

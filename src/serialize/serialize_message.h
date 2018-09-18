@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 // City
@@ -117,7 +117,7 @@ void save(Archive& ar, const Message& message, const unsigned int /*version*/)
             ar & std::static_pointer_cast<City::Event>(message.info);
             break;
         case MessageType::MARKET:
-            ar & std::static_pointer_cast<VMarket::EventBase>(message.info);
+            ar & std::static_pointer_cast<MarketBase::EventBase>(message.info);
             break;
         case MessageType::PERSON:
             ar & std::static_pointer_cast<Person::Event>(message.info);
@@ -157,7 +157,7 @@ void load(Archive& ar, Message& message, const unsigned int /*version*/)
         }
         case MessageType::MARKET:
         {
-            std::shared_ptr<VMarket::EventBase> info;
+            std::shared_ptr<MarketBase::EventBase> info;
             ar & info;
             message.info = info;
             break;

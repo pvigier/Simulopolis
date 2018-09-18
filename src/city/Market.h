@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <unordered_map>
@@ -27,7 +27,7 @@
 #include "message/Subject.h"
 #include "city/Money.h"
 
-class VMarket : public Subject
+class MarketBase : public Subject
 {
 public:
     enum class Type : int {
@@ -45,10 +45,10 @@ public:
 
     struct EventBase
     {
-        VMarket::Type marketType;
+        MarketBase::Type marketType;
 
         EventBase();
-        EventBase(VMarket::Type marketType);
+        EventBase(MarketBase::Type marketType);
         virtual ~EventBase();
 
     private:
@@ -62,8 +62,8 @@ public:
         }
     };
 
-    VMarket(Type type);
-    virtual ~VMarket();
+    MarketBase(Type type);
+    virtual ~MarketBase();
 
     void setMessageBus(MessageBus* messageBus, bool alreadyAdded = false);
 
@@ -78,7 +78,7 @@ protected:
     unsigned int mTime;
     Type mType;
 
-    VMarket() = default;
+    MarketBase() = default;
 
 private:
     // Serialization
@@ -92,7 +92,7 @@ private:
 };
 
 template<typename T>
-class Market : public VMarket
+class Market : public MarketBase
 {
 public:
     struct Item
@@ -188,7 +188,7 @@ public:
 
         }
 
-        Event(VMarket::Type marketType, Type type) : EventBase(marketType), type(type)
+        Event(MarketBase::Type marketType, Type type) : EventBase(marketType), type(type)
         {
 
         }
@@ -201,7 +201,7 @@ public:
         template<typename Archive>
         void serialize(Archive& ar, const unsigned int /*version*/)
         {
-            ar & boost::serialization::base_object<VMarket::EventBase>(*this);
+            ar & boost::serialization::base_object<MarketBase::EventBase>(*this);
             ar & type;
             switch (type)
             {
@@ -227,7 +227,7 @@ public:
         }
     };
 
-    Market(Type type) : VMarket(type), mDirty(false)
+    Market(Type type) : MarketBase(type), mDirty(false)
     {
 
     }
@@ -450,14 +450,14 @@ private:
     template<typename Archive>
     void save(Archive& ar, const unsigned int /*version*/) const
     {
-        ar & boost::serialization::base_object<VMarket>(*this);
+        ar & boost::serialization::base_object<MarketBase>(*this);
         ar & mAuctions & mDesiredQuantities;
     }
 
     template<typename Archive>
     void load(Archive& ar, const unsigned int /*version*/)
     {
-        ar & boost::serialization::base_object<VMarket>(*this);
+        ar & boost::serialization::base_object<MarketBase>(*this);
         ar & mAuctions & mDesiredQuantities;
         mDirty = true;
     }

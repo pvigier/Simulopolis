@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "city/Housing.h"
 #include "city/City.h"
 #include "city/Company.h"
@@ -65,7 +65,7 @@ void Housing::tearDown()
 {
     update();
     // Remove everything from markets
-    const Market<Lease>* market = static_cast<const Market<Lease>*>(mOwner->getCity()->getMarket(VMarket::Type::RENT));
+    const Market<Lease>* market = static_cast<const Market<Lease>*>(mOwner->getCity()->getMarket(MarketBase::Type::RENT));
     for (Id id : mLeasesInMarket)
         mOwner->getMessageBus()->send(Message::create(market->getMailboxId(), MessageType::MARKET, market->createRemoveItemEvent(id)));
 }

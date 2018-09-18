@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "GoodsMarketWindow.h"
 #include "message/MessageBus.h"
 #include "resource/StylesheetManager.h"
@@ -66,7 +66,7 @@ void GoodsMarketWindow::setUp()
     for (int i = 0; i < 3; ++i)
     {
         for (const Market<Good>::Item* item : mMarkets[i]->getItems())
-            addItem(static_cast<VMarket::Type>(i), item->id);
+            addItem(static_cast<MarketBase::Type>(i), item->id);
     }
 }
 
@@ -93,10 +93,10 @@ void GoodsMarketWindow::update()
     }
 }
 
-void GoodsMarketWindow::addItem(VMarket::Type type, Id itemId)
+void GoodsMarketWindow::addItem(MarketBase::Type type, Id itemId)
 {
     const Market<Good>::Item& item = getMarket(type)->getItem(itemId);
-    std::tuple<VMarket::Type, Id> id(type, itemId);
+    std::tuple<MarketBase::Type, Id> id(type, itemId);
     mItems[id] = std::make_tuple(item.good->getProductionPlace(), item.good->getType(), item.reservePrice);
     std::size_t i = getRow(mItems[id]);
     if (i == mCounts.size())
@@ -108,9 +108,9 @@ void GoodsMarketWindow::addItem(VMarket::Type type, Id itemId)
         updateRow(i, ++mCounts[i].second);
 }
 
-void GoodsMarketWindow::removeItem(VMarket::Type type, Id itemId)
+void GoodsMarketWindow::removeItem(MarketBase::Type type, Id itemId)
 {
-    std::tuple<VMarket::Type, Id> id(type, itemId);
+    std::tuple<MarketBase::Type, Id> id(type, itemId);
     std::size_t i = getRow(mItems[id]);
     --mCounts[i].second;
     if (mCounts[i].second > 0)
@@ -145,15 +145,15 @@ void GoodsMarketWindow::updateRow(std::size_t i, int count)
     static_cast<GuiText*>(mTable->getCellContent(i, 4))->setString(format("%d", count));
 }
 
-Market<Good>* GoodsMarketWindow::getMarket(VMarket::Type type)
+Market<Good>* GoodsMarketWindow::getMarket(MarketBase::Type type)
 {
     switch (type)
     {
-        case VMarket::Type::NECESSARY_GOOD:
+        case MarketBase::Type::NECESSARY_GOOD:
             return mMarkets[0];
-        case VMarket::Type::NORMAL_GOOD:
+        case MarketBase::Type::NORMAL_GOOD:
             return mMarkets[1];
-        case VMarket::Type::LUXURY_GOOD:
+        case MarketBase::Type::LUXURY_GOOD:
             return mMarkets[2];
         default:
             return nullptr;

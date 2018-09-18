@@ -36,7 +36,7 @@ void GoalEnterCity::activate()
 {
     mState = State::ACTIVE;
     // Choose the right market
-    mMarket = static_cast<const Market<Lease>*>(mOwner->getCity()->getMarket(VMarket::Type::RENT));
+    mMarket = static_cast<const Market<Lease>*>(mOwner->getCity()->getMarket(MarketBase::Type::RENT));
 }
 
 Goal::State GoalEnterCity::process()

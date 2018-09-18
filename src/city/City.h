@@ -102,8 +102,8 @@ public:
 
     // Economy
     const Bank& getBank() const;
-    VMarket* getMarket(VMarket::Type type);
-    const VMarket* getMarket(VMarket::Type type) const;
+    MarketBase* getMarket(MarketBase::Type type);
+    const MarketBase* getMarket(MarketBase::Type type) const;
 
     // Company
     Company& getCompany();
@@ -167,7 +167,7 @@ private:
 
     // Economy
     Bank mBank;
-    std::vector<std::unique_ptr<VMarket>> mMarkets;
+    std::vector<std::unique_ptr<MarketBase>> mMarkets;
     Id mWorldAccount;
 
     // City company
