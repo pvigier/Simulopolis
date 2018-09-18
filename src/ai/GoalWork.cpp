@@ -64,8 +64,10 @@ bool GoalWork::handle(Message message)
     {
         const Person::Event& event = message.getInfo<Person::Event>();
         if (event.type == Person::Event::Type::FIRED)
+        {
             mState = State::FAILED;
-        return true;
+            return true;
+        }
     }
     return false;
 }

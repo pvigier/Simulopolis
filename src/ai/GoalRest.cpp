@@ -90,9 +90,8 @@ bool GoalRest::handle(Message message)
         if (event.type == Person::Event::Type::EXPELLED)
         {
             mState = State::FAILED;
-            //std::cout << "GoalRest failed: " << static_cast<int>(mState) << std::endl;
+            return true;
         }
-        return true;
     }
     return false;
 }
