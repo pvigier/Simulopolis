@@ -45,7 +45,7 @@ public:
     virtual void exit() override;
 
     void newGame(std::string cityName, uint64_t seed);
-    void loadGame(const std::string& path);
+    void loadGame(const std::string& cityName);
 
     const sf::Texture& getCityTexture() const;
 

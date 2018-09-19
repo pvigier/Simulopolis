@@ -87,11 +87,16 @@ public:
      */
     bool hasSave(const std::string& name) const;
 
+    /**
+     * \brief Return all the saves
+     *
+     * \return All the saves
+     */
+    const std::unordered_map<std::string, std::string>& getSaves() const;
+
 private:
     XmlManager* mXmlManager;
     XmlDocument mDocument; /**< Document where the saves are stored on the disk */
     std::string mPrefixPath; /**< Path of the folder in which is located "saves.xml" */
     std::unordered_map<std::string, std::string> mSaves; /**< Hash map that contains the saves */
-
-    std::string format(std::string name) const;
 };

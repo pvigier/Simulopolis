@@ -168,8 +168,9 @@ void Game::handleMessages()
                 }
                 case GameState::Event::Type::LOAD_GAME:
                 {
+                    GameStateLoadCity* loadCityState = static_cast<GameStateLoadCity*>(peekState());
                     std::unique_ptr<GameStateEditor> state = std::make_unique<GameStateEditor>();
-                    state->loadGame("saves/city");
+                    state->loadGame(loadCityState->getSelectedCity());
                     clearStates();
                     pushState(std::move(state));
                     break;

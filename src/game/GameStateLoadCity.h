@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <SFML/Graphics.hpp>
 #include "game/GameState.h"
 
 class Gui;
+class GuiButton;
 
 class GameStateLoadCity : public GameState
 {
@@ -34,8 +35,12 @@ public:
     virtual void draw() override;
     virtual void exit() override;
 
+    std::string getSelectedCity() const;
+
 private:
     std::unique_ptr<Gui> mGui;
+    std::vector<GuiButton*> mButtons;
+    std::size_t mISelected;
 
     void createGui();
 };

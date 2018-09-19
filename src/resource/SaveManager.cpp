@@ -73,7 +73,7 @@ bool SaveManager::hasSave(const std::string& name) const
     return (mSaves.find(name) != mSaves.end());
 }
 
-std::string SaveManager::format(std::string name) const
+const std::unordered_map<std::string, std::string>& SaveManager::getSaves() const
 {
-
+    return mSaves;
 }

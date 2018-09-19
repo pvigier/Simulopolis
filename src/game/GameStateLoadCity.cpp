@@ -21,12 +21,17 @@
 #include "input/InputEvent.h"
 #include "audio/AudioEngine.h"
 #include "resource/GuiManager.h"
+#include "resource/StylesheetManager.h"
+#include "resource/SaveManager.h"
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
+#include "gui/GuiText.h"
+#include "gui/GuiScrollArea.h"
+#include "gui/GuiHBoxLayout.h"
 #include "gui/GuiEvent.h"
 #include "util/format.h"
 
-GameStateLoadCity::GameStateLoadCity() : mGui(sGuiManager->getGui("load_city"))
+GameStateLoadCity::GameStateLoadCity() : mGui(sGuiManager->getGui("load_city")), mISelected(-1)
 {
     // Gui
     createGui();
@@ -77,8 +82,19 @@ void GameStateLoadCity::handleMessages()
                 {
                     const std::string& name = event.widget->getName();
                     if (name == "loadCityButton")
-                    {
                         sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::LOAD_GAME)));
+                    else
+                    {
+                        for (std::size_t i = 0; i < mButtons.size(); ++i)
+                        {
+                            if (event.widget == mButtons[i])
+                            {
+                                mISelected = i;
+                                mButtons[i]->setState(GuiButton::State::FORCE_PRESSED);
+                            }
+                            else
+                                mButtons[i]->setState(GuiButton::State::NORMAL);
+                        }
                     }
                 }
                 default:
@@ -105,9 +121,28 @@ void GameStateLoadCity::exit()
     mGui->setListen(false);
 }
 
+std::string GameStateLoadCity::getSelectedCity() const
+{
+    return static_cast<GuiText*>(mButtons[mISelected]->getChildren()[0])->getString().toAnsiString();
+}
+
 void GameStateLoadCity::createGui()
 {
     mGui->setViewportSize(sRenderEngine->getViewportSize());
+
+    // Add buttons
+    GuiScrollArea* scrollArea = mGui->get<GuiScrollArea>("scrollArea");
+    for (const std::pair<std::string, std::string>& save : sSaveManager->getSaves())
+    {
+        GuiButton* button = mGui->createWithDefaultName<GuiButton>(sStylesheetManager->getStylesheet("button"));
+        button->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Center, GuiLayout::VAlignment::Center));
+        button->setFixedInsideSize(sf::Vector2f(500.0f, 48.0f));
+        button->add(mGui->createWithDefaultName<GuiText>(save.first, 18, sStylesheetManager->getStylesheet("darkText")));
+        scrollArea->add(button);
+        mButtons.emplace_back(button);
+        // Subscribe to the button
+        button->subscribe(mMailbox.getId());
+    }
 
     // Register to events
     mGui->get("loadCityButton")->subscribe(mMailbox.getId());

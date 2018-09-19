@@ -369,9 +369,9 @@ void GameStateEditor::newGame(std::string cityName, uint64_t seed)
     mCity.subscribe(mMailbox.getId());
 }
 
-void GameStateEditor::loadGame(const std::string& path)
+void GameStateEditor::loadGame(const std::string& cityName)
 {
-    load_city(mCity, path);
+    load_city(mCity, sSaveManager->getSave(cityName));
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
         mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
     zoom(8.0f);
