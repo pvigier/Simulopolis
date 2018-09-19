@@ -32,19 +32,20 @@ GameStateSettings::GameStateSettings() : mGui(sGuiManager->getGui("settings")),
 {
     // Gui
     createGui();
+    mGui->subscribe(mMailbox.getId());
 }
 
 GameStateSettings::~GameStateSettings()
 {
     mGui->get("fullscreenButton")->unsubscribe(mMailbox.getId());
     mGui->get("musicButton")->unsubscribe(mMailbox.getId());
+    mGui->unsubscribe(mMailbox.getId());
 }
 
 void GameStateSettings::enter()
 {
-    mGui->handleMessages();
     // Subscribe to inputs
-    mGui->subscribe(mMailbox.getId());
+    mGui->setListen(true);
 }
 
 void GameStateSettings::handleMessages()
@@ -117,7 +118,7 @@ void GameStateSettings::draw()
 void GameStateSettings::exit()
 {
     // Unsubscribe to inputs
-    mGui->unsubscribe(mMailbox.getId());
+    mGui->setListen(false);
 }
 
 void GameStateSettings::createGui()

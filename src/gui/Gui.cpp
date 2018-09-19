@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "gui/Gui.h"
 #include "message/MessageBus.h"
 #include "input/InputEngine.h"
@@ -25,7 +25,7 @@
 MessageBus* Gui::sMessageBus = nullptr;
 InputEngine* Gui::sInputEngine = nullptr;
 
-Gui::Gui() : mVisible(true), mCounter(0)
+Gui::Gui() : mVisible(true), mListen(true), mCounter(0)
 {
     // Register the mailbox
     sMessageBus->addMailbox(mMailbox);
@@ -40,7 +40,8 @@ Gui::~Gui()
         remove(mRootWidgets[i]);
 
     // Unregister the mailbox
-    sInputEngine->unsubscribe(mMailbox.getId());
+    if (mListen)
+        sInputEngine->unsubscribe(mMailbox.getId());
     sMessageBus->removeMailbox(mMailbox);
 }
 
@@ -214,6 +215,18 @@ void Gui::setVisible(bool visible)
 bool Gui::isVisible() const
 {
     return mVisible;
+}
+
+bool Gui::setListen(bool listen)
+{
+    if (mListen != listen)
+    {
+        mListen = listen;
+        if (mListen)
+            sInputEngine->subscribe(mMailbox.getId());
+        else
+            sInputEngine->unsubscribe(mMailbox.getId());
+    }
 }
 
 std::string Gui::generateName()

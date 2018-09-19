@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <vector>
@@ -96,12 +96,15 @@ public:
     void setVisible(bool visible);
     bool isVisible() const;
 
+    bool setListen(bool listen);
+
 private:
     static MessageBus* sMessageBus;
     static InputEngine* sInputEngine;
     Mailbox mMailbox;
     sf::View mView;
     bool mVisible;
+    bool mListen;
     std::unordered_map<std::string, std::unique_ptr<GuiWidget>> mWidgets;
     std::vector<GuiWidget*> mRootWidgets;
     unsigned int mCounter; // To generate a name

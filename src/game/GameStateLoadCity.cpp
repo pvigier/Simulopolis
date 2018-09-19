@@ -30,18 +30,20 @@ GameStateLoadCity::GameStateLoadCity() : mGui(sGuiManager->getGui("load_city"))
 {
     // Gui
     createGui();
+    mGui->subscribe(mMailbox.getId());
 }
 
 GameStateLoadCity::~GameStateLoadCity()
 {
     mGui->get("loadCityButton")->unsubscribe(mMailbox.getId());
+    mGui->unsubscribe(mMailbox.getId());
 }
 
 void GameStateLoadCity::enter()
 {
     mGui->handleMessages();
     // Subscribe to inputs
-    mGui->subscribe(mMailbox.getId());
+    mGui->setListen(true);
 }
 
 void GameStateLoadCity::handleMessages()
@@ -100,7 +102,7 @@ void GameStateLoadCity::draw()
 void GameStateLoadCity::exit()
 {
     // Unsubscribe to inputs
-    mGui->unsubscribe(mMailbox.getId());
+    mGui->setListen(false);
 }
 
 void GameStateLoadCity::createGui()

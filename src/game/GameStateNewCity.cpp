@@ -36,18 +36,19 @@ GameStateNewCity::GameStateNewCity() : mGui(sGuiManager->getGui("new_city"))
 {
     // Gui
     createGui();
+    mGui->subscribe(mMailbox.getId());
 }
 
 GameStateNewCity::~GameStateNewCity()
 {
     mGui->get("createCityButton")->unsubscribe(mMailbox.getId());
+    mGui->unsubscribe(mMailbox.getId());
 }
 
 void GameStateNewCity::enter()
 {
-    mGui->handleMessages();
     // Subscribe to inputs
-    mGui->subscribe(mMailbox.getId());
+    mGui->setListen(true);
 }
 
 void GameStateNewCity::handleMessages()
@@ -108,7 +109,7 @@ void GameStateNewCity::draw()
 void GameStateNewCity::exit()
 {
     // Unsubscribe to inputs
-    mGui->unsubscribe(mMailbox.getId());
+    mGui->setListen(false);
 }
 
 uint64_t GameStateNewCity::getSeed() const

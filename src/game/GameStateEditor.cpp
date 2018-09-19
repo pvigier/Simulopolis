@@ -60,6 +60,7 @@ GameStateEditor::GameStateEditor() :
 
     // Gui
     createGui();
+    mGui->subscribe(mMailbox.getId());
 }
 
 GameStateEditor::~GameStateEditor()
@@ -78,13 +79,13 @@ GameStateEditor::~GameStateEditor()
         for (GuiWidget* button : buttonsWidget->getChildren())
             button->unsubscribe(mMailbox.getId());
     }
+    mGui->unsubscribe(mMailbox.getId());
 }
 
 void GameStateEditor::enter()
 {
-    mGui->handleMessages();
     // Subscribe to inputs
-    mGui->subscribe(mMailbox.getId());
+    mGui->setListen(true);
 }
 
 void GameStateEditor::handleMessages()
@@ -349,7 +350,7 @@ void GameStateEditor::draw()
 void GameStateEditor::exit()
 {
     // Unsubscribe to inputs
-    mGui->unsubscribe(mMailbox.getId());
+    mGui->setListen(false);
 }
 
 void GameStateEditor::newGame(std::string cityName, uint64_t seed)
