@@ -44,7 +44,7 @@ void GuiScrollArea::render(sf::RenderTarget& target, sf::RenderStates states, co
     // Culling
     if (mVisible && getOutsideRect().intersects(viewport))
     {
-        mRenderTexture.clear();
+        mRenderTexture.clear(sf::Color::Transparent);
         sf::FloatRect newViewport(mInsidePosition.x, mInsidePosition.y + mOffset, mInsideSize.x, mInsideSize.y);
         for (const GuiWidget* widget : mChildren)
             widget->render(mRenderTexture, states, newViewport);
@@ -171,12 +171,15 @@ bool GuiScrollArea::onMouseWheelScroll(float delta, bool /*processed*/)
 
 void GuiScrollArea::applyStyle()
 {
-    sf::Color scrollbarColor = mStyle->getFirstChildByName("scrollbar").getAttributes().get<sf::Color>("color", sf::Color());
-    mLine[0].color = scrollbarColor;
-    mLine[1].color = scrollbarColor;
-    mScrollButton.setFillColor(mStyle->getFirstChildByName("scrollbutton").getAttributes().get<sf::Color>("color", sf::Color()));
-    mScrollButton.setOutlineThickness(mStyle->getFirstChildByName("scrollbutton").getAttributes().get<float>("borderSize", 0.0f));
-    mScrollButton.setOutlineColor(mStyle->getFirstChildByName("scrollbutton").getAttributes().get<sf::Color>("borderColor", sf::Color()));
+    if (mStyle)
+    {
+        sf::Color scrollbarColor = mStyle->getFirstChildByName("scrollbar").getAttributes().get<sf::Color>("color", sf::Color());
+        mLine[0].color = scrollbarColor;
+        mLine[1].color = scrollbarColor;
+        mScrollButton.setFillColor(mStyle->getFirstChildByName("scrollbutton").getAttributes().get<sf::Color>("color", sf::Color()));
+        mScrollButton.setOutlineThickness(mStyle->getFirstChildByName("scrollbutton").getAttributes().get<float>("borderSize", 0.0f));
+        mScrollButton.setOutlineColor(mStyle->getFirstChildByName("scrollbutton").getAttributes().get<sf::Color>("borderColor", sf::Color()));
+    }
 }
 
 void GuiScrollArea::updateView()
