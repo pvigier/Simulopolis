@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "PersonGenerator.h"
 #include <fstream>
 
@@ -67,8 +67,10 @@ void PersonGenerator::setUp()
 
 std::unique_ptr<Person> PersonGenerator::generate(int year)
 {
+    // Gender
     std::uniform_int_distribution<int> genderPdf(0, 1);
     Person::Gender gender = static_cast<Person::Gender>(genderPdf(mGenerator));
+    // First name
     std::string firstName;
     if (gender == Person::Gender::MALE)
     {
@@ -80,12 +82,20 @@ std::unique_ptr<Person> PersonGenerator::generate(int year)
         std::uniform_int_distribution<std::size_t> firstNamePdf(0, mFemaleFirstNames.size() - 1);
         firstName = mFemaleFirstNames[firstNamePdf(mGenerator)];
     }
+    // Last name
     std::uniform_int_distribution<std::size_t> lastNamePdf(0, mLastNames.size() - 1);
     std::string lastName = mLastNames[lastNamePdf(mGenerator)];
+    // Age
     std::uniform_int_distribution<int> agePdf(20, 60);
     int age = agePdf(mGenerator);
     int birth = year - age;
+    // Car
     std::uniform_int_distribution<std::size_t> carPdf(0, mCars.size() - 1);
     std::string car = mCars[carPdf(mGenerator)];
-    return std::make_unique<Person>(firstName, lastName, gender, birth, car);
+    // Personality
+    std::array<float, Person::NB_EVALUATORS> biases;
+    std::normal_distribution<float> biasPdf(1.0f, 0.2f);
+    for (std::size_t i = 0; i < biases.size(); ++i)
+        biases[i] = biasPdf(mGenerator);
+    return std::make_unique<Person>(firstName, lastName, gender, birth, car, biases);
 }

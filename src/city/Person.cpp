@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "city/Person.h"
 #include "city/Business.h"
 #include "city/Lease.h"
@@ -48,7 +48,8 @@ Person::Event::Event(Type type, Work* work) : type(type), work(work)
 
 }
 
-Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car) :
+Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth,
+        const std::string& car, const std::array<float, NB_EVALUATORS>& biases) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth),
     mCity(nullptr), mMessageBus(nullptr),
     mState(State::WAITING), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::Type::NECESSARY), mCar(car),
@@ -60,13 +61,13 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
     mCar.setDriver(this);
 
     // Add evaluators to the brains
-    mShortTermBrain.addEvaluator(std::make_unique<GoalRestEvaluator>(1.0f));
-    mShortTermBrain.addEvaluator(std::make_unique<GoalWorkEvaluator>(1.0f));
-    mShortTermBrain.addEvaluator(std::make_unique<GoalShopEvaluator>(1.0f));
+    mShortTermBrain.addEvaluator(std::make_unique<GoalRestEvaluator>(biases[0]));
+    mShortTermBrain.addEvaluator(std::make_unique<GoalWorkEvaluator>(biases[1]));
+    mShortTermBrain.addEvaluator(std::make_unique<GoalShopEvaluator>(biases[2]));
     mLongTermBrain.addEvaluator(std::make_unique<GoalEnterCityEvaluator>(1.0f));
-    mLongTermBrain.addEvaluator(std::make_unique<GoalLeaveCityEvaluator>(1.0f));
-    mLongTermBrain.addEvaluator(std::make_unique<GoalGetBetterHomeEvaluator>(1.0f));
-    mLongTermBrain.addEvaluator(std::make_unique<GoalGetBetterWorkEvaluator>(1.0f));
+    mLongTermBrain.addEvaluator(std::make_unique<GoalLeaveCityEvaluator>(biases[3]));
+    mLongTermBrain.addEvaluator(std::make_unique<GoalGetBetterHomeEvaluator>(biases[4]));
+    mLongTermBrain.addEvaluator(std::make_unique<GoalGetBetterWorkEvaluator>(biases[5]));
 }
 
 Person::~Person()

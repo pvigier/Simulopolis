@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "PersonWindow.h"
 #include "resource/StylesheetManager.h"
 #include "city/Person.h"
@@ -48,15 +48,13 @@ void PersonWindow::setUp()
 
     // Personal info
     auto infoWidget = mGui->createWithDefaultName<GuiWidget>();
-    auto firstNameText = mGui->createWithDefaultName<GuiText>("First name: " + mPerson.getFirstName(), 12, mStylesheetManager->getStylesheet("darkText"));
-    auto lastNameText = mGui->createWithDefaultName<GuiText>("Last name: " + mPerson.getLastName(), 12, mStylesheetManager->getStylesheet("darkText"));
+    auto nameText = mGui->createWithDefaultName<GuiText>("Name: " + mPerson.getFullName(), 12, mStylesheetManager->getStylesheet("darkText"));
     mAgeText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mWorkText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mBankAccountText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mShortTermGoalText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mLongTermGoalText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    infoWidget->add(firstNameText);
-    infoWidget->add(lastNameText);
+    infoWidget->add(nameText);
     infoWidget->add(mAgeText);
     infoWidget->add(mWorkText);
     infoWidget->add(mBankAccountText);

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include "message/Mailbox.h"
@@ -52,7 +52,10 @@ public:
         Event(Type type, Work* work);
     };
 
-    Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth, const std::string& car);
+    static constexpr unsigned int NB_EVALUATORS = 6;
+
+    Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth,
+        const std::string& car, const std::array<float, NB_EVALUATORS>& biases);
     ~Person();
 
     void update(float dt);
