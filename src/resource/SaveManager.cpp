@@ -62,6 +62,23 @@ void SaveManager::addSave(const std::string& name)
     mDocument.addChild(XmlDocument("save", attributes, {}));
 }
 
+void SaveManager::removeSave(const std::string& name)
+{
+    if (hasSave(name))
+    {
+        for (std::size_t i = 0; i < mDocument.getChildren().size(); ++i)
+        {
+            if (mDocument.getChildren()[i].getAttributes().get("name") == name)
+            {
+                mDocument.removeChild(i);
+                break;
+            }
+        }
+        if (!std::remove(mSaves[name].c_str()))
+            DEBUG("Failed to delete " << mSaves[name] << "\n");
+    }
+}
+
 const std::string& SaveManager::getSave(const std::string& name) const
 {
     DEBUG_IF(mSaves.find(name) == mSaves.end(), name << " is an invalid city name.\n");

@@ -122,6 +122,8 @@ void Gui::remove(GuiWidget* widget)
     widget->tearDown();
     if (widget->isRoot())
         mRootWidgets.erase(std::find(mRootWidgets.begin(), mRootWidgets.end(), widget));
+    else
+        widget->getParent()->remove(widget);
     for (GuiWidget* child : widget->getChildren())
         remove(child);
     mWidgets.erase(widget->getName());

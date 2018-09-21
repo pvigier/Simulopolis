@@ -98,6 +98,12 @@ GuiWidget* GuiWidget::remove(std::size_t i)
     return widget;
 }
 
+void GuiWidget::remove(GuiWidget* widget)
+{
+    mChildren.erase(std::find(mChildren.begin(), mChildren.end(), widget));
+    setDirty();
+}
+
 std::vector<GuiWidget*>& GuiWidget::getChildren()
 {
     return mChildren;
@@ -131,6 +137,11 @@ bool GuiWidget::isRoot() const
 void GuiWidget::setRoot(bool root)
 {
     mRoot = root;
+}
+
+GuiWidget* GuiWidget::getParent()
+{
+    return mParent;
 }
 
 const GuiWidget* GuiWidget::getParent() const

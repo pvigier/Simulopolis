@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <vector>
@@ -45,6 +45,7 @@ public:
     void add(GuiWidget* widget);
     void insert(std::size_t i, GuiWidget* widget);
     GuiWidget* remove(std::size_t i);
+    void remove(GuiWidget* widget);
     std::vector<GuiWidget*>& getChildren();
     const std::vector<GuiWidget*>& getChildren() const;
 
@@ -54,6 +55,7 @@ public:
     void setName(const std::string& name);
     bool isRoot() const;
     void setRoot(bool root);
+    GuiWidget* getParent();
     const GuiWidget* getParent() const;
     void setParent(GuiWidget* parent);
     void setLayout(std::unique_ptr<GuiLayout> layout);

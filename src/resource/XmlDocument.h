@@ -35,6 +35,7 @@ public:
     const XmlDocument& getFirstChildByName(const std::string& name) const;
     bool hasChildren(const std::string& name) const;
     void addChild(XmlDocument child);
+    void removeChild(std::size_t i);
 
 private:
     std::string mName;

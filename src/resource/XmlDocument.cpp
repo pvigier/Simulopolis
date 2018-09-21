@@ -70,3 +70,8 @@ void XmlDocument::addChild(XmlDocument child)
 {
     mChildren.emplace_back(std::move(child));
 }
+
+void XmlDocument::removeChild(std::size_t i)
+{
+    mChildren.erase(mChildren.begin() + i);
+}

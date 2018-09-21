@@ -41,6 +41,7 @@ GameStateLoadCity::GameStateLoadCity() : mGui(sGuiManager->getGui("load_city")),
 GameStateLoadCity::~GameStateLoadCity()
 {
     mGui->get("loadCityButton")->unsubscribe(mMailbox.getId());
+    mGui->get("removeCityButton")->unsubscribe(mMailbox.getId());
     mGui->unsubscribe(mMailbox.getId());
 }
 
@@ -83,6 +84,16 @@ void GameStateLoadCity::handleMessages()
                     const std::string& name = event.widget->getName();
                     if (name == "loadCityButton")
                         sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::LOAD_GAME)));
+                    else if (name == "removeCityButton")
+                    {
+                        if (mISelected < mButtons.size())
+                        {
+                            sSaveManager->removeSave(getSelectedCity());
+                            mGui->remove(mButtons[mISelected]);
+                            mButtons.erase(mButtons.begin() + mISelected);
+                            mISelected = -1;
+                        }
+                    }
                     else
                     {
                         for (std::size_t i = 0; i < mButtons.size(); ++i)
@@ -146,4 +157,5 @@ void GameStateLoadCity::createGui()
 
     // Register to events
     mGui->get("loadCityButton")->subscribe(mMailbox.getId());
+    mGui->get("removeCityButton")->subscribe(mMailbox.getId());
 }

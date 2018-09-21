@@ -70,6 +70,13 @@ public:
     void addSave(const std::string& name);
 
     /**
+     * \brief Remove a city
+     *
+     * \param name Name of the city
+     */
+    void removeSave(const std::string& name);
+
+    /**
      * \brief Get a save
      *
      * \param name Name of the city to retrieve
