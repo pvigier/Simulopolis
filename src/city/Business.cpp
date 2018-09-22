@@ -195,10 +195,10 @@ void Business::prepareGoods()
     for (std::size_t i = 1; i < mEmployees.size(); ++i)
     {
         if (mEmployees[i]->hasWorkedThisMonth())
-            preparedGoods += 1.0;
+            preparedGoods += 1.0 * mEmployees[i]->getEmployee()->getProductivity(); // Productivity should be a parameter
     }
     if (getManager()->hasWorkedThisMonth())
-        preparedGoods *= 2.0;
+        preparedGoods *= 2.0 * getManager()->getEmployee()->getProductivity();
     mPreparedGoods += preparedGoods;
 }
 

@@ -55,7 +55,8 @@ public:
     static constexpr unsigned int NB_EVALUATORS = 6;
 
     Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth,
-        const std::string& car, const std::array<float, NB_EVALUATORS>& biases);
+        const std::string& car, const std::array<float, static_cast<int>(Need::COUNT)>& decayRates,
+        double productivity, const std::array<float, NB_EVALUATORS>& biases);
     ~Person();
 
     void update(float dt);
@@ -105,6 +106,7 @@ public:
     float getAverageNeed(Need need) const;
 
     // Abilities
+    double getProductivity() const;
     Work::Qualification getQualification() const;
 
     // AI
@@ -148,6 +150,7 @@ private:
     std::array<float, static_cast<int>(Need::COUNT)> mAverageNeeds;
 
     // Abilities
+    float mProductivity;
     Work::Qualification mQualification;
 
     // AI
@@ -173,7 +176,7 @@ private:
         ar & mCar;
         ar & mAccount & mLastMonthBalance & mMonthBalance;
         ar & mDecayRates & mNeeds & mAverageNeeds;
-        ar & mQualification;
+        ar & mProductivity & mQualification;
         ar & mShortTermBrain & mLongTermBrain;
     }
 };

@@ -145,13 +145,13 @@ void Industry::updateStock()
     {
         if (mEmployees[i]->hasWorkedThisMonth())
         {
-            batch.quantity += mEmployeeProductivity;
+            batch.quantity += mEmployeeProductivity * mEmployees[i]->getEmployee()->getProductivity();
             batch.cost += mEmployees[i]->getSalary();
         }
     }
     if (getManager()->hasWorkedThisMonth())
     {
-        batch.quantity *= 2.0;
+        batch.quantity *= 2.0 * getManager()->getEmployee()->getProductivity();
         batch.cost += getManager()->getSalary();
     }
     if (batch.quantity > 0.0)

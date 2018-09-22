@@ -49,14 +49,15 @@ Person::Event::Event(Type type, Work* work) : type(type), work(work)
 }
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth,
-        const std::string& car, const std::array<float, NB_EVALUATORS>& biases) :
+        const std::string& car, const std::array<float, static_cast<int>(Need::COUNT)>& decayRates,
+        double productivity, const std::array<float, NB_EVALUATORS>& biases) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth),
     mCity(nullptr), mMessageBus(nullptr),
     mState(State::WAITING), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::Type::NECESSARY), mCar(car),
     mAccount(UNDEFINED), mLastMonthBalance(0.0), mMonthBalance(0.0),
-    mDecayRates{0.1f, 0.1f, 0.01f, 0.01f, 0.1f},
-    mNeeds{1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, mAverageNeeds{0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-    mQualification(Work::Qualification::NON_QUALIFIED), mShortTermBrain(this), mLongTermBrain(this)
+    mDecayRates(decayRates), mNeeds{1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, mAverageNeeds{0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+    mProductivity(productivity), mQualification(Work::Qualification::NON_QUALIFIED),
+    mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
 
@@ -310,6 +311,11 @@ void Person::increaseNeed(Need need, float delta)
 float Person::getAverageNeed(Need need) const
 {
     return mAverageNeeds[static_cast<int>(need)];
+}
+
+double Person::getProductivity() const
+{
+    return mProductivity;
 }
 
 Work::Qualification Person::getQualification() const

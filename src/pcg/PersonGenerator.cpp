@@ -92,10 +92,20 @@ std::unique_ptr<Person> PersonGenerator::generate(int year)
     // Car
     std::uniform_int_distribution<std::size_t> carPdf(0, mCars.size() - 1);
     std::string car = mCars[carPdf(mGenerator)];
+    // Physiology
+    static std::array<float, static_cast<int>(Person::Need::COUNT)> standardDecayRates =
+        {0.1f, 0.1f, 0.01f, 0.01f, 0.1f};
+    std::array<float, static_cast<int>(Person::Need::COUNT)> decayRates;
+    std::normal_distribution<float> decayRatePdf(1.0f, 0.2f);
+    for (std::size_t i = 0; i < decayRates.size(); ++i)
+        decayRates[i] = std::max(0.0f, decayRatePdf(mGenerator)) * standardDecayRates[i];
+    // Abilities
+    std::normal_distribution<double> producivityPdf(1.0, 0.2);
+    double productivity = producivityPdf(mGenerator);
     // Personality
     std::array<float, Person::NB_EVALUATORS> biases;
     std::normal_distribution<float> biasPdf(1.0f, 0.2f);
     for (std::size_t i = 0; i < biases.size(); ++i)
-        biases[i] = biasPdf(mGenerator);
-    return std::make_unique<Person>(firstName, lastName, gender, birth, car, biases);
+        biases[i] = std::max(0.0f, biasPdf(mGenerator));
+    return std::make_unique<Person>(firstName, lastName, gender, birth, car, decayRates, productivity, biases);
 }
