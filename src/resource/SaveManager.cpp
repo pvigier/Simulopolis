@@ -18,6 +18,7 @@
 #include "resource/SaveManager.h"
 #include "util/debug.h"
 #include "resource/XmlManager.h"
+#include "resource/TextureManager.h"
 
 SaveManager::SaveManager() : mXmlManager(nullptr), mPrefixPath("saves/")
 {
@@ -34,6 +35,11 @@ void SaveManager::setXmlManager(XmlManager* xmlManager)
     mXmlManager = xmlManager;
 }
 
+void SaveManager::setTextureManager(TextureManager* textureManager)
+{
+    mTextureManager = textureManager;
+}
+
 void SaveManager::setUp()
 {
     std::string path = mPrefixPath + "saves.xml";
@@ -43,6 +49,9 @@ void SaveManager::setUp()
     {
         const std::string& name = child.getAttributes().get("name");
         mSaves[name] = mPrefixPath + child.getAttributes().get("path");
+        sf::Texture texture;
+        texture.loadFromFile(mSaves[name] + ".png");
+        mTextureManager->addTexture(name, texture);
     }
 }
 
@@ -76,6 +85,8 @@ void SaveManager::removeSave(const std::string& name)
         }
         if (std::remove(mSaves[name].c_str()) != 0)
             DEBUG("Failed to delete " << mSaves[name] << "\n");
+        if (std::remove((mSaves[name] + ".png").c_str()) != 0)
+            DEBUG("Failed to delete " << mSaves[name] + ".png" << "\n");
         mSaves.erase(name);
         updateXmlFile();
     }

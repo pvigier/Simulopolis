@@ -20,12 +20,14 @@
 #include "render/RenderEngine.h"
 #include "input/InputEvent.h"
 #include "audio/AudioEngine.h"
+#include "resource/TextureManager.h"
 #include "resource/GuiManager.h"
 #include "resource/StylesheetManager.h"
 #include "resource/SaveManager.h"
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiText.h"
+#include "gui/GuiImage.h"
 #include "gui/GuiScrollArea.h"
 #include "gui/GuiHBoxLayout.h"
 #include "gui/GuiEvent.h"
@@ -134,7 +136,7 @@ void GameStateLoadCity::exit()
 
 std::string GameStateLoadCity::getSelectedCity() const
 {
-    return static_cast<GuiText*>(mButtons[mISelected]->getChildren()[0])->getString().toAnsiString();
+    return static_cast<GuiText*>(mButtons[mISelected]->getChildren()[1])->getString().toAnsiString();
 }
 
 void GameStateLoadCity::createGui()
@@ -146,9 +148,11 @@ void GameStateLoadCity::createGui()
     for (const std::pair<std::string, std::string>& save : sSaveManager->getSaves())
     {
         GuiButton* button = mGui->createWithDefaultName<GuiButton>(sStylesheetManager->getStylesheet("button"));
-        button->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Center, GuiLayout::VAlignment::Center));
-        button->setFixedInsideSize(sf::Vector2f(500.0f, 48.0f));
+        button->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Center, 16.0f));
+        button->setFixedInsideSize(sf::Vector2f(500.0f, 64.0f));
+        button->add(mGui->createWithDefaultName<GuiImage>(sf::Sprite(sTextureManager->getTexture(save.first))));
         button->add(mGui->createWithDefaultName<GuiText>(save.first, 18, sStylesheetManager->getStylesheet("darkText")));
+        button->setBorderSize(1.0f);
         scrollArea->add(button);
         mButtons.emplace_back(button);
         // Subscribe to the button

@@ -46,18 +46,19 @@ void ResourceManager::setUp()
     mImageManager.setXmlManager(&mXmlManager);
     mImageManager.setUp();
     mSaveManager.setXmlManager(&mXmlManager);
+    mSaveManager.setTextureManager(&mTextureManager);
     mSaveManager.setUp();
 }
 
 void ResourceManager::tearDown()
 {
+    mSaveManager.tearDown();
+    mImageManager.tearDown();
+    mMusicManager.tearDown();
     mGuiManager.tearDown();
     mStylesheetManager.tearDown();
     mFontManager.tearDown();
     mTextureManager.tearDown();
-    mMusicManager.tearDown();
-    mImageManager.tearDown();
-    mSaveManager.tearDown();
 }
 
 XmlManager& ResourceManager::getXmlManager()

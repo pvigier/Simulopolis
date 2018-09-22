@@ -24,6 +24,7 @@
 #include "resource/XmlDocument.h"
 
 class XmlManager;
+class TextureManager;
 
 /**
  * \brief Manager that manages the saves
@@ -49,6 +50,13 @@ public:
      * \param xmlManager XmlManager to use
      */
     void setXmlManager(XmlManager* xmlManager);
+
+    /**
+     * \brief Set texture manager
+     *
+     * \param textureManager TextureManager to use
+     */
+    void setTextureManager(TextureManager* textureManager);
 
     /**
      * \brief Set up the manager
@@ -108,6 +116,7 @@ public:
 
 private:
     XmlManager* mXmlManager;
+    TextureManager* mTextureManager;
     XmlDocument mDocument; /**< Document where the saves are stored on the disk */
     std::string mPrefixPath; /**< Path of the folder in which is located "saves.xml" */
     std::unordered_map<std::string, std::string> mSaves; /**< Hash map that contains the saves */

@@ -68,7 +68,8 @@ GameStateEditor::~GameStateEditor()
     // Save city
     if (!sSaveManager->hasSave(mCity.getName()))
         sSaveManager->addSave(mCity.getName());
-    save_city(mCity, sSaveManager->getSave(mCity.getName()));
+    saveCity(mCity, sSaveManager->getSave(mCity.getName()));
+    savePreview(sf::Vector2u(64, 64), sSaveManager->getSave(mCity.getName()) + ".png");
     sSaveManager->updateXmlFile();
     // Tab buttons
     GuiWidget* buttonsWidget = mGui->get("tabButtons");
@@ -341,6 +342,10 @@ void GameStateEditor::update(float dt)
 
 void GameStateEditor::draw()
 {
+    // Background
+    sRenderEngine->setView(mGui->getView());
+    sRenderEngine->draw(mBackground);
+
     // City
     drawCity(mRenderTexture, mGameView);
 
@@ -360,8 +365,8 @@ void GameStateEditor::newGame(std::string cityName, uint64_t seed)
 {
     // Create a new city
     mCity.createMap(std::move(cityName), seed);
-    mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
-        mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
+    float width = (mCity.getMap().getWidth() + mCity.getMap().getHeight()) * Tile::SIZE;
+    mGameView.setCenter(width * 0.5f, width * 0.25f);
     zoom(8.0f);
 
     // Subscribe to the city
@@ -371,9 +376,9 @@ void GameStateEditor::newGame(std::string cityName, uint64_t seed)
 
 void GameStateEditor::loadGame(const std::string& cityName)
 {
-    load_city(mCity, sSaveManager->getSave(cityName));
-    mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
-        mCity.getMap().getHeight() * Tile::SIZE * 0.5f));
+    loadCity(mCity, sSaveManager->getSave(cityName));
+    float width = (mCity.getMap().getWidth() + mCity.getMap().getHeight()) * Tile::SIZE;
+    mGameView.setCenter(width * 0.5f, width * 0.25f);
     zoom(8.0f);
 
     // Subscribe to the city
@@ -389,11 +394,25 @@ const sf::Texture& GameStateEditor::getCityTexture() const
 void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View& view)
 {
     renderTexture.clear(sf::Color::Transparent);
-    renderTexture.setView(mGui->getView());
-    renderTexture.draw(mBackground);
     renderTexture.setView(view);
     renderTexture.draw(mCity);
     renderTexture.display();
+}
+
+void GameStateEditor::savePreview(sf::Vector2u size, const std::string& path)
+{
+    // Prepare to render
+    sf::RenderTexture renderTexture;
+    renderTexture.create(size.x, size.y);
+    sf::View view = mGameView;
+    float width = (mCity.getMap().getWidth() + mCity.getMap().getHeight()) * Tile::SIZE;
+    view.setCenter(width * 0.5f, width * 0.25f);
+    float factor = 1.05;
+    view.setSize(factor * width, factor * width * float(size.y) / float(size.x));
+    // Render
+    drawCity(renderTexture, view);
+    // Save
+    renderTexture.getTexture().copyToImage().saveToFile(path);
 }
 
 void GameStateEditor::createGui()
