@@ -119,15 +119,16 @@ void Gui::remove(const std::string& name)
 
 void Gui::remove(GuiWidget* widget)
 {
-
-    std::vector<GuiWidget*> children = widget->getChildren(); // Deep copy
-    for (GuiWidget* child : children)
-        remove(child);
     widget->tearDown();
+    // Alert the parent
     if (widget->isRoot())
         mRootWidgets.erase(std::find(mRootWidgets.begin(), mRootWidgets.end(), widget));
     else
         widget->getParent()->remove(widget);
+    // Remove children
+    std::vector<GuiWidget*> children = widget->getChildren(); // Deep copy
+    for (GuiWidget* child : children)
+        remove(child);
     mWidgets.erase(widget->getName());
 }
 
