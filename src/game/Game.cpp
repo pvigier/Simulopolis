@@ -54,6 +54,9 @@ Game::Game()
     mResourceManager.setUp();
     Map::loadTiles();
 
+    // Set icon
+    mRenderEngine.setIcon(mResourceManager.getImageManager().getImage("icon"));
+
     // Add musics
     mAudioEngine.addMusic(mResourceManager.getMusicManager().getMusic("gymnopedie1"));
     mAudioEngine.addMusic(mResourceManager.getMusicManager().getMusic("gymnopedie2"));

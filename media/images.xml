@@ -1,4 +1,5 @@
 <images>
+	<image name="icon" path="images/icon.png" />
 	<image name="background" path="images/background.png" />
 	<image name="business" path="images/business.png" />
     <image name="dirt" path="images/dirt.png" />

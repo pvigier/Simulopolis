@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 // SFML
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Image.hpp>
 
 /**
  * \brief Engine that manages the window and the render scene
@@ -53,6 +54,13 @@ public:
      * \return True if the window is open, false otherwise
      */
     bool isWindowOpen() const;
+
+    /**
+     * \brief Set icon
+     *
+     * \param icon Icon of the window
+     */
+    void setIcon(const sf::Image& image);
 
     /**
      * \brief Create a new window with the specified video mode

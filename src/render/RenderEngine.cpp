@@ -14,10 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
-#include "render/RenderEngine.h"
 
-#include <iostream>
+#include "render/RenderEngine.h"
 
 RenderEngine::RenderEngine() : mWindow(sf::VideoMode(800, 600), "Simulopolis",
     sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 4))
@@ -40,6 +38,11 @@ sf::RenderWindow& RenderEngine::getWindow()
 bool RenderEngine::isWindowOpen() const
 {
     return mWindow.isOpen();
+}
+
+void RenderEngine::setIcon(const sf::Image& image)
+{
+    mWindow.setIcon(image.getSize().x, image.getSize().y, image.getPixelsPtr());
 }
 
 void RenderEngine::setFullscreen(bool fullscreen)
