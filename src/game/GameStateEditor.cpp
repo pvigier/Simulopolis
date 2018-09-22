@@ -134,10 +134,13 @@ void GameStateEditor::handleMessages()
                         else
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::GROUND);
                         // Update the GUI
-                        unsigned int totalCost = computeCostOfSelection();
-                        auto selectionCostText = mGui->get<GuiText>("selectionCostText");
-                        selectionCostText->setString("$" + std::to_string(totalCost));
-                        //selectionCostText->setHighlight(mCity.getFunds() < totalCost);
+                        Money totalCost = computeCostOfSelection();
+                        GuiText* selectionCostText = mGui->get<GuiText>("selectionCostText");
+                        selectionCostText->setString(format("$%.2f", totalCost));
+                        if (mCity.getFunds() < totalCost)
+                            selectionCostText->setColor(sf::Color::Red);
+                        else
+                            selectionCostText->setColor(sf::Color::White);
                         selectionCostText->setOutsidePosition(sf::Vector2f(mousePosition) + sf::Vector2f(16, -16));
                         selectionCostText->setVisible(true);
                     }
@@ -612,13 +615,58 @@ Money GameStateEditor::getCost(Tile::Type type) const
 {
     switch (type)
     {
-        /*case Tile::Type::GRASS: return 50;
-        case Tile::Type::FOREST: return 100;
-        case Tile::Type::RESIDENTIAL: return 300;
-        case Tile::Type::COMMERCIAL: return 300;
-        case Tile::Type::INDUSTRIAL: return 300;
-        case Tile::Type::ROAD_GRASS: return 100;*/
-        default: return Money(0.0);
+        case Tile::Type::GRASS:
+            return Money(50.0);
+        case Tile::Type::FOREST:
+            return Money(100.0);
+        case Tile::Type::WATER:
+            return Money(50.0);
+        case Tile::Type::DIRT:
+            return Money(50.0);
+        case Tile::Type::CFB_HOUSING:
+            return Money(0.0);
+        case Tile::Type::AFFORDABLE_HOUSING:
+            return Money(1000.0);
+        case Tile::Type::APARTMENT_BUILDING:
+            return Money(2000.0);
+        case Tile::Type::VILLA:
+            return Money(3000.0);
+        case Tile::Type::CFB_INDUSTRY:
+            return Money(0.0);
+        case Tile::Type::FARM:
+            return Money(1000.0);
+        case Tile::Type::FACTORY:
+            return Money(3000.0);
+        case Tile::Type::WORKSHOP:
+            return Money(2000.0);
+        case Tile::Type::CFB_BUSINESS:
+            return Money(0.0);
+        case Tile::Type::GROCERY:
+            return Money(1000.0);
+        case Tile::Type::MALL:
+            return Money(3000.0);
+        case Tile::Type::BOUTIQUE:
+            return Money(2000.0);
+        case Tile::Type::CFB_HOSPITAL:
+            return Money(0.0);
+        case Tile::Type::HOSPITAL:
+            return Money(2000.0);
+        case Tile::Type::CFB_POLICE_STATION:
+            return Money(0.0);
+        case Tile::Type::POLICE_STATION:
+            return Money(2000.0);
+        case Tile::Type::CFB_SCHOOL:
+            return Money(0.0);
+        case Tile::Type::SCHOOL:
+            return Money(2000.0);
+        case Tile::Type::ROAD_GRASS:
+            return Money(100.0);
+        case Tile::Type::ROAD_SIDEWALK:
+            return Money(200.0);
+        case Tile::Type::BRIDGE:
+            return Money(1000.0);
+        default:
+            return Money(0.0);
     }
 }
 
