@@ -69,7 +69,10 @@ bool GuiScrollArea::updateMouseMoved(sf::Vector2f position, bool processed)
 {
     if (mVisible)
     {
+        mFocus = mBackground.getGlobalBounds().contains(position);
         sf::Vector2f offsetPosition = sf::Vector2f(position.x, position.y + mOffset);
+        if (!mFocus)
+            offsetPosition = sf::Vector2f(-1.0f, 1.0f);
         for (GuiWidget* widget : mChildren)
             processed = widget->updateMouseMoved(offsetPosition, processed) || processed;
         processed = onHover(position, processed) || processed;
@@ -82,6 +85,8 @@ bool GuiScrollArea::updateMouseButtonPressed(sf::Vector2f position, bool process
     if (mVisible)
     {
         sf::Vector2f offsetPosition = sf::Vector2f(position.x, position.y + mOffset);
+        if (!mFocus)
+            offsetPosition = sf::Vector2f(-1.0f, 1.0f);
         for (GuiWidget* widget : mChildren)
             processed = widget->updateMouseButtonPressed(offsetPosition, processed) || processed;
         processed = onPress(position, processed) || processed;
@@ -94,6 +99,8 @@ bool GuiScrollArea::updateMouseButtonReleased(sf::Vector2f position, bool proces
     if (mVisible)
     {
         sf::Vector2f offsetPosition = sf::Vector2f(position.x, position.y + mOffset);
+        if (!mFocus)
+            offsetPosition = sf::Vector2f(-1.0f, 1.0f);
         for (GuiWidget* widget : mChildren)
             processed = widget->updateMouseButtonReleased(offsetPosition, processed) || processed;
         processed = onRelease(position, processed) || processed;
@@ -145,7 +152,6 @@ bool GuiScrollArea::onRelease(sf::Vector2f /*position*/, bool /*processed*/)
 
 bool GuiScrollArea::onHover(sf::Vector2f position, bool /*processed*/)
 {
-    mFocus = mBackground.getGlobalBounds().contains(position);
     if (mScrolling)
     {
         float deltaRatio = (position.y - mAnchor) / (mInsideSize.y - mScrollButton.getSize().y);
