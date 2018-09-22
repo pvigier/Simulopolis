@@ -148,7 +148,7 @@ void GameStateLoadCity::createGui()
 
     // Add buttons
     GuiScrollArea* scrollArea = mGui->get<GuiScrollArea>("scrollArea");
-    for (const std::pair<std::string, std::string>& save : sSaveManager->getSaves())
+    for (const std::pair<const std::string, std::string>& save : sSaveManager->getSaves())
     {
         GuiButton* button = mGui->createWithDefaultName<GuiButton>(sStylesheetManager->getStylesheet("button"));
         button->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Center, 16.0f));

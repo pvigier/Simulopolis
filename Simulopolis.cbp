@@ -240,6 +240,8 @@
 		<Unit filename="src/resource/PropertyList.h" />
 		<Unit filename="src/resource/ResourceManager.cpp" />
 		<Unit filename="src/resource/ResourceManager.h" />
+		<Unit filename="src/resource/SaveManager.cpp" />
+		<Unit filename="src/resource/SaveManager.h" />
 		<Unit filename="src/resource/StylesheetManager.cpp" />
 		<Unit filename="src/resource/StylesheetManager.h" />
 		<Unit filename="src/resource/TextureManager.cpp" />
@@ -264,6 +266,8 @@
 		<Unit filename="src/util/debug.h" />
 		<Unit filename="src/util/enum.h" />
 		<Unit filename="src/util/format.h" />
+		<Unit filename="src/util/regex.cpp" />
+		<Unit filename="src/util/regex.h" />
 		<Unit filename="src/util/strong_typedef.h" />
 		<Extensions>
 			<code_completion />

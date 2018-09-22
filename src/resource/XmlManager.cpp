@@ -87,7 +87,7 @@ tinyxml2::XMLElement* XmlManager::createElement(tinyxml2::XMLDocument& doc, cons
 {
     XMLElement* element = doc.NewElement(document.getName().c_str());
     // Add properties
-    for (const std::pair<std::string, std::string>& property : document.getAttributes().getProperties())
+    for (const std::pair<const std::string, std::string>& property : document.getAttributes().getProperties())
         element->SetAttribute(property.first.c_str(), property.second.c_str());
     // Add children
     for (const XmlDocument& child : document.getChildren())

@@ -111,6 +111,8 @@ void GameStateEditor::handleMessages()
                         sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event{Event::Type::PAUSE_GAME}));
                     else if (event.key.code == sf::Keyboard::H)
                         mGui->setVisible(!mGui->isVisible());
+                    else if (event.key.code == sf::Keyboard::S)
+                        mRenderTexture.getTexture().copyToImage().saveToFile("screenshot.png");
                     break;
                 case sf::Event::MouseMoved:
                     // Pan the camera
