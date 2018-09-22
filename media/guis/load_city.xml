@@ -4,12 +4,11 @@
     <widget size="800 600">
         <widget style="tabs" size="600 400">
 			<text text="Select city" characterSize="32" style="darkText" />
-            <widget size="500 220">
-				<scrollarea name="scrollArea" maxVisibleSize="500 188" style="scrollarea">
+            <widget size="500 220" style="frame">
+				<scrollarea name="scrollArea" maxVisibleSize="500 220" style="scrollarea">
 					<vboxlayout />
 				</scrollarea>
                 <vboxlayout />
-                <vboxlayout spacing="16" margins="0 16 0 16" />
             </widget>
             <widget>
 				<button name="removeCityButton" size="192 36" style="button">
