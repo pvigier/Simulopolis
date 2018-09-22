@@ -48,7 +48,7 @@ void SaveManager::setUp()
 
 void SaveManager::tearDown()
 {
-    mXmlManager->saveDocument(mDocument, mPrefixPath + "saves.xml");
+
 }
 
 void SaveManager::addSave(const std::string& name)
@@ -74,8 +74,10 @@ void SaveManager::removeSave(const std::string& name)
                 break;
             }
         }
-        if (!std::remove(mSaves[name].c_str()))
+        if (std::remove(mSaves[name].c_str()) != 0)
             DEBUG("Failed to delete " << mSaves[name] << "\n");
+        mSaves.erase(name);
+        updateXmlFile();
     }
 }
 
@@ -93,4 +95,9 @@ bool SaveManager::hasSave(const std::string& name) const
 const std::unordered_map<std::string, std::string>& SaveManager::getSaves() const
 {
     return mSaves;
+}
+
+void SaveManager::updateXmlFile()
+{
+    mXmlManager->saveDocument(mDocument, mPrefixPath + "saves.xml");
 }

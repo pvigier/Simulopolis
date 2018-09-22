@@ -101,6 +101,11 @@ public:
      */
     const std::unordered_map<std::string, std::string>& getSaves() const;
 
+    /**
+     * \brief Update the xml file
+     */
+     void updateXmlFile();
+
 private:
     XmlManager* mXmlManager;
     XmlDocument mDocument; /**< Document where the saves are stored on the disk */

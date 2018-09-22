@@ -66,7 +66,10 @@ GameStateEditor::GameStateEditor() :
 GameStateEditor::~GameStateEditor()
 {
     // Save city
+    if (!sSaveManager->hasSave(mCity.getName()))
+        sSaveManager->addSave(mCity.getName());
     save_city(mCity, sSaveManager->getSave(mCity.getName()));
+    sSaveManager->updateXmlFile();
     // Tab buttons
     GuiWidget* buttonsWidget = mGui->get("tabButtons");
     for (GuiWidget* widget : buttonsWidget->getChildren())
@@ -355,9 +358,6 @@ void GameStateEditor::exit()
 
 void GameStateEditor::newGame(std::string cityName, uint64_t seed)
 {
-    // Create a new save
-    sSaveManager->addSave(cityName);
-
     // Create a new city
     mCity.createMap(std::move(cityName), seed);
     mGameView.setCenter(sf::Vector2f(mCity.getMap().getWidth() * Tile::SIZE,
