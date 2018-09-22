@@ -35,6 +35,7 @@ public:
     static constexpr float NB_HOURS_PER_MONTH = 30.0f * 24.0f;
     static constexpr float MAX_NB_IMMIGRANTS_PER_MONTH = 10.0f;
     static constexpr float MAX_NB_MONTHS_WAITING = 3.0f;
+    static constexpr Money SEED_MONEY = Money(30000.0);
 
     struct Intersection
     {

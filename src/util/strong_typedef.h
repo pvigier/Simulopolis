@@ -14,44 +14,44 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
-#define STRONG_TYPEDEF(Type, Handle)       \
-class Handle                               \
-{                                          \
-public:                                    \
-    Handle()                               \
-    {                                      \
-                                           \
-    }                                      \
-                                           \
-    explicit Handle(const Type& t) : mT(t) \
-    {                                      \
-                                           \
-    }                                      \
-                                           \
-    Handle& operator=(const Type& t)       \
-    {                                      \
-        mT = t;                            \
-        return *this;                      \
-    }                                      \
-                                           \
-    operator const Type&() const           \
-    {                                      \
-        return mT;                         \
-    }                                      \
-                                           \
-    operator Type&()                       \
-    {                                      \
-        return mT;                         \
-    }                                      \
-                                           \
-    bool operator<(const Handle& h) const  \
-    {                                      \
-        return mT < h.mT;                  \
-    }                                      \
-                                           \
-private:                                   \
-    Type mT;                               \
+#define STRONG_TYPEDEF(Type, Handle)                 \
+class Handle                                         \
+{                                                    \
+public:                                              \
+    Handle()                                         \
+    {                                                \
+                                                     \
+    }                                                \
+                                                     \
+    constexpr explicit Handle(const Type& t) : mT(t) \
+    {                                                \
+                                                     \
+    }                                                \
+                                                     \
+    constexpr Handle& operator=(const Type& t)       \
+    {                                                \
+        mT = t;                                      \
+        return *this;                                \
+    }                                                \
+                                                     \
+    constexpr operator const Type&() const           \
+    {                                                \
+        return mT;                                   \
+    }                                                \
+                                                     \
+    constexpr operator Type&()                       \
+    {                                                \
+        return mT;                                   \
+    }                                                \
+                                                     \
+    constexpr bool operator<(const Handle& h) const  \
+    {                                                \
+        return mT < h.mT;                            \
+    }                                                \
+                                                     \
+private:                                             \
+    Type mT;                                         \
 };

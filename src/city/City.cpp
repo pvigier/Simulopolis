@@ -20,6 +20,8 @@
 #include <sstream>
 #include "city/Building.h"
 
+constexpr Money City::SEED_MONEY; // Could be removed in C++17
+
 City::Intersection::Intersection() : type(City::Intersection::Type::NONE), car(nullptr)
 {
 
@@ -607,4 +609,12 @@ void City::setUp(bool loading)
 
     // Rendering
     mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
+
+    // Init the funds
+    if (!loading)
+    {
+        mBank.update();
+        mCityCompany.update(0.0f);
+        mBank.transferMoney(mWorldAccount, mCityCompany.getAccount(), SEED_MONEY);
+    }
 }
