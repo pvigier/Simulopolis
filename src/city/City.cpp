@@ -568,7 +568,7 @@ void City::onNewMonth()
         market->sellItems();
 
     // Collect taxes
-    mBank.collectTaxes(mCityCompany.getMailboxId(), mIncomeTax, mCorporateTax);
+    mBank.collectTaxes(mCityCompany.getAccount(), mIncomeTax, mCorporateTax);
 
     // Send messages
     notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
