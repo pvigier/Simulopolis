@@ -19,6 +19,7 @@
 #include "util/debug.h"
 #include "resource/XmlManager.h"
 #include "resource/TextureManager.h"
+#include "serialize/serialize_city.h"
 
 SaveManager::SaveManager() : mXmlManager(nullptr), mPrefixPath("saves/")
 {
@@ -60,15 +61,31 @@ void SaveManager::tearDown()
 
 }
 
-void SaveManager::addSave(const std::string& name)
+void SaveManager::save(const City& city, sf::Texture texture)
 {
-    std::string path = mPrefixPath + name + ".city";
-    mSaves[name] = path;
-    // Edit the document
-    PropertyList attributes;
-    attributes.add("name", name);
-    attributes.add("path", name + ".city");
-    mDocument.addChild(XmlDocument("save", attributes, {}));
+    const std::string& name = city.getName();
+    // Generate a filename if necessary
+    std::string path;
+    if (hasSave(name))
+        path = mSaves[name];
+    else
+    {
+        // Generate a new path
+        path = mPrefixPath + name + ".city";
+        mSaves[name] = path;
+        // Edit the document
+        PropertyList attributes;
+        attributes.add("name", name);
+        attributes.add("path", name + ".city");
+        mDocument.addChild(XmlDocument("save", attributes, {}));
+        updateXmlFile();
+    }
+    // Save the city
+    saveCity(city, path);
+    // Save the preview
+    std::string previewPath = path + ".png";
+    texture.copyToImage().saveToFile(previewPath);
+    mTextureManager->addTexture(name, texture);
 }
 
 void SaveManager::removeSave(const std::string& name)
@@ -92,10 +109,10 @@ void SaveManager::removeSave(const std::string& name)
     }
 }
 
-const std::string& SaveManager::getSave(const std::string& name) const
+void SaveManager::load(const std::string& name, City& city) const
 {
-    DEBUG_IF(mSaves.find(name) == mSaves.end(), name << " is an invalid city name.\n");
-    return mSaves.at(name);
+    DEBUG_IF(!hasSave(name), name << " is an invalid city name.\n");
+    loadCity(city, mSaves.at(name));
 }
 
 bool SaveManager::hasSave(const std::string& name) const

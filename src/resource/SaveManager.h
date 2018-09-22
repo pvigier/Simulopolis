@@ -20,11 +20,14 @@
 // STL
 #include <string>
 #include <unordered_map>
+// SFML
+#include <SFML/Graphics/Texture.hpp>
 // XmlDocument
 #include "resource/XmlDocument.h"
 
 class XmlManager;
 class TextureManager;
+class City;
 
 /**
  * \brief Manager that manages the saves
@@ -71,11 +74,12 @@ public:
     void tearDown();
 
     /**
-     * \brief Add a city
+     * \brief Save a city
      *
-     * \param name Name of the city
+     * \param city City to save
+     * \param texture Preview of the city
      */
-    void addSave(const std::string& name);
+    void save(const City& city, sf::Texture texture);
 
     /**
      * \brief Remove a city
@@ -85,13 +89,14 @@ public:
     void removeSave(const std::string& name);
 
     /**
-     * \brief Get a save
+     * \brief Load a city
      *
      * \param name Name of the city to retrieve
+     * \param city Loaded city
      *
      * \return Path to the save that corresponds to name
      */
-    const std::string& getSave(const std::string& name) const;
+    void load(const std::string& name, City& city) const;
 
     /**
      * \brief Check if a city already exists
@@ -109,15 +114,12 @@ public:
      */
     const std::unordered_map<std::string, std::string>& getSaves() const;
 
-    /**
-     * \brief Update the xml file
-     */
-     void updateXmlFile();
-
 private:
     XmlManager* mXmlManager;
     TextureManager* mTextureManager;
     XmlDocument mDocument; /**< Document where the saves are stored on the disk */
     std::string mPrefixPath; /**< Path of the folder in which is located "saves.xml" */
     std::unordered_map<std::string, std::string> mSaves; /**< Hash map that contains the saves */
+
+     void updateXmlFile();
 };

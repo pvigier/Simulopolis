@@ -160,18 +160,21 @@ void Game::handleMessages()
                 case GameState::Event::Type::NEW_GAME:
                 {
                     GameStateNewCity* newCityState = static_cast<GameStateNewCity*>(peekState());
-                    std::unique_ptr<GameStateEditor> state = std::make_unique<GameStateEditor>();
-                    state->newGame(newCityState->getCityName(), newCityState->getSeed());
+                    std::string cityName = newCityState->getCityName();
+                    uint64_t seed = newCityState->getSeed();
                     clearStates();
+                    std::unique_ptr<GameStateEditor> state = std::make_unique<GameStateEditor>();
+                    state->newGame(cityName, seed);
                     pushState(std::move(state));
                     break;
                 }
                 case GameState::Event::Type::LOAD_GAME:
                 {
                     GameStateLoadCity* loadCityState = static_cast<GameStateLoadCity*>(peekState());
-                    std::unique_ptr<GameStateEditor> state = std::make_unique<GameStateEditor>();
-                    state->loadGame(loadCityState->getSelectedCity());
+                    std::string cityName = loadCityState->getSelectedCity();
                     clearStates();
+                    std::unique_ptr<GameStateEditor> state = std::make_unique<GameStateEditor>();
+                    state->loadGame(cityName);
                     pushState(std::move(state));
                     break;
                 }

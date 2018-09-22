@@ -85,7 +85,10 @@ void GameStateLoadCity::handleMessages()
                 {
                     const std::string& name = event.widget->getName();
                     if (name == "loadCityButton")
-                        sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::LOAD_GAME)));
+                    {
+                        if (mISelected < mButtons.size())
+                            sMessageBus->send(Message::create(sGameId, MessageType::GAME, Event(Event::Type::LOAD_GAME)));
+                    }
                     else if (name == "removeCityButton")
                     {
                         if (mISelected < mButtons.size())

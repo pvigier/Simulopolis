@@ -21,7 +21,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include "util/debug.h"
 
-void saveCity(City& city, const std::string& path)
+void saveCity(const City& city, const std::string& path)
 {
     DEBUG("Save " << city.getName() << " at " << path << "\n");
     std::ofstream file(path);

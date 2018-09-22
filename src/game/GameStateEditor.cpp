@@ -39,7 +39,6 @@
 #include "game/LaborMarketWindow.h"
 #include "game/GoodsMarketWindow.h"
 #include "game/PoliciesWindow.h"
-#include "serialize/serialize_city.h"
 
 GameStateEditor::GameStateEditor() :
     mActionState(ActionState::NONE), mZoomLevel(1.0f),
@@ -66,11 +65,9 @@ GameStateEditor::GameStateEditor() :
 GameStateEditor::~GameStateEditor()
 {
     // Save city
-    if (!sSaveManager->hasSave(mCity.getName()))
-        sSaveManager->addSave(mCity.getName());
-    saveCity(mCity, sSaveManager->getSave(mCity.getName()));
-    savePreview(sf::Vector2u(64, 64), sSaveManager->getSave(mCity.getName()) + ".png");
-    sSaveManager->updateXmlFile();
+    sf::Texture preview;
+    generatePreview(sf::Vector2u(64, 64), preview);
+    sSaveManager->save(mCity, preview);
     // Tab buttons
     GuiWidget* buttonsWidget = mGui->get("tabButtons");
     for (GuiWidget* widget : buttonsWidget->getChildren())
@@ -376,7 +373,7 @@ void GameStateEditor::newGame(std::string cityName, uint64_t seed)
 
 void GameStateEditor::loadGame(const std::string& cityName)
 {
-    loadCity(mCity, sSaveManager->getSave(cityName));
+    sSaveManager->load(cityName, mCity);
     float width = (mCity.getMap().getWidth() + mCity.getMap().getHeight()) * Tile::SIZE;
     mGameView.setCenter(width * 0.5f, width * 0.25f);
     zoom(8.0f);
@@ -399,7 +396,7 @@ void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View&
     renderTexture.display();
 }
 
-void GameStateEditor::savePreview(sf::Vector2u size, const std::string& path)
+void GameStateEditor::generatePreview(sf::Vector2u size, sf::Texture& texture)
 {
     // Prepare to render
     sf::RenderTexture renderTexture;
@@ -412,7 +409,7 @@ void GameStateEditor::savePreview(sf::Vector2u size, const std::string& path)
     // Render
     drawCity(renderTexture, view);
     // Save
-    renderTexture.getTexture().copyToImage().saveToFile(path);
+    texture = renderTexture.getTexture();
 }
 
 void GameStateEditor::createGui()

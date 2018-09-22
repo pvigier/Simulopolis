@@ -72,7 +72,7 @@ private:
     std::vector<std::unique_ptr<sf::RenderTexture>> mMenuTextures;
 
     void drawCity(sf::RenderTexture& renderTexture, const sf::View& view);
-    void savePreview(sf::Vector2u size, const std::string& path);
+    void generatePreview(sf::Vector2u size, sf::Texture& texture);
 
     void createGui();
     void stopSelecting();

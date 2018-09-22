@@ -94,5 +94,5 @@ void register_types(Archive& ar)
     ar.template register_type<GoalWork>();
 }
 
-void saveCity(City& city, const std::string& path);
+void saveCity(const City& city, const std::string& path);
 void loadCity(City& city, const std::string& path);
