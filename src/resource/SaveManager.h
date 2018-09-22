@@ -19,7 +19,7 @@
 
 // STL
 #include <string>
-#include <unordered_map>
+#include <map>
 // SFML
 #include <SFML/Graphics/Texture.hpp>
 // XmlDocument
@@ -112,14 +112,14 @@ public:
      *
      * \return All the saves
      */
-    const std::unordered_map<std::string, std::string>& getSaves() const;
+    const std::map<std::string, std::string>& getSaves() const;
 
 private:
     XmlManager* mXmlManager;
     TextureManager* mTextureManager;
     XmlDocument mDocument; /**< Document where the saves are stored on the disk */
     std::string mPrefixPath; /**< Path of the folder in which is located "saves.xml" */
-    std::unordered_map<std::string, std::string> mSaves; /**< Hash map that contains the saves */
+    std::map<std::string, std::string> mSaves; /**< Hash map that contains the saves */
 
      void updateXmlFile();
 };
