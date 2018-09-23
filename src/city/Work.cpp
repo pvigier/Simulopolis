@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "city/Work.h"
 #include "city/Person.h"
 
@@ -47,31 +47,49 @@ std::string Work::typeToString(Type type)
     }
 }
 
-Work::Work(Type type, Building* workplace) :
-    mType(type), mEmployee(nullptr), mEmployer(nullptr), mWorkplace(workplace), mSalary(0.0),
-    mWorkedThisMonth(false)
+Work::Qualification Work::typeToQualification(Work::Type type)
 {
-    switch (mType)
+    switch (type)
     {
         case Type::FARMER:
         case Type::GROCER:
         case Type::CASHIER:
         case Type::WORKER:
-            mQualification = Qualification::NON_QUALIFIED;
-            break;
+            return Qualification::NON_QUALIFIED;
         case Type::CRAFTSPERSON:
         case Type::SALESPERSON:
         case Type::TEACHER:
         case Type::POLICE_OFFICER:
-            mQualification = Qualification::QUALIFIED;
-            break;
+            return Qualification::QUALIFIED;
         case Type::MANAGER:
         case Type::DOCTOR:
-            mQualification = Qualification::HIGHLY_QUALIFIED;
-            break;
+            return Qualification::HIGHLY_QUALIFIED;
         default:
-            break;
+            return Qualification::NON_QUALIFIED;
     }
+}
+
+float Work::typeToArduousness(Work::Type type)
+{
+    switch (typeToQualification(type))
+    {
+        case Qualification::NON_QUALIFIED:
+            return 0.5f;
+        case Qualification::QUALIFIED:
+            return 0.25f;
+        case Qualification::HIGHLY_QUALIFIED:
+            return 0.0f;
+        default:
+            return 0.0f;
+    }
+}
+
+Work::Work(Type type, Building* workplace) :
+    mType(type), mQualification(typeToQualification(mType)),
+    mEmployee(nullptr), mEmployer(nullptr), mWorkplace(workplace),
+    mSalary(0.0), mArduousness(typeToArduousness(mType)), mWorkedThisMonth(false)
+{
+
 }
 
 Work::Type Work::getType() const
@@ -125,6 +143,11 @@ void Work::setSalary(Money salary)
 Money Work::getSalary() const
 {
     return mSalary;
+}
+
+float Work::getArduousness() const
+{
+    return mArduousness;
 }
 
 bool Work::hasWorkedThisMonth() const

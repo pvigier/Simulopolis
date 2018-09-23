@@ -32,6 +32,8 @@ public:
     enum class Qualification : int {NON_QUALIFIED = 0, QUALIFIED, HIGHLY_QUALIFIED};
 
     static std::string typeToString(Type type);
+    static Qualification typeToQualification(Type type);
+    static float typeToArduousness(Type type);
 
     Work(Type type, Building* workplace);
 
@@ -45,6 +47,7 @@ public:
     const Building* getWorkplace() const;
     void setSalary(Money salary);
     Money getSalary() const;
+    float getArduousness() const;
     bool hasWorkedThisMonth() const;
     void setWorkedThisMonth(bool workedThisMonth);
 
@@ -55,6 +58,7 @@ private:
     Company* mEmployer;
     Building* mWorkplace;
     Money mSalary;
+    float mArduousness;
     bool mWorkedThisMonth;
 
     // Serialization
@@ -65,6 +69,6 @@ private:
     template<typename Archive>
     void serialize(Archive& ar, const unsigned int /*version*/)
     {
-        ar & mType & mQualification & mEmployee & mEmployer & mWorkplace & mSalary & mWorkedThisMonth;
+        ar & mType & mQualification & mEmployee & mEmployer & mWorkplace & mSalary & mArduousness & mWorkedThisMonth;
     }
 };

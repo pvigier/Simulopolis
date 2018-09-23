@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <boost/serialization/base_object.hpp>
@@ -35,6 +35,9 @@ public:
     virtual std::string toString() const override;
 
 private:
+    bool mAtWork;
+    float mLastUpdate;
+
     // Serialization
     friend class boost::serialization::access;
 
@@ -44,5 +47,6 @@ private:
     void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & boost::serialization::base_object<Goal>(*this);
+        ar & mAtWork & mLastUpdate;
     }
 };

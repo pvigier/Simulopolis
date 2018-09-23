@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "GoalWork.h"
 #include "city/Person.h"
 #include "city/Work.h"
@@ -23,7 +23,7 @@
 #include "GoalMoveTo.h"
 #include "GoalWait.h"
 
-GoalWork::GoalWork(Person* owner) : Goal(owner)
+GoalWork::GoalWork(Person* owner) : Goal(owner), mAtWork(false), mLastUpdate(0.0f)
 {
     //ctor
 }
@@ -38,9 +38,7 @@ void GoalWork::activate()
     mState = State::ACTIVE;
     // Add subgoals
     clearSubgoals();
-    const Work* work = mOwner->getWork();
-    pushBack(std::make_unique<GoalMoveTo>(mOwner, work->getWorkplace()));
-    pushBack(std::make_unique<GoalWait>(mOwner, mOwner->getCity()->computeNbHoursInAmonth(mOwner->getCity()->getWeeklyStandardWorkingHours())));
+    pushBack(std::make_unique<GoalMoveTo>(mOwner, mOwner->getWork()->getWorkplace()));
 }
 
 Goal::State GoalWork::process()
@@ -48,7 +46,28 @@ Goal::State GoalWork::process()
     activateIfInactive();
 
     if (!hasFailed())
+    {
         mState = processSubgoals();
+        if (mAtWork)
+        {
+            // Update happiness
+            float currentTime = mOwner->getCity()->getHumanTime();
+            float dmonth = (currentTime - mLastUpdate) / mOwner->getCity()->getTimePerMonth();
+            mLastUpdate = currentTime;
+            mOwner->increaseNeed(Person::Need::HAPPINESS,
+                -mOwner->getDecayRate(Person::Need::HAPPINESS) * mOwner->getWork()->getArduousness() * dmonth);
+        }
+
+        // If we just arrive at home
+        if (isCompleted() && !mAtWork)
+        {
+            mState = State::ACTIVE;
+            mAtWork = true;
+            mLastUpdate = mOwner->getCity()->getHumanTime();
+            mOwner->setState(Person::State::WAITING);
+            pushBack(std::make_unique<GoalWait>(mOwner, mOwner->getCity()->computeNbHoursInAmonth(mOwner->getCity()->getWeeklyStandardWorkingHours())));
+        }
+    }
 
     return mState;
 }
