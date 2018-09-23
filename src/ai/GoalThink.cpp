@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "GoalThink.h"
+#include "city/Person.h"
 
 GoalThink::GoalThink(Person* owner) : Goal(owner)
 {
@@ -55,6 +56,11 @@ void GoalThink::terminate()
 void GoalThink::addEvaluator(std::unique_ptr<GoalEvaluator> evaluator)
 {
     mEvaluators.emplace_back(std::move(evaluator));
+}
+
+std::vector<std::unique_ptr<GoalEvaluator>>& GoalThink::getEvaluators()
+{
+    return mEvaluators;
 }
 
 bool GoalThink::handle(Message message)

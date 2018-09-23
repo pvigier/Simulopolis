@@ -72,6 +72,11 @@ void Goal::clearSubgoals()
     mSubgoals.clear();
 }
 
+bool Goal::hasSubgoals() const
+{
+    return !mSubgoals.empty();
+}
+
 void  Goal::activateIfInactive()
 {
     if (isInactive())

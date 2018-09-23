@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "ai/GoalLeaveCity.h"
 #include "city/City.h"
 #include "ai/GoalMoveTo.h"
@@ -34,26 +34,30 @@ GoalLeaveCity::~GoalLeaveCity()
 void GoalLeaveCity::activate()
 {
     mState = State::ACTIVE;
-
-    // Add subgoals
-    clearSubgoals();
-    // Leave home and work
-    mOwner->leaveHome();
-    mOwner->quitWork();
+    // Prevent the citizen from choosing actions
+    for (std::unique_ptr<GoalEvaluator>& evaluator : mOwner->getShortTermBrain().getEvaluators())
+        evaluator->setBias(0.0f);
     // Look for an exit point
     sf::Vector2i exitPoint;
     sf::Vector2i carCoords = mOwner->getCity()->toTileIndices(mOwner->getCar().getKinematic().getPosition());
     if (mOwner->getCity()->getMap().getNetwork().getRandomEntryPoint(carCoords.y, carCoords.x, exitPoint))
     {
-		const Tile* tile = mOwner->getCity()->getMap().getTile(exitPoint.y, exitPoint.x);
-        pushBack(std::make_unique<GoalMoveTo>(mOwner, tile));
+        const Tile* tile = mOwner->getCity()->getMap().getTile(exitPoint.y, exitPoint.x);
+        mOwner->getShortTermBrain().pushBack(std::make_unique<GoalMoveTo>(mOwner, tile));
     }
 }
 
 Goal::State GoalLeaveCity::process()
 {
     activateIfInactive();
-    mState = processSubgoals();
+
+    if (!mOwner->getShortTermBrain().hasSubgoals())
+    {
+        mOwner->leaveHome();
+        mOwner->quitWork();
+        mState = State::COMPLETED;
+    }
+
     return mState;
 }
 

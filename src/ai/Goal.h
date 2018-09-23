@@ -46,6 +46,7 @@ public:
     void pushFront(std::unique_ptr<Goal> goal);
     void pushBack(std::unique_ptr<Goal> goal);
     void clearSubgoals();
+    bool hasSubgoals() const;
 
     virtual std::string toString() const;
 

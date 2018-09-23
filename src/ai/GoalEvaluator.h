@@ -27,8 +27,8 @@ public:
     GoalEvaluator(float bias);
     virtual ~GoalEvaluator();
 
+    void setBias(float bias);
     virtual float computeDesirability(Person* person) = 0;
-
     virtual void setGoal(Person* person) = 0;
 
 protected:

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "ai/GoalEvaluator.h"
 
 GoalEvaluator::GoalEvaluator(float bias) : mBias(bias)
@@ -25,4 +25,9 @@ GoalEvaluator::GoalEvaluator(float bias) : mBias(bias)
 GoalEvaluator::~GoalEvaluator()
 {
 
+}
+
+void GoalEvaluator::setBias(float bias)
+{
+    mBias = 0.0f;
 }
