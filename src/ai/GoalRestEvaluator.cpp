@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "ai/GoalRestEvaluator.h"
 #include "city/Person.h"
 #include "ai/GoalRest.h"
@@ -27,7 +27,7 @@ GoalRestEvaluator::GoalRestEvaluator(float bias) : GoalEvaluator(bias)
 float GoalRestEvaluator::computeDesirability(Person* person)
 {
     if (person->getHome())
-        return mBias * (1.0f - person->getNeed(Person::Need::ENERGY));
+        return std::max(EPSILON, mBias * (1.0f - person->getNeed(Person::Need::ENERGY)));
     return 0.0f;
 }
 

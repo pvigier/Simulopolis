@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <vector>
@@ -27,6 +27,7 @@ public:
     Path(std::vector<Vector2f> points, bool loop = false);
 
     Vector2f getCurrentPoint() const;
+    Vector2f getLastPoint() const;
     const std::vector<Vector2f> getPoints() const;
     void setNextPoint();
     bool isFinished() const;

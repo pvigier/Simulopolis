@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "GoalMoveTo.h"
 #include "city/City.h"
 #include "city/Person.h"
@@ -50,7 +50,11 @@ void GoalMoveTo::activate()
         if (path.isEmpty())
             mState = State::FAILED;
         else
+        {
             mOwner->getCar().getSteering().setPath(path);
+            if (mOwner->getCar().getKinematic().getPosition().squaredDistanceTo(mOwner->getCar().getSteering().getPath().getLastPoint()) < MIN_DISTANCE)
+                mState = State::COMPLETED;
+        }
     }
 }
 
@@ -60,7 +64,7 @@ Goal::State GoalMoveTo::process()
 
     Car& car = mOwner->getCar();
     if (mState != State::FAILED && car.getSteering().getPath().isFinished() &&
-        car.getKinematic().getPosition().squaredDistanceTo(car.getSteering().getPath().getCurrentPoint()) < ARRIVE_DISTANCE)
+        car.getKinematic().getPosition().squaredDistanceTo(car.getSteering().getPath().getLastPoint()) < ARRIVE_DISTANCE)
         mState = State::COMPLETED;
 
     return mState;

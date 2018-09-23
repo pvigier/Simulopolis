@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "Path.h"
 
 Path::Path() : mCurPoint(0), mLoop(false)
@@ -30,6 +30,11 @@ Path::Path(std::vector<Vector2f> points, bool loop) : mPoints(std::move(points))
 Vector2f Path::getCurrentPoint() const
 {
     return mPoints[mCurPoint];
+}
+
+Vector2f Path::getLastPoint() const
+{
+    return mPoints.back();
 }
 
 const std::vector<Vector2f> Path::getPoints() const
