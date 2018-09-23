@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <boost/serialization/split_member.hpp>
@@ -33,7 +33,7 @@ public:
     static void setTextureManager(TextureManager* textureManager);
     static void setImageManager(ImageManager* imageManager);
 
-    Car() = default;
+    Car() = default; // Only for serialization
     Car(std::string model);
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

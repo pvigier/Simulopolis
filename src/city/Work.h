@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <string>
@@ -33,7 +33,6 @@ public:
 
     static std::string typeToString(Type type);
 
-    Work();
     Work(Type type, Building* workplace);
 
     Type getType() const;
@@ -60,6 +59,8 @@ private:
 
     // Serialization
     friend class boost::serialization::access;
+
+    Work() = default;
 
     template<typename Archive>
     void serialize(Archive& ar, const unsigned int /*version*/)

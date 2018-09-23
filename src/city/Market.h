@@ -78,7 +78,7 @@ protected:
     unsigned int mTime;
     Type mType;
 
-    MarketBase() = default;
+    MarketBase() = default; // Only for serialization
 
 private:
     // Serialization

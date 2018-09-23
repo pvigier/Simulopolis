@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include "util/Vector.h"
@@ -22,7 +22,7 @@
 class Kinematic
 {
 public:
-    Kinematic() = default;
+    Kinematic() = default; // Only for serialization
     Kinematic(float mass, float maxSpeed,
         float maxForce = FLOAT_INFINITY, float maxRotation = FLOAT_INFINITY);
 

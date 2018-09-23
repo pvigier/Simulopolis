@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
  #pragma once
 
  #include <deque>
@@ -28,7 +28,7 @@ class Goal
 public:
     enum class State{ACTIVE, INACTIVE, COMPLETED, FAILED};
 
-    Goal(Person* owner = nullptr);
+    Goal(Person* owner);
     virtual ~Goal();
 
     virtual void activate() = 0;
@@ -53,6 +53,8 @@ protected:
     Person* mOwner;
     State mState;
     std::deque<std::unique_ptr<Goal>> mSubgoals;
+
+    Goal() = default; // Only for serialization
 
     void activateIfInactive();
     void reactivateIfFailed();

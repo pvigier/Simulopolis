@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include "Path.h"
@@ -24,7 +24,8 @@ class Kinematic;
 class SteeringBehaviors
 {
 public:
-    SteeringBehaviors(Kinematic* owner = nullptr);
+    SteeringBehaviors() = default; // Only for serialization
+    SteeringBehaviors(Kinematic* owner);
     ~SteeringBehaviors();
 
     Vector2f compute(float dt);

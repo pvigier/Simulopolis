@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <string>
@@ -28,7 +28,7 @@ class Company;
 class Lease
 {
 public:
-    Lease(Housing* housing = nullptr);
+    Lease(Housing* housing);
 
     const Person* getTenant() const;
     std::string getTenantName() const;
@@ -48,6 +48,8 @@ private:
 
     // Serialization
     friend class boost::serialization::access;
+
+    Lease() = default;
 
     template<typename Archive>
     void serialize(Archive& ar, const unsigned int /*version*/)

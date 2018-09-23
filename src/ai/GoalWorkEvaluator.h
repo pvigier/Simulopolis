@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <boost/serialization/base_object.hpp>
@@ -23,7 +23,7 @@
 class GoalWorkEvaluator : public GoalEvaluator
 {
 public:
-    GoalWorkEvaluator(float bias = 1.0f);
+    GoalWorkEvaluator(float bias);
 
     virtual float computeDesirability(Person* person) override;
 
@@ -32,6 +32,8 @@ public:
 private:
     // Serialization
     friend class boost::serialization::access;
+
+    GoalWorkEvaluator() = default;
 
     template<typename Archive>
     void serialize(Archive& ar, const unsigned int /*version*/)
