@@ -71,7 +71,7 @@ private:
     PoliciesWindow* mPoliciesWindow;
     std::vector<std::unique_ptr<sf::RenderTexture>> mMenuTextures;
 
-    void drawCity(sf::RenderTexture& renderTexture, const sf::View& view);
+    void drawCity(sf::RenderTexture& renderTexture, const sf::View& view, bool background);
     void generatePreview(sf::Vector2u size, sf::Texture& texture);
 
     void createGui();

@@ -344,12 +344,8 @@ void GameStateEditor::update(float dt)
 
 void GameStateEditor::draw()
 {
-    // Background
-    sRenderEngine->setView(mGui->getView());
-    sRenderEngine->draw(mBackground);
-
     // City
-    drawCity(mRenderTexture, mGameView);
+    drawCity(mRenderTexture, mGameView, true);
 
     // GUI
     sRenderEngine->setView(mGui->getView());
@@ -393,9 +389,14 @@ const sf::Texture& GameStateEditor::getCityTexture() const
     return mRenderTexture.getTexture();
 }
 
-void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View& view)
+void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View& view, bool background)
 {
     renderTexture.clear(sf::Color::Transparent);
+    if (background)
+    {
+        renderTexture.setView(mGui->getView());
+        renderTexture.draw(mBackground);
+    }
     renderTexture.setView(view);
     renderTexture.draw(mCity);
     renderTexture.display();
@@ -412,7 +413,7 @@ void GameStateEditor::generatePreview(sf::Vector2u size, sf::Texture& texture)
     float factor = 1.05;
     view.setSize(factor * width, factor * width * float(size.y) / float(size.x));
     // Render
-    drawCity(renderTexture, view);
+    drawCity(renderTexture, view, false);
     // Save
     texture = renderTexture.getTexture();
 }
@@ -569,13 +570,13 @@ void GameStateEditor::updateWindows()
     for (GuiWindow* window : mWindowManagers[0].getWindows())
     {
         PersonWindow* personWindow = static_cast<PersonWindow*>(window);
-        drawCity(personWindow->getRenderTexture(), personWindow->getView());
+        drawCity(personWindow->getRenderTexture(), personWindow->getView(), true);
         personWindow->update();
     }
     for (GuiWindow* window : mWindowManagers[1].getWindows())
     {
         BuildingWindow* buildingWindow = static_cast<BuildingWindow*>(window);
-        drawCity(buildingWindow->getRenderTexture(), buildingWindow->getView());
+        drawCity(buildingWindow->getRenderTexture(), buildingWindow->getView(), true);
         buildingWindow->update();
     }
 }
