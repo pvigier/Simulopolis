@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "city/Good.h"
 #include "city/Industry.h"
 
@@ -38,11 +38,11 @@ float Good::typeToHappiness(Good::Type type)
     switch (type)
     {
         case Good::Type::NECESSARY:
-            return 0.0f;
+            return 0.05f;
         case Good::Type::NORMAL:
-            return 5.0f;
+            return 0.1f;
         case Good::Type::LUXURY:
-            return 20.0f;
+            return 0.2f;
         default:
             return 0.0f;
     }

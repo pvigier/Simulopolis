@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "Map.h"
 #include <fstream>
 #include "util/IdManager.h"
@@ -42,9 +42,9 @@ void Map::loadTiles()
     sTileAtlas.emplace_back(std::make_unique<Tile>("water", Tile::Type::WATER, Tile::Category::WATER));
     sTileAtlas.emplace_back(std::make_unique<Tile>("dirt", Tile::Type::DIRT, Tile::Category::OBSTACLE));
     sTileAtlas.emplace_back(std::make_unique<CallForBids>("grass", Tile::Type::CFB_HOUSING, sf::Color(167, 125, 83)));
-    sTileAtlas.emplace_back(std::make_unique<Housing>("housing", Tile::Type::AFFORDABLE_HOUSING, 3, 3, 5));
-    sTileAtlas.emplace_back(std::make_unique<Housing>("housing", Tile::Type::APARTMENT_BUILDING, 2, 2, 10));
-    sTileAtlas.emplace_back(std::make_unique<Housing>("housing", Tile::Type::VILLA, 1, 1, 20));
+    sTileAtlas.emplace_back(std::make_unique<Housing>("housing", Tile::Type::AFFORDABLE_HOUSING, 3, 3, 0.2f));
+    sTileAtlas.emplace_back(std::make_unique<Housing>("housing", Tile::Type::APARTMENT_BUILDING, 2, 2, 0.3f));
+    sTileAtlas.emplace_back(std::make_unique<Housing>("housing", Tile::Type::VILLA, 1, 1, 0.4f));
     sTileAtlas.emplace_back(std::make_unique<CallForBids>("grass", Tile::Type::CFB_INDUSTRY, sf::Color(192, 188, 170)));
     sTileAtlas.emplace_back(std::make_unique<Industry>("industry", Tile::Type::FARM, 1, Good::Type::NECESSARY, 4, 2, Work::Type::FARMER));
     sTileAtlas.emplace_back(std::make_unique<Industry>("industry", Tile::Type::FACTORY, 3, Good::Type::NORMAL, 0.5, 6, Work::Type::WORKER));
