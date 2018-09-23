@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <deque>
@@ -69,7 +69,7 @@ protected:
     std::unique_ptr<Good> mGood;
     std::deque<Batch> mStock;
     std::set<Id> mGoodsInMarket;
-    double mEmployeeProductivity;
+    double mEmployeeProductivity; // Number of goods per month of work
     std::vector<std::unique_ptr<Work>> mEmployees;
     std::set<Id> mWorksInMarket;
 

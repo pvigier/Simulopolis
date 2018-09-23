@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <queue>
@@ -40,7 +40,7 @@ public:
     static Type getBusinessType(Good::Type goodType);
 
     Business(const std::string& name, Type type, unsigned int nbStairs, Good::Type goodType, unsigned int maxSizeStock,
-        std::size_t nbEmployees, Work::Type employeeType);
+        double employeeProductivity, std::size_t nbEmployees, Work::Type employeeType);
     virtual ~Business();
 
     virtual std::unique_ptr<Tile> clone() const override;
@@ -67,6 +67,7 @@ protected:
     Money mStockCost;
     double mPreparedGoods;
     Money mPrice;
+    double mEmployeeProductivity; // Number of goods per month of work
     std::vector<std::unique_ptr<Work>> mEmployees;
     std::set<Id> mWorksInMarket;
 
@@ -86,6 +87,7 @@ private:
     void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar & boost::serialization::base_object<Building>(*this);
-        ar & mGoodType & mMaxSizeStock & mStock & mStockCost & mPreparedGoods & mPrice & mEmployees & mWorksInMarket;
+        ar & mGoodType & mMaxSizeStock & mStock & mStockCost & mPreparedGoods & mPrice;
+        ar & mEmployeeProductivity & mEmployees & mWorksInMarket;
     }
 };

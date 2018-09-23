@@ -141,17 +141,18 @@ Money Industry::Batch::getCostPerUnit()
 void Industry::updateStock()
 {
     Batch batch{0.0, Money(0.0)};
+    double dmonth = mOwner->getCity()->getWeeklyStandardWorkingHours() / City::NB_HOURS_PER_MONTH;
     for (std::size_t i = 1; i < mEmployees.size(); ++i)
     {
         if (mEmployees[i]->hasWorkedThisMonth())
         {
-            batch.quantity += mEmployeeProductivity * mEmployees[i]->getEmployee()->getProductivity();
+            batch.quantity += mEmployeeProductivity * mEmployees[i]->getEmployee()->getProductivity() * dmonth;
             batch.cost += mEmployees[i]->getSalary();
         }
     }
     if (getManager()->hasWorkedThisMonth())
     {
-        batch.quantity *= 2.0 * getManager()->getEmployee()->getProductivity();
+        batch.quantity += batch.quantity * getManager()->getEmployee()->getProductivity() * dmonth;
         batch.cost += getManager()->getSalary();
     }
     if (batch.quantity > 0.0)

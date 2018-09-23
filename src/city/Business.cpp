@@ -37,9 +37,9 @@ Tile::Type Business::getBusinessType(Good::Type goodType)
 }
 
 Business::Business(const std::string& name, Type type, unsigned int nbStairs, Good::Type goodType, unsigned int maxSizeStock,
-    std::size_t nbEmployees, Work::Type employeeType) :
+    double employeeProductivity, std::size_t nbEmployees, Work::Type employeeType) :
     Building(name, type, nbStairs), mGoodType(goodType), mMaxSizeStock(maxSizeStock), mStock(0), mStockCost(0.0),
-    mPrice(0.0)
+    mPrice(0.0), mEmployeeProductivity(employeeProductivity)
 {
     mEmployees.emplace_back(std::make_unique<Work>(Work::Type::MANAGER, this));
     for (std::size_t i = 0; i < nbEmployees; ++i)
@@ -53,7 +53,7 @@ Business::~Business()
 
 std::unique_ptr<Tile> Business::clone() const
 {
-    return std::make_unique<Business>(mTextureName, mType, mNbStairs, mGoodType, mMaxSizeStock, mEmployees.size() - 1, mEmployees.back()->getType());
+    return std::make_unique<Business>(mTextureName, mType, mNbStairs, mGoodType, mMaxSizeStock, mEmployeeProductivity, mEmployees.size() - 1, mEmployees.back()->getType());
 }
 
 void Business::update()
@@ -192,13 +192,14 @@ void Business::onNewMonth()
 void Business::prepareGoods()
 {
     double preparedGoods = 0.0;
+    double dmonth = mOwner->getCity()->getWeeklyStandardWorkingHours() / City::NB_HOURS_PER_MONTH;
     for (std::size_t i = 1; i < mEmployees.size(); ++i)
     {
         if (mEmployees[i]->hasWorkedThisMonth())
-            preparedGoods += 1.0 * mEmployees[i]->getEmployee()->getProductivity(); // Productivity should be a parameter
+            preparedGoods += mEmployeeProductivity * mEmployees[i]->getEmployee()->getProductivity() * dmonth;
     }
     if (getManager()->hasWorkedThisMonth())
-        preparedGoods *= 2.0 * getManager()->getEmployee()->getProductivity();
+        preparedGoods += preparedGoods * getManager()->getEmployee()->getProductivity() * dmonth;
     mPreparedGoods += preparedGoods;
 }
 
