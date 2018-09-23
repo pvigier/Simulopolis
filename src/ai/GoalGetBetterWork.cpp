@@ -56,9 +56,9 @@ Goal::State GoalGetBetterWork::process()
                 mOwner->getCity()->getMap().isReachableFrom(mOwner->getHome()->getHousing(), item->good->getWorkplace()))
                 mOwner->getMessageBus()->send(Message::create(mOwner->getMailboxId(), mMarket->getMailboxId(), MessageType::MARKET, mMarket->createBidEvent(item->id, item->reservePrice)));
         }
+        if (mNbMonthsBeforeFailing == 0)
+            mState = State::FAILED;
     }
-    else if (mNbMonthsBeforeFailing == 0)
-        mState = State::FAILED;
     --mNbMonthsBeforeFailing;
 
     return mState;
