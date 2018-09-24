@@ -17,17 +17,17 @@
 
 #include "serialize/serialize_city.h"
 #include <fstream>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
 #include "util/debug.h"
 
 void saveCity(const City& city, const std::string& path)
 {
     DEBUG("Save " << city.getName() << " at " << path << "\n");
-    std::ofstream file(path);
+    std::ofstream file(path, std::ios::out | std::ios::binary);
     if (file)
     {
-        boost::archive::text_oarchive oa(file);
+        boost::archive::binary_oarchive oa(file);
         register_types(oa);
         oa << city;
         file.close();
@@ -39,10 +39,10 @@ void saveCity(const City& city, const std::string& path)
 void loadCity(City& city, const std::string& path)
 {
     DEBUG("Load " << city.getName() << " from " << path << "\n");
-    std::ifstream file(path);
+    std::ifstream file(path, std::ios::in | std::ios::binary);
     if (file)
     {
-        boost::archive::text_iarchive ia(file);
+        boost::archive::binary_iarchive ia(file);
         register_types(ia);
         ia >> city;
         file.close();
