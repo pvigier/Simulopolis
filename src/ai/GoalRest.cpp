@@ -64,10 +64,9 @@ Goal::State GoalRest::process()
             mState = State::ACTIVE;
             mAtHome = true;
             mLastUpdate = mOwner->getCity()->getHumanTime();
-            mOwner->setState(Person::State::WAITING);
             // Compute the number of hours needed to be rested
             float nbMonths = (1.0f - mOwner->getNeed(Person::Need::ENERGY)) / (Housing::ENERGY_GROWTH_RATE - mOwner->getDecayRate(Person::Need::ENERGY));
-            nbMonths = std::max(0.1f, nbMonths);
+            nbMonths = clamp(nbMonths, 0.1f, 1.0f);
             float nbHours =  nbMonths * City::NB_HOURS_PER_MONTH;
             // Add subgoal
             pushBack(std::make_unique<GoalWait>(mOwner, nbHours));

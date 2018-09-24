@@ -32,7 +32,7 @@ class Person
 {
 public:
     enum class Gender{MALE = 0, FEMALE = 1};
-    enum class State{WAITING, MOVING};
+    enum class State{INVISIBLE, VISIBLE};
     enum class Need : int {ENERGY = 0, SATIETY, HEALTH, SAFETY, HAPPINESS, COUNT};
 
     struct Event

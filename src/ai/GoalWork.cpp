@@ -64,7 +64,6 @@ Goal::State GoalWork::process()
             mState = State::ACTIVE;
             mAtWork = true;
             mLastUpdate = mOwner->getCity()->getHumanTime();
-            mOwner->setState(Person::State::WAITING);
             pushBack(std::make_unique<GoalWait>(mOwner, mOwner->getCity()->computeNbHoursInAmonth(mOwner->getCity()->getWeeklyStandardWorkingHours())));
         }
     }

@@ -163,7 +163,7 @@ void City::update(float dt)
     }
     for (Person* citizen : mCitizens)
     {
-        if (citizen->getState() == Person::State::MOVING)
+        if (citizen->getState() == Person::State::VISIBLE)
         {
             const Car& car = citizen->getCar();
             sf::Vector2f bottomLeft(car.getBounds().left, car.getBounds().top + car.getBounds().height);

@@ -36,7 +36,7 @@ void GoalMoveTo::activate()
     mState = State::ACTIVE;
 
     // Update the state of the Owner
-    mOwner->setState(Person::State::MOVING);
+    mOwner->setState(Person::State::VISIBLE);
 
     // Update the steering behavior
     sf::Vector2i start = mOwner->getCity()->toTileIndices(mOwner->getCar().getKinematic().getPosition());
@@ -72,7 +72,7 @@ Goal::State GoalMoveTo::process()
 
 void GoalMoveTo::terminate()
 {
-
+    mOwner->setState(Person::State::INVISIBLE);
 }
 
 std::string GoalMoveTo::toString() const

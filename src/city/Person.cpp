@@ -53,7 +53,7 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
         double productivity, const std::array<float, NB_EVALUATORS>& biases) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth),
     mCity(nullptr), mMessageBus(nullptr),
-    mState(State::WAITING), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::Type::NECESSARY), mCar(car),
+    mState(State::INVISIBLE), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::Type::NECESSARY), mCar(car),
     mAccount(UNDEFINED), mLastMonthBalance(0.0), mMonthBalance(0.0),
     mDecayRates(decayRates), mNeeds{1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, mAverageNeeds{0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
     mProductivity(productivity), mQualification(Work::Qualification::NON_QUALIFIED),
@@ -134,7 +134,7 @@ void Person::update(float dt)
     mShortTermBrain.process();
 
     // Update the car if necessary
-    if (mState == State::MOVING)
+    if (mState == State::VISIBLE)
         mCar.update(dt);
 
     // Update needs

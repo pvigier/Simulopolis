@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "GoalWait.h"
 #include "city/City.h"
 #include "city/Person.h"
@@ -35,7 +35,7 @@ void GoalWait::activate()
     mState = State::ACTIVE;
 
     // Update the state of the Owner
-    mOwner->setState(Person::State::WAITING);
+    mOwner->setState(Person::State::INVISIBLE);
 
     // Compute the end time
     mEndTime = mOwner->getCity()->getHumanTime() + mDuration;
