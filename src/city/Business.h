@@ -50,7 +50,9 @@ public:
 
     Good::Type getGoodType() const;
     unsigned int getStock() const;
+    unsigned int getMaxSizeStock() const;
     bool hasPreparedGoods() const;
+    unsigned int getPreparedGoods() const;
     Money getPrice() const;
     std::unique_ptr<Work>& getManager();
     const std::unique_ptr<Work>& getManager() const;

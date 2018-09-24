@@ -52,21 +52,36 @@ void ImmigrantsWindow::setUp()
     std::vector<std::string> names{"Name", "Age", "Money", "Visa"};
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
+    // Scroll area
+    GuiScrollArea* scrollArea = mGui->createWithDefaultName<GuiScrollArea>(sf::Vector2i(400, 200), mStylesheetManager->getStylesheet("scrollarea"));
+    scrollArea->add(mTable);
+    scrollArea->setLayout(std::make_unique<GuiVBoxLayout>());
+
     // Text
     mRentalMarketText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mLaborMarketText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
     mAttractivenessText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
 
-    // Scroll area
-    GuiScrollArea* scrollArea = mGui->createWithDefaultName<GuiScrollArea>(sf::Vector2i(400, 200), mStylesheetManager->getStylesheet("scrollarea"));
-    scrollArea->add(mTable);
-    scrollArea->setLayout(std::make_unique<GuiVBoxLayout>());
+    // Buttons
+    GuiButton* welcomeAllButton = mGui->create<GuiButton>("welcomeAllButton", mStylesheetManager->getStylesheet("button"));
+    welcomeAllButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
+    welcomeAllButton->add(mGui->createWithDefaultName<GuiText>("Accept all", 12, mStylesheetManager->getStylesheet("darkText")));
+    welcomeAllButton->subscribe(mListenerId);
+    GuiButton* ejectAllButton = mGui->create<GuiButton>("ejectAllButton", mStylesheetManager->getStylesheet("button"));
+    ejectAllButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
+    ejectAllButton->add(mGui->createWithDefaultName<GuiText>("Eject all", 12, mStylesheetManager->getStylesheet("darkText")));
+    ejectAllButton->subscribe(mListenerId);
+    GuiWidget* buttons = mGui->createWithDefaultName<GuiWidget>();
+    buttons->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Right, GuiLayout::VAlignment::Center, 4.0f));
+    buttons->add(welcomeAllButton);
+    buttons->add(ejectAllButton);
 
     // Window
     add(scrollArea);
     add(mRentalMarketText);
     add(mLaborMarketText);
     add(mAttractivenessText);
+    add(buttons);
     setOutsidePosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
@@ -119,11 +134,11 @@ void ImmigrantsWindow::addImmigrant(Person* person)
     // Visa
     GuiWidget* visaButtons = mGui->createWithDefaultName<GuiWidget>();
     visaButtons->setLayout(std::make_unique<GuiHBoxLayout>(2.0f));
-    GuiButton* acceptedButton = mGui->create<GuiButton>("Accepted" + std::to_string(person->getId()) + "|" + visaButtons->getName(), mStylesheetManager->getStylesheet("button"));
+    GuiButton* acceptedButton = mGui->create<GuiButton>("accepted" + std::to_string(person->getId()) + "|" + visaButtons->getName(), mStylesheetManager->getStylesheet("button"));
     acceptedButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
     acceptedButton->add(mGui->createWithDefaultName<GuiText>("Yes", 12, mStylesheetManager->getStylesheet("darkText")));
     acceptedButton->subscribe(mListenerId);
-    GuiButton* rejectedButton = mGui->create<GuiButton>("Rejected" + std::to_string(person->getId()) + "|" + visaButtons->getName(), mStylesheetManager->getStylesheet("button"));
+    GuiButton* rejectedButton = mGui->create<GuiButton>("rejected" + std::to_string(person->getId()) + "|" + visaButtons->getName(), mStylesheetManager->getStylesheet("button"));
     rejectedButton->add(mGui->createWithDefaultName<GuiText>("No", 12, mStylesheetManager->getStylesheet("darkText")));
     rejectedButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
     rejectedButton->subscribe(mListenerId);

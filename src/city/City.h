@@ -123,7 +123,9 @@ public:
 
     // Agents
     void eject(Person* person);
+    void ejectAll();
     void welcome(Person* person);
+    void welcomeAll();
     unsigned int getPopulation() const;
     Person* getPerson(Id id);
     const std::vector<Person*>& getCitizens() const;

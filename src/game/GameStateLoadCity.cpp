@@ -151,7 +151,7 @@ void GameStateLoadCity::createGui()
     for (const std::pair<const std::string, std::string>& save : sSaveManager->getSaves())
     {
         GuiButton* button = mGui->createWithDefaultName<GuiButton>(sStylesheetManager->getStylesheet("button"));
-        button->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Center, 16.0f));
+        button->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Left, GuiLayout::VAlignment::Center, 16.0f, GuiLayout::Margins{8.0f, 0.0f, 0.0f, 0.0f}));
         button->setFixedInsideSize(sf::Vector2f(500.0f, 64.0f));
         button->add(mGui->createWithDefaultName<GuiImage>(sf::Sprite(sTextureManager->getTexture(save.first))));
         button->add(mGui->createWithDefaultName<GuiText>(save.first, 18, sStylesheetManager->getStylesheet("darkText")));

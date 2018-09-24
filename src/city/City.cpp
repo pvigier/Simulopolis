@@ -406,6 +406,13 @@ void City::eject(Person* person)
     notify(Message::create(MessageType::CITY, Event(Event::Type::IMMIGRANT_EJECTED, person)));
 }
 
+void City::ejectAll()
+{
+    std::vector<Person*> immigrants = mImmigrants; // Deep copy
+    for (Person* immigrant : immigrants)
+        eject(immigrant);
+}
+
 void City::welcome(Person* person)
 {
     std::size_t i = std::find(mImmigrants.begin(), mImmigrants.end(), person) - mImmigrants.begin();
@@ -415,6 +422,13 @@ void City::welcome(Person* person)
     person->setCity(this, &mCityMessageBus);
     // Notify
     notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_CITIZEN, person)));
+}
+
+void City::welcomeAll()
+{
+    std::vector<Person*> immigrants = mImmigrants; // Deep copy
+    for (Person* immigrant : immigrants)
+        welcome(immigrant);
 }
 
 unsigned int City::getPopulation() const

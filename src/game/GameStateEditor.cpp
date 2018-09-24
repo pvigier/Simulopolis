@@ -238,14 +238,18 @@ void GameStateEditor::handleMessages()
                         openPersonWindow(*mCity.getPerson(extractId(name, "openPersonWindow")));
                     else if (name.substr(0, 16) == "openBuildingWindow")
                         openBuildingWindow(*mCity.getBuilding(extractId(name, "openBuildingWindow")));
-                    else if (name.substr(0, 8) == "Accepted")
+                    else if (name == "welcomeAllButton")
+                        mCity.welcomeAll();
+                    else if (name == "ejectAllButton")
+                        mCity.ejectAll();
+                    else if (name.substr(0, 8) == "accepted")
                     {
-                        Person* person = mCity.getPerson(extractId(name, "Accepted"));
+                        Person* person = mCity.getPerson(extractId(name, "accepted"));
                         mCity.welcome(person);
                     }
-                    else if (name.substr(0, 8) == "Rejected")
+                    else if (name.substr(0, 8) == "rejected")
                     {
-                        Person* person = mCity.getPerson(extractId(name, "Rejected"));
+                        Person* person = mCity.getPerson(extractId(name, "rejected"));
                         mCity.eject(person);
                     }
                     else if (!updateTabs(name))

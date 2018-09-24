@@ -153,9 +153,19 @@ unsigned int Business::getStock() const
     return mStock;
 }
 
+unsigned int Business::getMaxSizeStock() const
+{
+    return mMaxSizeStock;
+}
+
 bool Business::hasPreparedGoods() const
 {
     return mStock > 0 && mPreparedGoods >= 1.0;
+}
+
+unsigned int Business::getPreparedGoods() const
+{
+    return mPreparedGoods;
 }
 
 Money Business::getPrice() const

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "BuildingWindow.h"
 #include "resource/StylesheetManager.h"
 #include "city/Building.h"
@@ -33,7 +33,8 @@
 
 BuildingWindow::BuildingWindow(StylesheetManager* stylesheetManager, const Building& building) :
     GuiWindow(format("%s %d", Tile::typeToString(building.getType()).c_str(), building.getId()), stylesheetManager->getStylesheet("window")),
-    mStylesheetManager(stylesheetManager), mBuilding(building), mImage(nullptr), mStockText(nullptr), mTable(nullptr)
+    mStylesheetManager(stylesheetManager), mBuilding(building),
+    mImage(nullptr), mStockText(nullptr), mPreparedGoodsText(nullptr), mTable(nullptr)
 {
 
 }
@@ -87,7 +88,9 @@ void BuildingWindow::setUp()
         if (mBuilding.isBusiness())
         {
             mStockText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
+            mPreparedGoodsText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
             infoWidget->add(mStockText);
+            infoWidget->add(mPreparedGoodsText);
         }
         // Table
         std::vector<std::string> names = {"Employee", "Work", "Salary"};
@@ -126,7 +129,11 @@ void BuildingWindow::update()
     {
         // Info
         if (mBuilding.isBusiness())
-            mStockText->setString(format("Stock: %d", static_cast<const Business&>(mBuilding).getStock()));
+        {
+            const Business& business = static_cast<const Business&>(mBuilding);
+            mStockText->setString(format("Stock: %d/%d", business.getStock(), business.getMaxSizeStock()));
+            mPreparedGoodsText->setString(format("Prepared goods: %d", business.getPreparedGoods()));
+        }
         // Table
         const std::vector<std::unique_ptr<Work>>* employees = Company::getEmployees(&mBuilding);
         for (std::size_t i = 0; i < employees->size(); ++i)

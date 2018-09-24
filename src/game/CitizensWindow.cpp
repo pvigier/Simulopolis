@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "CitizensWindow.h"
 #include "resource/StylesheetManager.h"
 #include "gui/Gui.h"
@@ -45,7 +45,7 @@ CitizensWindow::~CitizensWindow()
 void CitizensWindow::setUp()
 {
     // Create table
-    std::vector<std::string> names{"Name", "Age", "Work"};
+    std::vector<std::string> names{"Name", "Age", "Work", "Money", "Happiness"};
     mTable = mGui->createWithDefaultName<GuiTable>(names, mStylesheetManager->getStylesheet("table"));
 
     // Scroll area
@@ -88,10 +88,13 @@ void CitizensWindow::update()
         }
     }
 
+    // Update the cells
     for (std::size_t i = 0; i < mCitizens.size(); ++i)
     {
         static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("%d", mCitizens[i]->getAge(mCity.getYear())));
         static_cast<GuiText*>(mTable->getCellContent(i, 2))->setString(mCitizens[i]->getWorkStatus());
+        static_cast<GuiText*>(mTable->getCellContent(i, 3))->setString(format("$%.2f", mCitizens[i]->getAccountBalance()));
+        static_cast<GuiText*>(mTable->getCellContent(i, 4))->setString(format("%.0f", 100.0f * mCitizens[i]->getNeed(Person::Need::HAPPINESS)));
     }
 }
 
@@ -109,6 +112,8 @@ void CitizensWindow::addCitizen(Person* person)
     // Add row
     mTable->addRow({
         personButton,
+        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
         mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
     });
