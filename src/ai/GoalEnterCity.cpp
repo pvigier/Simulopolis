@@ -61,7 +61,7 @@ Goal::State GoalEnterCity::process()
                 mOwner->getCity()->getMap().getNetwork().getRandomEntryPoint(roadCoords.y, roadCoords.x, entryPoint))
             {
                     // Set position
-                    mOwner->getCar().getKinematic().setPosition(mOwner->getCity()->getMap().computePosition(entryPoint.y, entryPoint.x) + sf::Vector2f(Tile::SIZE, Tile::SIZE * 0.5f));
+                    mOwner->getCar().getKinematic().setPosition(mOwner->getCity()->getMap().computePosition(entryPoint.y, entryPoint.x) + sf::Vector2f(Tile::HEIGHT, Tile::HEIGHT * 0.5f));
                     // Terminate
                     mState = State::COMPLETED;
             }

@@ -363,7 +363,7 @@ void GameStateEditor::newGame(std::string cityName, uint64_t seed)
 {
     // Create a new city
     mCity.createMap(std::move(cityName), seed);
-    float width = (mCity.getMap().getWidth() + mCity.getMap().getHeight()) * Tile::SIZE;
+    float width = (mCity.getMap().getWidth() + mCity.getMap().getHeight()) * Tile::HEIGHT;
     mGameView.setCenter(width * 0.5f, width * 0.25f);
     zoom(8.0f);
 
@@ -375,7 +375,7 @@ void GameStateEditor::newGame(std::string cityName, uint64_t seed)
 void GameStateEditor::loadGame(const std::string& cityName)
 {
     sSaveManager->load(cityName, mCity);
-    float width = (mCity.getMap().getWidth() + mCity.getMap().getHeight()) * Tile::SIZE;
+    float width = (mCity.getMap().getWidth() + mCity.getMap().getHeight()) * Tile::HEIGHT;
     mGameView.setCenter(width * 0.5f, width * 0.25f);
     zoom(8.0f);
 
@@ -408,7 +408,7 @@ void GameStateEditor::generatePreview(sf::Vector2u size, sf::Texture& texture)
     sf::RenderTexture renderTexture;
     renderTexture.create(size.x, size.y);
     sf::View view = mGameView;
-    float width = (mCity.getMap().getWidth() + mCity.getMap().getHeight()) * Tile::SIZE;
+    float width = (mCity.getMap().getWidth() + mCity.getMap().getHeight()) * Tile::HEIGHT;
     view.setCenter(width * 0.5f, width * 0.25f);
     float factor = 1.05;
     view.setSize(factor * width, factor * width * float(size.y) / float(size.x));

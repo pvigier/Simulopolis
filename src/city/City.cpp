@@ -454,8 +454,8 @@ float City::getAttractiveness() const
 
 sf::Vector2i City::toTileIndices(const sf::Vector2f& position) const
 {
-    int x = position.y / Tile::SIZE + 0.5f * (position.x / Tile::SIZE - mMap.getWidth() - 1);
-    int y = position.y / Tile::SIZE - 0.5f * (position.x / Tile::SIZE - mMap.getWidth() - 1);
+    int x = position.y / Tile::HEIGHT + 0.5f * (position.x / Tile::HEIGHT - mMap.getWidth() - 1);
+    int y = position.y / Tile::HEIGHT - 0.5f * (position.x / Tile::HEIGHT - mMap.getWidth() - 1);
     return sf::Vector2i(x, y);
 }
 

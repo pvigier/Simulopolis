@@ -86,14 +86,14 @@ Tile::Type Tile::stringToType(const std::string& s)
     else if (s == "bridge")
         return Type::BRIDGE;
     else
-        return Type::VOID;
+        return Type::EMPTY;
 }
 
 std::string Tile::typeToString(Tile::Type type)
 {
     switch (type)
     {
-        case Type::VOID:
+        case Type::EMPTY:
             return "Void";
         case Type::GRASS:
             return "Grass";

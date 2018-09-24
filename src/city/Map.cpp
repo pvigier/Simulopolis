@@ -36,7 +36,7 @@ Map::Map() : mWidth(0), mHeight(0), mNbSelected(0), mNetwork(mWidth, mHeight)
 
 void Map::loadTiles()
 {
-    sTileAtlas.emplace_back(std::make_unique<Tile>("grass", Tile::Type::VOID, Tile::Category::GROUND));
+    sTileAtlas.emplace_back(std::make_unique<Tile>("grass", Tile::Type::EMPTY, Tile::Category::GROUND));
     sTileAtlas.emplace_back(std::make_unique<Tile>("grass", Tile::Type::GRASS, Tile::Category::GROUND));
     sTileAtlas.emplace_back(std::make_unique<Tile>("forest", Tile::Type::FOREST, Tile::Category::OBSTACLE));
     sTileAtlas.emplace_back(std::make_unique<Tile>("water", Tile::Type::WATER, Tile::Category::WATER));
@@ -237,8 +237,8 @@ Path Map::getPath(sf::Vector2i start, sf::Vector2i end) const
         const sf::Vector2i& coords = coordinates[i];
         // Offset
         constexpr float t = 0.15f;
-        const sf::Vector2f xOffset = sf::Vector2f(-0.5f, 0.25f) * Tile::SIZE;
-        const sf::Vector2f yOffset = sf::Vector2f(-0.5f, -0.25f) * Tile::SIZE;
+        const sf::Vector2f xOffset = sf::Vector2f(-0.5f, 0.25f) * Tile::HEIGHT;
+        const sf::Vector2f yOffset = sf::Vector2f(-0.5f, -0.25f) * Tile::HEIGHT;
         sf::Vector2i iOffset;
         if (i > 0)
             iOffset += coords - coordinates[i-1];
@@ -255,7 +255,7 @@ Path Map::getPath(sf::Vector2i start, sf::Vector2i end) const
         else
             denom = 0.75f;
         sf::Vector2f offset = t * (xOffset * iOffset.x + yOffset * iOffset.y) / denom;
-        points.push_back(computePosition(coords.y, coords.x) + sf::Vector2f(Tile::SIZE, Tile::SIZE * 0.5f) + offset);
+        points.push_back(computePosition(coords.y, coords.x) + sf::Vector2f(Tile::HEIGHT, Tile::HEIGHT * 0.5f) + offset);
     }
     return Path(points);
 }
@@ -307,8 +307,8 @@ unsigned int Map::getNbSelected() const
 sf::Vector2f Map::computePosition(std::size_t i, std::size_t j) const
 {
     sf::Vector2f position;
-    position.x = (j - i) * Tile::SIZE + mWidth * Tile::SIZE;
-    position.y = (j + i) * Tile::SIZE * 0.5f;
+    position.x = (j - i) * Tile::HEIGHT + mWidth * Tile::HEIGHT;
+    position.y = (j + i) * Tile::HEIGHT * 0.5f;
     return position;
 }
 
@@ -328,7 +328,7 @@ void Map::updateTile(int i, int j)
                 j + dj >= 0 && j + dj < static_cast<int>(mWidth))
                 neighbors[dj + 1][di + 1] = mTiles.get(i + di, j + dj).get();
             else
-                neighbors[dj + 1][di + 1] = sTileAtlas[static_cast<int>(Tile::Type::VOID)].get();
+                neighbors[dj + 1][di + 1] = sTileAtlas[static_cast<int>(Tile::Type::EMPTY)].get();
         }
     }
     mTiles.get(i, j)->updateVariant(neighbors);
