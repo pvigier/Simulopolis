@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "gui/GuiImage.h"
 #include "resource/PropertyList.h"
 
@@ -55,7 +55,9 @@ void GuiImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void GuiImage::setSprite(sf::Sprite sprite)
 {
     mSprite = sprite;
-    setDirty();
+    mSprite.setPosition(mInsidePosition);
+    sf::Vector2f textureSize(mSprite.getTexture()->getSize());
+    mSprite.setScale(mInsideSize.x / textureSize.x, mInsideSize.y / textureSize.y);
 }
 
 void GuiImage::onOutsidePositionChanged()

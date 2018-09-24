@@ -26,7 +26,8 @@ GuiWidget::GuiWidget(const XmlDocument* style) :
     applyStyle();
 }
 
-GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nullptr), mDirty(true)
+GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nullptr), mFixedSize(false),
+    mDirty(true)
 {
     mVisible = properties.get<bool>("visible", true);
     setOutsidePosition(properties.get<sf::Vector2f>("position", sf::Vector2f()));
@@ -173,9 +174,12 @@ sf::Vector2f GuiWidget::getOutsidePosition() const
 
 void GuiWidget::setOutsidePosition(sf::Vector2f position)
 {
-    mOutsidePosition = position;
-    onOutsidePositionChanged();
-    setDirty();
+    if (position != mOutsidePosition)
+    {
+        mOutsidePosition = position;
+        onOutsidePositionChanged();
+        setDirty();
+    }
 }
 
 sf::Vector2f GuiWidget::getInsidePosition() const
@@ -195,10 +199,13 @@ sf::Vector2f GuiWidget::getInsideSize() const
 
 void GuiWidget::setFixedInsideSize(sf::Vector2f size)
 {
-    mInsideSize = size;
-    mFixedSize = true;
-    onInsideSizeFixed();
-    setDirty();
+    if (!mFixedSize || size != mInsideSize)
+    {
+        mInsideSize = size;
+        mFixedSize = true;
+        onInsideSizeFixed();
+        setDirty();
+    }
 }
 
 void GuiWidget::fitInsideSizeToContent()

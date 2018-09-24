@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "gui/GuiTable.h"
 #include "gui/Gui.h"
 #include "gui/GuiText.h"
@@ -88,7 +88,6 @@ void GuiTable::addRow(const std::vector<GuiWidget*>& row, bool isTitle)
         cell->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Center, GuiLayout::VAlignment::Center, 0.0f, GuiLayout::Margins{3.0f, 3.0f, 3.0f, 3.0f}));
         mChildren[j]->add(cell);
     }
-    setDirty();
 }
 
 void GuiTable::removeRow(std::size_t i)
@@ -96,7 +95,6 @@ void GuiTable::removeRow(std::size_t i)
     for (std::size_t j = 0; j < mChildren.size(); ++j)
         mChildren[j]->remove(i + 1);
     mRowHeights.erase(mRowHeights.begin() + i + 1);
-    setDirty();
 }
 
 void GuiTable::clear()
