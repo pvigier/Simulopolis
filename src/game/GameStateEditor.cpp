@@ -374,6 +374,7 @@ void GameStateEditor::newGame(std::string cityName, uint64_t seed)
 
 void GameStateEditor::loadGame(const std::string& cityName)
 {
+    // Load city
     sSaveManager->load(cityName, mCity);
     float width = (mCity.getMap().getWidth() + mCity.getMap().getHeight()) * Tile::HEIGHT;
     mGameView.setCenter(width * 0.5f, width * 0.25f);
@@ -610,8 +611,12 @@ bool GameStateEditor::updateTile(const std::string& name)
 
 void GameStateEditor::zoom(float factor)
 {
-    mGameView.zoom(factor);
-    mZoomLevel *= factor;
+    if ((mZoomLevel >= 2.0f && factor <= 1.0f) ||
+        (mZoomLevel <= 8.0f && factor >= 1.0f))
+    {
+        mGameView.zoom(factor);
+        mZoomLevel *= factor;
+    }
 }
 
 Money GameStateEditor::getCost(Tile::Type type) const
