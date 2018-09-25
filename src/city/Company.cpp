@@ -46,9 +46,9 @@ const std::vector<std::unique_ptr<Work>>* Company::getEmployees(const Building* 
         return nullptr;
 }
 
-Company::Company(std::string name, int creationYear, Person* owner) :
+Company::Company(std::string name, int creationYear, Person* owner, Money funds) :
     mName(std::move(name)), mCreationYear(creationYear),
-    mCity(nullptr), mMessageBus(nullptr), mOwner(owner), mAccount(UNDEFINED)
+    mCity(nullptr), mMessageBus(nullptr), mOwner(owner), mFunds(funds), mAccount(UNDEFINED)
 {
     mRents.fill(Money(0.0));
     mSalaries.fill(Money(0.0));
@@ -141,7 +141,7 @@ void Company::setCity(const City* city, MessageBus* messageBus, bool alreadyAdde
     {
         mMessageBus->addMailbox(mMailbox);
         // Create bank account
-        mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCreateAccountEvent(Bank::Account::Type::COMPANY)));
+        mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCreateAccountEvent(Bank::Account::Type::COMPANY, mFunds)));
     }
 }
 

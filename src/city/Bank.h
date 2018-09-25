@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include "util/IdManager.h"
@@ -50,6 +50,12 @@ public:
     {
         enum class Type{CREATE_ACCOUNT, CLOSE_ACCOUNT, ACCOUNT_CREATED, TRANSFER_MONEY};
 
+        struct CreateAccountEvent
+        {
+            Account::Type accountType;
+            Money funds;
+        };
+
         struct TransferMoneyEvent
         {
             Id issuer;
@@ -61,7 +67,7 @@ public:
 
         union
         {
-            Account::Type accountType;
+            CreateAccountEvent create;
             TransferMoneyEvent transfer;
             Id account;
         };
@@ -80,7 +86,7 @@ public:
     Id getMailboxId() const;
 
     // Account management
-    void createAccount(Id owner, Account::Type type);
+    void createAccount(Id owner, Account::Type type, Money funds);
     Id createWorldAccount();
     void closeAccount(Id account);
     Money getBalance(Id account) const;
@@ -92,7 +98,7 @@ public:
     void collectTaxes(Id cityAccount, double incomeTax, double corporateTax);
 
     // Events
-    Event createCreateAccountEvent(Account::Type type) const;
+    Event createCreateAccountEvent(Account::Type type, Money funds) const;
     Event createCloseAccountEvent(Id account) const;
     Event createTransferMoneyEvent(Id issuer, Id receiver, Money amount) const;
     Event createAccountCreatedEvent(Id account) const;

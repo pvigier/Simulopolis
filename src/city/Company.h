@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
  #pragma once
 
  #include <vector>
@@ -36,7 +36,7 @@ public:
     static std::vector<std::unique_ptr<Work>>* getEmployees(Building* building);
     static const std::vector<std::unique_ptr<Work>>* getEmployees(const Building* building);
 
-    Company(std::string name, int creationYear, Person* owner = nullptr);
+    Company(std::string name, int creationYear, Person* owner, Money funds);
     ~Company();
 
     void update(float dt);
@@ -75,6 +75,9 @@ private:
     MessageBus* mMessageBus;
     const Person* mOwner;
     Mailbox mMailbox;
+
+    // Finance
+    Money mFunds;
     Id mAccount;
 
     // Buildings

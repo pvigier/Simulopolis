@@ -58,7 +58,7 @@ void Bank::update()
             switch (event.type)
             {
                 case Event::Type::CREATE_ACCOUNT:
-                    createAccount(message.sender, event.accountType);
+                    createAccount(message.sender, event.create.accountType, event.create.funds);
                     break;
                 case Event::Type::CLOSE_ACCOUNT:
                     closeAccount(event.account);
@@ -78,9 +78,9 @@ Id Bank::getMailboxId() const
     return mMailbox.getId();
 }
 
-void Bank::createAccount(Id owner, Account::Type type)
+void Bank::createAccount(Id owner, Account::Type type, Money funds)
 {
-    Id account = mAccounts.add(Account{UNDEFINED, owner, type, Money(0.0), Money(0.0)});
+    Id account = mAccounts.add(Account{UNDEFINED, owner, type, funds, funds});
     mAccounts.get(account).id = account;
     mMessageBus->send(Message::create(owner, MessageType::BANK, createAccountCreatedEvent(account)));
 }
@@ -140,10 +140,10 @@ void Bank::collectTaxes(Id cityAccount, double incomeTax, double corporateTax)
     }
 }
 
-Bank::Event Bank::createCreateAccountEvent(Account::Type type) const
+Bank::Event Bank::createCreateAccountEvent(Account::Type type, Money funds) const
 {
     Event event(Event::Type::CREATE_ACCOUNT);
-    event.accountType = type;
+    event.create = Event::CreateAccountEvent{type, funds};
     return event;
 }
 

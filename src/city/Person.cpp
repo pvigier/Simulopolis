@@ -50,11 +50,11 @@ Person::Event::Event(Type type, Work* work) : type(type), work(work)
 
 Person::Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth,
         const std::string& car, const std::array<float, static_cast<int>(Need::COUNT)>& decayRates,
-        double productivity, const std::array<float, NB_EVALUATORS>& biases) :
+        double productivity, const std::array<float, NB_EVALUATORS>& biases, Money funds) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth),
     mCity(nullptr), mMessageBus(nullptr),
     mState(State::INVISIBLE), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::Type::NECESSARY), mCar(car),
-    mAccount(UNDEFINED), mLastMonthBalance(0.0), mMonthBalance(0.0),
+    mFunds(funds), mAccount(UNDEFINED), mLastMonthBalance(0.0), mMonthBalance(0.0),
     mDecayRates(decayRates), mNeeds{1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, mAverageNeeds{0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
     mProductivity(productivity), mQualification(Work::Qualification::NON_QUALIFIED),
     mShortTermBrain(this), mLongTermBrain(this)
@@ -184,7 +184,7 @@ void Person::setCity(const City* city, MessageBus* messageBus, bool alreadyAdded
     {
         mMessageBus->addMailbox(mMailbox);
         // Create bank account
-        mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCreateAccountEvent(Bank::Account::Type::PERSON)));
+        mMessageBus->send(Message::create(mMailbox.getId(), mCity->getBank().getMailboxId(), MessageType::BANK, mCity->getBank().createCreateAccountEvent(Bank::Account::Type::PERSON, mFunds)));
     }
 }
 
@@ -274,6 +274,11 @@ Car& Person::getCar()
 const Car& Person::getCar() const
 {
     return mCar;
+}
+
+Money Person::getInitialFunds() const
+{
+    return mFunds;
 }
 
 Id Person::getAccount() const

@@ -33,7 +33,7 @@ void serialize(Archive& ar, Bank::Event& event, const unsigned int /*version*/)
     switch (event.type)
     {
         case Bank::Event::Type::CREATE_ACCOUNT:
-            ar & event.accountType;
+            ar & event.create.accountType & event.create.funds;
             break;
         case Bank::Event::Type::CLOSE_ACCOUNT:
         case Bank::Event::Type::ACCOUNT_CREATED:

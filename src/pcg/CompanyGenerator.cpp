@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "CompanyGenerator.h"
 #include <fstream>
 #include "city/Person.h"
@@ -104,5 +104,5 @@ Company CompanyGenerator::generate(int year, Person* owner)
     std::uniform_int_distribution<int> suffixPdf(0, mSuffixes.size() - 1);
     std::string suffix = mSuffixes[suffixPdf(mGenerator)];
 
-    return Company(name + " " + suffix, year, owner);
+    return Company(name + " " + suffix, year, owner, Money(0.0));
 }

@@ -56,7 +56,7 @@ public:
 
     Person(const std::string& firstName, const std::string& lastName, Gender gender, int birth,
         const std::string& car, const std::array<float, static_cast<int>(Need::COUNT)>& decayRates,
-        double productivity, const std::array<float, NB_EVALUATORS>& biases);
+        double productivity, const std::array<float, NB_EVALUATORS>& biases, Money funds);
     ~Person();
 
     void update(float dt);
@@ -93,6 +93,7 @@ public:
     const Car& getCar() const;
 
     // Finance
+    Money getInitialFunds() const;
     Id getAccount() const;
     Money getAccountBalance() const;
     Money getLastMonthOutcome() const;
@@ -138,6 +139,7 @@ private:
     Car mCar;
 
     // Finance
+    Money mFunds;
     Id mAccount;
     Money mLastMonthBalance;
     Money mMonthBalance;
@@ -174,7 +176,7 @@ private:
         ar & mState;
         ar & mHome & mWork & mConsumptionHabit;
         ar & mCar;
-        ar & mAccount & mLastMonthBalance & mMonthBalance;
+        ar & mFunds & mAccount & mLastMonthBalance & mMonthBalance;
         ar & mDecayRates & mNeeds & mAverageNeeds;
         ar & mProductivity & mQualification;
         ar & mShortTermBrain & mLongTermBrain;

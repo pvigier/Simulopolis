@@ -64,7 +64,7 @@ City::Event::Event(Building* building) : type(Type::BUILDING_DESTROYED), buildin
 
 City::City() :
     mTerrainGenerator(mRandomGenerator), mPersonGenerator(mRandomGenerator), mCompanyGenerator(mRandomGenerator),
-    mCurrentTime(0.0), mTimePerMonth(20.0f), mMonth(0), mYear(0), mCityCompany("City", 0),
+    mCurrentTime(0.0), mTimePerMonth(20.0f), mMonth(0), mYear(0), mCityCompany("City", 0, nullptr, SEED_MONEY),
     mWeeklyStandardWorkingHours(0), mMinimumWage(0.0), mIncomeTax(0.0f), mCorporateTax(0.0f)
 {
 
@@ -623,12 +623,4 @@ void City::setUp(bool loading)
 
     // Rendering
     mCarsByTile.reshape(mMap.getHeight(), mMap.getWidth());
-
-    // Init the funds
-    if (!loading)
-    {
-        mBank.update();
-        mCityCompany.update(0.0f);
-        mBank.transferMoney(mWorldAccount, mCityCompany.getAccount(), SEED_MONEY);
-    }
 }

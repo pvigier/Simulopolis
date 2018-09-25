@@ -101,11 +101,14 @@ std::unique_ptr<Person> PersonGenerator::generate(int year)
         decayRates[i] = std::max(0.0f, decayRatePdf(mGenerator)) * standardDecayRates[i];
     // Abilities
     std::normal_distribution<double> producivityPdf(1.0, 0.2);
-    double productivity = producivityPdf(mGenerator);
+    double productivity = std::max(0.0, producivityPdf(mGenerator));
     // Personality
     std::array<float, Person::NB_EVALUATORS> biases;
     std::normal_distribution<float> biasPdf(1.0f, 0.2f);
     for (std::size_t i = 0; i < biases.size(); ++i)
         biases[i] = std::max(0.0f, biasPdf(mGenerator));
-    return std::make_unique<Person>(firstName, lastName, gender, birth, car, decayRates, productivity, biases);
+    // Funds
+    std::exponential_distribution<double> fundsPdf(1 / 100.0); // 100.0f is the mean
+    Money funds(fundsPdf(mGenerator));
+    return std::make_unique<Person>(firstName, lastName, gender, birth, car, decayRates, productivity, biases, funds);
 }
