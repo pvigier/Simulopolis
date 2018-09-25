@@ -10,16 +10,6 @@ In Simulopolis, each citizen is an autonomous agent which has needs (energy, sat
 
 Your goal as a mayor is to build and manage a city that will allow your citizens to be happy. Experiment different economic models, policies and architectures to achieve that.
 
-## Download
-
-You can download the latest stable releases on the [itch.io page]().
-
-## Screenshots
-
-![Screenshot 1](https://github.com/pvigier/CityBuilder/raw/master/images/screenshot1.gif)
-![Screenshot 2](https://github.com/pvigier/CityBuilder/raw/master/images/screenshot2.png)
-![Screenshot 3](https://github.com/pvigier/CityBuilder/raw/master/images/screenshot2.png)
-
 ## Features
 
 * Nearly an infinity of terrains on which you can settle your city.
@@ -34,6 +24,15 @@ This game is currently in development. Planned features include:
 * Call for bids: you can mark parcels available to private companies which will make offers to obtain them. As the mayor, you will choose the companies that will win them.
 * A lot more.
 
+## Download
+
+You can download the latest stable releases on the [itch.io page](https://pvigier.itch.io/simulopolis).
+
+## Screenshots
+
+![Screenshot 1](https://github.com/pvigier/CityBuilder/raw/master/images/screenshot1.gif)
+![Screenshot 2](https://github.com/pvigier/CityBuilder/raw/master/images/screenshot2.png)
+
 ## Credits
 
 * Most assets are done by [Kenney](https://opengameart.org/users/kenney).
@@ -43,7 +42,7 @@ This game is currently in development. Planned features include:
 
 There are only three dependencies:
 
-* [SFML2](https://www.sfml-dev.org/)
+* [SFML](https://www.sfml-dev.org/)
 * [TinyXML-2](http://www.grinninglizard.com/tinyxml2/)
 * [Boost Serialization](https://www.boost.org/doc/libs/1_68_0/libs/serialization/doc/index.html)
 
@@ -51,8 +50,8 @@ The easiest way to build the project is to use [cmake](https://cmake.org/).
 
 ## Donate
 
-You can support the project by making a donation on the [itch.io page]().
+You can support the project by making a donation on the [itch.io page](https://pvigier.itch.io/simulopolis).
 
 ## License
 
-Distributed under the [GNU GENERAL PUBLIC LICENSE version3](https://www.gnu.org/licenses/gpl-3.0.en.html)
+Distributed under the [GNU GENERAL PUBLIC LICENSE version 3](https://www.gnu.org/licenses/gpl-3.0.en.html)
