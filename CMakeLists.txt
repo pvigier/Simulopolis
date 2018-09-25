@@ -10,9 +10,19 @@ set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -fno-pie -no-pie")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+# Special flags
+
+if(${CMAKE_CXX_PLATFORM_ID} MATCHES "MinGW")
+	message("MinGW")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+	message("GCC")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-pie -no-pie")
+endif()
 
 # Files
 
