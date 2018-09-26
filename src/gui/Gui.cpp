@@ -222,7 +222,7 @@ bool Gui::isVisible() const
     return mVisible;
 }
 
-bool Gui::setListen(bool listen)
+void Gui::setListen(bool listen)
 {
     if (mListen != listen)
     {

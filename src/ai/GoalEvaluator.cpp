@@ -29,5 +29,5 @@ GoalEvaluator::~GoalEvaluator()
 
 void GoalEvaluator::setBias(float bias)
 {
-    mBias = 0.0f;
+    mBias = bias;
 }

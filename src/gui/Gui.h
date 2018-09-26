@@ -96,7 +96,7 @@ public:
     void setVisible(bool visible);
     bool isVisible() const;
 
-    bool setListen(bool listen);
+    void setListen(bool listen);
 
 private:
     static MessageBus* sMessageBus;
