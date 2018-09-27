@@ -29,7 +29,7 @@ Game::Game()
     mMessageBus.addMailbox(mMailbox);
 
     // Initialize the input engine
-    mInputEngine.setRenderEngine(&mRenderEngine);
+    mInputEngine.setWindow(&mRenderEngine.getWindow());
     mInputEngine.setSubjectMessageBus(&mMessageBus);
 
     // Push dependencies

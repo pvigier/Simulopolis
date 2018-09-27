@@ -67,6 +67,9 @@ void GameStateStart::handleMessages()
                 case sf::Event::Closed:
                     sRenderEngine->closeWindow();
                     break;
+                case sf::Event::Resized:
+                    mGui->setViewportSize(sf::Vector2u(event.size.width, event.size.height));
+                    break;
                 /*case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
                         sRenderEngine->getWindow().close();

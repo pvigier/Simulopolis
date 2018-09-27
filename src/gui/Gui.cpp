@@ -207,7 +207,7 @@ const sf::View& Gui::getView()
     return mView;
 }
 
-void Gui::setViewportSize(sf::Vector2i viewportSize)
+void Gui::setViewportSize(sf::Vector2u viewportSize)
 {
     mView = sf::View(sf::FloatRect(sf::Vector2f(), sf::Vector2f(viewportSize)));
 }

@@ -79,14 +79,7 @@ public:
      *
      * \return Size of the viewport
      */
-    sf::Vector2i getViewportSize() const;
-
-    /**
-     * \brief Return the offset of the viewport
-     *
-     * \return Offset of the viewport
-     */
-    sf::Vector2i getViewportOffset() const;
+    sf::Vector2u getViewportSize() const;
 
     /**
      * \brief Get the view
@@ -129,7 +122,4 @@ public:
 
 private:
     sf::RenderWindow mWindow; /**< Window that is opened */
-    sf::RenderTexture mRenderTexture; /**< Texture that is drawn on the window */
-    sf::Vector2i mViewportOffset; /** Offset of the viewport */
-    sf::Sprite mSprite; /**< Sprite used to draw the render texture on the window */
 };

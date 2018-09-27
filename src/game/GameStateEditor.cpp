@@ -48,7 +48,7 @@ GameStateEditor::GameStateEditor() :
     mPoliciesWindow(nullptr)
 {
     // Views
-    sf::Vector2i viewportSize = sRenderEngine->getViewportSize();
+    sf::Vector2u viewportSize = sRenderEngine->getViewportSize();
     mGameView.setSize(sf::Vector2f(viewportSize));
 
     // Render texture
@@ -105,6 +105,12 @@ void GameStateEditor::handleMessages()
             {
                 case sf::Event::Closed:
                     sRenderEngine->closeWindow();
+                    break;
+                case sf::Event::Resized:
+                    mRenderTexture.create(event.size.width, event.size.height);
+                    mGameView = sf::View(mGameView.getCenter(), sf::Vector2f(event.size.width, event.size.height));
+                    mGameView.zoom(mZoomLevel);
+                    mGui->setViewportSize(sf::Vector2u(event.size.width, event.size.height));
                     break;
                 case sf::Event::KeyPressed:
                     if (event.key.code == sf::Keyboard::Escape)
@@ -399,7 +405,7 @@ void GameStateEditor::drawCity(sf::RenderTexture& renderTexture, const sf::View&
     renderTexture.clear(sf::Color::Transparent);
     if (background)
     {
-        renderTexture.setView(mGui->getView());
+        renderTexture.setView(sf::View(mBackground.getGlobalBounds()));
         renderTexture.draw(mBackground);
     }
     renderTexture.setView(view);

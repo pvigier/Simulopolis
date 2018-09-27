@@ -18,11 +18,9 @@
 #include "render/RenderEngine.h"
 
 RenderEngine::RenderEngine() : mWindow(sf::VideoMode(800, 600), "Simulopolis",
-    sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 4))
+    sf::Style::Default, sf::ContextSettings(0, 0, 4))
 {
     mWindow.setFramerateLimit(60);
-    mRenderTexture.create(800, 600);
-    mSprite.setTexture(mRenderTexture.getTexture());
 }
 
 RenderEngine::~RenderEngine()
@@ -53,7 +51,7 @@ void RenderEngine::setFullscreen(bool fullscreen)
             sf::Style::Fullscreen, sf::ContextSettings(0, 0, 4));
     else
         mWindow.create(sf::VideoMode(800, 600), "Simulopolis",
-            sf::Style::Titlebar | sf::Style::Close, sf::ContextSettings(0, 0, 4));
+            sf::Style::Default, sf::ContextSettings(0, 0, 4));
 }
 
 void RenderEngine::closeWindow()
@@ -61,47 +59,37 @@ void RenderEngine::closeWindow()
     mWindow.close();
 }
 
-sf::Vector2i RenderEngine::getViewportSize() const
+sf::Vector2u RenderEngine::getViewportSize() const
 {
-    return sf::Vector2i(mRenderTexture.getSize());
-}
-
-sf::Vector2i RenderEngine::getViewportOffset() const
-{
-    return mViewportOffset;
+    return mWindow.getSize();
 }
 
 const sf::View& RenderEngine::getView() const
 {
-    return mRenderTexture.getView();
+    return mWindow.getView();
 }
 
 void RenderEngine::setView(const sf::View& view)
 {
-    mRenderTexture.setView(view);
+    mWindow.setView(view);
 }
 
 sf::Vector2f RenderEngine::mapPixelToCoords(const sf::Vector2i &point, const sf::View &view) const
 {
-    return mRenderTexture.mapPixelToCoords(point, view);
+    return mWindow.mapPixelToCoords(point, view);
 }
 
 void RenderEngine::clear()
 {
     mWindow.clear();
-    mRenderTexture.clear();
-    mViewportOffset = sf::Vector2i(mWindow.getSize()) / 2 - sf::Vector2i(mRenderTexture.getSize()) / 2;
-    mSprite.setPosition(sf::Vector2f(mViewportOffset));
 }
 
 void RenderEngine::draw(const sf::Drawable& drawable)
 {
-    mRenderTexture.draw(drawable);
+    mWindow.draw(drawable);
 }
 
 void RenderEngine::display()
 {
-    mRenderTexture.display();
-    mWindow.draw(mSprite);
     mWindow.display();
 }

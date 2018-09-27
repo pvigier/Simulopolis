@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
+#include <SFML/Window.hpp>
 #include "message/Subject.h"
-#include "render/RenderEngine.h"
 #include "input/InputEvent.h"
 
 /**
@@ -42,11 +42,11 @@ public:
     ~InputEngine();
 
     /**
-     * \brief Set the render engine
+     * \brief Set the window
      *
-     * \param renderEngine Render engine from which the events are polled
+     * \param window Window from which the events are polled
      */
-    void setRenderEngine(RenderEngine* renderEngine);
+    void setWindow(sf::Window* window);
 
     /**
      * \brief Poll events
@@ -81,5 +81,5 @@ public:
     sf::Vector2i getMousePosition() const;
 
 private:
-    RenderEngine* mRenderEngine; /**< Render engine from which the inputs are polled */
+    sf::Window* mWindow; /**< Window from which the inputs are polled */
 };

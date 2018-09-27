@@ -92,7 +92,7 @@ public:
     void handleMessages();
 
     const sf::View& getView();
-    void setViewportSize(sf::Vector2i viewportSize);
+    void setViewportSize(sf::Vector2u viewportSize);
     void setVisible(bool visible);
     bool isVisible() const;
 
