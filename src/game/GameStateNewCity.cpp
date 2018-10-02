@@ -47,6 +47,7 @@ GameStateNewCity::~GameStateNewCity()
 
 void GameStateNewCity::enter()
 {
+    mGui->setViewportSize(sRenderEngine->getViewportSize());
     // Subscribe to inputs
     mGui->setListen(true);
 }
@@ -127,8 +128,6 @@ std::string GameStateNewCity::getCityName() const
 
 void GameStateNewCity::createGui()
 {
-    mGui->setViewportSize(sRenderEngine->getViewportSize());
-
     // Seed
     uint64_t seed = integer_noise(std::chrono::system_clock::now().time_since_epoch().count());
     mGui->get<GuiInput>("seedInput")->setString(std::to_string(seed));

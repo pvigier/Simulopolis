@@ -44,6 +44,7 @@ GameStateSettings::~GameStateSettings()
 
 void GameStateSettings::enter()
 {
+    mGui->setViewportSize(sRenderEngine->getViewportSize());
     // Subscribe to inputs
     mGui->setListen(true);
 }
@@ -126,8 +127,6 @@ void GameStateSettings::exit()
 
 void GameStateSettings::createGui()
 {
-    mGui->setViewportSize(sRenderEngine->getViewportSize());
-
     // Register to events
     mGui->get("fullscreenButton")->subscribe(mMailbox.getId());
     mGui->get("musicButton")->subscribe(mMailbox.getId());

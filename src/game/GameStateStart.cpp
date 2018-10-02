@@ -49,6 +49,7 @@ GameStateStart::~GameStateStart()
 
 void GameStateStart::enter()
 {
+    mGui->setViewportSize(sRenderEngine->getViewportSize());
     // Subscribe to inputs
     mGui->setListen(true);
 }
@@ -128,9 +129,6 @@ void GameStateStart::setCityTexture(const sf::Texture& texture)
 
 void GameStateStart::createGui(bool resume)
 {
-    mGui->setViewportSize(sRenderEngine->getViewportSize());
-    //mGui->get("menu")->setFixedInsideSize(sf::Vector2f(sRenderEngine->getWindow().getSize()));
-
     // Resume button
     const PropertyList& textProperties = sStylesheetManager->getStylesheet("darkText")->getFirstChildByName("text").getAttributes();
     sf::Color textColor = textProperties.get<sf::Color>("color");

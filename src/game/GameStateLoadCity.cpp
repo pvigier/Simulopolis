@@ -49,7 +49,7 @@ GameStateLoadCity::~GameStateLoadCity()
 
 void GameStateLoadCity::enter()
 {
-    mGui->handleMessages();
+    mGui->setViewportSize(sRenderEngine->getViewportSize());
     // Subscribe to inputs
     mGui->setListen(true);
 }
@@ -147,8 +147,6 @@ std::string GameStateLoadCity::getSelectedCity() const
 
 void GameStateLoadCity::createGui()
 {
-    mGui->setViewportSize(sRenderEngine->getViewportSize());
-
     // Add buttons
     GuiScrollArea* scrollArea = mGui->get<GuiScrollArea>("scrollArea");
     for (const std::pair<const std::string, std::string>& save : sSaveManager->getSaves())

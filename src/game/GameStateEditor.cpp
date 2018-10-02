@@ -85,6 +85,7 @@ GameStateEditor::~GameStateEditor()
 
 void GameStateEditor::enter()
 {
+    mGui->setViewportSize(sRenderEngine->getViewportSize());
     // Subscribe to inputs
     mGui->setListen(true);
 }
@@ -431,8 +432,6 @@ void GameStateEditor::generatePreview(sf::Vector2u size, sf::Texture& texture)
 
 void GameStateEditor::createGui()
 {
-    mGui->setViewportSize(sRenderEngine->getViewportSize());
-
     // Tab buttons
     GuiWidget* buttonsWidget = mGui->get("tabButtons");
     for (GuiWidget* widget : buttonsWidget->getChildren())
