@@ -38,31 +38,31 @@
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="housingTabButton" size="32 32" style="button">
-                <image texture="housing" rect="0 85 132 132" size="24 24" />
+                <image texture="housing" rect="0 85 132 132" size="26 26" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="industryTabButton" size="32 32" style="button">
-                <image texture="industry" rect="0 85 132 132" size="24 24" />
+                <image texture="industry" rect="0 85 132 132" size="26 26" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="businessTabButton" size="32 32" style="button">
-                <image texture="business" rect="0 85 132 132" size="24 24" />
+                <image texture="business" rect="0 85 132 132" size="26 26" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="healthTabButton" size="32 32" style="button">
-                <image texture="hospital" rect="0 85 132 132" size="24 24" />
+                <image texture="hospital" rect="0 85 132 132" size="26 26" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="securityTabButton" size="32 32" style="button">
-                <image texture="police" rect="0 85 132 132" size="24 24" />
+                <image texture="police" rect="0 85 132 132" size="26 26" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="educationTabButton" size="32 32" style="button">
-                <image texture="school" rect="0 85 132 132" size="24 24" />
+                <image texture="school" rect="0 85 132 132" size="26 26" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="roadTabButton" size="32 32" style="button">
-                <image texture="road" rect="0 0 132 101" size="24 18" />
+                <image texture="road" rect="0 0 132 101" size="26 20" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <vboxlayout hAlignment="left" vAlignment="top" />

@@ -480,7 +480,8 @@ void GameStateEditor::generateMenuTextures()
 {
     const Tile* neighbors[3][3];
     for (int i = 0; i < 3; ++i)
-        std::fill(neighbors[i], neighbors[i] + 3, Map::getTileAtlas()[0].get());
+        std::fill(neighbors[i], neighbors[i] + 3, Map::getTileAtlas()[static_cast<int>(Tile::Type::EMPTY)].get());
+    neighbors[2][1] = Map::getTileAtlas()[static_cast<int>(Tile::Type::ROAD_GRASS)].get();
     for (const std::unique_ptr<Tile>& tile : Map::getTileAtlas())
     {
         tile->setPosition(sf::Vector2i(), sf::Vector2f());
