@@ -48,16 +48,16 @@ public:
     void remove(GuiWidget* widget);
     std::vector<GuiWidget*>& getChildren();
     const std::vector<GuiWidget*>& getChildren() const;
-
-    // Parameters
-    void setGui(Gui* gui);
-    const std::string& getName() const;
-    void setName(const std::string& name);
     bool isRoot() const;
     void setRoot(bool root);
     GuiWidget* getParent();
     const GuiWidget* getParent() const;
     void setParent(GuiWidget* parent);
+
+    // Parameters
+    void setGui(Gui* gui);
+    const std::string& getName() const;
+    void setName(const std::string& name);
     void setLayout(std::unique_ptr<GuiLayout> layout);
     bool isDirty() const;
 
@@ -71,7 +71,7 @@ public:
     void fitInsideSizeToContent();
     sf::Vector2f getContentSize() const;
     sf::FloatRect getOutsideRect() const;
-    virtual void updateSize();
+    virtual void updateSize(); // Public only for GuiTable
 
     // Style
     void setBackgroundColor(const sf::Color& color);
@@ -90,29 +90,42 @@ public:
     virtual bool hasGuiEvents() const;
 
 protected:
-    Gui* mGui;
-    std::string mName;
+    enum SizePolicy{FIXED, FIT_TO_CONTENT, RATIO};
+
+    // Hierarchy
     bool mRoot;
     GuiWidget* mParent;
     std::vector<GuiWidget*> mChildren;
     std::unique_ptr<GuiLayout> mLayout;
+
+    // Parameters
+    Gui* mGui;
+    std::string mName;
+
+    // Position and size
     sf::Vector2f mOutsidePosition;
     sf::Vector2f mInsidePosition;
+    std::array<SizePolicy, 2> mSizePolicies;
     sf::Vector2f mOutsideSize;
     sf::Vector2f mInsideSize;
+    sf::Vector2f mInsideSizeRatio;
+
+    // Style
     bool mVisible;
-    bool mFixedSize;
     const XmlDocument* mStyle;
     sf::RectangleShape mBackground;
 
+    // Dirtiness
     void setDirty();
-    void updateAlignment();
     void resetDirty();
 
     // Events
     virtual void onOutsidePositionChanged();
-    virtual void onContentSizeChanged(sf::Vector2f contentSize);
-    virtual void onInsideSizeFixed();
+    virtual void onContentWidthChanged(float contentWidth);
+    virtual void onContentHeightChanged(float contentHeight);
+    virtual void onInsideWidthFixed();
+    virtual void onInsideHeightFixed();
+    virtual void onViewportSizeChanged(sf::Vector2u viewportSize);
 
     // Input
     virtual bool onHover(sf::Vector2f position, bool processed);
@@ -122,9 +135,15 @@ protected:
     virtual bool onKey(sf::Keyboard::Key key, bool processed);
     virtual bool onText(sf::Uint32 unicode, bool processed);
 
-    // Style
+    // Updates
+    void updateAlignment();
+    void updateDesign();
+
+    // Design and style
+    virtual void applyDesign();
     virtual void applyStyle();
 
 private:
+    // Flag
     bool mDirty;
 };

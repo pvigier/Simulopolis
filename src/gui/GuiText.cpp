@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "gui/GuiText.h"
 #include "resource/XmlDocument.h"
 
@@ -77,9 +77,8 @@ void GuiText::setColor(sf::Color color)
     mText.setFillColor(color);
 }
 
-void GuiText::onOutsidePositionChanged()
+void GuiText::applyDesign()
 {
-    GuiWidget::onOutsidePositionChanged();
     mText.setPosition(sf::Vector2f(sf::Vector2i(mInsidePosition)));
 }
 

@@ -108,29 +108,21 @@ bool GuiScrollArea::updateMouseButtonReleased(sf::Vector2f position, bool proces
     return processed;
 }
 
-void GuiScrollArea::onOutsidePositionChanged()
+void GuiScrollArea::onContentWidthChanged(float contentWidth)
 {
-    GuiWidget::onOutsidePositionChanged();
-    // Content
-    updateView();
-    mSprite.setPosition(mInsidePosition);
-    // Scroll bar
-    updateScrollbar();
-}
-
-void GuiScrollArea::onContentSizeChanged(sf::Vector2f contentSize)
-{
-    mContentSize = contentSize;
+    mContentSize.x = contentWidth;
     mInsideSize = sf::Vector2f(std::min<int>(mContentSize.x, mMaxVisibleSize.x), std::min<int>(mContentSize.y, mMaxVisibleSize.y));
     mOutsideSize = mInsideSize;
-    mSprite.setTextureRect(sf::IntRect(0, 0, mInsideSize.x, mInsideSize.y));
-    mScrollbarVisible = contentSize.y > mInsideSize.y;
+}
+
+void GuiScrollArea::onContentHeightChanged(float contentHeight)
+{
+    mContentSize.y = contentHeight;
+    mInsideSize = sf::Vector2f(std::min<int>(mContentSize.x, mMaxVisibleSize.x), std::min<int>(mContentSize.y, mMaxVisibleSize.y));
+    mOutsideSize = mInsideSize;
+    mScrollbarVisible = mContentSize.y > mInsideSize.y;
     if (mScrollbarVisible)
         mOutsideSize.x += SCROLLBAR_OFFSET + 0.5f * mScrollButton.getSize().x;
-    mOffset = clamp(mOffset, 0.0f, mContentSize.y - mMaxVisibleSize.y);
-    updateView();
-    updateScrollbar();
-    mBackground.setSize(mOutsideSize);
 }
 
 bool GuiScrollArea::onPress(sf::Vector2f position, bool processed)
@@ -173,6 +165,17 @@ bool GuiScrollArea::onMouseWheelScroll(float delta, bool /*processed*/)
         return true;
     }
     return false;
+}
+
+void GuiScrollArea::applyDesign()
+{
+    GuiWidget::applyDesign();
+    mSprite.setPosition(mInsidePosition);
+    mSprite.setTextureRect(sf::IntRect(0, 0, mInsideSize.x, mInsideSize.y));
+    mOffset = clamp(mOffset, 0.0f, mContentSize.y - mMaxVisibleSize.y);
+    updateView();
+    updateScrollbar();
+    mBackground.setSize(mOutsideSize);
 }
 
 void GuiScrollArea::applyStyle()

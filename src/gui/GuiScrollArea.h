@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <SFML/Graphics.hpp>
@@ -37,13 +37,14 @@ public:
     virtual bool updateMouseButtonReleased(sf::Vector2f position, bool processed) override;
 
 protected:
-    virtual void onOutsidePositionChanged() override;
-    virtual void onContentSizeChanged(sf::Vector2f contentSize) override;
+    virtual void onContentWidthChanged(float contentWidth) override;
+    virtual void onContentHeightChanged(float contentHeight) override;
     virtual bool onPress(sf::Vector2f position, bool processed) override;
     virtual bool onRelease(sf::Vector2f position, bool processed) override;
     virtual bool onHover(sf::Vector2f position, bool processed) override;
     virtual bool onMouseWheelScroll(float delta, bool processed) override;
 
+    virtual void applyDesign() override;
     virtual void applyStyle() override;
 
 private:

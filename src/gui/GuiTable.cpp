@@ -59,8 +59,14 @@ void GuiTable::updateSize()
     updateTable();
     for (GuiWidget* widget : mChildren)
         widget->setFixedInsideSize(widget->getContentSize());
-    if (!mFixedSize)
-        onContentSizeChanged(getContentSize());
+    if (mSizePolicies[0] == SizePolicy::FIT_TO_CONTENT || mSizePolicies[1] == SizePolicy::FIT_TO_CONTENT)
+    {
+        sf::Vector2f contentSize = getContentSize();
+        if (mSizePolicies[0] == SizePolicy::FIT_TO_CONTENT && contentSize.x != mInsideSize.x)
+            onContentWidthChanged(contentSize.x);
+        if (mSizePolicies[1] == SizePolicy::FIT_TO_CONTENT && contentSize.y != mInsideSize.y)
+            onContentHeightChanged(contentSize.y);
+    }
 }
 
 GuiWidget* GuiTable::getCell(std::size_t i, std::size_t j)

@@ -21,13 +21,14 @@
 #include "resource/XmlDocument.h"
 
 GuiWidget::GuiWidget(const XmlDocument* style) :
-    mRoot(false), mParent(nullptr), mVisible(true), mFixedSize(false), mStyle(style), mDirty(true)
+    mRoot(false), mParent(nullptr), mSizePolicies{SizePolicy::FIT_TO_CONTENT, SizePolicy::FIT_TO_CONTENT},
+    mVisible(true), mStyle(style), mDirty(true)
 {
     applyStyle();
 }
 
-GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nullptr), mFixedSize(false),
-    mDirty(true)
+GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nullptr),
+    mSizePolicies{SizePolicy::FIT_TO_CONTENT, SizePolicy::FIT_TO_CONTENT}, mDirty(true)
 {
     mVisible = properties.get<bool>("visible", true);
     setOutsidePosition(properties.get<sf::Vector2f>("position", sf::Vector2f()));
@@ -70,6 +71,7 @@ void GuiWidget::update()
 {
     updateSize();
     updateAlignment();
+    updateDesign();
     resetDirty();
 }
 
@@ -115,21 +117,6 @@ const std::vector<GuiWidget*>& GuiWidget::getChildren() const
     return mChildren;
 }
 
-void GuiWidget::setGui(Gui* gui)
-{
-    mGui = gui;
-}
-
-const std::string& GuiWidget::getName() const
-{
-    return mName;
-}
-
-void GuiWidget::setName(const std::string& name)
-{
-    mName = name;
-}
-
 bool GuiWidget::isRoot() const
 {
     return mRoot;
@@ -153,6 +140,21 @@ const GuiWidget* GuiWidget::getParent() const
 void GuiWidget::setParent(GuiWidget* parent)
 {
     mParent = parent;
+}
+
+void GuiWidget::setGui(Gui* gui)
+{
+    mGui = gui;
+}
+
+const std::string& GuiWidget::getName() const
+{
+    return mName;
+}
+
+void GuiWidget::setName(const std::string& name)
+{
+    mName = name;
 }
 
 void GuiWidget::setLayout(std::unique_ptr<GuiLayout> layout)
@@ -199,18 +201,20 @@ sf::Vector2f GuiWidget::getInsideSize() const
 
 void GuiWidget::setFixedInsideSize(sf::Vector2f size)
 {
-    if (!mFixedSize || size != mInsideSize)
+    if (!(mSizePolicies[0] == SizePolicy::FIXED && mSizePolicies[1] == SizePolicy::FIXED) ||
+        size != mInsideSize)
     {
         mInsideSize = size;
-        mFixedSize = true;
-        onInsideSizeFixed();
+        mSizePolicies.fill(SizePolicy::FIXED);
+        onInsideWidthFixed();
+        onInsideHeightFixed();
         setDirty();
     }
 }
 
 void GuiWidget::fitInsideSizeToContent()
 {
-    mFixedSize = false;
+    mSizePolicies.fill(SizePolicy::FIT_TO_CONTENT);;
     setDirty();
 }
 
@@ -228,8 +232,14 @@ void GuiWidget::updateSize()
 {
     for (GuiWidget* widget : mChildren)
         widget->updateSize();
-    if (!mFixedSize)
-        onContentSizeChanged(getContentSize());
+    if (mSizePolicies[0] == SizePolicy::FIT_TO_CONTENT || mSizePolicies[1] == SizePolicy::FIT_TO_CONTENT)
+    {
+        sf::Vector2f contentSize = getContentSize();
+        if (mSizePolicies[0] == SizePolicy::FIT_TO_CONTENT && contentSize.x != mInsideSize.x)
+            onContentWidthChanged(contentSize.x);
+        if (mSizePolicies[1] == SizePolicy::FIT_TO_CONTENT && contentSize.y != mInsideSize.y)
+            onContentHeightChanged(contentSize.y);
+    }
 }
 
 void GuiWidget::setBackgroundColor(const sf::Color& color)
@@ -331,14 +341,6 @@ void GuiWidget::setDirty()
         mParent->setDirty();
 }
 
-void GuiWidget::updateAlignment()
-{
-    if (mLayout)
-        mLayout->align();
-    for (GuiWidget* widget : mChildren)
-        widget->updateAlignment();
-}
-
 void GuiWidget::resetDirty()
 {
     mDirty = false;
@@ -349,20 +351,33 @@ void GuiWidget::resetDirty()
 void GuiWidget::onOutsidePositionChanged()
 {
     mInsidePosition = mOutsidePosition;
-    mBackground.setPosition(mOutsidePosition);
 }
 
-void GuiWidget::onContentSizeChanged(sf::Vector2f contentSize)
+void GuiWidget::onContentWidthChanged(float contentWidth)
 {
-    mOutsideSize = contentSize;
-    mInsideSize = contentSize;
-    mBackground.setSize(mOutsideSize);
+    mOutsideSize.x = contentWidth;
+    mInsideSize.x = contentWidth;
 }
 
-void GuiWidget::onInsideSizeFixed()
+void GuiWidget::onContentHeightChanged(float contentHeight)
 {
-    mOutsideSize = mInsideSize;
-    mBackground.setSize(mOutsideSize);
+    mOutsideSize.y = contentHeight;
+    mInsideSize.y = contentHeight;
+}
+
+void GuiWidget::onInsideWidthFixed()
+{
+    mOutsideSize.x = mInsideSize.x;
+}
+
+void GuiWidget::onInsideHeightFixed()
+{
+    mOutsideSize.y = mInsideSize.y;
+}
+
+void GuiWidget::onViewportSizeChanged(sf::Vector2u viewportSize)
+{
+
 }
 
 bool GuiWidget::onHover(sf::Vector2f /*position*/, bool /*processed*/)
@@ -395,6 +410,21 @@ bool GuiWidget::onText(sf::Uint32 /*unicode*/, bool /*processed*/)
     return false;
 }
 
+void GuiWidget::updateAlignment()
+{
+    if (mLayout)
+        mLayout->align();
+    for (GuiWidget* widget : mChildren)
+        widget->updateAlignment();
+}
+
+void GuiWidget::updateDesign()
+{
+    applyDesign();
+    for (GuiWidget* widget : mChildren)
+        widget->updateDesign();
+}
+
 void GuiWidget::applyStyle()
 {
     sf::Color backgroundColor = sf::Color::Transparent;
@@ -413,4 +443,10 @@ void GuiWidget::applyStyle()
     mBackground.setFillColor(backgroundColor);
     mBackground.setOutlineColor(borderColor);
     mBackground.setOutlineThickness(borderSize);
+}
+
+void GuiWidget::applyDesign()
+{
+    mBackground.setPosition(mOutsidePosition);
+    mBackground.setSize(mOutsideSize);
 }

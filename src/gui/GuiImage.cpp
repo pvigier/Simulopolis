@@ -55,23 +55,15 @@ void GuiImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void GuiImage::setSprite(sf::Sprite sprite)
 {
     mSprite = sprite;
-    mSprite.setPosition(mInsidePosition);
-    sf::Vector2f textureSize(mSprite.getTexture()->getSize());
-    mSprite.setScale(mInsideSize.x / textureSize.x, mInsideSize.y / textureSize.y);
+    applyDesign();
 }
 
-void GuiImage::onOutsidePositionChanged()
+void GuiImage::applyDesign()
 {
-    GuiWidget::onOutsidePositionChanged();
     mSprite.setPosition(mInsidePosition);
-}
-
-void GuiImage::onInsideSizeFixed()
-{
-    GuiWidget::onInsideSizeFixed();
     if (mSprite.getTexture())
     {
-        sf::Vector2f textureSize(mSprite.getTexture()->getSize());
+        sf::Vector2f textureSize(mSprite.getTextureRect().width, mSprite.getTextureRect().height);
         mSprite.setScale(mInsideSize.x / textureSize.x, mInsideSize.y / textureSize.y);
     }
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include "SFML/Graphics.hpp"
@@ -34,8 +34,7 @@ public:
     void setSprite(sf::Sprite sprite);
 
 protected:
-    virtual void onOutsidePositionChanged() override;
-    virtual void onInsideSizeFixed() override;
+    virtual void applyDesign() override;
 
 private:
     sf::Sprite mSprite;

@@ -51,30 +51,6 @@ bool GuiWindow::hasGuiEvents() const
     return true;
 }
 
-void GuiWindow::onOutsidePositionChanged()
-{
-    GuiWidget::onOutsidePositionChanged();
-    mBar.setPosition(mInsidePosition);
-    sf::Vector2f barSize = sf::Vector2f(mBar.getGlobalBounds().width, mBar.getGlobalBounds().height);
-    // Close button
-    sf::Vector2f closeButtonSize = sf::Vector2f(mCloseButton.getGlobalBounds().width, mCloseButton.getGlobalBounds().height);
-    mCloseButton.setPosition(mInsidePosition + sf::Vector2f(mInsideSize.x - closeButtonSize.x * 1.5f, -barSize.y * 0.5f - closeButtonSize.y * 0.5f));
-    // Title
-    sf::Vector2f titleSize = sf::Vector2f(mTitle.getGlobalBounds().width, mTitle.getCharacterSize() * 5 / 4);
-    sf::Vector2i titlePosition(mInsidePosition + sf::Vector2f(mInsideSize.x * 0.5f, -barSize.y * 0.5f) - titleSize * 0.5f);
-    mTitle.setPosition(sf::Vector2f(titlePosition));
-}
-
-void GuiWindow::onContentSizeChanged(sf::Vector2f contentSize)
-{
-    mInsideSize = contentSize;
-    mBar.setSize(sf::Vector2f(mInsideSize.x, mStyle->getFirstChildByName("bar").getAttributes().get<float>("height")));
-    mCloseButton.setRadius(mStyle->getFirstChildByName("bar").getAttributes().get<float>("height") * 0.25f);
-    // Update position
-    onOutsidePositionChanged();
-    GuiWidget::onContentSizeChanged(mInsideSize); // To remove
-}
-
 bool GuiWindow::onHover(sf::Vector2f position, bool /*processed*/)
 {
     if (mOnMove)
@@ -104,6 +80,23 @@ bool GuiWindow::onRelease(sf::Vector2f position, bool processed)
         notify(Message::create(MessageType::GUI, GuiEvent(this, GuiEvent::Type::WINDOW_CLOSED)));
     mCloseButton.setFillColor(mStyle->getFirstChildByName("close").getAttributes().get<sf::Color>("color"));
     return mBackground.getGlobalBounds().contains(position) || mBar.getGlobalBounds().contains(position);
+}
+
+void GuiWindow::applyDesign()
+{
+    GuiWidget::applyDesign();
+    // Bar
+    mBar.setPosition(mInsidePosition);
+    sf::Vector2f barSize(mInsideSize.x, mStyle->getFirstChildByName("bar").getAttributes().get<float>("height"));
+    mBar.setSize(barSize);
+    // Close button
+    mCloseButton.setRadius(mStyle->getFirstChildByName("bar").getAttributes().get<float>("height") * 0.25f);
+    sf::Vector2f closeButtonSize = sf::Vector2f(mCloseButton.getGlobalBounds().width, mCloseButton.getGlobalBounds().height);
+    mCloseButton.setPosition(mInsidePosition + sf::Vector2f(mInsideSize.x - closeButtonSize.x * 1.5f, -barSize.y * 0.5f - closeButtonSize.y * 0.5f));
+    // Title
+    sf::Vector2f titleSize = sf::Vector2f(mTitle.getGlobalBounds().width, mTitle.getCharacterSize() * 5 / 4);
+    sf::Vector2i titlePosition(mInsidePosition + sf::Vector2f(mInsideSize.x * 0.5f, -barSize.y * 0.5f) - titleSize * 0.5f);
+    mTitle.setPosition(sf::Vector2f(titlePosition));
 }
 
 void GuiWindow::applyStyle()
