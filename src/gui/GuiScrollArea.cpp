@@ -26,7 +26,6 @@ GuiScrollArea::GuiScrollArea(sf::Vector2i maxVisibleSize, const XmlDocument* sty
     mRenderTexture.create(mMaxVisibleSize.x, mMaxVisibleSize.y);
     mSprite.setTexture(mRenderTexture.getTexture());
     mScrollButton.setSize(sf::Vector2f(8.0f, 32.0f));
-    applyStyle();
 }
 
 GuiScrollArea::GuiScrollArea(const PropertyList& properties) :
@@ -36,7 +35,6 @@ GuiScrollArea::GuiScrollArea(const PropertyList& properties) :
     mRenderTexture.create(mMaxVisibleSize.x, mMaxVisibleSize.y);
     mSprite.setTexture(mRenderTexture.getTexture());
     mScrollButton.setSize(sf::Vector2f(8.0f, 32.0f));
-    applyStyle();
 }
 
 void GuiScrollArea::render(sf::RenderTarget& target, sf::RenderStates states, const sf::FloatRect& viewport) const
@@ -180,6 +178,7 @@ void GuiScrollArea::applyDesign()
 
 void GuiScrollArea::applyStyle()
 {
+    GuiWidget::applyStyle();
     if (mStyle)
     {
         sf::Color scrollbarColor = mStyle->getFirstChildByName("scrollbar").getAttributes().get<sf::Color>("color", sf::Color());

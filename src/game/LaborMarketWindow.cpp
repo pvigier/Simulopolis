@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "LaborMarketWindow.h"
 #include "message/MessageBus.h"
 #include "resource/StylesheetManager.h"
@@ -59,6 +59,7 @@ void LaborMarketWindow::setUp()
     add(scrollArea);
     setOutsidePosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
+    applyStyle();
 
     // Add items
     for (const Market<Work>::Item* item : mMarket->getItems())

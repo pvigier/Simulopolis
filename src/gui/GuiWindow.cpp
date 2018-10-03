@@ -22,14 +22,12 @@
 GuiWindow::GuiWindow(const std::string& title, const XmlDocument* style) :
     GuiWidget(style), mOnMove(false)
 {
-    applyStyle();
     setTitle(title);
 }
 
 GuiWindow::GuiWindow(const PropertyList& properties) :
     GuiWidget(properties)
 {
-    applyStyle();
     setTitle(properties.get("title"));
 }
 
@@ -101,6 +99,7 @@ void GuiWindow::applyDesign()
 
 void GuiWindow::applyStyle()
 {
+    GuiWidget::applyStyle();
     // Bar
     mBar.setOrigin(0.0f, mStyle->getFirstChildByName("bar").getAttributes().get<float>("height") +
         mStyle->getFirstChildByName("border").getAttributes().get<int>("size"));

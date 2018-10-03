@@ -24,7 +24,7 @@ GuiWidget::GuiWidget(const XmlDocument* style) :
     mRoot(false), mParent(nullptr), mSizePolicies{SizePolicy::FIT_TO_CONTENT, SizePolicy::FIT_TO_CONTENT},
     mVisible(true), mStyle(style), mDirty(true)
 {
-    applyStyle();
+
 }
 
 GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nullptr),
@@ -46,7 +46,6 @@ GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nul
     }
     // Style
     mStyle = properties.get<const XmlDocument*>("style", nullptr);
-    applyStyle();
 }
 
 GuiWidget::~GuiWidget()
@@ -72,7 +71,7 @@ void GuiWidget::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void GuiWidget::setUp()
 {
-
+    applyStyle();
 }
 
 void GuiWidget::update()
