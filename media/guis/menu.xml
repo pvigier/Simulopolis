@@ -1,7 +1,7 @@
 <gui>
-	<image name="background" texture="background" />
-    <image size="800 600" name="city" />
-    <widget size="800 600">
+	<image name="background" texture="background" size="100% 100%"/>
+    <image size="100% 100%" name="city" />
+    <widget size="100% 100%">
         <widget>
             <text text="Welcome to" characterSize="32" style="titleText" />
             <text text="Simulopolis" characterSize="110" style="titleText" />

@@ -1,274 +1,277 @@
 <gui>
 	<text name="selectionCostText" characterSize="12" style="costText" />
-    <widget size="800 28" style="bar">
-        <button name="openImmigrantsWindowButton" style="button">
-            <text text="Immigrants" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
-        </button>
-        <button name="openCitizensWindowButton" style="button">
-            <text text="Citizens" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
-        </button>
-        <button name="openCompaniesWindowButton" style="button">
-            <text text="Companies" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
-        </button>
-        <button name="openRentalMarketWindowButton" style="button">
-            <text text="Rental market" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
-        </button>
-        <button name="openLaborMarketWindowButton" style="button">
-            <text text="Labor market" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
-        </button>
-        <button name="openGoodsMarketWindowButton" style="button">
-            <text text="Goods market" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
-        </button>
-        <button name="openPoliciesWindowButton" style="button">
-            <text text="Policies" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
-        </button>
-        <hboxlayout vAlignment="center" spacing="2" margins="4 0 4 0" />
-    </widget>
-    <widget name="rightMenu" position="608 28">
-        <widget name="tabButtons">
-            <button name="landscapeTabButton" size="32 32" style="button">
-                <image texture="grass" size="24 18" />
-                <hboxlayout hAlignment="center" vAlignment="center" />
-            </button>
-            <button name="housingTabButton" size="32 32" style="button">
-                <image texture="housing" rect="0 85 132 132" size="26 26" />
-                <hboxlayout hAlignment="center" vAlignment="center" />
-            </button>
-            <button name="industryTabButton" size="32 32" style="button">
-                <image texture="industry" rect="0 85 132 132" size="26 26" />
-                <hboxlayout hAlignment="center" vAlignment="center" />
-            </button>
-            <button name="businessTabButton" size="32 32" style="button">
-                <image texture="business" rect="0 85 132 132" size="26 26" />
-                <hboxlayout hAlignment="center" vAlignment="center" />
-            </button>
-            <button name="healthTabButton" size="32 32" style="button">
-                <image texture="hospital" rect="0 85 132 132" size="26 26" />
-                <hboxlayout hAlignment="center" vAlignment="center" />
-            </button>
-            <button name="securityTabButton" size="32 32" style="button">
-                <image texture="police" rect="0 85 132 132" size="26 26" />
-                <hboxlayout hAlignment="center" vAlignment="center" />
-            </button>
-            <button name="educationTabButton" size="32 32" style="button">
-                <image texture="school" rect="0 85 132 132" size="26 26" />
-                <hboxlayout hAlignment="center" vAlignment="center" />
-            </button>
-            <button name="roadTabButton" size="32 32" style="button">
-                <image texture="road" rect="0 0 132 101" size="26 20" />
-                <hboxlayout hAlignment="center" vAlignment="center" />
-            </button>
-            <vboxlayout hAlignment="left" vAlignment="top" />
-        </widget>
-        <tabwidget name="tabs">
-            <widget name="landscapeTab" size="160 556" style="tabs">
-                <widget size="128 12" name="landscapeTitle">
-                    <text text="Landscape" characterSize="12" style="darkText" />
-                    <hboxlayout hAlignment="center" />
-                </widget>
-                <widget name="landscapeButtons">
-                    <button name="grassButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="forestButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="waterButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <hboxlayout spacing="2" />
-                </widget>
-                <vboxlayout margins="13 13 13 13" spacing="16" />
-            </widget>
-            <widget name="housingTab" size="160 556" style="tabs">
-                <widget size="128 12" name="housingTitle">
-                    <text text="Housing" characterSize="12" style="darkText" />
-                    <hboxlayout hAlignment="center" />
-                </widget>
-                <widget size="128 200" name="housingButtons">
-                    <button name="CFBHousingButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="affordableHousingButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="apartmentBuildingButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="villaButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <hboxlayout spacing="2" />
-                </widget>
-                <vboxlayout margins="13 13 13 13" spacing="16" />
-            </widget>
-            <widget name="industryTab" size="160 556" style="tabs">
-                <widget size="128 12" name="industryTitle">
-                    <text text="Industry" characterSize="12" style="darkText" />
-                    <hboxlayout hAlignment="center" />
-                </widget>
-                <widget name="industryButtons">
-                    <button name="CFBIndustryButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="farmButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="factoryButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="workshopButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <hboxlayout spacing="2" />
-                </widget>
-                <vboxlayout margins="13 13 13 13" spacing="16" />
-            </widget>
-            <widget name="businessTab" size="160 556" style="tabs">
-                <widget size="128 12" name="businessTitle">
-                    <text text="Business" characterSize="12" style="darkText" />
-                    <hboxlayout hAlignment="center" />
-                </widget>
-                <widget name="businessButtons">
-                    <button name="CFBBusinessButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="groceryButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="mallButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="boutiqueButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <hboxlayout spacing="2" />
-                </widget>
-                <vboxlayout margins="13 13 13 13" spacing="16" />
-            </widget>
-            <widget name="healthTab" size="160 556" style="tabs">
-                <widget size="128 12" name="healthTitle">
-                    <text text="Health" characterSize="12" style="darkText" />
-                    <hboxlayout hAlignment="center" />
-                </widget>
-                <widget name="healthButtons">
-                    <button name="CFBHospitalButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="hospitalButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <hboxlayout spacing="2" />
-                </widget>
-                <vboxlayout margins="13 13 13 13" spacing="16" />
-            </widget>
-            <widget name="securityTab" size="160 556" style="tabs">
-                <widget size="128 12" name="securityTitle">
-                    <text text="Security" characterSize="12" style="darkText" />
-                    <hboxlayout hAlignment="center" />
-                </widget>
-                <widget name="securityButtons">
-                    <button name="CFBPoliceStationButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="policeStationButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <hboxlayout spacing="2" />
-                </widget>
-                <vboxlayout margins="13 13 13 13" spacing="16" />
-            </widget>
-            <widget name="educationTab" size="160 556" style="tabs">
-                <widget size="128 12" name="educationTitle">
-                    <text text="Education" characterSize="12" style="darkText" />
-                    <hboxlayout hAlignment="center" />
-                </widget>
-                <widget name="educationButtons">
-                    <button name="CFBSchoolButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="schoolButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <hboxlayout spacing="2" />
-                </widget>
-                <vboxlayout margins="13 13 13 13" spacing="16" />
-            </widget>
-            <widget name="roadTab" size="160 556" style="tabs">
-                <widget size="128 12" name="roadTitle">
-                    <text text="Roads" characterSize="12" style="darkText" />
-                    <hboxlayout hAlignment="center" />
-                </widget>
-                <widget name="roadButtons">
-                    <button name="roadGrassButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="roadSidewalkButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <button name="bridgeButton" size="32 32" style="button">
-                        <image size="26 26" />
-                        <hboxlayout hAlignment="center" vAlignment="center" />
-                    </button>
-                    <hboxlayout spacing="2" />
-                </widget>
-                <vboxlayout margins="13 13 13 13" spacing="16" />
-            </widget>
-            <overlaplayout />
-        </tabwidget>
-        <hboxlayout hAlignment="right" vAlignment="top" />
-    </widget>
-    <widget name="infoBar" position="0 584" size="800 16">
-        <widget name="dateButton" size="160 16" style="button">
-            <text name="dateText" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" />
-        </widget>
-        <widget name="fundsButton" size="160 16" style="button">
-            <text name="fundsText" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" />
-        </widget>
-        <widget name="populationButton" size="160 16" style="button">
-            <text name="populationText" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" />
-        </widget>
-        <widget name="happinessButton" size="160 16" style="button">
-            <text name="happinessText" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" />
-        </widget>
-        <widget name="currentTileButton" size="160 16" style="button">
-            <text name="currentTileText" characterSize="12" style="darkText" />
-            <hboxlayout hAlignment="center" vAlignment="center" />
-        </widget>
-        <hboxlayout vAlignment="bottom" />
+	<widget size="100% 100%">
+		<widget width="100%" height="4.67%" style="bar">
+			<button name="openImmigrantsWindowButton" style="button">
+				<text text="Immigrants" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+			</button>
+			<button name="openCitizensWindowButton" style="button">
+				<text text="Citizens" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+			</button>
+			<button name="openCompaniesWindowButton" style="button">
+				<text text="Companies" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+			</button>
+			<button name="openRentalMarketWindowButton" style="button">
+				<text text="Rental market" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+			</button>
+			<button name="openLaborMarketWindowButton" style="button">
+				<text text="Labor market" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+			</button>
+			<button name="openGoodsMarketWindowButton" style="button">
+				<text text="Goods market" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+			</button>
+			<button name="openPoliciesWindowButton" style="button">
+				<text text="Policies" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+			</button>
+			<hboxlayout vAlignment="center" spacing="2" margins="4 0 4 0" />
+		</widget>
+		<widget name="rightMenu">
+			<widget name="tabButtons">
+				<button name="landscapeTabButton" size="32 32" style="button">
+					<image texture="grass" size="24 18" />
+					<hboxlayout hAlignment="center" vAlignment="center" />
+				</button>
+				<button name="housingTabButton" size="32 32" style="button">
+					<image texture="housing" rect="0 85 132 132" size="26 26" />
+					<hboxlayout hAlignment="center" vAlignment="center" />
+				</button>
+				<button name="industryTabButton" size="32 32" style="button">
+					<image texture="industry" rect="0 85 132 132" size="26 26" />
+					<hboxlayout hAlignment="center" vAlignment="center" />
+				</button>
+				<button name="businessTabButton" size="32 32" style="button">
+					<image texture="business" rect="0 85 132 132" size="26 26" />
+					<hboxlayout hAlignment="center" vAlignment="center" />
+				</button>
+				<button name="healthTabButton" size="32 32" style="button">
+					<image texture="hospital" rect="0 85 132 132" size="26 26" />
+					<hboxlayout hAlignment="center" vAlignment="center" />
+				</button>
+				<button name="securityTabButton" size="32 32" style="button">
+					<image texture="police" rect="0 85 132 132" size="26 26" />
+					<hboxlayout hAlignment="center" vAlignment="center" />
+				</button>
+				<button name="educationTabButton" size="32 32" style="button">
+					<image texture="school" rect="0 85 132 132" size="26 26" />
+					<hboxlayout hAlignment="center" vAlignment="center" />
+				</button>
+				<button name="roadTabButton" size="32 32" style="button">
+					<image texture="road" rect="0 0 132 101" size="26 20" />
+					<hboxlayout hAlignment="center" vAlignment="center" />
+				</button>
+				<vboxlayout hAlignment="left" vAlignment="top" />
+			</widget>
+			<tabwidget name="tabs">
+				<widget name="landscapeTab" width="20%" height="92.67%"style="tabs">
+					<widget size="128 12" name="landscapeTitle">
+						<text text="Landscape" characterSize="12" style="darkText" />
+						<hboxlayout hAlignment="center" />
+					</widget>
+					<widget name="landscapeButtons">
+						<button name="grassButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="forestButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="waterButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<hboxlayout spacing="2" />
+					</widget>
+					<vboxlayout margins="13 13 13 13" spacing="16" />
+				</widget>
+				<widget name="housingTab" width="20%" height="92.67%"style="tabs">
+					<widget size="128 12" name="housingTitle">
+						<text text="Housing" characterSize="12" style="darkText" />
+						<hboxlayout hAlignment="center" />
+					</widget>
+					<widget size="128 200" name="housingButtons">
+						<button name="CFBHousingButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="affordableHousingButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="apartmentBuildingButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="villaButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<hboxlayout spacing="2" />
+					</widget>
+					<vboxlayout margins="13 13 13 13" spacing="16" />
+				</widget>
+				<widget name="industryTab" width="20%" height="92.67%"style="tabs">
+					<widget size="128 12" name="industryTitle">
+						<text text="Industry" characterSize="12" style="darkText" />
+						<hboxlayout hAlignment="center" />
+					</widget>
+					<widget name="industryButtons">
+						<button name="CFBIndustryButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="farmButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="factoryButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="workshopButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<hboxlayout spacing="2" />
+					</widget>
+					<vboxlayout margins="13 13 13 13" spacing="16" />
+				</widget>
+				<widget name="businessTab" width="20%" height="92.67%"style="tabs">
+					<widget size="128 12" name="businessTitle">
+						<text text="Business" characterSize="12" style="darkText" />
+						<hboxlayout hAlignment="center" />
+					</widget>
+					<widget name="businessButtons">
+						<button name="CFBBusinessButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="groceryButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="mallButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="boutiqueButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<hboxlayout spacing="2" />
+					</widget>
+					<vboxlayout margins="13 13 13 13" spacing="16" />
+				</widget>
+				<widget name="healthTab" width="20%" height="92.67%"style="tabs">
+					<widget size="128 12" name="healthTitle">
+						<text text="Health" characterSize="12" style="darkText" />
+						<hboxlayout hAlignment="center" />
+					</widget>
+					<widget name="healthButtons">
+						<button name="CFBHospitalButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="hospitalButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<hboxlayout spacing="2" />
+					</widget>
+					<vboxlayout margins="13 13 13 13" spacing="16" />
+				</widget>
+				<widget name="securityTab" width="20%" height="92.67%"style="tabs">
+					<widget size="128 12" name="securityTitle">
+						<text text="Security" characterSize="12" style="darkText" />
+						<hboxlayout hAlignment="center" />
+					</widget>
+					<widget name="securityButtons">
+						<button name="CFBPoliceStationButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="policeStationButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<hboxlayout spacing="2" />
+					</widget>
+					<vboxlayout margins="13 13 13 13" spacing="16" />
+				</widget>
+				<widget name="educationTab" width="20%" height="92.67%"style="tabs">
+					<widget size="128 12" name="educationTitle">
+						<text text="Education" characterSize="12" style="darkText" />
+						<hboxlayout hAlignment="center" />
+					</widget>
+					<widget name="educationButtons">
+						<button name="CFBSchoolButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="schoolButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<hboxlayout spacing="2" />
+					</widget>
+					<vboxlayout margins="13 13 13 13" spacing="16" />
+				</widget>
+				<widget name="roadTab" width="20%" height="92.67%"style="tabs">
+					<widget size="128 12" name="roadTitle">
+						<text text="Roads" characterSize="12" style="darkText" />
+						<hboxlayout hAlignment="center" />
+					</widget>
+					<widget name="roadButtons">
+						<button name="roadGrassButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="roadSidewalkButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<button name="bridgeButton" size="32 32" style="button">
+							<image size="26 26" />
+							<hboxlayout hAlignment="center" vAlignment="center" />
+						</button>
+						<hboxlayout spacing="2" />
+					</widget>
+					<vboxlayout margins="13 13 13 13" spacing="16" />
+				</widget>
+				<overlaplayout />
+			</tabwidget>
+			<hboxlayout hAlignment="right" vAlignment="top" />
+		</widget>
+		<widget name="infoBar" width="100%" height="2.67%">
+			<widget name="dateButton" width="20%" height="2.67%" style="button">
+				<text name="dateText" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" />
+			</widget>
+			<widget name="fundsButton" width="20%" height="2.67%" style="button">
+				<text name="fundsText" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" />
+			</widget>
+			<widget name="populationButton" width="20%" height="2.67%" style="button">
+				<text name="populationText" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" />
+			</widget>
+			<widget name="happinessButton" width="20%" height="2.67%" style="button">
+				<text name="happinessText" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" />
+			</widget>
+			<widget name="currentTileButton" width="20%" height="2.67%" style="button">
+				<text name="currentTileText" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" />
+			</widget>
+			<hboxlayout vAlignment="bottom" />
+		</widget>
+		<vboxlayout hAlignment="right"/>
     </widget>
 </gui>

@@ -1,10 +1,10 @@
 <gui>
-	<image name="background" texture="background" />
-    <image name="city" />
-    <widget size="800 600">
-        <widget style="tabs" size="600 400">
+	<image name="background" texture="background" size="100% 100%"/>
+    <image name="city" size="100% 100%"/>
+    <widget size="100% 100%">
+        <widget style="tabs" size="75% 66.7%">
 			<text text="Settings" characterSize="32" style="darkText" />
-			<widget size="500 220">
+            <widget size="62.5% 36.7%">
                 <button name="fullscreenButton" size="192 36" style="button">
 					<text name="fullscreenText" text="Fullscreen: off" characterSize="24" style="darkText" />
 					<hboxlayout hAlignment="center" vAlignment="center" />

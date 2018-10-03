@@ -1,11 +1,11 @@
 <gui>
-	<image name="background" texture="background" />
-    <image name="city" />
-    <widget size="800 600">
-        <widget style="tabs" size="600 400">
+	<image name="background" texture="background" size="100% 100%"/>
+    <image name="city" size="100% 100%"/>
+    <widget size="100% 100%">
+        <widget style="tabs" size="75% 66.7%">
 			<text text="Select city" characterSize="32" style="darkText" />
-            <widget size="500 220" style="frame">
-				<scrollarea name="scrollArea" maxVisibleSize="500 220" style="scrollarea">
+            <widget size="62.5% 36.7%" style="frame">
+				<scrollarea name="scrollArea" maxVisibleSize="62.5% 36.7%" style="scrollarea">
 					<vboxlayout />
 				</scrollarea>
                 <vboxlayout />
