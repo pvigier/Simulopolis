@@ -16,6 +16,7 @@
  */
 
 #include "gui/GuiWidget.h"
+#include "gui/Gui.h"
 #include "gui/GuiLayout.h"
 #include "resource/PropertyList.h"
 #include "resource/XmlDocument.h"
@@ -36,13 +37,28 @@ GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nul
     setOutsidePosition(properties.get<sf::Vector2f>("position", sf::Vector2f()));
     // Size
     if (properties.has("size"))
-        setFixedInsideSize(properties.get<sf::Vector2f>("size"));
+    {
+        if (properties.isPercentageVector("size"))
+            setInsideSizeRatio(properties.getPercentageVector("size"));
+        else
+            setFixedInsideSize(properties.get<sf::Vector2f>("size"));
+    }
     else
     {
         if (properties.has("width"))
-            setFixedInsideWidth(properties.get<float>("width"));
+        {
+            if (properties.isPercentage("width"))
+                setInsideWidthRatio(properties.getPercentage("width"));
+            else
+                setFixedInsideWidth(properties.get<float>("width"));
+        }
         if (properties.has("height"))
-            setFixedInsideHeight(properties.get<float>("height"));
+        {
+            if (properties.isPercentage("height"))
+                setInsideHeightRatio(properties.getPercentage("height"));
+            else
+                setFixedInsideHeight(properties.get<float>("height"));
+        }
     }
     // Style
     mStyle = properties.get<const XmlDocument*>("style", nullptr);
@@ -236,20 +252,68 @@ void GuiWidget::setFixedInsideSize(sf::Vector2f size)
 
 void GuiWidget::fitInsideWidthToContent()
 {
-    mSizePolicies[0] = SizePolicy::FIT_TO_CONTENT;
-    setDirty();
+    if (mSizePolicies[0] != SizePolicy::FIT_TO_CONTENT)
+    {
+        mSizePolicies[0] = SizePolicy::FIT_TO_CONTENT;
+        setDirty();
+    }
 }
 
 void GuiWidget::fitInsideHeightToContent()
 {
-    mSizePolicies[1] = SizePolicy::FIT_TO_CONTENT;
-    setDirty();
+    if (mSizePolicies[1] != SizePolicy::FIT_TO_CONTENT)
+    {
+        mSizePolicies[1] = SizePolicy::FIT_TO_CONTENT;
+        setDirty();
+    }
 }
 
 void GuiWidget::fitInsideSizeToContent()
 {
     fitInsideWidthToContent();
     fitInsideHeightToContent();
+}
+
+void GuiWidget::setInsideWidthRatio(float widthRatio)
+{
+    if (mSizePolicies[0] != SizePolicy::RATIO || widthRatio != mInsideSizeRatio.x)
+    {
+        mInsideSizeRatio.x = widthRatio;
+        mSizePolicies[0] = SizePolicy::RATIO;
+        setDirty();
+    }
+}
+
+void GuiWidget::setInsideHeightRatio(float heightRatio)
+{
+    if (mSizePolicies[1] != SizePolicy::RATIO || heightRatio != mInsideSizeRatio.y)
+    {
+        mInsideSizeRatio.y = heightRatio;
+        mSizePolicies[1] = SizePolicy::RATIO;
+        setDirty();
+    }
+}
+
+void GuiWidget::setInsideSizeRatio(sf::Vector2f sizeRatio)
+{
+    setInsideWidthRatio(sizeRatio.x);
+    setInsideHeightRatio(sizeRatio.y);
+}
+
+void GuiWidget::setViewportSize(sf::Vector2u viewportSize)
+{
+    if (mSizePolicies[0] == SizePolicy::RATIO)
+    {
+        onViewportWidthChanged(viewportSize.x);
+        setDirty();
+    }
+    if (mSizePolicies[1] == SizePolicy::RATIO)
+    {
+        onViewportHeightChanged(viewportSize.y);
+        setDirty();
+    }
+    for (GuiWidget* widget : mChildren)
+        widget->setViewportSize(viewportSize);
 }
 
 sf::Vector2f GuiWidget::getContentSize() const
@@ -409,9 +473,16 @@ void GuiWidget::onInsideHeightFixed()
     mOutsideSize.y = mInsideSize.y;
 }
 
-void GuiWidget::onViewportSizeChanged(sf::Vector2u viewportSize)
+void GuiWidget::onViewportWidthChanged(unsigned int viewportWidth)
 {
+    mInsideSize.x = viewportWidth * mInsideSizeRatio.x;
+    mOutsideSize.x = mInsideSize.x;
+}
 
+void GuiWidget::onViewportHeightChanged(unsigned int viewportHeight)
+{
+    mInsideSize.y = viewportHeight * mInsideSizeRatio.y;
+    mOutsideSize.y = mInsideSize.y;
 }
 
 bool GuiWidget::onHover(sf::Vector2f /*position*/, bool /*processed*/)

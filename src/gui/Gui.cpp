@@ -210,6 +210,9 @@ const sf::View& Gui::getView()
 void Gui::setViewportSize(sf::Vector2u viewportSize)
 {
     mView = sf::View(sf::FloatRect(sf::Vector2f(), sf::Vector2f(viewportSize)));
+    // Propagate to widgets
+    for (GuiWidget* widget : mRootWidgets)
+        widget->setViewportSize(viewportSize);
 }
 
 void Gui::setVisible(bool visible)

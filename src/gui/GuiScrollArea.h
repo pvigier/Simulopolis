@@ -32,6 +32,8 @@ public:
     virtual void render(sf::RenderTarget& target, sf::RenderStates states, const sf::FloatRect& viewport) const override;
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    virtual void setViewportSize(sf::Vector2u viewportSize) override;
+
     virtual bool updateMouseMoved(sf::Vector2f position, bool processed) override;
     virtual bool updateMouseButtonPressed(sf::Vector2f position, bool processed) override;
     virtual bool updateMouseButtonReleased(sf::Vector2f position, bool processed) override;
@@ -39,6 +41,7 @@ public:
 protected:
     virtual void onContentWidthChanged(float contentWidth) override;
     virtual void onContentHeightChanged(float contentHeight) override;
+
     virtual bool onPress(sf::Vector2f position, bool processed) override;
     virtual bool onRelease(sf::Vector2f position, bool processed) override;
     virtual bool onHover(sf::Vector2f position, bool processed) override;
@@ -51,7 +54,9 @@ private:
     bool mFocus;
     bool mScrollbarVisible;
     float mOffset;
+    std::array<SizePolicy, 2> mMaxVisibleSizePolicies;
     sf::Vector2i mMaxVisibleSize;
+    sf::Vector2f mMaxVisibleSizeRatio;
     sf::Vector2f mContentSize;
     mutable sf::RenderTexture mRenderTexture;
     sf::Sprite mSprite;

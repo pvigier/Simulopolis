@@ -20,21 +20,31 @@
 #include "util/common.h"
 
 GuiScrollArea::GuiScrollArea(sf::Vector2i maxVisibleSize, const XmlDocument* style) :
-    GuiWidget(style), mFocus(false), mScrollbarVisible(false), mOffset(0.0f), mMaxVisibleSize(maxVisibleSize),
-    mScrolling(false), mAnchor(0.0f)
+    GuiWidget(style), mFocus(false), mScrollbarVisible(false), mOffset(0.0f),
+    mMaxVisibleSizePolicies{SizePolicy::FIT_TO_CONTENT, SizePolicy::FIT_TO_CONTENT},
+    mMaxVisibleSize(maxVisibleSize), mScrolling(false), mAnchor(0.0f)
 {
     mRenderTexture.create(mMaxVisibleSize.x, mMaxVisibleSize.y);
-    mSprite.setTexture(mRenderTexture.getTexture());
-    mScrollButton.setSize(sf::Vector2f(8.0f, 32.0f));
 }
 
 GuiScrollArea::GuiScrollArea(const PropertyList& properties) :
-    GuiWidget(properties), mFocus(false), mScrollbarVisible(false), mOffset(0.0f), mScrolling(false), mAnchor(0.0f)
+    GuiWidget(properties), mFocus(false), mScrollbarVisible(false), mOffset(0.0f),
+    mMaxVisibleSizePolicies{SizePolicy::FIT_TO_CONTENT, SizePolicy::FIT_TO_CONTENT},
+    mScrolling(false), mAnchor(0.0f)
 {
-    mMaxVisibleSize = properties.get<sf::Vector2i>("maxVisibleSize", sf::Vector2i());
-    mRenderTexture.create(mMaxVisibleSize.x, mMaxVisibleSize.y);
-    mSprite.setTexture(mRenderTexture.getTexture());
-    mScrollButton.setSize(sf::Vector2f(8.0f, 32.0f));
+    if (properties.has("maxVisibleSize"))
+    {
+        if (properties.isPercentageVector("maxVisibleSize"))
+        {
+            mMaxVisibleSizeRatio = properties.getPercentageVector("maxVisibleSize");
+            mMaxVisibleSizePolicies.fill(SizePolicy::RATIO);
+        }
+        else
+        {
+            mMaxVisibleSize = properties.get<sf::Vector2i>("maxVisibleSize");
+            mRenderTexture.create(mMaxVisibleSize.x, mMaxVisibleSize.y);
+        }
+    }
 }
 
 void GuiScrollArea::render(sf::RenderTarget& target, sf::RenderStates states, const sf::FloatRect& viewport) const
@@ -61,6 +71,38 @@ void GuiScrollArea::draw(sf::RenderTarget& target, sf::RenderStates states) cons
         target.draw(mLine.data(), 2, sf::Lines);
         target.draw(mScrollButton);
     }
+}
+
+void GuiScrollArea::setViewportSize(sf::Vector2u viewportSize)
+{
+    // Inside size
+    if (mSizePolicies[0] == SizePolicy::RATIO)
+    {
+        onViewportWidthChanged(viewportSize.x);
+        setDirty();
+    }
+    if (mSizePolicies[1] == SizePolicy::RATIO)
+    {
+        onViewportHeightChanged(viewportSize.y);
+        setDirty();
+    }
+    // Tmp
+    if (mMaxVisibleSizePolicies[0] == SizePolicy::RATIO || mMaxVisibleSizePolicies[1] == SizePolicy::RATIO)
+    {
+        if (mMaxVisibleSizePolicies[0] == SizePolicy::RATIO)
+        {
+            mMaxVisibleSize.x = viewportSize.x * mMaxVisibleSizeRatio.x;
+            setDirty();
+        }
+        if (mMaxVisibleSizePolicies[1] == SizePolicy::RATIO)
+        {
+            mMaxVisibleSize.y = viewportSize.y * mMaxVisibleSizeRatio.y;
+            setDirty();
+        }
+        mRenderTexture.create(mMaxVisibleSize.x, mMaxVisibleSize.y);
+    }
+    for (GuiWidget* widget : mChildren)
+        widget->setViewportSize(viewportSize);
 }
 
 bool GuiScrollArea::updateMouseMoved(sf::Vector2f position, bool processed)
@@ -169,8 +211,10 @@ void GuiScrollArea::applyDesign()
 {
     GuiWidget::applyDesign();
     mSprite.setPosition(mInsidePosition);
+    mSprite.setTexture(mRenderTexture.getTexture());
     mSprite.setTextureRect(sf::IntRect(0, 0, mInsideSize.x, mInsideSize.y));
     mOffset = clamp(mOffset, 0.0f, mContentSize.y - mMaxVisibleSize.y);
+    mScrollButton.setSize(sf::Vector2f(8.0f, 32.0f));
     updateView();
     updateScrollbar();
     mBackground.setSize(mOutsideSize);

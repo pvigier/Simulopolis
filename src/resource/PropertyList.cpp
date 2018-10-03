@@ -24,8 +24,8 @@
 TextureManager* PropertyList::sTextureManager = nullptr;
 FontManager* PropertyList::sFontManager = nullptr;
 StylesheetManager* PropertyList::sStylesheetManager = nullptr;
-std::regex PropertyList::mPercentageRegex("[0-9]+%");
-std::regex PropertyList::mPercentageVectorRegex("[0-9]+% [0-9]+%");
+std::regex PropertyList::mPercentageRegex("[0-9]+(.[0-9]*)?%");
+std::regex PropertyList::mPercentageVectorRegex("[0-9]+(.[0-9]*)?% [0-9]+(.[0-9]*)?%");
 
 PropertyList::PropertyList()
 {

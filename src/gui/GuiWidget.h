@@ -73,6 +73,10 @@ public:
     void fitInsideWidthToContent();
     void fitInsideHeightToContent();
     void fitInsideSizeToContent();
+    void setInsideWidthRatio(float widthRatio);
+    void setInsideHeightRatio(float heightRatio);
+    void setInsideSizeRatio(sf::Vector2f sizeRatio);
+    virtual void setViewportSize(sf::Vector2u viewportSize); // Virtual only for GuiScrollArea
     sf::Vector2f getContentSize() const;
     sf::FloatRect getOutsideRect() const;
     virtual void updateSize(); // Public only for GuiTable
@@ -129,7 +133,8 @@ protected:
     virtual void onContentHeightChanged(float contentHeight);
     virtual void onInsideWidthFixed();
     virtual void onInsideHeightFixed();
-    virtual void onViewportSizeChanged(sf::Vector2u viewportSize);
+    virtual void onViewportWidthChanged(unsigned int viewportWidth);
+    virtual void onViewportHeightChanged(unsigned int viewportHeight);
 
     // Input
     virtual bool onHover(sf::Vector2f position, bool processed);
