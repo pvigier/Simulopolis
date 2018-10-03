@@ -67,7 +67,11 @@ public:
     sf::Vector2f getInsidePosition() const;
     sf::Vector2f getOutsideSize() const;
     sf::Vector2f getInsideSize() const;
+    void setFixedInsideWidth(float width);
+    void setFixedInsideHeight(float height);
     void setFixedInsideSize(sf::Vector2f size);
+    void fitInsideWidthToContent();
+    void fitInsideHeightToContent();
     void fitInsideSizeToContent();
     sf::Vector2f getContentSize() const;
     sf::FloatRect getOutsideRect() const;

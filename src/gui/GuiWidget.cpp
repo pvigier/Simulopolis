@@ -30,13 +30,21 @@ GuiWidget::GuiWidget(const XmlDocument* style) :
 GuiWidget::GuiWidget(const PropertyList& properties) : mRoot(false), mParent(nullptr),
     mSizePolicies{SizePolicy::FIT_TO_CONTENT, SizePolicy::FIT_TO_CONTENT}, mDirty(true)
 {
+    // Visibility
     mVisible = properties.get<bool>("visible", true);
+    // Position
     setOutsidePosition(properties.get<sf::Vector2f>("position", sf::Vector2f()));
-    mInsideSize = properties.get<sf::Vector2f>("size", sf::Vector2f());
+    // Size
     if (properties.has("size"))
-        setFixedInsideSize(mInsideSize);
+        setFixedInsideSize(properties.get<sf::Vector2f>("size"));
     else
-        fitInsideSizeToContent();
+    {
+        if (properties.has("width"))
+            setFixedInsideWidth(properties.get<float>("width"));
+        if (properties.has("height"))
+            setFixedInsideHeight(properties.get<float>("height"));
+    }
+    // Style
     mStyle = properties.get<const XmlDocument*>("style", nullptr);
     applyStyle();
 }
@@ -199,23 +207,50 @@ sf::Vector2f GuiWidget::getInsideSize() const
     return mInsideSize;
 }
 
-void GuiWidget::setFixedInsideSize(sf::Vector2f size)
+void GuiWidget::setFixedInsideWidth(float width)
 {
-    if (!(mSizePolicies[0] == SizePolicy::FIXED && mSizePolicies[1] == SizePolicy::FIXED) ||
-        size != mInsideSize)
+    if (!mSizePolicies[0] == SizePolicy::FIXED || width != mInsideSize.x)
     {
-        mInsideSize = size;
-        mSizePolicies.fill(SizePolicy::FIXED);
+        mInsideSize.x = width;
+        mSizePolicies[0] = SizePolicy::FIXED;
         onInsideWidthFixed();
+        setDirty();
+    }
+}
+
+void GuiWidget::setFixedInsideHeight(float height)
+{
+    if (!mSizePolicies[1] == SizePolicy::FIXED || height != mInsideSize.y)
+    {
+        mInsideSize.y = height;
+        mSizePolicies[1] = SizePolicy::FIXED;
         onInsideHeightFixed();
         setDirty();
     }
 }
 
+void GuiWidget::setFixedInsideSize(sf::Vector2f size)
+{
+    setFixedInsideWidth(size.x);
+    setFixedInsideHeight(size.y);
+}
+
+void GuiWidget::fitInsideWidthToContent()
+{
+    mSizePolicies[0] = SizePolicy::FIT_TO_CONTENT;
+    setDirty();
+}
+
+void GuiWidget::fitInsideHeightToContent()
+{
+    mSizePolicies[1] = SizePolicy::FIT_TO_CONTENT;
+    setDirty();
+}
+
 void GuiWidget::fitInsideSizeToContent()
 {
-    mSizePolicies.fill(SizePolicy::FIT_TO_CONTENT);;
-    setDirty();
+    fitInsideWidthToContent();
+    fitInsideHeightToContent();
 }
 
 sf::Vector2f GuiWidget::getContentSize() const
