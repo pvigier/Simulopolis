@@ -19,6 +19,7 @@
 
 #include <unordered_map>
 #include <sstream>
+#include <regex>
 #include <SFML/Graphics.hpp>
 #include "gui/GuiLayout.h"
 
@@ -63,10 +64,18 @@ public:
 
     const std::unordered_map<std::string, std::string>& getProperties() const;
 
+    // Percentages
+    bool isPercentage(const std::string& name) const;
+    float getPercentage(const std::string& name) const;
+    bool isPercentageVector(const std::string& name) const;
+    sf::Vector2f getPercentageVector(const std::string& name) const;
+
 private:
     static TextureManager* sTextureManager;
     static FontManager* sFontManager;
     static StylesheetManager* sStylesheetManager;
+    static std::regex mPercentageRegex;
+    static std::regex mPercentageVectorRegex;
 
     std::unordered_map<std::string, std::string> mProperties;
 };

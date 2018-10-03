@@ -24,6 +24,8 @@
 TextureManager* PropertyList::sTextureManager = nullptr;
 FontManager* PropertyList::sFontManager = nullptr;
 StylesheetManager* PropertyList::sStylesheetManager = nullptr;
+std::regex PropertyList::mPercentageRegex("[0-9]+%");
+std::regex PropertyList::mPercentageVectorRegex("[0-9]+% [0-9]+%");
 
 PropertyList::PropertyList()
 {
@@ -181,4 +183,28 @@ GuiLayout::Margins PropertyList::get(const std::string& name) const
 const std::unordered_map<std::string, std::string>& PropertyList::getProperties() const
 {
     return mProperties;
+}
+
+bool PropertyList::isPercentage(const std::string& name) const
+{
+    return std::regex_match(mProperties.at(name), mPercentageRegex);
+}
+
+float PropertyList::getPercentage(const std::string& name) const
+{
+    const std::string& value = mProperties.at(name);
+    return std::stof(value.substr(0, value.size() - 1)) / 100.0f;
+}
+
+bool PropertyList::isPercentageVector(const std::string& name) const
+{
+    return std::regex_match(mProperties.at(name), mPercentageVectorRegex);
+}
+
+sf::Vector2f PropertyList::getPercentageVector(const std::string& name) const
+{
+    const std::string& value = mProperties.at(name);
+    std::size_t iPercentage = value.find('%');
+    return sf::Vector2f(std::stof(value.substr(0, iPercentage)) / 100.0f,
+        std::stof(value.substr(iPercentage + 1)) / 100.0f);
 }
