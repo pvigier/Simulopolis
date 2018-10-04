@@ -74,8 +74,8 @@ private:
     void drawCity(sf::RenderTexture& renderTexture, const sf::View& view, bool background);
     void generatePreview(sf::Vector2u size, sf::Texture& texture);
 
+    // Gui
     void createGui();
-    void stopSelecting();
     void generateMenuTextures();
     void openPersonWindow(const Person& person);
     void openBuildingWindow(const Building& building);
@@ -89,6 +89,11 @@ private:
     bool updateTabs(const std::string& name);
     bool updateTile(const std::string& name);
 
+    // Editor
+    void startPanning(sf::Vector2i mousePosition);
+    void pan(sf::Vector2i mousePosition);
+    void startSelecting(sf::Vector2f gamePosition);
+    void stopSelecting();
     void zoom(float factor);
 
     Money getCost(Tile::Type type) const;

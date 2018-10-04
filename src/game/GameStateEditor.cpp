@@ -95,7 +95,7 @@ void GameStateEditor::handleMessages()
     mGui->handleMessages();
 
     sf::Vector2i mousePosition = sInputEngine->getMousePosition();
-    sf::Vector2f gamePos = sRenderEngine->mapPixelToCoords(mousePosition, mGameView);
+    sf::Vector2f gamePosition = sRenderEngine->mapPixelToCoords(mousePosition, mGameView);
     while (!mMailbox.isEmpty())
     {
         Message message = mMailbox.get();
@@ -120,19 +120,22 @@ void GameStateEditor::handleMessages()
                         mGui->setVisible(!mGui->isVisible());
                     else if (event.key.code == sf::Keyboard::S)
                         mRenderTexture.getTexture().copyToImage().saveToFile("screenshot.png");
+                    else if (event.key.code == sf::Keyboard::LControl &&
+                        sInputEngine->isButtonPressed(sf::Mouse::Button::Left))
+                        startPanning(mousePosition);
+                    break;
+                case sf::Event::KeyReleased:
+                    if (event.key.code == sf::Keyboard::LControl)
+                        mActionState = ActionState::NONE;
                     break;
                 case sf::Event::MouseMoved:
                     // Pan the camera
                     if (mActionState == ActionState::PANNING)
-                    {
-                        sf::Vector2f delta(mousePosition - mPanningAnchor);
-                        mGameView.move(-1.0f * delta * mZoomLevel);
-                        mPanningAnchor = mousePosition;
-                    }
+                        pan(mousePosition);
                     // Select tiles
                     else if(mActionState == ActionState::SELECTING)
                     {
-                        mSelectionEnd = mCity.toTileIndices(gamePos);
+                        mSelectionEnd = mCity.toTileIndices(gamePosition);
                         mCity.getMap().deselect();
                         if (mCurrentTile == Tile::Type::GRASS)
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, ~(Tile::Category::WATER | Tile::Category::BRIDGE));
@@ -159,10 +162,7 @@ void GameStateEditor::handleMessages()
                     if (!event.processed && event.mouseButton.button == sf::Mouse::Middle)
                     {
                         if (mActionState != ActionState::PANNING)
-                        {
-                            mActionState = ActionState::PANNING;
-                            mPanningAnchor = mousePosition;
-                        }
+                            startPanning(mousePosition);
                         stopSelecting();
                     }
                     else if (event.mouseButton.button == sf::Mouse::Right)
@@ -173,12 +173,13 @@ void GameStateEditor::handleMessages()
                     }
                     else if (!event.processed && event.mouseButton.button == sf::Mouse::Left)
                     {
+                        // Panning
+                        if (mActionState != ActionState::PANNING &&
+                            sInputEngine->isKeyPressed(sf::Keyboard::LControl))
+                            startPanning(mousePosition);
                         // Select map tile
-                        if (mActionState != ActionState::SELECTING)
-                        {
-                            mActionState = ActionState::SELECTING;
-                            mSelectionStart = mCity.toTileIndices(gamePos);
-                        }
+                        else if (mActionState != ActionState::SELECTING)
+                            startSelecting(gamePosition);
                     }
                     break;
                 case sf::Event::MouseButtonReleased:
@@ -197,7 +198,7 @@ void GameStateEditor::handleMessages()
                     }
                     else if (!event.processed && event.mouseButton.button == sf::Mouse::Right)
                     {
-                        City::Intersection intersection = mCity.intersect(gamePos);
+                        City::Intersection intersection = mCity.intersect(gamePosition);
                         if (intersection.type == City::Intersection::Type::CAR)
                             openPersonWindow(*intersection.car->getDriver());
                         else if (intersection.type == City::Intersection::Type::BUILDING)
@@ -468,6 +469,25 @@ void GameStateEditor::createGui()
     // Window managers
     mWindowManagers.emplace_back(mMailbox.getId());
     mWindowManagers.emplace_back(mMailbox.getId());
+}
+
+void GameStateEditor::startPanning(sf::Vector2i mousePosition)
+{
+    mActionState = ActionState::PANNING;
+    mPanningAnchor = mousePosition;
+}
+
+void GameStateEditor::pan(sf::Vector2i mousePosition)
+{
+    sf::Vector2f delta(mousePosition - mPanningAnchor);
+    mGameView.move(-1.0f * delta * mZoomLevel);
+    mPanningAnchor = mousePosition;
+}
+
+void GameStateEditor::startSelecting(sf::Vector2f gamePosition)
+{
+    mActionState = ActionState::SELECTING;
+    mSelectionStart = mCity.toTileIndices(gamePosition);
 }
 
 void GameStateEditor::stopSelecting()
