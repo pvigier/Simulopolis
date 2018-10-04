@@ -27,6 +27,7 @@
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiInput.h"
+#include "gui/GuiImage.h"
 #include "gui/GuiEvent.h"
 #include "pcg/noise.h"
 #include "util/format.h"
@@ -114,6 +115,11 @@ void GameStateNewCity::exit()
 {
     // Unsubscribe to inputs
     mGui->setListen(false);
+}
+
+void GameStateNewCity::setCityTexture(const sf::Texture& texture)
+{
+    mGui->get<GuiImage>("city")->setSprite(sf::Sprite(texture));
 }
 
 uint64_t GameStateNewCity::getSeed() const

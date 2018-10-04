@@ -35,6 +35,8 @@ public:
     virtual void draw() override;
     virtual void exit() override;
 
+    void setCityTexture(const sf::Texture& texture);
+
     std::string getSelectedCity() const;
 
 private:

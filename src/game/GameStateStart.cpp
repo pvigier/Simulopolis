@@ -30,7 +30,7 @@
 #include "gui/GuiImage.h"
 #include "gui/GuiEvent.h"
 
-GameStateStart::GameStateStart(bool resume) : mGui(sGuiManager->getGui("menu"))
+GameStateStart::GameStateStart(bool resume) : mGui(sGuiManager->getGui("menu")), mCityTexture(nullptr)
 {
     // Gui
     createGui(resume);
@@ -122,9 +122,15 @@ void GameStateStart::exit()
     mGui->setListen(false);
 }
 
+const sf::Texture* GameStateStart::getCityTexture() const
+{
+    return mCityTexture;
+}
+
 void GameStateStart::setCityTexture(const sf::Texture& texture)
 {
     mGui->get<GuiImage>("city")->setSprite(sf::Sprite(texture));
+    mCityTexture = &texture;
 }
 
 void GameStateStart::createGui(bool resume)

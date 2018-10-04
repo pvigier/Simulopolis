@@ -34,6 +34,8 @@ public:
     virtual void draw() override;
     virtual void exit() override;
 
+    void setCityTexture(const sf::Texture& texture);
+
     uint64_t getSeed() const;
     std::string getCityName() const;
 

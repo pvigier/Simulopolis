@@ -152,14 +152,32 @@ void Game::handleMessages()
                     popState();
                     break;
                 case GameState::Event::Type::OPEN_NEW_CITY_SCREEN:
-                    pushState(std::make_unique<GameStateNewCity>());
+                {
+                    std::unique_ptr<GameStateNewCity> state = std::make_unique<GameStateNewCity>();
+                    const sf::Texture* texture = static_cast<GameStateStart*>(peekState())->getCityTexture();
+                    if (texture)
+                        state->setCityTexture(*texture);
+                    pushState(std::move(state));
                     break;
+                }
                 case GameState::Event::Type::OPEN_CITY_LOADING_SCREEN:
-                    pushState(std::make_unique<GameStateLoadCity>());
+                {
+                    std::unique_ptr<GameStateLoadCity> state = std::make_unique<GameStateLoadCity>();
+                    const sf::Texture* texture = static_cast<GameStateStart*>(peekState())->getCityTexture();
+                    if (texture)
+                        state->setCityTexture(*texture);
+                    pushState(std::move(state));
                     break;
+                }
                 case GameState::Event::Type::OPEN_SETTINGS:
-                    pushState(std::make_unique<GameStateSettings>());
+                {
+                    std::unique_ptr<GameStateSettings> state = std::make_unique<GameStateSettings>();
+                    const sf::Texture* texture = static_cast<GameStateStart*>(peekState())->getCityTexture();
+                    if (texture)
+                        state->setCityTexture(*texture);
+                    pushState(std::move(state));
                     break;
+                }
                 case GameState::Event::Type::NEW_GAME:
                 {
                     GameStateNewCity* newCityState = static_cast<GameStateNewCity*>(peekState());

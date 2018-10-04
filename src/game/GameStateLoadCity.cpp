@@ -140,6 +140,11 @@ void GameStateLoadCity::exit()
     mGui->setListen(false);
 }
 
+void GameStateLoadCity::setCityTexture(const sf::Texture& texture)
+{
+    mGui->get<GuiImage>("city")->setSprite(sf::Sprite(texture));
+}
+
 std::string GameStateLoadCity::getSelectedCity() const
 {
     return static_cast<GuiText*>(mButtons[mISelected]->getChildren()[1])->getString().toAnsiString();

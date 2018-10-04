@@ -24,6 +24,7 @@
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiText.h"
+#include "gui/GuiImage.h"
 #include "gui/GuiEvent.h"
 #include "util/format.h"
 
@@ -123,6 +124,11 @@ void GameStateSettings::exit()
 {
     // Unsubscribe to inputs
     mGui->setListen(false);
+}
+
+void GameStateSettings::setCityTexture(const sf::Texture& texture)
+{
+    mGui->get<GuiImage>("city")->setSprite(sf::Sprite(texture));
 }
 
 void GameStateSettings::createGui()
