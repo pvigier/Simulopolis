@@ -217,7 +217,6 @@ void GuiScrollArea::applyDesign()
     mScrollButton.setSize(sf::Vector2f(8.0f, 32.0f));
     updateView();
     updateScrollbar();
-    mBackground.setSize(mOutsideSize);
 }
 
 void GuiScrollArea::applyStyle()
@@ -236,7 +235,8 @@ void GuiScrollArea::applyStyle()
 
 void GuiScrollArea::updateView()
 {
-    mRenderTexture.setView(sf::View(sf::FloatRect(mInsidePosition.x, mOffset + mInsidePosition.y, mMaxVisibleSize.x, mMaxVisibleSize.y)));
+    mRenderTexture.setView(sf::View(sf::FloatRect(int(mInsidePosition.x), int(mOffset + mInsidePosition.y),
+        mMaxVisibleSize.x, mMaxVisibleSize.y))); // Use integral origin to prevent blurry texts
 }
 
 void GuiScrollArea::updateScrollbar()

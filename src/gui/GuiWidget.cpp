@@ -530,6 +530,12 @@ void GuiWidget::updateDesign()
         widget->updateDesign();
 }
 
+void GuiWidget::applyDesign()
+{
+    mBackground.setPosition(mOutsidePosition);
+    mBackground.setSize(mOutsideSize);
+}
+
 void GuiWidget::applyStyle()
 {
     sf::Color backgroundColor = sf::Color::Transparent;
@@ -548,10 +554,4 @@ void GuiWidget::applyStyle()
     mBackground.setFillColor(backgroundColor);
     mBackground.setOutlineColor(borderColor);
     mBackground.setOutlineThickness(borderSize);
-}
-
-void GuiWidget::applyDesign()
-{
-    mBackground.setPosition(mOutsidePosition);
-    mBackground.setSize(mOutsideSize);
 }
