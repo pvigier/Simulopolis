@@ -21,7 +21,7 @@ if(${CMAKE_CXX_PLATFORM_ID} MATCHES "MinGW")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows")
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 	message("GCC")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-pie -no-pie -Wl,-rpath,.")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-pie -no-pie -Wl,-rpath,lib")
 endif()
 
 # Files
@@ -39,6 +39,12 @@ set(EXECUTABLE_NAME "Simulopolis")
 add_executable(${EXECUTABLE_NAME} ${SRCS} ${HEADERS})
 
 # Libraries
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+	#message("Static linking")
+	#set(SFML_STATIC_LIBRARIES TRUE)
+	#set(Boost_USE_STATIC_LIBS ON)
+endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules" ${CMAKE_MODULE_PATH})
 
