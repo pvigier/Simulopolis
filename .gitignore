@@ -51,3 +51,9 @@ build/
 # Saves
 saves/*
 !saves/saves.xml
+
+# License
+preamble.txt
+
+# Dependencies
+lib
