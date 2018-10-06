@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
+#include <SFML/Graphics/RenderTarget.hpp>
 #include "city/Car.h"
 #include "resource/TextureManager.h"
 #include "resource/ImageManager.h"

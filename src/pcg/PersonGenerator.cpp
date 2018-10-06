@@ -17,6 +17,8 @@
 
 #include "PersonGenerator.h"
 #include <fstream>
+#include "pcg/RandomGenerator.h"
+#include "city/Person.h"
 
 PersonGenerator::PersonGenerator(RandomGenerator& generator) : mGenerator(generator)
 {

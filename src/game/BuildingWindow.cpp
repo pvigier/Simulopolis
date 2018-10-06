@@ -23,6 +23,8 @@
 #include "city/Industry.h"
 #include "city/Business.h"
 #include "city/Service.h"
+#include "city/Lease.h"
+#include "city/Work.h"
 #include "gui/Gui.h"
 #include "gui/GuiText.h"
 #include "gui/GuiImage.h"

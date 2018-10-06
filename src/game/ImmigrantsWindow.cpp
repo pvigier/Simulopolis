@@ -32,8 +32,8 @@
 ImmigrantsWindow::ImmigrantsWindow(Id listenerId, MessageBus* messageBus, StylesheetManager* stylesheetManager, City& city) :
     GuiWindow("Immigrants", stylesheetManager->getStylesheet("window")), mListenerId(listenerId),
     mMessageBus(messageBus), mStylesheetManager(stylesheetManager), mCity(city),
-    mRentalMarket(static_cast<const Market<Lease>*>(mCity.getMarket(MarketBase::Type::RENT))),
-    mLaborMarket(static_cast<const Market<Work>*>(mCity.getMarket(MarketBase::Type::WORK))),
+    mRentalMarket(static_cast<const Market<Lease>*>(mCity.getMarket(MarketType::RENT))),
+    mLaborMarket(static_cast<const Market<Work>*>(mCity.getMarket(MarketType::WORK))),
     mTable(nullptr), mRentalMarketText(nullptr), mLaborMarketText(nullptr), mAttractivenessText(nullptr)
 {
     mMessageBus->addMailbox(mMailbox);

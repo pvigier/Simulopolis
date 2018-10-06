@@ -25,19 +25,19 @@ class Person;
 class Company;
 class Building;
 
+enum class WorkType{FARMER, WORKER, CRAFTSPERSON, GROCER, CASHIER, SALESPERSON, MANAGER, DOCTOR, TEACHER, POLICE_OFFICER};
+enum class Qualification : int {NON_QUALIFIED = 0, QUALIFIED, HIGHLY_QUALIFIED};
+
 class Work
 {
 public:
-    enum class Type{FARMER, WORKER, CRAFTSPERSON, GROCER, CASHIER, SALESPERSON, MANAGER, DOCTOR, TEACHER, POLICE_OFFICER};
-    enum class Qualification : int {NON_QUALIFIED = 0, QUALIFIED, HIGHLY_QUALIFIED};
+    static std::string typeToString(WorkType type);
+    static Qualification typeToQualification(WorkType type);
+    static float typeToArduousness(WorkType type);
 
-    static std::string typeToString(Type type);
-    static Qualification typeToQualification(Type type);
-    static float typeToArduousness(Type type);
+    Work(WorkType type, Building* workplace);
 
-    Work(Type type, Building* workplace);
-
-    Type getType() const;
+    WorkType getType() const;
     Qualification getQualification() const;
     const Person* getEmployee() const;
     std::string getEmployeeName() const;
@@ -52,7 +52,7 @@ public:
     void setWorkedThisMonth(bool workedThisMonth);
 
 private:
-    Type mType;
+    WorkType mType;
     Qualification mQualification;
     Person* mEmployee;
     Company* mEmployer;

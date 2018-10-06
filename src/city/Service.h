@@ -14,18 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <set>
 #include "city/Building.h"
-#include "city/Work.h"
+
+class Work;
+enum class WorkType;
 
 class Service : public Building
 {
 public:
     Service(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbEmployees,
-        Work::Type employeeType);
+        WorkType employeeType);
     virtual ~Service();
 
     virtual std::unique_ptr<Tile> clone() const override;

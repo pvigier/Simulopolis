@@ -26,6 +26,8 @@
 #include "city/Business.h"
 #include "city/Service.h"
 #include "city/Company.h"
+#include "city/Work.h"
+#include "city/Good.h"
 
 std::vector<std::unique_ptr<Tile>> Map::sTileAtlas;
 
@@ -46,19 +48,19 @@ void Map::loadTiles()
     sTileAtlas.emplace_back(std::make_unique<Housing>("housing", Tile::Type::APARTMENT_BUILDING, 2, 2, 0.3f));
     sTileAtlas.emplace_back(std::make_unique<Housing>("housing", Tile::Type::VILLA, 1, 1, 0.4f));
     sTileAtlas.emplace_back(std::make_unique<CallForBids>("grass", Tile::Type::CFB_INDUSTRY, sf::Color(192, 188, 170)));
-    sTileAtlas.emplace_back(std::make_unique<Industry>("industry", Tile::Type::FARM, 1, Good::Type::NECESSARY, 16, 2, Work::Type::FARMER));
-    sTileAtlas.emplace_back(std::make_unique<Industry>("industry", Tile::Type::FACTORY, 3, Good::Type::NORMAL, 2, 6, Work::Type::WORKER));
-    sTileAtlas.emplace_back(std::make_unique<Industry>("industry", Tile::Type::WORKSHOP, 2, Good::Type::LUXURY, 0.5, 4, Work::Type::CRAFTSPERSON));
+    sTileAtlas.emplace_back(std::make_unique<Industry>("industry", Tile::Type::FARM, 1, GoodType::NECESSARY, 16, 2, WorkType::FARMER));
+    sTileAtlas.emplace_back(std::make_unique<Industry>("industry", Tile::Type::FACTORY, 3, GoodType::NORMAL, 2, 6, WorkType::WORKER));
+    sTileAtlas.emplace_back(std::make_unique<Industry>("industry", Tile::Type::WORKSHOP, 2, GoodType::LUXURY, 0.5, 4, WorkType::CRAFTSPERSON));
     sTileAtlas.emplace_back(std::make_unique<CallForBids>("grass", Tile::Type::CFB_BUSINESS, sf::Color(178, 83, 83)));
-    sTileAtlas.emplace_back(std::make_unique<Business>("business", Tile::Type::GROCERY, 1, Good::Type::NECESSARY, 16, 16, 2, Work::Type::GROCER));
-    sTileAtlas.emplace_back(std::make_unique<Business>("business", Tile::Type::MALL, 3, Good::Type::NORMAL, 12, 2, 6, Work::Type::CASHIER));
-    sTileAtlas.emplace_back(std::make_unique<Business>("business", Tile::Type::BOUTIQUE, 2, Good::Type::LUXURY, 4, 0.5, 4, Work::Type::SALESPERSON));
+    sTileAtlas.emplace_back(std::make_unique<Business>("business", Tile::Type::GROCERY, 1, GoodType::NECESSARY, 16, 16, 2, WorkType::GROCER));
+    sTileAtlas.emplace_back(std::make_unique<Business>("business", Tile::Type::MALL, 3, GoodType::NORMAL, 12, 2, 6, WorkType::CASHIER));
+    sTileAtlas.emplace_back(std::make_unique<Business>("business", Tile::Type::BOUTIQUE, 2, GoodType::LUXURY, 4, 0.5, 4, WorkType::SALESPERSON));
     sTileAtlas.emplace_back(std::make_unique<CallForBids>("grass", Tile::Type::CFB_HOSPITAL, sf::Color(255, 255, 255)));
-    sTileAtlas.emplace_back(std::make_unique<Service>("hospital", Tile::Type::HOSPITAL, 2, 1, Work::Type::DOCTOR));
+    sTileAtlas.emplace_back(std::make_unique<Service>("hospital", Tile::Type::HOSPITAL, 2, 1, WorkType::DOCTOR));
     sTileAtlas.emplace_back(std::make_unique<CallForBids>("grass", Tile::Type::CFB_POLICE_STATION, sf::Color(49, 122, 187)));
-    sTileAtlas.emplace_back(std::make_unique<Service>("police", Tile::Type::POLICE_STATION, 2, 1, Work::Type::POLICE_OFFICER));
+    sTileAtlas.emplace_back(std::make_unique<Service>("police", Tile::Type::POLICE_STATION, 2, 1, WorkType::POLICE_OFFICER));
     sTileAtlas.emplace_back(std::make_unique<CallForBids>("grass", Tile::Type::CFB_SCHOOL, sf::Color(207, 156, 104)));
-    sTileAtlas.emplace_back(std::make_unique<Service>("school", Tile::Type::SCHOOL, 2, 1, Work::Type::TEACHER));
+    sTileAtlas.emplace_back(std::make_unique<Service>("school", Tile::Type::SCHOOL, 2, 1, WorkType::TEACHER));
     sTileAtlas.emplace_back(std::make_unique<Road>("road", Tile::Type::ROAD_GRASS));
     sTileAtlas.emplace_back(std::make_unique<Road>("road", Tile::Type::ROAD_SIDEWALK));
     sTileAtlas.emplace_back(std::make_unique<Road>("road", Tile::Type::BRIDGE));

@@ -28,6 +28,8 @@
 #include "gui/GuiOverlapLayout.h"
 #include "gui/GuiEvent.h"
 #include "city/City.h"
+#include "city/Company.h"
+#include "city/Work.h"
 #include "util/format.h"
 #include "util/regex.h"
 
@@ -82,9 +84,9 @@ void PoliciesWindow::setUp()
     publicServiceTab->setFixedInsideSize(sf::Vector2f(400.0f, 100.0f));
     publicServiceTab->setLayout(std::make_unique<GuiVBoxLayout>(4.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
 
-    createLine(publicServiceTab, "Salary of a non-qualified job: $", format("%.2f", mCity.getCompany().getSalary(Work::Qualification::NON_QUALIFIED)), "\\d{0,9}(\\.\\d{0,2})?");
-    createLine(publicServiceTab, "Salary of a qualified job: $", format("%.2f", mCity.getCompany().getSalary(Work::Qualification::QUALIFIED)), "\\d{0,9}(\\.\\d{0,2})?");
-    createLine(publicServiceTab, "Salary of a highly qualified job: $", format("%.2f", mCity.getCompany().getSalary(Work::Qualification::HIGHLY_QUALIFIED)), "\\d{0,9}(\\.\\d{0,2})?");
+    createLine(publicServiceTab, "Salary of a non-qualified job: $", format("%.2f", mCity.getCompany().getSalary(Qualification::NON_QUALIFIED)), "\\d{0,9}(\\.\\d{0,2})?");
+    createLine(publicServiceTab, "Salary of a qualified job: $", format("%.2f", mCity.getCompany().getSalary(Qualification::QUALIFIED)), "\\d{0,9}(\\.\\d{0,2})?");
+    createLine(publicServiceTab, "Salary of a highly qualified job: $", format("%.2f", mCity.getCompany().getSalary(Qualification::HIGHLY_QUALIFIED)), "\\d{0,9}(\\.\\d{0,2})?");
 
     // Tax policy
     GuiWidget* taxPolicyTab = mGui->createWithDefaultName<GuiWidget>(mStylesheetManager->getStylesheet("windowTabs"));
@@ -123,9 +125,9 @@ void PoliciesWindow::tearDown()
     mCity.getCompany().setRent(Tile::Type::VILLA, Money(std::stod(mInputs[4]->getString().toAnsiString())));
 
     // Public service
-    mCity.getCompany().setSalary(Work::Qualification::NON_QUALIFIED, Money(std::stod(mInputs[5]->getString().toAnsiString())));
-    mCity.getCompany().setSalary(Work::Qualification::QUALIFIED, Money(std::stod(mInputs[6]->getString().toAnsiString())));
-    mCity.getCompany().setSalary(Work::Qualification::HIGHLY_QUALIFIED, Money(std::stod(mInputs[7]->getString().toAnsiString())));
+    mCity.getCompany().setSalary(Qualification::NON_QUALIFIED, Money(std::stod(mInputs[5]->getString().toAnsiString())));
+    mCity.getCompany().setSalary(Qualification::QUALIFIED, Money(std::stod(mInputs[6]->getString().toAnsiString())));
+    mCity.getCompany().setSalary(Qualification::HIGHLY_QUALIFIED, Money(std::stod(mInputs[7]->getString().toAnsiString())));
 
     // Tax policy
     mCity.setIncomeTax(std::stof(mInputs[8]->getString().toAnsiString()));

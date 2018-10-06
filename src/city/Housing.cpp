@@ -19,6 +19,7 @@
 #include "city/City.h"
 #include "city/Company.h"
 #include "city/Market.h"
+#include "city/Lease.h"
 
 Housing::Housing(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbInhabitants, float comfort) :
     Building(name, type, nbStairs), mComfort(comfort)
@@ -65,7 +66,7 @@ void Housing::tearDown()
 {
     update();
     // Remove everything from markets
-    const Market<Lease>* market = static_cast<const Market<Lease>*>(mOwner->getCity()->getMarket(MarketBase::Type::RENT));
+    const Market<Lease>* market = static_cast<const Market<Lease>*>(mOwner->getCity()->getMarket(MarketType::RENT));
     for (Id id : mLeasesInMarket)
         mOwner->getMessageBus()->send(Message::create(market->getMailboxId(), MessageType::MARKET, market->createRemoveItemEvent(id)));
 }

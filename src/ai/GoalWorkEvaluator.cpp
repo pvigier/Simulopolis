@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "ai/GoalWorkEvaluator.h"
 #include "city/Person.h"
+#include "city/Work.h"
 #include "ai/GoalWork.h"
 
 GoalWorkEvaluator::GoalWorkEvaluator(float bias) : GoalEvaluator(bias)

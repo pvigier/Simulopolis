@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "GoalShop.h"
 #include "city/Person.h"
 #include "city/Housing.h"
 #include "city/Business.h"
 #include "city/City.h"
 #include "city/Lease.h"
+#include "city/Good.h"
 #include "GoalMoveTo.h"
 #include "GoalWait.h"
 

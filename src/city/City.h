@@ -19,15 +19,18 @@
 
 #include <vector>
 #include <memory>
+#include "message/MessageBus.h"
 #include "message/Subject.h"
 #include "pcg/TerrainGenerator.h"
 #include "pcg/PersonGenerator.h"
 #include "pcg/CompanyGenerator.h"
 #include "city/Map.h"
 #include "city/Bank.h"
-#include "city/Market.h"
 
+class MarketBase;
+enum class MarketType : int;
 class Building;
+class Car;
 
 class City : public sf::Drawable, public Subject
 {
@@ -103,8 +106,8 @@ public:
 
     // Economy
     const Bank& getBank() const;
-    MarketBase* getMarket(MarketBase::Type type);
-    const MarketBase* getMarket(MarketBase::Type type) const;
+    MarketBase* getMarket(MarketType type);
+    const MarketBase* getMarket(MarketType type) const;
 
     // Company
     Company& getCompany();
@@ -174,7 +177,7 @@ private:
     Id mWorldAccount;
 
     // City company
-    Company mCityCompany;
+    std::unique_ptr<Company> mCityCompany;
 
     // Policy
     unsigned int mWeeklyStandardWorkingHours;

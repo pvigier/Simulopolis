@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include "message/Mailbox.h"
@@ -38,7 +38,7 @@ public:
     void update();
 
 private:
-    using Key = std::tuple<const Building*, Work::Type, Money>;
+    using Key = std::tuple<const Building*, WorkType, Money>;
 
     MessageBus* mMessageBus;
     StylesheetManager* mStylesheetManager;
@@ -54,6 +54,6 @@ private:
 
     // Rows
     std::size_t getRow(const Key& key) const;
-    void addRow(const Building* building, Work::Type type, Money salary, int count);
+    void addRow(const Building* building, WorkType type, Money salary, int count);
     void updateRow(std::size_t i, int count);
 };

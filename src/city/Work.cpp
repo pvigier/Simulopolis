@@ -18,58 +18,58 @@
 #include "city/Work.h"
 #include "city/Person.h"
 
-std::string Work::typeToString(Type type)
+std::string Work::typeToString(WorkType type)
 {
     switch (type)
     {
-        case Type::FARMER:
+        case WorkType::FARMER:
             return "Farmer";
-        case Type::WORKER:
+        case WorkType::WORKER:
             return "Worker";
-        case Type::CRAFTSPERSON:
+        case WorkType::CRAFTSPERSON:
             return "Craftsperson";
-        case Type::GROCER:
+        case WorkType::GROCER:
             return "Grocer";
-        case Type::CASHIER:
+        case WorkType::CASHIER:
             return "Cashier";
-        case Type::SALESPERSON:
+        case WorkType::SALESPERSON:
             return "Salesperson";
-        case Type::MANAGER:
+        case WorkType::MANAGER:
             return "Manager";
-        case Type::DOCTOR:
+        case WorkType::DOCTOR:
             return "Doctor";
-        case Type::TEACHER:
+        case WorkType::TEACHER:
             return "Teacher";
-        case Type::POLICE_OFFICER:
+        case WorkType::POLICE_OFFICER:
             return "Police officer";
         default:
             return "";
     }
 }
 
-Work::Qualification Work::typeToQualification(Work::Type type)
+Qualification Work::typeToQualification(WorkType type)
 {
     switch (type)
     {
-        case Type::FARMER:
-        case Type::GROCER:
-        case Type::CASHIER:
-        case Type::WORKER:
+        case WorkType::FARMER:
+        case WorkType::GROCER:
+        case WorkType::CASHIER:
+        case WorkType::WORKER:
             return Qualification::NON_QUALIFIED;
-        case Type::CRAFTSPERSON:
-        case Type::SALESPERSON:
-        case Type::TEACHER:
-        case Type::POLICE_OFFICER:
+        case WorkType::CRAFTSPERSON:
+        case WorkType::SALESPERSON:
+        case WorkType::TEACHER:
+        case WorkType::POLICE_OFFICER:
             return Qualification::QUALIFIED;
-        case Type::MANAGER:
-        case Type::DOCTOR:
+        case WorkType::MANAGER:
+        case WorkType::DOCTOR:
             return Qualification::HIGHLY_QUALIFIED;
         default:
             return Qualification::NON_QUALIFIED;
     }
 }
 
-float Work::typeToArduousness(Work::Type type)
+float Work::typeToArduousness(WorkType type)
 {
     switch (typeToQualification(type))
     {
@@ -84,7 +84,7 @@ float Work::typeToArduousness(Work::Type type)
     }
 }
 
-Work::Work(Type type, Building* workplace) :
+Work::Work(WorkType type, Building* workplace) :
     mType(type), mQualification(typeToQualification(mType)),
     mEmployee(nullptr), mEmployer(nullptr), mWorkplace(workplace),
     mSalary(0.0), mArduousness(typeToArduousness(mType)), mWorkedThisMonth(false)
@@ -92,12 +92,12 @@ Work::Work(Type type, Building* workplace) :
 
 }
 
-Work::Type Work::getType() const
+WorkType Work::getType() const
 {
     return mType;
 }
 
-Work::Qualification Work::getQualification() const
+Qualification Work::getQualification() const
 {
     return mQualification;
 }

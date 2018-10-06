@@ -39,6 +39,7 @@
 #include "game/LaborMarketWindow.h"
 #include "game/GoodsMarketWindow.h"
 #include "game/PoliciesWindow.h"
+#include "city/Car.h"
 
 GameStateEditor::GameStateEditor() :
     mActionState(ActionState::NONE), mZoomLevel(1.0f),
@@ -546,7 +547,7 @@ void GameStateEditor::openRentalMarketWindow()
 {
     if (!mRentalMarketWindow)
     {
-        mRentalMarketWindow = mGui->createRootWithDefaultName<RentalMarketWindow>(sMessageBus, sStylesheetManager, static_cast<Market<Lease>*>(mCity.getMarket(MarketBase::Type::RENT)));
+        mRentalMarketWindow = mGui->createRootWithDefaultName<RentalMarketWindow>(sMessageBus, sStylesheetManager, static_cast<Market<Lease>*>(mCity.getMarket(MarketType::RENT)));
         mRentalMarketWindow->subscribe(mMailbox.getId());
     }
 }
@@ -555,7 +556,7 @@ void GameStateEditor::openLaborMarketWindow()
 {
     if (!mLaborMarketWindow)
     {
-        mLaborMarketWindow = mGui->createRootWithDefaultName<LaborMarketWindow>(sMessageBus, sStylesheetManager, static_cast<Market<Work>*>(mCity.getMarket(MarketBase::Type::WORK)));
+        mLaborMarketWindow = mGui->createRootWithDefaultName<LaborMarketWindow>(sMessageBus, sStylesheetManager, static_cast<Market<Work>*>(mCity.getMarket(MarketType::WORK)));
         mLaborMarketWindow->subscribe(mMailbox.getId());
     }
 }
@@ -565,9 +566,9 @@ void GameStateEditor::openGoodsMarketWindow()
     if (!mGoodsMarketWindow)
     {
         std::array<Market<Good>*, 3> markets = {
-            static_cast<Market<Good>*>(mCity.getMarket(MarketBase::Type::NECESSARY_GOOD)),
-            static_cast<Market<Good>*>(mCity.getMarket(MarketBase::Type::NORMAL_GOOD)),
-            static_cast<Market<Good>*>(mCity.getMarket(MarketBase::Type::LUXURY_GOOD))
+            static_cast<Market<Good>*>(mCity.getMarket(MarketType::NECESSARY_GOOD)),
+            static_cast<Market<Good>*>(mCity.getMarket(MarketType::NORMAL_GOOD)),
+            static_cast<Market<Good>*>(mCity.getMarket(MarketType::LUXURY_GOOD))
         };
         mGoodsMarketWindow = mGui->createRootWithDefaultName<GoodsMarketWindow>(sMessageBus, sStylesheetManager, std::move(markets));
         mGoodsMarketWindow->subscribe(mMailbox.getId());

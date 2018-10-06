@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <string>
@@ -23,21 +23,21 @@
 class Building;
 class Industry;
 
+enum class GoodType : int {NECESSARY = 0, NORMAL, LUXURY};
+
 class Good
 {
 public:
-    enum class Type : int {NECESSARY = 0, NORMAL, LUXURY};
+    static std::string typeToString(GoodType type);
+    static float typeToHappiness(GoodType type);
 
-    static std::string typeToString(Good::Type type);
-    static float typeToHappiness(Good::Type type);
+    Good(GoodType type, Industry* productionPlace);
 
-    Good(Type type, Industry* productionPlace);
-
-    Type getType() const;
+    GoodType getType() const;
     const Building* getProductionPlace() const;
 
 private:
-    Type mType;
+    GoodType mType;
     Industry* mProductionPlace;
 
     // Serialization

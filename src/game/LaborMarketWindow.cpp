@@ -122,7 +122,7 @@ std::size_t LaborMarketWindow::getRow(const Key& key) const
     return std::find_if(mCounts.begin(), mCounts.end(), [&key](const std::pair<Key, int>& x){ return x.first == key; }) - mCounts.begin();
 }
 
-void LaborMarketWindow::addRow(const Building* building, Work::Type type, Money salary, int count)
+void LaborMarketWindow::addRow(const Building* building, WorkType type, Money salary, int count)
 {
     // Add row
     mTable->addRow({

@@ -22,7 +22,7 @@ MarketBase::EventBase::EventBase()
 
 }
 
-MarketBase::EventBase::EventBase(MarketBase::Type marketType) : marketType(marketType)
+MarketBase::EventBase::EventBase(MarketType marketType) : marketType(marketType)
 {
 
 }
@@ -32,7 +32,7 @@ MarketBase::EventBase::~EventBase()
 
 }
 
-MarketBase::MarketBase(Type type) : mMessageBus(nullptr), mTime(0), mType(type)
+MarketBase::MarketBase(MarketType type) : mMessageBus(nullptr), mTime(0), mType(type)
 {
 
 }

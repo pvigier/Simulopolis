@@ -20,13 +20,15 @@
 #include "message/Mailbox.h"
 #include "ai/GoalThink.h"
 #include "city/Car.h"
-#include "city/Work.h"
-#include "city/Good.h"
+#include "city/Money.h"
 
 class MessageBus;
 class City;
 class Lease;
+class Work;
+enum class Qualification;
 class Business;
+enum class GoodType;
 
 class Person
 {
@@ -86,7 +88,7 @@ public:
     void setWork(Work* work);
     void quitWork();
     std::string getWorkStatus() const;
-    Good::Type getConsumptionHabit() const;
+    GoodType getConsumptionHabit() const;
 
     // Car
     Car& getCar();
@@ -108,7 +110,7 @@ public:
 
     // Abilities
     double getProductivity() const;
-    Work::Qualification getQualification() const;
+    Qualification getQualification() const;
 
     // AI
     GoalThink& getShortTermBrain();
@@ -133,7 +135,7 @@ private:
     // Daily life
     Lease* mHome;
     Work* mWork;
-    Good::Type mConsumptionHabit;
+    GoodType mConsumptionHabit;
 
     // Car
     Car mCar;
@@ -153,7 +155,7 @@ private:
 
     // Abilities
     float mProductivity;
-    Work::Qualification mQualification;
+    Qualification mQualification;
 
     // AI
     GoalThink mShortTermBrain;

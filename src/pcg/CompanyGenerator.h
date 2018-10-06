@@ -14,12 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
-#include "pcg/RandomGenerator.h"
-#include "city/Company.h"
+#include <memory>
+#include <vector>
 
+class RandomGenerator;
+class Company;
 class Person;
 
 class CompanyGenerator
@@ -29,7 +31,7 @@ public:
 
     void setUp();
 
-    Company generate(int year, Person* owner);
+    std::unique_ptr<Company> generate(int year, Person* owner);
 
 
 private:

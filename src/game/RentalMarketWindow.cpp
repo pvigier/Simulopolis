@@ -27,6 +27,7 @@
 #include "gui/GuiHBoxLayout.h"
 #include "city/Company.h"
 #include "city/Housing.h"
+#include "city/Lease.h"
 #include "util/format.h"
 
 RentalMarketWindow::RentalMarketWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager,

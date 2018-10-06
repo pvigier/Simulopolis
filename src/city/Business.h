@@ -20,8 +20,12 @@
 #include <queue>
 #include <set>
 #include "city/Building.h"
-#include "city/Good.h"
-#include "city/Work.h"
+#include "city/Money.h"
+
+class Work;
+enum class WorkType;
+class Good;
+enum class GoodType;
 
 template<typename T> class Market;
 
@@ -37,10 +41,10 @@ public:
         Money price;
     };
 
-    static Type getBusinessType(Good::Type goodType);
+    static Type getBusinessType(GoodType goodType);
 
-    Business(const std::string& name, Type type, unsigned int nbStairs, Good::Type goodType, unsigned int maxSizeStock,
-        double employeeProductivity, std::size_t nbEmployees, Work::Type employeeType);
+    Business(const std::string& name, Type type, unsigned int nbStairs, GoodType goodType, unsigned int maxSizeStock,
+        double employeeProductivity, std::size_t nbEmployees, WorkType employeeType);
     virtual ~Business();
 
     virtual std::unique_ptr<Tile> clone() const override;
@@ -48,7 +52,7 @@ public:
     virtual void tearDown() override;
     virtual void setOwner(Company* owner) override;
 
-    Good::Type getGoodType() const;
+    GoodType getGoodType() const;
     unsigned int getStock() const;
     unsigned int getMaxSizeStock() const;
     bool hasPreparedGoods() const;
@@ -63,7 +67,7 @@ public:
     void onNewMonth();
 
 protected:
-    Good::Type mGoodType;
+    GoodType mGoodType;
     unsigned int mMaxSizeStock;
     unsigned int mStock;
     Money mStockCost;

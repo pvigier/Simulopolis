@@ -22,6 +22,7 @@
 #include "game/GameStateNewCity.h"
 #include "game/GameStateLoadCity.h"
 #include "game/GameStateSettings.h"
+#include "city/Car.h"
 
 Game::Game()
 {

@@ -18,42 +18,42 @@
 #include "city/Good.h"
 #include "city/Industry.h"
 
-std::string Good::typeToString(Good::Type type)
+std::string Good::typeToString(GoodType type)
 {
     switch (type)
     {
-        case Good::Type::NECESSARY:
+        case GoodType::NECESSARY:
             return "Necessary";
-        case Good::Type::NORMAL:
+        case GoodType::NORMAL:
             return "Normal";
-        case Good::Type::LUXURY:
+        case GoodType::LUXURY:
             return "Luxury";
         default:
             return "";
     }
 }
 
-float Good::typeToHappiness(Good::Type type)
+float Good::typeToHappiness(GoodType type)
 {
     switch (type)
     {
-        case Good::Type::NECESSARY:
+        case GoodType::NECESSARY:
             return 0.05f;
-        case Good::Type::NORMAL:
+        case GoodType::NORMAL:
             return 0.1f;
-        case Good::Type::LUXURY:
+        case GoodType::LUXURY:
             return 0.2f;
         default:
             return 0.0f;
     }
 }
 
-Good::Good(Type type, Industry* productionPlace) : mType(type), mProductionPlace(productionPlace)
+Good::Good(GoodType type, Industry* productionPlace) : mType(type), mProductionPlace(productionPlace)
 {
 
 }
 
-Good::Type Good::getType() const
+GoodType Good::getType() const
 {
     return mType;
 }

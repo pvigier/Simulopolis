@@ -21,14 +21,16 @@
  #include <string>
  #include "message/Mailbox.h"
  #include "city/Tile.h"
- #include "city/Work.h"
- #include "city/Good.h"
+ #include "city/Money.h"
 
 class MessageBus;
 class Person;
 class City;
 class Building;
 class Lease;
+enum class GoodType;
+class Work;
+enum class Qualification;
 
 class Company
 {
@@ -60,12 +62,12 @@ public:
     // Rent and salaries
     Money getRent(Tile::Type housingType) const;
     void setRent(Tile::Type housingType, Money rent);
-    Money getSalary(Work::Qualification qualification) const;
-    void setSalary(Work::Qualification qualification, Money salary);
-    double getWholesaleMargin(Good::Type goodType) const;
-    void setWholesaleMargin(Good::Type goodType, double margin);
-    double getRetailMargin(Good::Type goodType) const;
-    void setRetailMargin(Good::Type goodType, double margin);
+    Money getSalary(Qualification qualification) const;
+    void setSalary(Qualification qualification, Money salary);
+    double getWholesaleMargin(GoodType goodType) const;
+    void setWholesaleMargin(GoodType goodType, double margin);
+    double getRetailMargin(GoodType goodType) const;
+    void setRetailMargin(GoodType goodType, double margin);
 
 private:
     // Data

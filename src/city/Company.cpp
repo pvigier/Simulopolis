@@ -17,10 +17,14 @@
 
 #include "city/Company.h"
 #include "city/City.h"
+#include "city/Market.h"
 #include "city/Housing.h"
 #include "city/Industry.h"
 #include "city/Business.h"
 #include "city/Service.h"
+#include "city/Person.h"
+#include "city/Lease.h"
+#include "city/Work.h"
 
 std::vector<std::unique_ptr<Work>>* Company::getEmployees(Building* building)
 {
@@ -258,12 +262,12 @@ void Company::setRent(Tile::Type housingType, Money rent)
     }
 }
 
-Money Company::getSalary(Work::Qualification qualification) const
+Money Company::getSalary(Qualification qualification) const
 {
     return mSalaries[static_cast<int>(qualification)];
 }
 
-void Company::setSalary(Work::Qualification qualification, Money salary)
+void Company::setSalary(Qualification qualification, Money salary)
 {
     mSalaries[static_cast<int>(qualification)] = salary;
     for (Building* building : mBuildings)
@@ -279,35 +283,35 @@ void Company::setSalary(Work::Qualification qualification, Money salary)
     }
 }
 
-double Company::getWholesaleMargin(Good::Type goodType) const
+double Company::getWholesaleMargin(GoodType goodType) const
 {
     return mWholesaleMargins[static_cast<int>(goodType)];
 }
 
-void Company::setWholesaleMargin(Good::Type goodType, double margin)
+void Company::setWholesaleMargin(GoodType goodType, double margin)
 {
     mWholesaleMargins[static_cast<int>(goodType)] = margin;
 }
 
-double Company::getRetailMargin(Good::Type goodType) const
+double Company::getRetailMargin(GoodType goodType) const
 {
      return mRetailMargins[static_cast<int>(goodType)];
 }
 
-void Company::setRetailMargin(Good::Type goodType, double margin)
+void Company::setRetailMargin(GoodType goodType, double margin)
 {
     mRetailMargins[static_cast<int>(goodType)] = margin;
 }
 
 void Company::addToMarket(Lease* lease)
 {
-    const Market<Lease>* market = static_cast<const Market<Lease>*>(mCity->getMarket(MarketBase::Type::RENT));
+    const Market<Lease>* market = static_cast<const Market<Lease>*>(mCity->getMarket(MarketType::RENT));
     mMessageBus->send(Message::create(lease->getHousing()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, lease, lease->getRent())));
 }
 
 void Company::addToMarket(Work* work)
 {
-    const Market<Work>* market = static_cast<const Market<Work>*>(mCity->getMarket(MarketBase::Type::WORK));
+    const Market<Work>* market = static_cast<const Market<Work>*>(mCity->getMarket(MarketType::WORK));
     mMessageBus->send(Message::create(work->getWorkplace()->getMailboxId(), market->getMailboxId(), MessageType::MARKET, market->createAddItemEvent(mAccount, work, work->getSalary())));
 }
 

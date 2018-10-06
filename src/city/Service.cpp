@@ -19,9 +19,10 @@
 #include "city/City.h"
 #include "city/Company.h"
 #include "city/Market.h"
+#include "city/Work.h"
 
 Service::Service(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbEmployees,
-        Work::Type employeeType) :
+        WorkType employeeType) :
     Building(name, type, nbStairs)
 {
     for (std::size_t i = 0; i < nbEmployees; ++i)
@@ -66,7 +67,7 @@ void Service::tearDown()
 {
     update();
     // Remove everything from markets
-    const Market<Work>* market = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(MarketBase::Type::WORK));
+    const Market<Work>* market = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(MarketType::WORK));
     for (Id id : mWorksInMarket)
         mOwner->getMessageBus()->send(Message::create(market->getMailboxId(), MessageType::MARKET, market->createRemoveItemEvent(id)));
 }

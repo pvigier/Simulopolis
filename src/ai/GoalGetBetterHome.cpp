@@ -37,7 +37,7 @@ void GoalGetBetterHome::activate()
 {
     mState = State::ACTIVE;
     // Choose the right market
-    mMarket = static_cast<const Market<Lease>*>(mOwner->getCity()->getMarket(MarketBase::Type::RENT));
+    mMarket = static_cast<const Market<Lease>*>(mOwner->getCity()->getMarket(MarketType::RENT));
 }
 
 Goal::State GoalGetBetterHome::process()

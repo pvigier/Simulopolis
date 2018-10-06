@@ -20,17 +20,19 @@
 #include <deque>
 #include <set>
 #include "city/Building.h"
-#include "city/Good.h"
-#include "city/Work.h"
+#include "city/Money.h"
 
 class Work;
+enum class WorkType;
+class Good;
+enum class GoodType;
 template<typename T> class Market;
 
 class Industry : public Building
 {
 public:
-    Industry(const std::string& name, Type type, unsigned int nbStairs, Good::Type goodType, double employeeProductivity,
-        std::size_t nbEmployees, Work::Type employeeType);
+    Industry(const std::string& name, Type type, unsigned int nbStairs, GoodType goodType, double employeeProductivity,
+        std::size_t nbEmployees, WorkType employeeType);
     virtual ~Industry();
 
     virtual std::unique_ptr<Tile> clone() const override;
@@ -38,7 +40,7 @@ public:
     virtual void tearDown() override;
     virtual void setOwner(Company* owner) override;
 
-    Good::Type getGoodType() const;
+    GoodType getGoodType() const;
     std::unique_ptr<Work>& getManager();
     const std::unique_ptr<Work>& getManager() const;
     std::vector<std::unique_ptr<Work>>& getEmployees();

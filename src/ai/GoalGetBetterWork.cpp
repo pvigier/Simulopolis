@@ -21,6 +21,7 @@
 #include "city/Market.h"
 #include "city/Lease.h"
 #include "city/Housing.h"
+#include "city/Work.h"
 
 GoalGetBetterWork::GoalGetBetterWork(Person* owner, unsigned int nbMonthsBeforeFailing) :
     Goal(owner), mNbMonthsBeforeFailing(nbMonthsBeforeFailing), mMarket(nullptr)
@@ -37,7 +38,7 @@ void GoalGetBetterWork::activate()
 {
     mState = State::ACTIVE;
     // Choose the right market
-    mMarket = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(MarketBase::Type::WORK));
+    mMarket = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(MarketType::WORK));
 }
 
 Goal::State GoalGetBetterWork::process()
@@ -47,7 +48,7 @@ Goal::State GoalGetBetterWork::process()
     // Try to obtain a better work
     if (!isCompleted())
     {
-        Work::Qualification qualification = mOwner->getQualification();
+        Qualification qualification = mOwner->getQualification();
         const Work* work = mOwner->getWork();
         for (const Market<Work>::Item* item : mMarket->getItems())
         {

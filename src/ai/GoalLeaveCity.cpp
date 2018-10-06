@@ -17,9 +17,8 @@
 
 #include "ai/GoalLeaveCity.h"
 #include "city/City.h"
+#include "city/Person.h"
 #include "ai/GoalMoveTo.h"
-
-#include <iostream>
 
 GoalLeaveCity::GoalLeaveCity(Person* owner) : Goal(owner)
 {

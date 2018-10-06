@@ -19,6 +19,7 @@
 #include "city/City.h"
 #include "city/Person.h"
 #include "city/Housing.h"
+#include "city/Lease.h"
 #include "ai/GoalMoveTo.h"
 #include "ai/GoalWait.h"
 

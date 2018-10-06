@@ -18,7 +18,7 @@
 #pragma once
 
 #include <boost/serialization/split_member.hpp>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include "ai/Kinematic.h"
 #include "ai/SteeringBehaviors.h"
 #include "render/sprite_intersection.h"

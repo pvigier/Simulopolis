@@ -19,13 +19,16 @@
 #include "city/City.h"
 #include "city/Company.h"
 #include "city/Market.h"
+#include "city/Person.h"
+#include "city/Work.h"
+#include "city/Good.h"
 
-Industry::Industry(const std::string& name, Type type, unsigned int nbStairs, Good::Type goodType,
-    double employeeProductivity, std::size_t nbEmployees, Work::Type employeeType) :
+Industry::Industry(const std::string& name, Type type, unsigned int nbStairs, GoodType goodType,
+    double employeeProductivity, std::size_t nbEmployees, WorkType employeeType) :
     Building(name, type, nbStairs), mGood(std::make_unique<Good>(goodType, this)),
     mEmployeeProductivity(employeeProductivity)
 {
-    mEmployees.emplace_back(std::make_unique<Work>(Work::Type::MANAGER, this));
+    mEmployees.emplace_back(std::make_unique<Work>(WorkType::MANAGER, this));
     for (std::size_t i = 0; i < nbEmployees; ++i)
         mEmployees.emplace_back(std::make_unique<Work>(employeeType, this));
 }
@@ -49,7 +52,7 @@ void Industry::update()
         if (message.type == MessageType::MARKET)
         {
             const MarketBase::EventBase& eventBase = message.getInfo<MarketBase::EventBase>();
-            if (eventBase.marketType == MarketBase::Type::WORK)
+            if (eventBase.marketType == MarketType::WORK)
             {
                 const Market<Work>::Event& event = static_cast<const Market<Work>::Event&>(eventBase);
                 switch (event.type)
@@ -87,7 +90,7 @@ void Industry::tearDown()
 {
     update();
     // Remove everything from markets
-    const Market<Work>* laborMarket = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(MarketBase::Type::WORK));
+    const Market<Work>* laborMarket = static_cast<const Market<Work>*>(mOwner->getCity()->getMarket(MarketType::WORK));
     for (Id id : mWorksInMarket)
         mOwner->getMessageBus()->send(Message::create(laborMarket->getMailboxId(), MessageType::MARKET, laborMarket->createRemoveItemEvent(id)));
     const Market<Good>* goodsMarket = getMarket();
@@ -102,7 +105,7 @@ void Industry::setOwner(Company* owner)
         employee->setEmployer(mOwner);
 }
 
-Good::Type Industry::getGoodType() const
+GoodType Industry::getGoodType() const
 {
     return mGood->getType();
 }
@@ -201,12 +204,12 @@ const Market<Good>* Industry::getMarket()
 {
     switch (mGood->getType())
     {
-        case Good::Type::NECESSARY:
-            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(MarketBase::Type::NECESSARY_GOOD));
-        case Good::Type::NORMAL:
-            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(MarketBase::Type::NORMAL_GOOD));
-        case Good::Type::LUXURY:
-            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(MarketBase::Type::LUXURY_GOOD));
+        case GoodType::NECESSARY:
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(MarketType::NECESSARY_GOOD));
+        case GoodType::NORMAL:
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(MarketType::NORMAL_GOOD));
+        case GoodType::LUXURY:
+            return static_cast<const Market<Good>*>(mOwner->getCity()->getMarket(MarketType::LUXURY_GOOD));
         default:
             return nullptr;
     };

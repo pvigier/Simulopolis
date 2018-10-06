@@ -38,25 +38,25 @@ public:
     void update();
 
 private:
-    using Key = std::tuple<const Building*, Good::Type, Money>;
+    using Key = std::tuple<const Building*, GoodType, Money>;
 
     MessageBus* mMessageBus;
     StylesheetManager* mStylesheetManager;
     Mailbox mMailbox;
     std::array<Market<Good>*, 3> mMarkets;
-    std::map<std::tuple<MarketBase::Type, Id>, Key> mItems;
+    std::map<std::tuple<MarketType, Id>, Key> mItems;
     std::vector<std::pair<Key, int>> mCounts;
     GuiTable* mTable;
 
     // Items
-    void addItem(MarketBase::Type type, Id itemId);
-    void removeItem(MarketBase::Type type, Id itemId);
+    void addItem(MarketType type, Id itemId);
+    void removeItem(MarketType type, Id itemId);
 
     // Rows
     std::size_t getRow(const Key& key) const;
-    void addRow(const Building* building, Good::Type goodType, Money price, int count);
+    void addRow(const Building* building, GoodType goodType, Money price, int count);
     void updateRow(std::size_t i, int count);
 
     // Util
-    Market<Good>* getMarket(MarketBase::Type type);
+    Market<Good>* getMarket(MarketType type);
 };

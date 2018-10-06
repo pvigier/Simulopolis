@@ -17,6 +17,8 @@
 
 #include "CompanyGenerator.h"
 #include <fstream>
+#include "pcg/RandomGenerator.h"
+#include "city/Company.h"
 #include "city/Person.h"
 
 CompanyGenerator::CompanyGenerator(RandomGenerator& generator) : mGenerator(generator)
@@ -66,7 +68,7 @@ void CompanyGenerator::setUp()
     }
 }
 
-Company CompanyGenerator::generate(int year, Person* owner)
+std::unique_ptr<Company> CompanyGenerator::generate(int year, Person* owner)
 {
     std::discrete_distribution<int> typePdf{0.1, 0.4, 0.1, 0.4};
     int type = typePdf(mGenerator);
@@ -104,5 +106,5 @@ Company CompanyGenerator::generate(int year, Person* owner)
     std::uniform_int_distribution<int> suffixPdf(0, mSuffixes.size() - 1);
     std::string suffix = mSuffixes[suffixPdf(mGenerator)];
 
-    return Company(name + " " + suffix, year, owner, Money(0.0));
+    return std::make_unique<Company>(name + " " + suffix, year, owner, Money(0.0));
 }

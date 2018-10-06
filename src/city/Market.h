@@ -27,10 +27,7 @@
 #include "message/Subject.h"
 #include "city/Money.h"
 
-class MarketBase : public Subject
-{
-public:
-    enum class Type : int {
+enum class MarketType : int {
         // Goods
         NECESSARY_GOOD = 0,
         NORMAL_GOOD,
@@ -43,12 +40,15 @@ public:
         COUNT
     };
 
+class MarketBase : public Subject
+{
+public:
     struct EventBase
     {
-        MarketBase::Type marketType;
+        MarketType marketType;
 
         EventBase();
-        EventBase(MarketBase::Type marketType);
+        EventBase(MarketType marketType);
         virtual ~EventBase();
 
     private:
@@ -62,7 +62,7 @@ public:
         }
     };
 
-    MarketBase(Type type);
+    MarketBase(MarketType type);
     virtual ~MarketBase();
 
     void setMessageBus(MessageBus* messageBus, bool alreadyAdded = false);
@@ -76,7 +76,7 @@ protected:
     MessageBus* mMessageBus;
     Mailbox mMailbox;
     unsigned int mTime;
-    Type mType;
+    MarketType mType;
 
     MarketBase() = default; // Only for serialization
 
@@ -188,7 +188,7 @@ public:
 
         }
 
-        Event(MarketBase::Type marketType, Type type) : EventBase(marketType), type(type)
+        Event(MarketType marketType, Type type) : EventBase(marketType), type(type)
         {
 
         }
@@ -227,7 +227,7 @@ public:
         }
     };
 
-    Market(Type type) : MarketBase(type), mDirty(false)
+    Market(MarketType type) : MarketBase(type), mDirty(false)
     {
 
     }

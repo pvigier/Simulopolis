@@ -14,11 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
-#include "pcg/RandomGenerator.h"
-#include "city/Person.h"
+#include <memory>
+#include <vector>
+
+class RandomGenerator;
+class Person;
 
 class PersonGenerator
 {

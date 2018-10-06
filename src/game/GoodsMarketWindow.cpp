@@ -67,7 +67,7 @@ void GoodsMarketWindow::setUp()
     for (int i = 0; i < 3; ++i)
     {
         for (const Market<Good>::Item* item : mMarkets[i]->getItems())
-            addItem(static_cast<MarketBase::Type>(i), item->id);
+            addItem(static_cast<MarketType>(i), item->id);
     }
 }
 
@@ -94,10 +94,10 @@ void GoodsMarketWindow::update()
     }
 }
 
-void GoodsMarketWindow::addItem(MarketBase::Type type, Id itemId)
+void GoodsMarketWindow::addItem(MarketType type, Id itemId)
 {
     const Market<Good>::Item& item = getMarket(type)->getItem(itemId);
-    std::tuple<MarketBase::Type, Id> id(type, itemId);
+    std::tuple<MarketType, Id> id(type, itemId);
     mItems[id] = std::make_tuple(item.good->getProductionPlace(), item.good->getType(), item.reservePrice);
     std::size_t i = getRow(mItems[id]);
     if (i == mCounts.size())
@@ -109,9 +109,9 @@ void GoodsMarketWindow::addItem(MarketBase::Type type, Id itemId)
         updateRow(i, ++mCounts[i].second);
 }
 
-void GoodsMarketWindow::removeItem(MarketBase::Type type, Id itemId)
+void GoodsMarketWindow::removeItem(MarketType type, Id itemId)
 {
-    std::tuple<MarketBase::Type, Id> id(type, itemId);
+    std::tuple<MarketType, Id> id(type, itemId);
     std::size_t i = getRow(mItems[id]);
     --mCounts[i].second;
     if (mCounts[i].second > 0)
@@ -129,7 +129,7 @@ std::size_t GoodsMarketWindow::getRow(const Key& key) const
     return std::find_if(mCounts.begin(), mCounts.end(), [&key](const std::pair<Key, int>& x){ return x.first == key; }) - mCounts.begin();
 }
 
-void GoodsMarketWindow::addRow(const Building* building, Good::Type goodType, Money price, int count)
+void GoodsMarketWindow::addRow(const Building* building, GoodType goodType, Money price, int count)
 {
     // Add row
     mTable->addRow({
@@ -146,15 +146,15 @@ void GoodsMarketWindow::updateRow(std::size_t i, int count)
     static_cast<GuiText*>(mTable->getCellContent(i, 4))->setString(format("%d", count));
 }
 
-Market<Good>* GoodsMarketWindow::getMarket(MarketBase::Type type)
+Market<Good>* GoodsMarketWindow::getMarket(MarketType type)
 {
     switch (type)
     {
-        case MarketBase::Type::NECESSARY_GOOD:
+        case MarketType::NECESSARY_GOOD:
             return mMarkets[0];
-        case MarketBase::Type::NORMAL_GOOD:
+        case MarketType::NORMAL_GOOD:
             return mMarkets[1];
-        case MarketBase::Type::LUXURY_GOOD:
+        case MarketType::LUXURY_GOOD:
             return mMarkets[2];
         default:
             return nullptr;

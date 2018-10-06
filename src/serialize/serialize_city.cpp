@@ -20,6 +20,10 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include "util/debug.h"
+#include "city/Company.h"
+#include "city/Lease.h"
+#include "city/Work.h"
+#include "city/Good.h"
 
 void saveCity(const City& city, const std::string& path)
 {

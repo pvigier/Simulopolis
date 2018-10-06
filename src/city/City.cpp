@@ -18,7 +18,11 @@
 #include "City.h"
 #include <fstream>
 #include <sstream>
+#include "city/Market.h"
+#include "city/Company.h"
 #include "city/Building.h"
+#include "city/Person.h"
+#include "city/Good.h"
 
 constexpr Money City::SEED_MONEY; // Could be removed in C++17
 
@@ -64,7 +68,8 @@ City::Event::Event(Building* building) : type(Type::BUILDING_DESTROYED), buildin
 
 City::City() :
     mTerrainGenerator(mRandomGenerator), mPersonGenerator(mRandomGenerator), mCompanyGenerator(mRandomGenerator),
-    mCurrentTime(0.0), mTimePerMonth(20.0f), mMonth(0), mYear(0), mCityCompany("City", 0, nullptr, SEED_MONEY),
+    mCurrentTime(0.0), mTimePerMonth(20.0f), mMonth(0), mYear(0),
+    mCityCompany(std::make_unique<Company>("City", 0, nullptr, SEED_MONEY)),
     mWeeklyStandardWorkingHours(0), mMinimumWage(0.0), mIncomeTax(0.0f), mCorporateTax(0.0f)
 {
 
@@ -134,7 +139,7 @@ void City::update(float dt)
         citizen->update(dt);
 
     // Update the companies
-    mCityCompany.update(dt);
+    mCityCompany->update(dt);
     for (std::unique_ptr<Company>& company : mCompanies)
         company->update(dt);
 
@@ -216,11 +221,11 @@ void City::createMap(std::string name, uint64_t seed)
     mCityMessageBus.addMailbox(mMailbox);
 
     // Markets
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(MarketBase::Type::NECESSARY_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(MarketBase::Type::NORMAL_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Good>>(MarketBase::Type::LUXURY_GOOD));
-    mMarkets.emplace_back(std::make_unique<Market<Lease>>(MarketBase::Type::RENT));
-    mMarkets.emplace_back(std::make_unique<Market<Work>>(MarketBase::Type::WORK));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(MarketType::NECESSARY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(MarketType::NORMAL_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Good>>(MarketType::LUXURY_GOOD));
+    mMarkets.emplace_back(std::make_unique<Market<Lease>>(MarketType::RENT));
+    mMarkets.emplace_back(std::make_unique<Market<Work>>(MarketType::WORK));
 
     // Economy
     mWorldAccount = mBank.createWorldAccount();
@@ -233,7 +238,7 @@ void City::bulldoze(Tile::Type type)
 {
     // Bulldoze the map
     std::vector<Id> buildingsToRemove;
-    mMap.bulldoze(type, mCityCompany, mBuildings, buildingsToRemove);
+    mMap.bulldoze(type, *mCityCompany, mBuildings, buildingsToRemove);
     // Notify the changes
     for (Id id : buildingsToRemove)
         notify(Message::create(MessageType::CITY, Event(getBuilding(id))));
@@ -327,29 +332,29 @@ const Bank& City::getBank() const
     return mBank;
 }
 
-MarketBase* City::getMarket(MarketBase::Type type)
+MarketBase* City::getMarket(MarketType type)
 {
     return mMarkets[static_cast<int>(type)].get();
 }
 
-const MarketBase* City::getMarket(MarketBase::Type type) const
+const MarketBase* City::getMarket(MarketType type) const
 {
     return mMarkets[static_cast<int>(type)].get();
 }
 
 Company& City::getCompany()
 {
-    return mCityCompany;
+    return *mCityCompany;
 }
 
 Money City::getFunds() const
 {
-    return mCityCompany.getAccountBalance();
+    return mCityCompany->getAccountBalance();
 }
 
 void City::decreaseFunds(Money amount)
 {
-    mBank.transferMoney(mCityCompany.getAccount(), mWorldAccount, amount);
+    mBank.transferMoney(mCityCompany->getAccount(), mWorldAccount, amount);
 }
 
 unsigned int City::getWeeklyStandardWorkingHours() const
@@ -371,7 +376,7 @@ void City::setMinimumWage(Money minimumWage)
 {
     mMinimumWage = minimumWage;
     // Send messages
-    mCityMessageBus.send(Message::create(mCityCompany.getMailboxId(), MessageType::CITY, Event(mMinimumWage)));
+    mCityMessageBus.send(Message::create(mCityCompany->getMailboxId(), MessageType::CITY, Event(mMinimumWage)));
     for (std::unique_ptr<Company>& company : mCompanies)
         mCityMessageBus.send(Message::create(company->getMailboxId(), MessageType::CITY, Event(mMinimumWage)));
 }
@@ -555,10 +560,10 @@ void City::computeAttractiveness()
 {
     mAttractiveness = 1.0f;
     // Ease to obtain a home
-    float nbHomesAvailable = static_cast<const Market<Lease>*>(getMarket(MarketBase::Type::RENT))->getItems().size();
+    float nbHomesAvailable = static_cast<const Market<Lease>*>(getMarket(MarketType::RENT))->getItems().size();
     mAttractiveness *= 1 - 1 / (1.0f + nbHomesAvailable);
     // Ease to obtain a job
-    float nbWorksAvailable = static_cast<const Market<Work>*>(getMarket(MarketBase::Type::WORK))->getItems().size();
+    float nbWorksAvailable = static_cast<const Market<Work>*>(getMarket(MarketType::WORK))->getItems().size();
     mAttractiveness *= 1 - 1 / (1.0f + nbWorksAvailable);
     // Happiness
     mAttractiveness *= getAverageHappiness();
@@ -582,13 +587,13 @@ void City::onNewMonth()
         market->sellItems();
 
     // Collect taxes
-    mBank.collectTaxes(mCityCompany.getAccount(), mIncomeTax, mCorporateTax);
+    mBank.collectTaxes(mCityCompany->getAccount(), mIncomeTax, mCorporateTax);
 
     // Send messages
     notify(Message::create(MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
     for (Person* citizen : mCitizens)
         mCityMessageBus.send(Message::create(citizen->getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
-    mCityMessageBus.send(Message::create(mCityCompany.getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
+    mCityMessageBus.send(Message::create(mCityCompany->getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
     for (std::unique_ptr<Company>& company : mCompanies)
         mCityMessageBus.send(Message::create(company->getMailboxId(), MessageType::CITY, Event(Event::Type::NEW_MONTH, mMonth)));
 }
@@ -617,7 +622,7 @@ void City::setUp(bool loading)
         citizen->setCity(this, &mCityMessageBus, loading);
 
     // Companies
-    mCityCompany.setCity(this, &mCityMessageBus, loading);
+    mCityCompany->setCity(this, &mCityMessageBus, loading);
     for (std::unique_ptr<Company>& company : mCompanies)
         company->setCity(this, &mCityMessageBus, loading);
 

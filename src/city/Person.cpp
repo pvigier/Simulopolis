@@ -19,6 +19,9 @@
 #include "city/Business.h"
 #include "city/Lease.h"
 #include "city/City.h"
+#include "city/Company.h"
+#include "city/Work.h"
+#include "city/Good.h"
 #include "message/MessageBus.h"
 #include "ai/GoalRestEvaluator.h"
 #include "ai/GoalWorkEvaluator.h"
@@ -53,10 +56,10 @@ Person::Person(const std::string& firstName, const std::string& lastName, Gender
         double productivity, const std::array<float, NB_EVALUATORS>& biases, Money funds) :
     mId(UNDEFINED), mFirstName(firstName), mLastName(lastName), mGender(gender), mBirth(birth),
     mCity(nullptr), mMessageBus(nullptr),
-    mState(State::INVISIBLE), mHome(nullptr), mWork(nullptr), mConsumptionHabit(Good::Type::NECESSARY), mCar(car),
+    mState(State::INVISIBLE), mHome(nullptr), mWork(nullptr), mConsumptionHabit(GoodType::NECESSARY), mCar(car),
     mFunds(funds), mAccount(UNDEFINED), mLastMonthBalance(0.0), mMonthBalance(0.0),
     mDecayRates(decayRates), mNeeds{1.0f, 1.0f, 1.0f, 1.0f, 1.0f}, mAverageNeeds{0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-    mProductivity(productivity), mQualification(Work::Qualification::NON_QUALIFIED),
+    mProductivity(productivity), mQualification(Qualification::NON_QUALIFIED),
     mShortTermBrain(this), mLongTermBrain(this)
 {
     mCar.setDriver(this);
@@ -261,7 +264,7 @@ std::string Person::getWorkStatus() const
         return "Unemployed";
 }
 
-Good::Type Person::getConsumptionHabit() const
+GoodType Person::getConsumptionHabit() const
 {
     return mConsumptionHabit;
 }
@@ -323,7 +326,7 @@ double Person::getProductivity() const
     return mProductivity;
 }
 
-Work::Qualification Person::getQualification() const
+Qualification Person::getQualification() const
 {
     return mQualification;
 }
