@@ -70,7 +70,7 @@
 			</widget>
 			<tabwidget name="tabs">
 				<widget name="landscapeTab" width="20%" height="92.67%"style="tabs">
-					<widget size="128 12" name="landscapeTitle">
+					<widget name="landscapeTitle">
 						<text text="Landscape" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
@@ -89,14 +89,14 @@
 						</button>
 						<hboxlayout spacing="2" />
 					</widget>
-					<vboxlayout margins="13 13 13 13" spacing="16" />
+					<vboxlayout hAlignment="center" margins="0 13 0 0" spacing="16" />
 				</widget>
 				<widget name="housingTab" width="20%" height="92.67%"style="tabs">
-					<widget size="128 12" name="housingTitle">
+					<widget name="housingTitle">
 						<text text="Housing" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
-					<widget size="128 200" name="housingButtons">
+					<widget name="housingButtons">
 						<button name="CFBHousingButton" size="32 32" style="button">
 							<image size="26 26" />
 							<hboxlayout hAlignment="center" vAlignment="center" />
@@ -115,10 +115,10 @@
 						</button>
 						<hboxlayout spacing="2" />
 					</widget>
-					<vboxlayout margins="13 13 13 13" spacing="16" />
+					<vboxlayout hAlignment="center" margins="0 13 0 0" spacing="16" />
 				</widget>
 				<widget name="industryTab" width="20%" height="92.67%"style="tabs">
-					<widget size="128 12" name="industryTitle">
+					<widget name="industryTitle">
 						<text text="Industry" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
@@ -141,10 +141,10 @@
 						</button>
 						<hboxlayout spacing="2" />
 					</widget>
-					<vboxlayout margins="13 13 13 13" spacing="16" />
+					<vboxlayout hAlignment="center" margins="0 13 0 0" spacing="16" />
 				</widget>
 				<widget name="businessTab" width="20%" height="92.67%"style="tabs">
-					<widget size="128 12" name="businessTitle">
+					<widget name="businessTitle">
 						<text text="Business" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
@@ -167,10 +167,10 @@
 						</button>
 						<hboxlayout spacing="2" />
 					</widget>
-					<vboxlayout margins="13 13 13 13" spacing="16" />
+					<vboxlayout hAlignment="center" margins="0 13 0 0" spacing="16" />
 				</widget>
 				<widget name="healthTab" width="20%" height="92.67%"style="tabs">
-					<widget size="128 12" name="healthTitle">
+					<widget name="healthTitle">
 						<text text="Health" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
@@ -185,10 +185,10 @@
 						</button>
 						<hboxlayout spacing="2" />
 					</widget>
-					<vboxlayout margins="13 13 13 13" spacing="16" />
+					<vboxlayout hAlignment="center" margins="0 13 0 0" spacing="16" />
 				</widget>
 				<widget name="securityTab" width="20%" height="92.67%"style="tabs">
-					<widget size="128 12" name="securityTitle">
+					<widget name="securityTitle">
 						<text text="Security" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
@@ -203,10 +203,10 @@
 						</button>
 						<hboxlayout spacing="2" />
 					</widget>
-					<vboxlayout margins="13 13 13 13" spacing="16" />
+					<vboxlayout hAlignment="center" margins="0 13 0 0" spacing="16" />
 				</widget>
 				<widget name="educationTab" width="20%" height="92.67%"style="tabs">
-					<widget size="128 12" name="educationTitle">
+					<widget name="educationTitle">
 						<text text="Education" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
@@ -221,10 +221,10 @@
 						</button>
 						<hboxlayout spacing="2" />
 					</widget>
-					<vboxlayout margins="13 13 13 13" spacing="16" />
+					<vboxlayout hAlignment="center" margins="0 13 0 0" spacing="16" />
 				</widget>
 				<widget name="roadTab" width="20%" height="92.67%"style="tabs">
-					<widget size="128 12" name="roadTitle">
+					<widget name="roadTitle">
 						<text text="Roads" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
@@ -243,7 +243,7 @@
 						</button>
 						<hboxlayout spacing="2" />
 					</widget>
-					<vboxlayout margins="13 13 13 13" spacing="16" />
+					<vboxlayout hAlignment="center" margins="0 13 0 0" spacing="16" />
 				</widget>
 				<overlaplayout />
 			</tabwidget>
