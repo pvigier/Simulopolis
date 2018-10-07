@@ -24,6 +24,7 @@
 #include "pcg/TerrainGenerator.h"
 #include "pcg/PersonGenerator.h"
 #include "pcg/CompanyGenerator.h"
+#include "pcg/NewspaperGenerator.h"
 #include "city/Map.h"
 #include "city/Bank.h"
 
@@ -157,6 +158,7 @@ private:
     TerrainGenerator mTerrainGenerator;
     PersonGenerator mPersonGenerator;
     CompanyGenerator mCompanyGenerator;
+    NewspaperGenerator mNewspaperGenerator;
 
     // Name
     std::string mName;

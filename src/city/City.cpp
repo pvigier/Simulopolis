@@ -67,7 +67,8 @@ City::Event::Event(Building* building) : type(Type::BUILDING_DESTROYED), buildin
 }
 
 City::City() :
-    mTerrainGenerator(mRandomGenerator), mPersonGenerator(mRandomGenerator), mCompanyGenerator(mRandomGenerator),
+    mTerrainGenerator(mRandomGenerator), mPersonGenerator(mRandomGenerator),
+    mCompanyGenerator(mRandomGenerator), mNewspaperGenerator(mRandomGenerator),
     mCurrentTime(0.0), mTimePerMonth(20.0f), mMonth(0), mYear(0),
     mCityCompany(std::make_unique<Company>("City", 0, nullptr, SEED_MONEY)),
     mWeeklyStandardWorkingHours(0), mMinimumWage(0.0), mIncomeTax(0.0f), mCorporateTax(0.0f)
@@ -230,6 +231,8 @@ void City::createMap(std::string name, uint64_t seed)
     // Economy
     mWorldAccount = mBank.createWorldAccount();
 
+    // Newspaper
+    mNewspaperGenerator.setUp();
     // Set up
     setUp(false);
 }
