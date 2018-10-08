@@ -233,6 +233,8 @@ void City::createMap(std::string name, uint64_t seed)
 
     // Newspaper
     mNewspaperGenerator.setUp();
+    mNewspaper.setName(mNewspaperGenerator.generate(mName));
+
     // Set up
     setUp(false);
 }
@@ -343,6 +345,11 @@ MarketBase* City::getMarket(MarketType type)
 const MarketBase* City::getMarket(MarketType type) const
 {
     return mMarkets[static_cast<int>(type)].get();
+}
+
+const Newspaper& City::getNewspaper() const
+{
+    return mNewspaper;
 }
 
 Company& City::getCompany()

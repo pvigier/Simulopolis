@@ -27,6 +27,7 @@
 #include "pcg/NewspaperGenerator.h"
 #include "city/Map.h"
 #include "city/Bank.h"
+#include "city/Newspaper.h"
 
 class MarketBase;
 enum class MarketType : int;
@@ -110,6 +111,9 @@ public:
     MarketBase* getMarket(MarketType type);
     const MarketBase* getMarket(MarketType type) const;
 
+    // Newspaper
+    const Newspaper& getNewspaper() const;
+
     // Company
     Company& getCompany();
     Money getFunds() const;
@@ -178,6 +182,9 @@ private:
     std::vector<std::unique_ptr<MarketBase>> mMarkets;
     Id mWorldAccount;
 
+    // Newspaper
+    Newspaper mNewspaper;
+
     // City company
     std::unique_ptr<Company> mCityCompany;
 
@@ -230,6 +237,7 @@ private:
         ar & mMap;
         ar & mTotalTime & mCurrentTime & mTimePerMonth & mMonth & mYear;
         ar & mBank & mMarkets & mWorldAccount;
+        ar & mNewspaper;
         ar & mWeeklyStandardWorkingHours & mMinimumWage & mIncomeTax & mCorporateTax;
         ar & mPersons & mCitizens & mImmigrants & mCompanies & mBuildings;
         ar & mTimeBeforeLeaving;
@@ -246,6 +254,7 @@ private:
         ar & mMap;
         ar & mTotalTime & mCurrentTime & mTimePerMonth & mMonth & mYear;
         ar & mBank & mMarkets & mWorldAccount;
+        ar & mNewspaper;
         ar & mWeeklyStandardWorkingHours & mMinimumWage & mIncomeTax & mCorporateTax;
         ar & mPersons & mCitizens & mImmigrants & mCompanies & mBuildings;
         ar & mTimeBeforeLeaving;
