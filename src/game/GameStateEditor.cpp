@@ -39,6 +39,7 @@
 #include "game/LaborMarketWindow.h"
 #include "game/GoodsMarketWindow.h"
 #include "game/PoliciesWindow.h"
+#include "game/NewspaperWindow.h"
 #include "city/Car.h"
 
 GameStateEditor::GameStateEditor() :
@@ -46,7 +47,7 @@ GameStateEditor::GameStateEditor() :
     mCurrentTile(Tile::Type::GRASS), mGui(sGuiManager->getGui("editor")),
     mImmigrantsWindow(nullptr), mCitizensWindow(nullptr),
     mRentalMarketWindow(nullptr), mLaborMarketWindow(nullptr), mGoodsMarketWindow(nullptr),
-    mPoliciesWindow(nullptr)
+    mPoliciesWindow(nullptr), mNewspaperWindow(nullptr)
 {
     // Views
     sf::Vector2u viewportSize = sRenderEngine->getViewportSize();
@@ -243,6 +244,8 @@ void GameStateEditor::handleMessages()
                         openGoodsMarketWindow();
                     else if (name == "openPoliciesWindowButton")
                         openPoliciesWindow();
+                    else if (name == "openNewspaperWindowButton")
+                        openNewspaperWindow();
                     else if (name.substr(0, 16) == "openPersonWindow")
                         openPersonWindow(*mCity.getPerson(extractId(name, "openPersonWindow")));
                     else if (name.substr(0, 16) == "openBuildingWindow")
@@ -280,6 +283,8 @@ void GameStateEditor::handleMessages()
                         mGoodsMarketWindow = nullptr;
                     else if (mPoliciesWindow == window)
                         mPoliciesWindow = nullptr;
+                    else if (mNewspaperWindow == nullptr)
+                        mNewspaperWindow = nullptr;
                     else
                     {
                         for (WindowManager& windowManager : mWindowManagers)
@@ -466,6 +471,7 @@ void GameStateEditor::createGui()
     mGui->get("openLaborMarketWindowButton")->subscribe(mMailbox.getId());
     mGui->get("openGoodsMarketWindowButton")->subscribe(mMailbox.getId());
     mGui->get("openPoliciesWindowButton")->subscribe(mMailbox.getId());
+    mGui->get("openNewspaperWindowButton")->subscribe(mMailbox.getId());
 
     // Window managers
     mWindowManagers.emplace_back(mMailbox.getId());
@@ -582,6 +588,15 @@ void GameStateEditor::openPoliciesWindow()
     {
         mPoliciesWindow = mGui->createRootWithDefaultName<PoliciesWindow>(sMessageBus, sStylesheetManager, mCity);
         mPoliciesWindow->subscribe(mMailbox.getId());
+    }
+}
+
+void GameStateEditor::openNewspaperWindow()
+{
+    if (!mNewspaperWindow)
+    {
+        mNewspaperWindow = mGui->createRootWithDefaultName<NewspaperWindow>(sStylesheetManager, mCity.getNewspaper());
+        mNewspaperWindow->subscribe(mMailbox.getId());
     }
 }
 

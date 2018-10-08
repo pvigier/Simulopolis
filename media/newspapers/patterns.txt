@@ -1,0 +1,5 @@
+The <city> Post
+The <city> Tribune
+The <city> Times
+The <city> News
+The <city> Globe

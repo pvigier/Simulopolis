@@ -1,4 +1,5 @@
 <fonts>
 	<font name="font" path="fonts/Cabin-Regular.ttf" />
     <font name="titleFont" path="fonts/BebasNeue-Regular.ttf" />
+    <font name="newspaperFont" path="fonts/LinLibertine_aDRS.ttf" />
 </fonts>

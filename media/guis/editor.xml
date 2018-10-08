@@ -4,6 +4,7 @@
 		<widget width="100%" height="4.67%" style="bar">
 			<button name="openImmigrantsWindowButton" style="button">
 				<text text="Immigrants" characterSize="12" style="darkText" />
+				<!--<image texture="immigrants" size="26 26" />-->
 				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
 			</button>
 			<button name="openCitizensWindowButton" style="button">
@@ -28,6 +29,10 @@
 			</button>
 			<button name="openPoliciesWindowButton" style="button">
 				<text text="Policies" characterSize="12" style="darkText" />
+				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
+			</button>
+			<button name="openNewspaperWindowButton" style="button">
+				<text text="News" characterSize="12" style="darkText" />
 				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
 			</button>
 			<hboxlayout vAlignment="center" spacing="2" margins="4 0 4 0" />

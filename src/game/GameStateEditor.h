@@ -29,6 +29,7 @@ class RentalMarketWindow;
 class LaborMarketWindow;
 class GoodsMarketWindow;
 class PoliciesWindow;
+class NewspaperWindow;
 
 enum class ActionState{NONE, PANNING, SELECTING};
 
@@ -69,6 +70,7 @@ private:
     LaborMarketWindow* mLaborMarketWindow;
     GoodsMarketWindow* mGoodsMarketWindow;
     PoliciesWindow* mPoliciesWindow;
+    NewspaperWindow* mNewspaperWindow;
     std::vector<std::unique_ptr<sf::RenderTexture>> mMenuTextures;
 
     void drawCity(sf::RenderTexture& renderTexture, const sf::View& view, bool background);
@@ -85,6 +87,7 @@ private:
     void openLaborMarketWindow();
     void openGoodsMarketWindow();
     void openPoliciesWindow();
+    void openNewspaperWindow();
     void updateWindows();
     bool updateTabs(const std::string& name);
     bool updateTile(const std::string& name);
