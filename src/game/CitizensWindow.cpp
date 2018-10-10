@@ -18,7 +18,7 @@
 #include "CitizensWindow.h"
 #include "resource/StylesheetManager.h"
 #include "gui/Gui.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiTable.h"
 #include "gui/GuiScrollArea.h"
@@ -92,10 +92,10 @@ void CitizensWindow::update()
     // Update the cells
     for (std::size_t i = 0; i < mCitizens.size(); ++i)
     {
-        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("%d", mCitizens[i]->getAge(mCity.getYear())));
-        static_cast<GuiText*>(mTable->getCellContent(i, 2))->setString(mCitizens[i]->getWorkStatus());
-        static_cast<GuiText*>(mTable->getCellContent(i, 3))->setString(format("$%.2f", mCitizens[i]->getAccountBalance()));
-        static_cast<GuiText*>(mTable->getCellContent(i, 4))->setString(format("%.0f", 100.0f * mCitizens[i]->getNeed(Person::Need::HAPPINESS)));
+        static_cast<GuiLabel*>(mTable->getCellContent(i, 1))->setString(format("%d", mCitizens[i]->getAge(mCity.getYear())));
+        static_cast<GuiLabel*>(mTable->getCellContent(i, 2))->setString(mCitizens[i]->getWorkStatus());
+        static_cast<GuiLabel*>(mTable->getCellContent(i, 3))->setString(format("$%.2f", mCitizens[i]->getAccountBalance()));
+        static_cast<GuiLabel*>(mTable->getCellContent(i, 4))->setString(format("%.0f", 100.0f * mCitizens[i]->getNeed(Person::Need::HAPPINESS)));
     }
 }
 
@@ -107,16 +107,16 @@ void CitizensWindow::addCitizen(Person* person)
     // Person button
     GuiWidget* personButton = mGui->create<GuiButton>("openPersonWindow" + std::to_string(person->getId()) + "|" + mTable->getName(), mStylesheetManager->getStylesheet("button"));
     personButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
-    personButton->add(mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("darkText")));
+    personButton->add(mGui->createWithDefaultName<GuiLabel>(fullName, 12, mStylesheetManager->getStylesheet("darkText")));
     personButton->subscribe(mListenerId);
 
     // Add row
     mTable->addRow({
         personButton,
-        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText")),
     });
 }
 

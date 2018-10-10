@@ -17,7 +17,7 @@
 
 #include "gui/GuiTable.h"
 #include "gui/Gui.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
 #include "resource/XmlDocument.h"
@@ -47,7 +47,7 @@ void GuiTable::setUp()
     // Add titles
     std::vector<GuiWidget*> titles;
     for (const std::string& columnName : mColumnNames)
-        titles.push_back(mGui->createWithDefaultName<GuiText>(columnName, 12, &mStyle->getFirstChildByName("title")));
+        titles.push_back(mGui->createWithDefaultName<GuiLabel>(columnName, 12, &mStyle->getFirstChildByName("title")));
     addRow(titles, true);
 
     // Set Layout

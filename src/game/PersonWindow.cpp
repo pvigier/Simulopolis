@@ -19,7 +19,7 @@
 #include "resource/StylesheetManager.h"
 #include "city/Person.h"
 #include "gui/Gui.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiImage.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
@@ -28,8 +28,8 @@
 PersonWindow::PersonWindow(StylesheetManager* stylesheetManager, const Person& person, int year) :
     GuiWindow(person.getFullName(), stylesheetManager->getStylesheet("window")),
     mStylesheetManager(stylesheetManager), mPerson(person), mYear(year), mImage(nullptr),
-    mAgeText(nullptr), mWorkText(nullptr), mShortTermGoalText(nullptr), mLongTermGoalText(nullptr),
-    mEnergyText(nullptr), mSatietyText(nullptr), mHealthText(nullptr), mSafetyText(nullptr), mHappinessText(nullptr)
+    mAgeLabel(nullptr), mWorkLabel(nullptr), mShortTermGoalLabel(nullptr), mLongTermGoalLabel(nullptr),
+    mEnergyLabel(nullptr), mSatietyLabel(nullptr), mHealthLabel(nullptr), mSafetyLabel(nullptr), mHappinessLabel(nullptr)
 {
 
 }
@@ -48,18 +48,18 @@ void PersonWindow::setUp()
 
     // Personal info
     auto infoWidget = mGui->createWithDefaultName<GuiWidget>();
-    auto nameText = mGui->createWithDefaultName<GuiText>("Name: " + mPerson.getFullName(), 12, mStylesheetManager->getStylesheet("darkText"));
-    mAgeText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mWorkText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mBankAccountText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mShortTermGoalText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mLongTermGoalText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    infoWidget->add(nameText);
-    infoWidget->add(mAgeText);
-    infoWidget->add(mWorkText);
-    infoWidget->add(mBankAccountText);
-    infoWidget->add(mShortTermGoalText);
-    infoWidget->add(mLongTermGoalText);
+    auto nameLabel = mGui->createWithDefaultName<GuiLabel>("Name: " + mPerson.getFullName(), 12, mStylesheetManager->getStylesheet("darkText"));
+    mAgeLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mWorkLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mBankAccountLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mShortTermGoalLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mLongTermGoalLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    infoWidget->add(nameLabel);
+    infoWidget->add(mAgeLabel);
+    infoWidget->add(mWorkLabel);
+    infoWidget->add(mBankAccountLabel);
+    infoWidget->add(mShortTermGoalLabel);
+    infoWidget->add(mLongTermGoalLabel);
     infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
     // Top widget
@@ -70,16 +70,16 @@ void PersonWindow::setUp()
 
     // Bottom widget
     auto bottomWidget = mGui->createWithDefaultName<GuiWidget>();
-    mEnergyText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mSatietyText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mHealthText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mSafetyText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mHappinessText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    bottomWidget->add(mEnergyText);
-    bottomWidget->add(mSatietyText);
-    bottomWidget->add(mHealthText);
-    bottomWidget->add(mSafetyText);
-    bottomWidget->add(mHappinessText);
+    mEnergyLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mSatietyLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mHealthLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mSafetyLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mHappinessLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    bottomWidget->add(mEnergyLabel);
+    bottomWidget->add(mSatietyLabel);
+    bottomWidget->add(mHealthLabel);
+    bottomWidget->add(mSafetyLabel);
+    bottomWidget->add(mHappinessLabel);
     bottomWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
 
     // Window
@@ -92,16 +92,16 @@ void PersonWindow::setUp()
 
 void PersonWindow::update()
 {
-    mAgeText->setString(format("Age: %d", mPerson.getAge(mYear)));
-    mWorkText->setString("Work: " + mPerson.getWorkStatus());
-    mBankAccountText->setString(format("Bank account: $%.2f", mPerson.getAccountBalance()));
-    mShortTermGoalText->setString("Short term goal: " + mPerson.getShortTermBrain().toString());
-    mLongTermGoalText->setString("Long term goal: " + mPerson.getLongTermBrain().toString());
-    mEnergyText->setString(format("Energy: %.2f", mPerson.getNeed(Person::Need::ENERGY)));
-    mSatietyText->setString(format("Satiety: %.2f", mPerson.getNeed(Person::Need::SATIETY)));
-    mHealthText->setString(format("Health: %.2f", mPerson.getNeed(Person::Need::HEALTH)));
-    mSafetyText->setString(format("Safety: %.2f", mPerson.getNeed(Person::Need::SAFETY)));
-    mHappinessText->setString(format("Happiness: %.0f", 100.0f * mPerson.getNeed(Person::Need::HAPPINESS)));
+    mAgeLabel->setString(format("Age: %d", mPerson.getAge(mYear)));
+    mWorkLabel->setString("Work: " + mPerson.getWorkStatus());
+    mBankAccountLabel->setString(format("Bank account: $%.2f", mPerson.getAccountBalance()));
+    mShortTermGoalLabel->setString("Short term goal: " + mPerson.getShortTermBrain().toString());
+    mLongTermGoalLabel->setString("Long term goal: " + mPerson.getLongTermBrain().toString());
+    mEnergyLabel->setString(format("Energy: %.2f", mPerson.getNeed(Person::Need::ENERGY)));
+    mSatietyLabel->setString(format("Satiety: %.2f", mPerson.getNeed(Person::Need::SATIETY)));
+    mHealthLabel->setString(format("Health: %.2f", mPerson.getNeed(Person::Need::HEALTH)));
+    mSafetyLabel->setString(format("Safety: %.2f", mPerson.getNeed(Person::Need::SAFETY)));
+    mHappinessLabel->setString(format("Happiness: %.0f", 100.0f * mPerson.getNeed(Person::Need::HAPPINESS)));
 }
 
 void PersonWindow::onNewYear()

@@ -23,12 +23,12 @@
 class XmlDocument;
 class PropertyList;
 
-class GuiText : public GuiWidget
+class GuiLabel : public GuiWidget
 {
 public:
-    GuiText(const sf::String& text, unsigned int characterSize, const XmlDocument* style);
-    GuiText(const PropertyList& properties);
-    virtual ~GuiText();
+    GuiLabel(const sf::String& text, unsigned int characterSize, const XmlDocument* style);
+    GuiLabel(const PropertyList& properties);
+    virtual ~GuiLabel();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

@@ -19,7 +19,7 @@
 #include "message/MessageBus.h"
 #include "resource/StylesheetManager.h"
 #include "gui/Gui.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiTable.h"
 #include "gui/GuiScrollArea.h"
@@ -127,16 +127,16 @@ void RentalMarketWindow::addRow(const Housing* housing, Money rent, int count)
 {
     // Add row
     mTable->addRow({
-        mGui->createWithDefaultName<GuiText>(housing->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>(format("%d", housing->getId()), 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>(Tile::typeToString(housing->getType()), 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>(format("$%.2f", rent), 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>(format("%d", count), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>(housing->getOwner()->getName(), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>(format("%d", housing->getId()), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>(Tile::typeToString(housing->getType()), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>(format("$%.2f", rent), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>(format("%d", count), 12, mStylesheetManager->getStylesheet("darkText")),
     });
 }
 
 void RentalMarketWindow::updateRow(std::size_t i, int count)
 {
-    static_cast<GuiText*>(mTable->getCellContent(i, 4))->setString(format("%d", count));
+    static_cast<GuiLabel*>(mTable->getCellContent(i, 4))->setString(format("%d", count));
 }
 

@@ -26,7 +26,7 @@
 #include "city/Lease.h"
 #include "city/Work.h"
 #include "gui/Gui.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiImage.h"
 #include "gui/GuiTable.h"
 #include "gui/GuiVBoxLayout.h"
@@ -36,7 +36,7 @@
 BuildingWindow::BuildingWindow(StylesheetManager* stylesheetManager, const Building& building) :
     GuiWindow(format("%s %d", Tile::typeToString(building.getType()).c_str(), building.getId()), stylesheetManager->getStylesheet("window")),
     mStylesheetManager(stylesheetManager), mBuilding(building),
-    mImage(nullptr), mStockText(nullptr), mPreparedGoodsText(nullptr), mTable(nullptr)
+    mImage(nullptr), mStockLabel(nullptr), mPreparedGoodsLabel(nullptr), mTable(nullptr)
 {
 
 }
@@ -55,8 +55,8 @@ void BuildingWindow::setUp()
 
     // Personal info
     auto infoWidget = mGui->createWithDefaultName<GuiWidget>();
-    auto typeText = mGui->createWithDefaultName<GuiText>("Type: " + Tile::typeToString(mBuilding.getType()), 12, mStylesheetManager->getStylesheet("darkText"));
-    auto ownerText = mGui->createWithDefaultName<GuiText>("Owner: " + mBuilding.getOwner()->getName(), 12, mStylesheetManager->getStylesheet("darkText"));
+    auto typeText = mGui->createWithDefaultName<GuiLabel>("Type: " + Tile::typeToString(mBuilding.getType()), 12, mStylesheetManager->getStylesheet("darkText"));
+    auto ownerText = mGui->createWithDefaultName<GuiLabel>("Owner: " + mBuilding.getOwner()->getName(), 12, mStylesheetManager->getStylesheet("darkText"));
     infoWidget->add(typeText);
     infoWidget->add(ownerText);
     infoWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
@@ -80,8 +80,8 @@ void BuildingWindow::setUp()
         for (std::size_t i = 0; i < static_cast<const Housing&>(mBuilding).getLeases().size(); ++i)
         {
             mTable->addRow({
-                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
-                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
+                mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText")),
+                mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText")),
             });
         }
     }
@@ -89,10 +89,10 @@ void BuildingWindow::setUp()
     {
         if (mBuilding.isBusiness())
         {
-            mStockText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-            mPreparedGoodsText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-            infoWidget->add(mStockText);
-            infoWidget->add(mPreparedGoodsText);
+            mStockLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+            mPreparedGoodsLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+            infoWidget->add(mStockLabel);
+            infoWidget->add(mPreparedGoodsLabel);
         }
         // Table
         std::vector<std::string> names = {"Employee", "Work", "Salary"};
@@ -100,9 +100,9 @@ void BuildingWindow::setUp()
         for (std::size_t i = 0; i < Company::getEmployees(&mBuilding)->size(); ++i)
         {
             mTable->addRow({
-                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
-                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
-                mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText")),
+                mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText")),
+                mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText")),
+                mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText")),
             });
         }
     }
@@ -124,8 +124,8 @@ void BuildingWindow::update()
         const std::vector<std::unique_ptr<Lease>>& leases = static_cast<const Housing&>(mBuilding).getLeases();
         for (std::size_t i = 0; i < leases.size(); ++i)
         {
-            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setString(leases[i]->getTenantName());
-            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("$%.2f", leases[i]->getRent()));
+            static_cast<GuiLabel*>(mTable->getCellContent(i, 0))->setString(leases[i]->getTenantName());
+            static_cast<GuiLabel*>(mTable->getCellContent(i, 1))->setString(format("$%.2f", leases[i]->getRent()));
         }
     }
     else
@@ -134,16 +134,16 @@ void BuildingWindow::update()
         if (mBuilding.isBusiness())
         {
             const Business& business = static_cast<const Business&>(mBuilding);
-            mStockText->setString(format("Stock: %d/%d", business.getStock(), business.getMaxSizeStock()));
-            mPreparedGoodsText->setString(format("Prepared goods: %d", business.getPreparedGoods()));
+            mStockLabel->setString(format("Stock: %d/%d", business.getStock(), business.getMaxSizeStock()));
+            mPreparedGoodsLabel->setString(format("Prepared goods: %d", business.getPreparedGoods()));
         }
         // Table
         const std::vector<std::unique_ptr<Work>>* employees = Company::getEmployees(&mBuilding);
         for (std::size_t i = 0; i < employees->size(); ++i)
         {
-            static_cast<GuiText*>(mTable->getCellContent(i, 0))->setString((*employees)[i]->getEmployeeName());
-            static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(Work::typeToString((*employees)[i]->getType()));
-            static_cast<GuiText*>(mTable->getCellContent(i, 2))->setString(format("$%.2f", (*employees)[i]->getSalary()));
+            static_cast<GuiLabel*>(mTable->getCellContent(i, 0))->setString((*employees)[i]->getEmployeeName());
+            static_cast<GuiLabel*>(mTable->getCellContent(i, 1))->setString(Work::typeToString((*employees)[i]->getType()));
+            static_cast<GuiLabel*>(mTable->getCellContent(i, 2))->setString(format("$%.2f", (*employees)[i]->getSalary()));
         }
     }
 }

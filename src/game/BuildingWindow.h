@@ -23,7 +23,7 @@
 class StylesheetManager;
 class Building;
 class GuiImage;
-class GuiText;
+class GuiLabel;
 class GuiTable;
 
 class BuildingWindow : public GuiWindow
@@ -44,8 +44,8 @@ private:
     StylesheetManager* mStylesheetManager;
     const Building& mBuilding;
     GuiImage* mImage;
-    GuiText* mStockText;
-    GuiText* mPreparedGoodsText;
+    GuiLabel* mStockLabel;
+    GuiLabel* mPreparedGoodsLabel;
     GuiTable* mTable;
     sf::RenderTexture mRenderTexture;
 };

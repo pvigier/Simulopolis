@@ -22,7 +22,7 @@
 
 class StylesheetManager;
 class GuiTable;
-class GuiText;
+class GuiLabel;
 class City;
 class Person;
 class Lease;
@@ -49,9 +49,9 @@ private:
     const Market<Lease>* mRentalMarket;
     const Market<Work>* mLaborMarket;
     GuiTable* mTable;
-    GuiText* mRentalMarketText;
-    GuiText* mLaborMarketText;
-    GuiText* mAttractivenessText;
+    GuiLabel* mRentalMarketLabel;
+    GuiLabel* mLaborMarketLabel;
+    GuiLabel* mAttractivenessLabel;
 
     void addImmigrant(Person* person);
     void removeImmigrant(Person* person);

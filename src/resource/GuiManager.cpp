@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "resource/GuiManager.h"
 #include "util/debug.h"
 #include "resource/XmlManager.h"
 #include "resource/PropertyList.h"
 #include "gui/GuiWidget.h"
 #include "gui/GuiButton.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiImage.h"
 #include "gui/GuiTabWidget.h"
 #include "gui/GuiInput.h"
@@ -136,7 +136,7 @@ std::unique_ptr<GuiWidget> GuiManager::createWidget(const XmlDocument& node)
     else if (type == "button")
         widget = std::make_unique<GuiButton>(node.getAttributes());
     else if (type == "text")
-        widget = std::make_unique<GuiText>(node.getAttributes());
+        widget = std::make_unique<GuiLabel>(node.getAttributes());
     else if (type == "image")
         widget = std::make_unique<GuiImage>(node.getAttributes());
     else if (type == "tabwidget")

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <regex>
@@ -23,7 +23,7 @@
 #include "gui/GuiLayout.h"
 
 class XmlDocument;
-class GuiText;
+class GuiLabel;
 
 class GuiInput : public GuiWidget
 {
@@ -52,7 +52,7 @@ private:
     unsigned int mCharacterSize;
     GuiLayout::Margins mMargins;
     const XmlDocument* mTextStyle;
-    GuiText* mText;
+    GuiLabel* mLabel;
     std::size_t mCursor;
     sf::RectangleShape mCursorShape;
     mutable sf::Int32 mElapsedTime;
@@ -61,6 +61,5 @@ private:
 
     void resetClock() const;
     void setCursor(std::size_t cursor);
-    bool updateText(const sf::String& text);
     std::size_t mousePositionToCursor(sf::Vector2f position);
 };

@@ -19,7 +19,7 @@
 #include "message/MessageBus.h"
 #include "resource/StylesheetManager.h"
 #include "gui/Gui.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiInput.h"
 #include "gui/GuiTabWidget.h"
@@ -54,7 +54,7 @@ void PoliciesWindow::setUp()
     for (const std::string& name : tabNames)
     {
         mTabButtons.push_back(mGui->createWithDefaultName<GuiButton>(mStylesheetManager->getStylesheet("button")));
-        mTabButtons.back()->add(mGui->createWithDefaultName<GuiText>(name, 12, mStylesheetManager->getStylesheet("darkText")));
+        mTabButtons.back()->add(mGui->createWithDefaultName<GuiLabel>(name, 12, mStylesheetManager->getStylesheet("darkText")));
         mTabButtons.back()->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{3.0f, 3.0f, 3.0f, 3.0f}));
         mTabButtons.back()->subscribe(mMailbox.getId());
         mTabButtonsWidget->add(mTabButtons.back());
@@ -166,7 +166,7 @@ void PoliciesWindow::createLine(GuiWidget* tab, const std::string& label, const 
     tab->add(widget);
 
     // Label
-    widget->add(mGui->createWithDefaultName<GuiText>(label, 12, mStylesheetManager->getStylesheet("darkText")));
+    widget->add(mGui->createWithDefaultName<GuiLabel>(label, 12, mStylesheetManager->getStylesheet("darkText")));
 
     // Input
     GuiInput* input = mGui->createWithDefaultName<GuiInput>(12, mStylesheetManager->getStylesheet("input"));
@@ -177,7 +177,7 @@ void PoliciesWindow::createLine(GuiWidget* tab, const std::string& label, const 
 
     // Suffix
     if (!suffix.empty())
-        widget->add(mGui->createWithDefaultName<GuiText>(suffix, 12, mStylesheetManager->getStylesheet("darkText")));
+        widget->add(mGui->createWithDefaultName<GuiLabel>(suffix, 12, mStylesheetManager->getStylesheet("darkText")));
 
 }
 

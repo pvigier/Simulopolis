@@ -19,7 +19,7 @@
 #include "resource/StylesheetManager.h"
 #include "city/Newspaper.h"
 #include "gui/Gui.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
 #include "util/format.h"
@@ -39,13 +39,13 @@ NewspaperWindow::~NewspaperWindow()
 void NewspaperWindow::setUp()
 {
     // Personal info
-    auto nameText = mGui->createWithDefaultName<GuiText>(mNewspaper.getName(), 32, mStylesheetManager->getStylesheet("newspaperText"));
-    auto dateText = mGui->createWithDefaultName<GuiText>("September 2000", 12, mStylesheetManager->getStylesheet("newspaperText"));
+    auto nameLabel = mGui->createWithDefaultName<GuiLabel>(mNewspaper.getName(), 32, mStylesheetManager->getStylesheet("newspaperText"));
+    auto dateLabel = mGui->createWithDefaultName<GuiLabel>("September 2000", 12, mStylesheetManager->getStylesheet("newspaperText"));
 
     // Top widget
     auto topWidget = mGui->createWithDefaultName<GuiWidget>();
-    topWidget->add(nameText);
-    topWidget->add(dateText);
+    topWidget->add(nameLabel);
+    topWidget->add(dateLabel);
     topWidget->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Center, GuiLayout::VAlignment::Top, 4.0f));
 
     // Bottom widget

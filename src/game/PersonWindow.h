@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <SFML/Graphics/RenderTexture.hpp>
@@ -23,7 +23,7 @@
 class StylesheetManager;
 class Person;
 class GuiImage;
-class GuiText;
+class GuiLabel;
 
 class PersonWindow : public GuiWindow
 {
@@ -45,15 +45,15 @@ private:
     const Person& mPerson;
     int mYear;
     GuiImage* mImage;
-    GuiText* mAgeText;
-    GuiText* mWorkText;
-    GuiText* mBankAccountText;
-    GuiText* mShortTermGoalText;
-    GuiText* mLongTermGoalText;
-    GuiText* mEnergyText;
-    GuiText* mSatietyText;
-    GuiText* mHealthText;
-    GuiText* mSafetyText;
-    GuiText* mHappinessText;
+    GuiLabel* mAgeLabel;
+    GuiLabel* mWorkLabel;
+    GuiLabel* mBankAccountLabel;
+    GuiLabel* mShortTermGoalLabel;
+    GuiLabel* mLongTermGoalLabel;
+    GuiLabel* mEnergyLabel;
+    GuiLabel* mSatietyLabel;
+    GuiLabel* mHealthLabel;
+    GuiLabel* mSafetyLabel;
+    GuiLabel* mHappinessLabel;
     sf::RenderTexture mRenderTexture;
 };

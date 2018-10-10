@@ -27,7 +27,7 @@
 #include "resource/GuiManager.h"
 #include "resource/SaveManager.h"
 #include "gui/GuiButton.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiImage.h"
 #include "gui/GuiTabWidget.h"
 #include "gui/GuiEvent.h"
@@ -149,7 +149,7 @@ void GameStateEditor::handleMessages()
                             mCity.getMap().select(mSelectionStart, mSelectionEnd, Tile::Category::GROUND);
                         // Update the GUI
                         Money totalCost = computeCostOfSelection();
-                        GuiText* selectionCostText = mGui->get<GuiText>("selectionCostText");
+                        GuiLabel* selectionCostText = mGui->get<GuiLabel>("selectionCostText");
                         selectionCostText->setString(format("$%.2f", totalCost));
                         if (mCity.getFunds() < totalCost)
                             selectionCostText->setColor(sf::Color::Red);
@@ -348,11 +348,11 @@ void GameStateEditor::update(float dt)
     mCity.update(dt);
 
     // Update the info bar at the bottom of the screen
-    mGui->get<GuiText>("dateText")->setString(format("%s %d", mCity.getFormattedMonth().c_str(), 2000 + mCity.getYear()));
-    mGui->get<GuiText>("fundsText")->setString(format("$%.2f", mCity.getFunds()));
-    mGui->get<GuiText>("populationText")->setString(format("Population: %d", mCity.getPopulation()));
-    mGui->get<GuiText>("happinessText")->setString(format("Happiness: %.0f", 100.0f * mCity.getAverageHappiness()));
-    mGui->get<GuiText>("currentTileText")->setString(Tile::typeToString(mCurrentTile));
+    mGui->get<GuiLabel>("dateText")->setString(format("%s %d", mCity.getFormattedMonth().c_str(), 2000 + mCity.getYear()));
+    mGui->get<GuiLabel>("fundsText")->setString(format("$%.2f", mCity.getFunds()));
+    mGui->get<GuiLabel>("populationText")->setString(format("Population: %d", mCity.getPopulation()));
+    mGui->get<GuiLabel>("happinessText")->setString(format("Happiness: %.0f", 100.0f * mCity.getAverageHappiness()));
+    mGui->get<GuiLabel>("currentTileText")->setString(Tile::typeToString(mCurrentTile));
 
     // Update the windows
     updateWindows();

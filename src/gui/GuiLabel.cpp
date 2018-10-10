@@ -15,10 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "resource/XmlDocument.h"
 
-GuiText::GuiText(const sf::String& text, unsigned int characterSize, const XmlDocument* style) :
+GuiLabel::GuiLabel(const sf::String& text, unsigned int characterSize, const XmlDocument* style) :
     GuiWidget(style),
     mText(text, mStyle->getFirstChildByName("text").getAttributes().get<const sf::Font&>("font"), characterSize)
 {
@@ -26,7 +26,7 @@ GuiText::GuiText(const sf::String& text, unsigned int characterSize, const XmlDo
     setFixedInsideSize(computeSize());
 }
 
-GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
+GuiLabel::GuiLabel(const PropertyList& properties) : GuiWidget(properties)
 {
     const XmlDocument* style = properties.get<const XmlDocument*>("style");
     mText.setString(properties.get<sf::String>("text", ""));
@@ -36,34 +36,34 @@ GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
     setFixedInsideSize(computeSize());
 }
 
-GuiText::~GuiText()
+GuiLabel::~GuiLabel()
 {
     //dtor
 }
 
-void GuiText::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void GuiLabel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     GuiWidget::draw(target, states);
     target.draw(mText, states);
 }
 
-void GuiText::setCharacterSize(unsigned int characterSize)
+void GuiLabel::setCharacterSize(unsigned int characterSize)
 {
     mText.setCharacterSize(characterSize);
     setFixedInsideSize(computeSize());
 }
 
-const sf::Text& GuiText::getText() const
+const sf::Text& GuiLabel::getText() const
 {
     return mText;
 }
 
-const sf::String& GuiText::getString() const
+const sf::String& GuiLabel::getString() const
 {
     return mText.getString();
 }
 
-void GuiText::setString(const sf::String& text)
+void GuiLabel::setString(const sf::String& text)
 {
     if (text != mText.getString())
     {
@@ -72,17 +72,17 @@ void GuiText::setString(const sf::String& text)
     }
 }
 
-void GuiText::setColor(sf::Color color)
+void GuiLabel::setColor(sf::Color color)
 {
     mText.setFillColor(color);
 }
 
-void GuiText::applyDesign()
+void GuiLabel::applyDesign()
 {
     mText.setPosition(sf::Vector2f(sf::Vector2i(mInsidePosition)));
 }
 
-sf::Vector2f GuiText::computeSize() const
+sf::Vector2f GuiLabel::computeSize() const
 {
     return sf::Vector2f(mText.getGlobalBounds().width, mText.getCharacterSize() * 5 / 4);
 }

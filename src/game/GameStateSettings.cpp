@@ -23,7 +23,7 @@
 #include "resource/GuiManager.h"
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiImage.h"
 #include "gui/GuiEvent.h"
 #include "util/format.h"
@@ -87,18 +87,18 @@ void GameStateSettings::handleMessages()
                     {
                         mFullscreen = !mFullscreen;
                         if (mFullscreen)
-                            mGui->get<GuiText>("fullscreenText")->setString("Fullscreen: on");
+                            mGui->get<GuiLabel>("fullscreenText")->setString("Fullscreen: on");
                         else
-                            mGui->get<GuiText>("fullscreenText")->setString("Fullscreen: off");
+                            mGui->get<GuiLabel>("fullscreenText")->setString("Fullscreen: off");
                         sRenderEngine->setFullscreen(mFullscreen);
                     }
                     else if (name == "musicButton")
                     {
                         mMute = !mMute;
                         if (mMute)
-                            mGui->get<GuiText>("musicText")->setString("Music: off");
+                            mGui->get<GuiLabel>("musicText")->setString("Music: off");
                         else
-                            mGui->get<GuiText>("musicText")->setString("Music: on");
+                            mGui->get<GuiLabel>("musicText")->setString("Music: on");
                         sAudioEngine->setVolume(!mMute * 100.0f);
                     }
                 }

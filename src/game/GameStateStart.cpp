@@ -26,7 +26,7 @@
 #include "resource/XmlDocument.h"
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiImage.h"
 #include "gui/GuiEvent.h"
 
@@ -145,7 +145,7 @@ void GameStateStart::createGui(bool resume)
         mGui->get<GuiButton>("resumeGameButton")->setState(GuiButton::State::DISABLED);
         textColor = textProperties.get<sf::Color>("disableColor", textColor);
     }
-    mGui->get<GuiText>("resumeGameText")->setColor(textColor);
+    mGui->get<GuiLabel>("resumeGameText")->setColor(textColor);
 
     // Register to events
     mGui->get("resumeGameButton")->subscribe(mMailbox.getId());

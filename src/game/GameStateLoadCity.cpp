@@ -26,7 +26,7 @@
 #include "resource/SaveManager.h"
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiImage.h"
 #include "gui/GuiScrollArea.h"
 #include "gui/GuiHBoxLayout.h"
@@ -147,7 +147,7 @@ void GameStateLoadCity::setCityTexture(const sf::Texture& texture)
 
 std::string GameStateLoadCity::getSelectedCity() const
 {
-    return static_cast<GuiText*>(mButtons[mISelected]->getChildren()[1])->getString().toAnsiString();
+    return static_cast<GuiLabel*>(mButtons[mISelected]->getChildren()[1])->getString().toAnsiString();
 }
 
 void GameStateLoadCity::createGui()
@@ -161,7 +161,7 @@ void GameStateLoadCity::createGui()
         button->setInsideWidthRatio(0.625f);
         button->setFixedInsideHeight(64.0f);
         button->add(mGui->createWithDefaultName<GuiImage>(sf::Sprite(sTextureManager->getTexture(save.first))));
-        button->add(mGui->createWithDefaultName<GuiText>(save.first, 18, sStylesheetManager->getStylesheet("darkText")));
+        button->add(mGui->createWithDefaultName<GuiLabel>(save.first, 18, sStylesheetManager->getStylesheet("darkText")));
         button->setBorderSize(1.0f);
         scrollArea->add(button);
         mButtons.emplace_back(button);

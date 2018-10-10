@@ -18,7 +18,7 @@
 #include "ImmigrantsWindow.h"
 #include "resource/StylesheetManager.h"
 #include "gui/Gui.h"
-#include "gui/GuiText.h"
+#include "gui/GuiLabel.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiTable.h"
 #include "gui/GuiScrollArea.h"
@@ -34,7 +34,7 @@ ImmigrantsWindow::ImmigrantsWindow(Id listenerId, MessageBus* messageBus, Styles
     mMessageBus(messageBus), mStylesheetManager(stylesheetManager), mCity(city),
     mRentalMarket(static_cast<const Market<Lease>*>(mCity.getMarket(MarketType::RENT))),
     mLaborMarket(static_cast<const Market<Work>*>(mCity.getMarket(MarketType::WORK))),
-    mTable(nullptr), mRentalMarketText(nullptr), mLaborMarketText(nullptr), mAttractivenessText(nullptr)
+    mTable(nullptr), mRentalMarketLabel(nullptr), mLaborMarketLabel(nullptr), mAttractivenessLabel(nullptr)
 {
     mMessageBus->addMailbox(mMailbox);
     mCity.subscribe(mMailbox.getId());
@@ -57,19 +57,19 @@ void ImmigrantsWindow::setUp()
     scrollArea->add(mTable);
     scrollArea->setLayout(std::make_unique<GuiVBoxLayout>());
 
-    // Text
-    mRentalMarketText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mLaborMarketText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
-    mAttractivenessText = mGui->createWithDefaultName<GuiText>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    // Labels
+    mRentalMarketLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mLaborMarketLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
+    mAttractivenessLabel = mGui->createWithDefaultName<GuiLabel>("", 12, mStylesheetManager->getStylesheet("darkText"));
 
     // Buttons
     GuiButton* welcomeAllButton = mGui->create<GuiButton>("welcomeAllButton", mStylesheetManager->getStylesheet("button"));
     welcomeAllButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
-    welcomeAllButton->add(mGui->createWithDefaultName<GuiText>("Accept all", 12, mStylesheetManager->getStylesheet("darkText")));
+    welcomeAllButton->add(mGui->createWithDefaultName<GuiLabel>("Accept all", 12, mStylesheetManager->getStylesheet("darkText")));
     welcomeAllButton->subscribe(mListenerId);
     GuiButton* ejectAllButton = mGui->create<GuiButton>("ejectAllButton", mStylesheetManager->getStylesheet("button"));
     ejectAllButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
-    ejectAllButton->add(mGui->createWithDefaultName<GuiText>("Eject all", 12, mStylesheetManager->getStylesheet("darkText")));
+    ejectAllButton->add(mGui->createWithDefaultName<GuiLabel>("Eject all", 12, mStylesheetManager->getStylesheet("darkText")));
     ejectAllButton->subscribe(mListenerId);
     GuiWidget* buttons = mGui->createWithDefaultName<GuiWidget>();
     buttons->setLayout(std::make_unique<GuiHBoxLayout>(GuiLayout::HAlignment::Right, GuiLayout::VAlignment::Center, 4.0f));
@@ -78,9 +78,9 @@ void ImmigrantsWindow::setUp()
 
     // Window
     add(scrollArea);
-    add(mRentalMarketText);
-    add(mLaborMarketText);
-    add(mAttractivenessText);
+    add(mRentalMarketLabel);
+    add(mLaborMarketLabel);
+    add(mAttractivenessLabel);
     add(buttons);
     setOutsidePosition(sf::Vector2f(50.0f, 50.0f));
     setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
@@ -118,13 +118,13 @@ void ImmigrantsWindow::update()
     }
 
     // Update texts
-    mRentalMarketText->setString(format("Homes available: %d", mRentalMarket->getItems().size()));
-    mLaborMarketText->setString(format("Works available: %d", mLaborMarket->getItems().size()));
-    mAttractivenessText->setString(format("Attractiveness: %.2f", mCity.getAttractiveness()));
+    mRentalMarketLabel->setString(format("Homes available: %d", mRentalMarket->getItems().size()));
+    mLaborMarketLabel->setString(format("Works available: %d", mLaborMarket->getItems().size()));
+    mAttractivenessLabel->setString(format("Attractiveness: %.2f", mCity.getAttractiveness()));
 
     // Update ages
     for (std::size_t i = 0; i < mImmigrants.size(); ++i)
-        static_cast<GuiText*>(mTable->getCellContent(i, 1))->setString(format("%d", mImmigrants[i]->getAge(mCity.getYear())));
+        static_cast<GuiLabel*>(mTable->getCellContent(i, 1))->setString(format("%d", mImmigrants[i]->getAge(mCity.getYear())));
 }
 
 void ImmigrantsWindow::addImmigrant(Person* person)
@@ -137,10 +137,10 @@ void ImmigrantsWindow::addImmigrant(Person* person)
     visaButtons->setLayout(std::make_unique<GuiHBoxLayout>(2.0f));
     GuiButton* acceptedButton = mGui->create<GuiButton>("accepted" + std::to_string(person->getId()) + "|" + visaButtons->getName(), mStylesheetManager->getStylesheet("button"));
     acceptedButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
-    acceptedButton->add(mGui->createWithDefaultName<GuiText>("Yes", 12, mStylesheetManager->getStylesheet("darkText")));
+    acceptedButton->add(mGui->createWithDefaultName<GuiLabel>("Yes", 12, mStylesheetManager->getStylesheet("darkText")));
     acceptedButton->subscribe(mListenerId);
     GuiButton* rejectedButton = mGui->create<GuiButton>("rejected" + std::to_string(person->getId()) + "|" + visaButtons->getName(), mStylesheetManager->getStylesheet("button"));
-    rejectedButton->add(mGui->createWithDefaultName<GuiText>("No", 12, mStylesheetManager->getStylesheet("darkText")));
+    rejectedButton->add(mGui->createWithDefaultName<GuiLabel>("No", 12, mStylesheetManager->getStylesheet("darkText")));
     rejectedButton->setLayout(std::make_unique<GuiHBoxLayout>(0.0f, GuiLayout::Margins{2.0f, 2.0f, 2.0f, 2.0f}));
     rejectedButton->subscribe(mListenerId);
     visaButtons->add(acceptedButton);
@@ -148,9 +148,9 @@ void ImmigrantsWindow::addImmigrant(Person* person)
 
     // Add row
     mTable->addRow({
-        mGui->createWithDefaultName<GuiText>(fullName, 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>(format("%d", person->getAge(mCity.getYear())), 12, mStylesheetManager->getStylesheet("darkText")),
-        mGui->createWithDefaultName<GuiText>(format("$%.2f", person->getInitialFunds()), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>(fullName, 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>(format("%d", person->getAge(mCity.getYear())), 12, mStylesheetManager->getStylesheet("darkText")),
+        mGui->createWithDefaultName<GuiLabel>(format("$%.2f", person->getInitialFunds()), 12, mStylesheetManager->getStylesheet("darkText")),
         visaButtons
     });
 }
