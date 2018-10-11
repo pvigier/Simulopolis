@@ -117,7 +117,7 @@ std::unique_ptr<GuiWidget> GuiManager::loadWidgets(Gui* gui, const XmlDocument& 
 bool GuiManager::isWidget(const XmlDocument& node)
 {
     const std::string& type = node.getName();
-    return (type == "widget" || type == "button" || type == "text" || type == "image" || type == "tabwidget" ||
+    return (type == "widget" || type == "button" || type == "label" || type == "image" || type == "tabwidget" ||
             type == "input" || type == "scrollarea");
 }
 
@@ -135,7 +135,7 @@ std::unique_ptr<GuiWidget> GuiManager::createWidget(const XmlDocument& node)
         widget = std::make_unique<GuiWidget>(node.getAttributes());
     else if (type == "button")
         widget = std::make_unique<GuiButton>(node.getAttributes());
-    else if (type == "text")
+    else if (type == "label")
         widget = std::make_unique<GuiLabel>(node.getAttributes());
     else if (type == "image")
         widget = std::make_unique<GuiImage>(node.getAttributes());

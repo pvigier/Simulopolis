@@ -3,29 +3,29 @@
     <image size="100% 100%" name="city" />
     <widget size="100% 100%">
         <widget>
-            <text text="Welcome to" characterSize="32" style="titleText" />
-            <text text="Simulopolis" characterSize="110" style="titleText" />
+            <label text="Welcome to" characterSize="32" style="titleText" />
+            <label text="Simulopolis" characterSize="110" style="titleText" />
             <vboxlayout hAlignment="center" vAlignment="center" spacing="-36" />
         </widget>
         <widget name="menu">
             <button name="resumeGameButton" size="192 36" style="button">
-                <text name="resumeGameText" text="Resume game" characterSize="24" style="menuText" />
+                <label name="resumeGameText" text="Resume game" characterSize="24" style="menuText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="newGameButton" size="192 36" style="button">
-                <text text="New game" characterSize="24" style="menuText" />
+                <label text="New game" characterSize="24" style="menuText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="loadGameButton" size="192 36" style="button">
-                <text text="Load game" characterSize="24" style="menuText" />
+                <label text="Load game" characterSize="24" style="menuText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
 			<button name="settingsButton" size="192 36" style="button">
-                <text text="Settings" characterSize="24" style="menuText" />
+                <label text="Settings" characterSize="24" style="menuText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <button name="exitButton" size="192 36" style="button">
-                <text text="Exit" characterSize="24" style="menuText" />
+                <label text="Exit" characterSize="24" style="menuText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <vboxlayout hAlignment="center" vAlignment="center" spacing="16" />

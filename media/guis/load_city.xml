@@ -3,7 +3,7 @@
     <image name="city" size="100% 100%"/>
     <widget size="100% 100%">
         <widget style="tabs" size="75% 66.7%">
-			<text text="Select city" characterSize="32" style="darkText" />
+			<label text="Select city" characterSize="32" style="darkText" />
             <widget size="62.5% 36.7%" style="frame">
 				<scrollarea name="scrollArea" maxVisibleSize="62.5% 36.7%" style="scrollarea">
 					<vboxlayout />
@@ -12,11 +12,11 @@
             </widget>
             <widget>
 				<button name="removeCityButton" size="192 36" style="button">
-					<text text="Remove" characterSize="24" style="darkText" />
+					<label text="Remove" characterSize="24" style="darkText" />
 					<hboxlayout hAlignment="center" vAlignment="center" />
 				</button>
 				<button name="loadCityButton" size="192 36" style="button">
-					<text text="Load" characterSize="24" style="darkText" />
+					<label text="Load" characterSize="24" style="darkText" />
 					<hboxlayout hAlignment="center" vAlignment="center" />
 				</button>
 				<hboxlayout spacing="16" />
