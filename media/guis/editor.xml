@@ -3,36 +3,36 @@
 	<widget size="100% 100%">
 		<widget width="100%" height="4.67%" style="bar">
 			<button name="openImmigrantsWindowButton" style="button">
-				<label text="Immigrants" characterSize="12" style="darkText" />
+				<label string="Immigrants" characterSize="12" style="darkText" />
 				<!--<image texture="immigrants" size="26 26" />-->
 				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
 			</button>
 			<button name="openCitizensWindowButton" style="button">
-				<label text="Citizens" characterSize="12" style="darkText" />
+				<label string="Citizens" characterSize="12" style="darkText" />
 				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
 			</button>
 			<button name="openCompaniesWindowButton" style="button">
-				<label text="Companies" characterSize="12" style="darkText" />
+				<label string="Companies" characterSize="12" style="darkText" />
 				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
 			</button>
 			<button name="openRentalMarketWindowButton" style="button">
-				<label text="Rental market" characterSize="12" style="darkText" />
+				<label string="Rental market" characterSize="12" style="darkText" />
 				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
 			</button>
 			<button name="openLaborMarketWindowButton" style="button">
-				<label text="Labor market" characterSize="12" style="darkText" />
+				<label string="Labor market" characterSize="12" style="darkText" />
 				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
 			</button>
 			<button name="openGoodsMarketWindowButton" style="button">
-				<label text="Goods market" characterSize="12" style="darkText" />
+				<label string="Goods market" characterSize="12" style="darkText" />
 				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
 			</button>
 			<button name="openPoliciesWindowButton" style="button">
-				<label text="Policies" characterSize="12" style="darkText" />
+				<label string="Policies" characterSize="12" style="darkText" />
 				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
 			</button>
 			<button name="openNewspaperWindowButton" style="button">
-				<label text="News" characterSize="12" style="darkText" />
+				<label string="News" characterSize="12" style="darkText" />
 				<hboxlayout hAlignment="center" vAlignment="center" margins="4 4 4 4" />
 			</button>
 			<hboxlayout vAlignment="center" spacing="2" margins="4 0 4 0" />
@@ -76,7 +76,7 @@
 			<tabwidget name="tabs">
 				<widget name="landscapeTab" width="20%" height="92.67%"style="tabs">
 					<widget name="landscapeTitle">
-						<label text="Landscape" characterSize="12" style="darkText" />
+						<label string="Landscape" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
 					<widget name="landscapeButtons">
@@ -98,7 +98,7 @@
 				</widget>
 				<widget name="housingTab" width="20%" height="92.67%"style="tabs">
 					<widget name="housingTitle">
-						<label text="Housing" characterSize="12" style="darkText" />
+						<label string="Housing" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
 					<widget name="housingButtons">
@@ -124,7 +124,7 @@
 				</widget>
 				<widget name="industryTab" width="20%" height="92.67%"style="tabs">
 					<widget name="industryTitle">
-						<label text="Industry" characterSize="12" style="darkText" />
+						<label string="Industry" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
 					<widget name="industryButtons">
@@ -150,7 +150,7 @@
 				</widget>
 				<widget name="businessTab" width="20%" height="92.67%"style="tabs">
 					<widget name="businessTitle">
-						<label text="Business" characterSize="12" style="darkText" />
+						<label string="Business" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
 					<widget name="businessButtons">
@@ -176,7 +176,7 @@
 				</widget>
 				<widget name="healthTab" width="20%" height="92.67%"style="tabs">
 					<widget name="healthTitle">
-						<label text="Health" characterSize="12" style="darkText" />
+						<label string="Health" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
 					<widget name="healthButtons">
@@ -194,7 +194,7 @@
 				</widget>
 				<widget name="securityTab" width="20%" height="92.67%"style="tabs">
 					<widget name="securityTitle">
-						<label text="Security" characterSize="12" style="darkText" />
+						<label string="Security" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
 					<widget name="securityButtons">
@@ -212,7 +212,7 @@
 				</widget>
 				<widget name="educationTab" width="20%" height="92.67%"style="tabs">
 					<widget name="educationTitle">
-						<label text="Education" characterSize="12" style="darkText" />
+						<label string="Education" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
 					<widget name="educationButtons">
@@ -230,7 +230,7 @@
 				</widget>
 				<widget name="roadTab" width="20%" height="92.67%"style="tabs">
 					<widget name="roadTitle">
-						<label text="Roads" characterSize="12" style="darkText" />
+						<label string="Roads" characterSize="12" style="darkText" />
 						<hboxlayout hAlignment="center" />
 					</widget>
 					<widget name="roadButtons">

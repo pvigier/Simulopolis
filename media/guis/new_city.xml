@@ -3,22 +3,22 @@
     <image name="city" size="100% 100%"/>
     <widget size="100% 100%">
         <widget style="tabs" size="75% 66.7%">
-			<label text="New city" characterSize="32" style="darkText" />
+			<label string="New city" characterSize="32" style="darkText" />
             <widget size="62.5% 36.7%" style="frame">
                 <widget>
-                    <label text="City name: " characterSize="18" style="darkText" />
+                    <label string="City name: " characterSize="18" style="darkText" />
                     <input name="nameInput" characterSize="18" style="input" regex="[a-zA-Z ]{0,32}" />
                     <hboxlayout />
                 </widget>
                 <widget>
-                    <label text="Seed: " characterSize="18" style="darkText" />
+                    <label string="Seed: " characterSize="18" style="darkText" />
                     <input name="seedInput" characterSize="18" style="input" regex="\d+" />
                     <hboxlayout />
                 </widget>
                 <vboxlayout spacing="16" margins="16 16 16 16" />
             </widget>
             <button name="createCityButton" size="192 36" style="button">
-                <label text="Create" characterSize="24" style="darkText" />
+                <label string="Create" characterSize="24" style="darkText" />
                 <hboxlayout hAlignment="center" vAlignment="center" />
             </button>
             <vboxlayout hAlignment="center" vAlignment="top" spacing="16" margins="32 32 32 32" />

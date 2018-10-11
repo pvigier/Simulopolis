@@ -26,11 +26,7 @@ GuiInput::GuiInput(unsigned int characterSize, const XmlDocument* style) :
     mTextStyle(nullptr), mLabel(nullptr), mCursorShape(sf::Vector2f(1.0f, mCharacterSize * 5 / 4)),
     mElapsedTime(0.0f), mRegex(".*")
 {
-    if (mStyle)
-    {
-        mMargins = mStyle->getFirstChildByName("text").getAttributes().get<GuiLayout::Margins>("margins", GuiLayout::Margins{0.0f, 0.0f, 0.0f, 0.0f});
-        mTextStyle = mStyle->getFirstChildByName("text").getAttributes().get<const XmlDocument*>("style", nullptr);
-    }
+
 }
 
 GuiInput::GuiInput(const PropertyList& properties) :
@@ -40,11 +36,6 @@ GuiInput::GuiInput(const PropertyList& properties) :
     mCharacterSize = properties.get<unsigned int>("characterSize", 0);
     mCursorShape.setSize(sf::Vector2f(sf::Vector2f(1.0f, mCharacterSize * 5 / 4)));
     setRegex(properties.get<std::string>("regex", ".*"));
-    if (mStyle)
-    {
-        mMargins = mStyle->getFirstChildByName("text").getAttributes().get<GuiLayout::Margins>("margins", GuiLayout::Margins{0.0f, 0.0f, 0.0f, 0.0f});
-        mTextStyle = mStyle->getFirstChildByName("text").getAttributes().get<const XmlDocument*>("style", nullptr);
-    }
 }
 
 GuiInput::~GuiInput()
@@ -62,11 +53,11 @@ void GuiInput::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void GuiInput::setUp()
 {
+    applyStyle();
     mLabel = mGui->createWithDefaultName<GuiLabel>("", mCharacterSize, mTextStyle);
     add(mLabel);
     setCursor(0);
     setLayout(std::make_unique<GuiHBoxLayout>(0.0f, mMargins));
-    applyStyle();
 }
 
 const sf::String& GuiInput::getString() const
@@ -74,19 +65,19 @@ const sf::String& GuiInput::getString() const
     return mLabel->getString();
 }
 
-bool GuiInput::setString(const sf::String& text)
+bool GuiInput::setString(const sf::String& string)
 {
-    if (std::regex_match(text.toAnsiString(), mRegex))
+    if (std::regex_match(string.toAnsiString(), mRegex))
     {
-        mLabel->setString(text);
+        mLabel->setString(string);
         return true;
     }
     return false;
 }
 
-void GuiInput::setRegex(const std::string& s)
+void GuiInput::setRegex(const std::string& pattern)
 {
-    mRegex.assign(s);
+    mRegex.assign(pattern);
 }
 
 void GuiInput::onOutsidePositionChanged()
@@ -148,6 +139,16 @@ bool GuiInput::onText(sf::Uint32 unicode, bool processed)
         return true;
     }
     return false;
+}
+
+void GuiInput::applyStyle()
+{
+    GuiWidget::applyStyle();
+    if (mStyle)
+    {
+        mMargins = mStyle->getFirstChildByName("text").getAttributes().get<GuiLayout::Margins>("margins", GuiLayout::Margins{0.0f, 0.0f, 0.0f, 0.0f});
+        mTextStyle = mStyle->getFirstChildByName("text").getAttributes().get<const XmlDocument*>("style", nullptr);
+    }
 }
 
 void GuiInput::resetClock() const

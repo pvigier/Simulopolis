@@ -3,14 +3,14 @@
     <image name="city" size="100% 100%"/>
     <widget size="100% 100%">
         <widget style="tabs" size="75% 66.7%">
-			<label text="Settings" characterSize="32" style="darkText" />
+			<label string="Settings" characterSize="32" style="darkText" />
             <widget size="62.5% 36.7%">
                 <button name="fullscreenButton" size="192 36" style="button">
-					<label name="fullscreenText" text="Fullscreen: off" characterSize="24" style="darkText" />
+					<label name="fullscreenText" string="Fullscreen: off" characterSize="24" style="darkText" />
 					<hboxlayout hAlignment="center" vAlignment="center" />
 				</button>
 				<button name="musicButton" size="192 36" style="button">
-					<label name="musicText" text="Music: on" characterSize="24" style="darkText" />
+					<label name="musicText" string="Music: on" characterSize="24" style="darkText" />
 					<hboxlayout hAlignment="center" vAlignment="center" />
 				</button>
                 <vboxlayout hAlignment="center" spacing="16" margins="0 16 0 16" />

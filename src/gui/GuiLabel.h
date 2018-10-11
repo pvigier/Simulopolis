@@ -26,22 +26,25 @@ class PropertyList;
 class GuiLabel : public GuiWidget
 {
 public:
-    GuiLabel(const sf::String& text, unsigned int characterSize, const XmlDocument* style);
+    GuiLabel(const sf::String& string, unsigned int characterSize, const XmlDocument* style);
     GuiLabel(const PropertyList& properties);
     virtual ~GuiLabel();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    virtual void setUp() override;
+
     void setCharacterSize(unsigned int characterSize);
     const sf::Text& getText() const;
     const sf::String& getString() const;
-    void setString(const sf::String& text);
+    void setString(const sf::String& string);
     void setColor(sf::Color color);
 
 protected:
     sf::Text mText;
 
     virtual void applyDesign() override;
+    virtual void applyStyle() override;
 
 private:
     sf::Vector2f computeSize() const;

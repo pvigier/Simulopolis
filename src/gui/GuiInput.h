@@ -37,15 +37,16 @@ public:
     virtual void setUp() override;
 
     const sf::String& getString() const;
-    bool setString(const sf::String& text);
-    void setRegex(const std::string& s);
+    bool setString(const sf::String& string);
+    void setRegex(const std::string& pattern);
 
 protected:
-
     virtual void onOutsidePositionChanged() override;
     virtual bool onPress(sf::Vector2f position, bool processed) override;
     virtual bool onKey(sf::Keyboard::Key key, bool processed) override;
     virtual bool onText(sf::Uint32 unicode, bool processed) override;
+
+    virtual void applyStyle() override;
 
 private:
     bool mFocus;
