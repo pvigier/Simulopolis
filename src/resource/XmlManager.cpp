@@ -80,7 +80,7 @@ PropertyList XmlManager::createProperties(XMLElement* node) const
     PropertyList properties;
     for (const XMLAttribute* attribute = node->FirstAttribute(); attribute != nullptr; attribute = attribute->Next())
         properties.add(attribute->Name(), attribute->Value());
-    return std::move(properties);
+    return properties;
 }
 
 tinyxml2::XMLElement* XmlManager::createElement(tinyxml2::XMLDocument& doc, const XmlDocument& document) const

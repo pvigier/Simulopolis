@@ -15,5 +15,5 @@ std::vector<std::string> split(const std::string& string, char delimiter)
         if (start != std::end(string))
             ++start;
     }
-    return std::move(tokens);
+    return tokens;
 }

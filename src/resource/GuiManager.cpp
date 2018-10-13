@@ -69,7 +69,7 @@ std::unique_ptr<Gui> GuiManager::getGui(const std::string& name)
     DEBUG_IF(mGuis.find(name) == mGuis.end(), name << " is an invalid gui name.\n");
     std::unique_ptr<Gui> gui = std::make_unique<Gui>();
     loadRootWidgets(gui.get(), *mGuis[name]);
-    return std::move(gui);
+    return gui;
 }
 
 void GuiManager::loadGui(const XmlDocument& node)
@@ -145,7 +145,7 @@ std::unique_ptr<GuiWidget> GuiManager::createWidget(const XmlDocument& node)
         widget = std::make_unique<GuiInput>(node.getAttributes());
     else if (type == "scrollarea")
         widget = std::make_unique<GuiScrollArea>(node.getAttributes());
-    return std::move(widget);
+    return widget;
 }
 
 std::unique_ptr<GuiLayout> GuiManager::createLayout(const XmlDocument& node)
@@ -158,5 +158,5 @@ std::unique_ptr<GuiLayout> GuiManager::createLayout(const XmlDocument& node)
         layout = std::make_unique<GuiVBoxLayout>(node.getAttributes());
     else if (type == "overlaplayout")
         layout = std::make_unique<GuiOverlapLayout>(node.getAttributes());
-    return std::move(layout);
+    return layout;
 }

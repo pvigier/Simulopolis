@@ -278,7 +278,7 @@ std::vector<const Building*> Map::getReachableBuildingsAround(const Tile* origin
             }
         }
     }
-    return std::move(buildings);
+    return buildings;
 }
 
 unsigned int Map::getWidth() const
