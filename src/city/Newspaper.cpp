@@ -19,3 +19,8 @@ void Newspaper::setName(std::string name)
 {
     mName = std::move(name);
 }
+
+const Newspaper::Edition& Newspaper::getLastEdition() const
+{
+    return mEditions.back();
+}
