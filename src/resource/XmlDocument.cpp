@@ -23,8 +23,10 @@ XmlDocument::XmlDocument()
 
 }
 
-XmlDocument::XmlDocument(std::string name, PropertyList attributes, std::vector<XmlDocument> children) :
-    mName(std::move(name)), mAttributes(std::move(attributes)), mChildren(std::move(children))
+XmlDocument::XmlDocument(std::string name, PropertyList attributes, std::string text,
+    std::vector<XmlDocument> children) :
+    mName(std::move(name)), mAttributes(std::move(attributes)), mText(std::move(text)),
+    mChildren(std::move(children))
 {
     for (std::size_t i = 0; i < mChildren.size(); ++i)
         mChildrenByName[mChildren[i].getName()].push_back(i);
@@ -43,6 +45,11 @@ PropertyList& XmlDocument::getAttributes()
 const PropertyList& XmlDocument::getAttributes() const
 {
     return mAttributes;
+}
+
+const std::string& XmlDocument::getText() const
+{
+    return mText;
 }
 
 const std::vector<XmlDocument>& XmlDocument::getChildren() const

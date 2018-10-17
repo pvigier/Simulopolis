@@ -25,11 +25,13 @@ class XmlDocument
 {
 public:
     XmlDocument();
-    XmlDocument(std::string name, PropertyList attributes, std::vector<XmlDocument> children);
+    XmlDocument(std::string name, PropertyList attributes, std::string text,
+        std::vector<XmlDocument> children);
 
     const std::string& getName() const;
     PropertyList& getAttributes();
     const PropertyList& getAttributes() const;
+    const std::string& getText() const;
     const std::vector<XmlDocument>& getChildren() const;
     const std::vector<std::size_t>& getChildrenByName(const std::string& name) const;
     const XmlDocument& getFirstChildByName(const std::string& name) const;
@@ -40,6 +42,7 @@ public:
 private:
     std::string mName;
     PropertyList mAttributes;
+    std::string mText;
     std::vector<XmlDocument> mChildren;
     std::unordered_map<std::string, std::vector<std::size_t>> mChildrenByName;
 };

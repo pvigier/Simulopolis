@@ -77,7 +77,7 @@ void SaveManager::save(const City& city, sf::Texture texture)
         PropertyList attributes;
         attributes.add("name", name);
         attributes.add("path", name + ".city");
-        mDocument.addChild(XmlDocument("save", attributes, {}));
+        mDocument.addChild(XmlDocument("save", attributes, "", {}));
         updateXmlFile();
     }
     // Save the city

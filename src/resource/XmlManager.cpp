@@ -51,7 +51,7 @@ XmlDocument XmlManager::loadDocument(const std::string& path) const
     if (root == nullptr)
     {
         DEBUG(path << " has not been loaded correctly.\n");
-        return XmlDocument("", PropertyList(), {});
+        return XmlDocument("", PropertyList(), "", {});
     }
 
     return loadDocument(root->ToElement());
@@ -68,11 +68,12 @@ XmlDocument XmlManager::loadDocument(XMLElement* node) const
 {
     std::string name = node->Name();
     PropertyList attributes = createProperties(node);
+    std::string text = node->GetText() ? node->GetText() : "";
     std::vector<XmlDocument> children;
     for (XMLElement* child = node->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
         children.push_back(loadDocument(child));
 
-    return XmlDocument(name, attributes, children);
+    return XmlDocument(name, attributes, text, children);
 }
 
 PropertyList XmlManager::createProperties(XMLElement* node) const
@@ -89,6 +90,9 @@ tinyxml2::XMLElement* XmlManager::createElement(tinyxml2::XMLDocument& doc, cons
     // Add properties
     for (const std::pair<const std::string, std::string>& property : document.getAttributes().getProperties())
         element->SetAttribute(property.first.c_str(), property.second.c_str());
+    // Add Text
+    if (!document.getText().empty())
+        element->SetText(document.getText().c_str());
     // Add children
     for (const XmlDocument& child : document.getChildren())
         element->InsertEndChild(createElement(doc, child));
