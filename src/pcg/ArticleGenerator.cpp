@@ -17,9 +17,11 @@
 
 #include "ArticleGenerator.h"
 #include <regex>
+#include "util/string.h"
 #include "resource/XmlManager.h"
 #include "pcg/RandomGenerator.h"
 #include "city/Newspaper.h"
+
 
 XmlManager* ArticleGenerator::sXmlManager = nullptr;
 
@@ -28,7 +30,7 @@ void ArticleGenerator::setXmlManager(XmlManager* xmlManager)
     sXmlManager = xmlManager;
 }
 
-ArticleGenerator::ArticleGenerator(RandomGenerator& generator) : mGenerator(generator)
+ArticleGenerator::ArticleGenerator(/*RandomGenerator& generator*/)/* : mGenerator(generator)*/
 {
     //ctor
 }
@@ -38,24 +40,24 @@ void ArticleGenerator::setUp()
     loadTemplate(ArticleType::NEW_CITY, "media/articles/new_city.xml");
 }
 
-Article ArticleGenerator::generate(ArticleType type, const Context& context, const std::string& date)
+Article ArticleGenerator::generate(ArticleType type, const Context& context, const std::string& author)
 {
     const ArticleTemplate& articleTemplate = mTemplates[static_cast<int>(type)];
     std::string title = articleTemplate.title;
     std::string body = articleTemplate.body;
     for (auto& kv : context)
     {
-        std::regex re(R"(\{\{ " + kv.first + " \}\})");
+        std::regex re(R"(\{\{ )" + kv.first + R"( \}\})");
         title = std::regex_replace(title, re, kv.second);
         body = std::regex_replace(body, re, kv.second);
     }
-    return Article{title, body, date};
+    return Article{title, body, author};
 }
 
 void ArticleGenerator::loadTemplate(ArticleType type, const std::string& path)
 {
     XmlDocument document = sXmlManager->loadDocument(path);
-    std::string title = document.getFirstChildByName("title").getText();
-    std::string text = document.getFirstChildByName("body").getText();
+    std::string title = strip(document.getFirstChildByName("title").getText());
+    std::string text = strip(document.getFirstChildByName("body").getText());
     mTemplates[static_cast<int>(type)] = ArticleTemplate{std::move(title), std::move(text)};
 }

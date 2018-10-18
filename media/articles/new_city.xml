@@ -1,0 +1,14 @@
+<article>
+    <title>{{ city }} has a new mayor!</title>
+    <body>
+The government appointed a newcomer to politics with the aim of settling a city on the wild land of {{ city }}.
+
+His first mission will be to connect {{ city }} with the rest of the world using roads.
+
+Then, he must order the construction of housing, industries and shops to attract people and populate the city.
+
+The final objective of the government with {{ city }} is to find the best model of city to make the citizens as happy as possible.
+
+We wish good luck to our new mayor.
+    </body>
+</article>

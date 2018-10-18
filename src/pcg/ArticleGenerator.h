@@ -38,15 +38,15 @@ public:
 
     static void setXmlManager(XmlManager* xmlManager);
 
-    ArticleGenerator(RandomGenerator& generator);
+    ArticleGenerator(/*RandomGenerator& generator*/);
 
     void setUp();
 
-    Article generate(ArticleType type, const Context& context, const std::string& date);
+    Article generate(ArticleType type, const Context& context, const std::string& author);
 
 private:
     static XmlManager* sXmlManager;
-    RandomGenerator& mGenerator;
+    //RandomGenerator& mGenerator;
     std::array<ArticleTemplate, static_cast<int>(ArticleType::COUNT)> mTemplates;
 
     void loadTemplate(ArticleType type, const std::string& path);
