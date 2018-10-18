@@ -1,8 +1,6 @@
 #include "util/string.h"
 #include <algorithm>
 
-#include <iostream>
-
 std::vector<std::string> split(const std::string& string, char delimiter)
 {
     std::vector<std::string> tokens;
@@ -16,4 +14,13 @@ std::vector<std::string> split(const std::string& string, char delimiter)
             ++start;
     }
     return tokens;
+}
+
+std::string strip(const std::string& string)
+{
+    auto isNotSpace = [](const char& c){ return !std::isspace(c); };
+    std::size_t iStart = std::find_if(string.begin(), string.end(), isNotSpace) - string.begin();
+    std::size_t iEnd = string.size() - (std::find_if(string.rbegin(), string.rend(), isNotSpace) -
+        string.rbegin());
+    return string.substr(iStart, iEnd - iStart);
 }
