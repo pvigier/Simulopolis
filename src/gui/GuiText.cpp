@@ -48,7 +48,7 @@ void GuiText::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void GuiText::setUp()
 {
-    buildLines();
+    buildParagraphs();
     buildTexts();
     applyStyle();
 }
@@ -69,26 +69,33 @@ void GuiText::applyDesign()
     else if (mAlignment == Alignment::Justified)
     {
         std::size_t i = 0;
-        for (int j = 0; j < static_cast<int>(mLines.size()) - 1; ++j)
+        for (const Paragraph& paragraph : mParagraphs)
         {
-            const std::vector<std::string>& line = mLines[j];
-            // Compute the space between word
-            float width = std::accumulate(std::next(mTexts.begin(), i), std::next(mTexts.begin(), i + line.size()), 0.0f,
-                [](const float& lhs, const sf::Text& rhs) { return lhs + rhs.getGlobalBounds().width; });
-            float space = (mInsideSize.x - width) / (line.size() - 1);
-            // Place the words
-            for (std::size_t k = 0; k < line.size(); ++k)
+            for (int j = 0; j < static_cast<int>(paragraph.size()) - 1; ++j)
+            {
+                const Line& line = paragraph[j];
+                // Compute the space between word
+                float width = std::accumulate(std::next(mTexts.begin(), i), std::next(mTexts.begin(), i + line.size()), 0.0f,
+                    [](const float& lhs, const sf::Text& rhs) { return lhs + rhs.getGlobalBounds().width; });
+                float space = (mInsideSize.x - width) / (line.size() - 1);
+                // Place the words
+                for (std::size_t k = 0; k < line.size(); ++k)
+                {
+                    mTexts[i].setPosition(sf::Vector2f(sf::Vector2i(position)));
+                    position.x += space + mTexts[i].getGlobalBounds().width;
+                    ++i;
+                }
+                position.x = mInsidePosition.x;
+                position.y += lineHeight;
+            }
+            // Special case for the last line
+            if (!paragraph.empty())
             {
                 mTexts[i].setPosition(sf::Vector2f(sf::Vector2i(position)));
-                position.x += space + mTexts[i].getGlobalBounds().width;
                 ++i;
+                position.y += lineHeight;
             }
-            position.x = mInsidePosition.x;
-            position.y += lineHeight;
         }
-        // Special case for the last line
-        if (!mLines.empty())
-            mTexts.back().setPosition(sf::Vector2f(sf::Vector2i(position)));
     }
 }
 
@@ -105,37 +112,46 @@ void GuiText::applyStyle()
     }
 }
 
-void GuiText::buildLines()
+void GuiText::buildParagraphs()
 {
-    mLines.clear();
-    // Split string in words
-    std::vector<std::string> words = split(mString.toAnsiString(), ' ');
-    // Create lines
-    if (!words.empty())
+    mParagraphs.clear();
+    int nbLines = 0;
+    // Split string in paragraphs
+    std::vector<std::string> paragraphs = split(mString.toAnsiString(), '\n');
+    for (const std::string& paragraph : paragraphs)
     {
-        std::vector<std::string> line = {words.front()};
-        std::string lineString = words.front();
-        sf::Text lineText = createText(words.front());
-        for (std::size_t i = 1; i < words.size(); ++i)
+        std::vector<Line> lines;
+        // Split paragraph in words
+        std::vector<std::string> words = split(paragraph, ' ');
+        // Create lines
+        if (!words.empty())
         {
-            const std::string& word = words[i];
-            lineString += ' ' + word;
-            lineText.setString(lineString);
-            if (lineText.getGlobalBounds().width > mInsideSize.x)
+            Line line = {words.front()};
+            std::string lineString = words.front();
+            sf::Text lineText = createText(words.front());
+            for (std::size_t i = 1; i < words.size(); ++i)
             {
-                mLines.push_back(line);
-                line = {word};
-                lineText.setString(word);
-                lineString = word;
+                const std::string& word = words[i];
+                lineString += ' ' + word;
+                lineText.setString(lineString);
+                if (lineText.getGlobalBounds().width > mInsideSize.x)
+                {
+                    lines.push_back(line);
+                    line = {word};
+                    lineText.setString(word);
+                    lineString = word;
+                }
+                else
+                    line.push_back(word);
             }
-            else
-                line.push_back(word);
+            if (!line.empty())
+                lines.push_back(line);
         }
-        if (!line.empty())
-            mLines.push_back(line);
+        nbLines += lines.size();
+        mParagraphs.emplace_back(std::move(lines));
     }
     // Set height
-    setFixedInsideHeight(mLines.size() * getLineHeight());
+    setFixedInsideHeight(nbLines * getLineHeight());
 }
 
 void GuiText::buildTexts()
@@ -144,19 +160,25 @@ void GuiText::buildTexts()
     // Create texts
     if (mAlignment == Alignment::Justified)
     {
-        for (int i = 0; i < static_cast<int>(mLines.size()) - 1; ++i)
+        for (const Paragraph& paragraph : mParagraphs)
         {
-            for (const std::string& word : mLines[i])
-                mTexts.emplace_back(createText(word));
+            for (int i = 0; i < static_cast<int>(paragraph.size()) - 1; ++i)
+            {
+                for (const std::string& word : paragraph[i])
+                    mTexts.emplace_back(createText(word));
+            }
+            // Special case for the last line
+            if (!paragraph.empty())
+                mTexts.emplace_back(createText(join(paragraph.back(), ' ')));
         }
-        // Special case for the last line
-        if (!mLines.empty())
-            mTexts.emplace_back(createText(join(mLines.back(), ' ')));
     }
     else
     {
-        for (const std::vector<std::string>& line : mLines)
-            mTexts.emplace_back(createText(join(line, ' ')));
+        for (const Paragraph& paragraph : mParagraphs)
+        {
+            for (const Line& line : paragraph)
+                mTexts.emplace_back(createText(join(line, ' ')));
+        }
     }
 }
 

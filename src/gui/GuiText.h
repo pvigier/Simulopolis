@@ -42,17 +42,20 @@ public:
     //void setString(const sf::String& string);
 
 protected:
+    using Line = std::vector<std::string>;
+    using Paragraph = std::vector<Line>;
+
     sf::String mString;
     unsigned int mCharacterSize;
     Alignment mAlignment;
-    std::vector<std::vector<std::string>> mLines;
+    std::vector<Paragraph> mParagraphs;
     std::vector<sf::Text> mTexts;
 
     virtual void applyDesign() override;
     virtual void applyStyle() override;
 
 private:
-    void buildLines();
+    void buildParagraphs();
     void buildTexts();
     sf::Text createText(const std::string& string) const;
     unsigned int getLineHeight() const;

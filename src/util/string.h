@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-std::vector<std::string> split(const std::string& string, char delimiter);
+std::vector<std::string> split(const std::string& string, char separator);
 
 template <typename Container, typename Separator>
 std::string join(const Container& tokens, Separator separator)
