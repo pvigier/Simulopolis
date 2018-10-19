@@ -1,5 +1,5 @@
 <article>
-    <title>{{ city }} has a new mayor!</title>
+    <title>{{ city }} has a new mayor</title>
     <body>
 The government appointed a newcomer to politics with the aim of settling a city on the wild land of {{ city }}.
 

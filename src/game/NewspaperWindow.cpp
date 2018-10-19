@@ -20,6 +20,7 @@
 #include "city/Newspaper.h"
 #include "gui/Gui.h"
 #include "gui/GuiLabel.h"
+#include "gui/GuiText.h"
 #include "gui/GuiVBoxLayout.h"
 #include "gui/GuiHBoxLayout.h"
 #include "util/format.h"
@@ -38,25 +39,37 @@ NewspaperWindow::~NewspaperWindow()
 
 void NewspaperWindow::setUp()
 {
-    // Personal info
-    auto nameLabel = mGui->createWithDefaultName<GuiLabel>(mNewspaper.getName(), 32, mStylesheetManager->getStylesheet("newspaperText"));
-    auto dateLabel = mGui->createWithDefaultName<GuiLabel>("September 2000", 12, mStylesheetManager->getStylesheet("newspaperText"));
-
     // Top widget
     auto topWidget = mGui->createWithDefaultName<GuiWidget>();
-    topWidget->add(nameLabel);
-    topWidget->add(dateLabel);
     topWidget->setLayout(std::make_unique<GuiVBoxLayout>(GuiLayout::HAlignment::Center, GuiLayout::VAlignment::Top, 4.0f));
 
-    // Bottom widget
-    auto bottomWidget = mGui->createWithDefaultName<GuiWidget>();
-    bottomWidget->setLayout(std::make_unique<GuiVBoxLayout>(3.0f));
+    // Title
+    auto nameLabel = mGui->createWithDefaultName<GuiLabel>(mNewspaper.getName(), 100,
+        mStylesheetManager->getStylesheet("newspaperHeadText"));
+    const Newspaper::Edition& edition = mNewspaper.getLastEdition();
+    auto dateLabel = mGui->createWithDefaultName<GuiLabel>(edition.date, 16,
+        mStylesheetManager->getStylesheet("newspaperText"));
+    topWidget->add(nameLabel);
+    topWidget->add(dateLabel);
+
+    // Articles
+    for (const Article& article : edition.articles)
+    {
+        auto titleText = mGui->createWithDefaultName<GuiLabel>(article.title, 18,
+            mStylesheetManager->getStylesheet("newspaperTitleText"));
+        auto authorText = mGui->createWithDefaultName<GuiLabel>("By " + article.author, 12,
+            mStylesheetManager->getStylesheet("newspaperAuthorText"));
+        auto articleText = mGui->createWithDefaultName<GuiText>(400.0f, article.body, 16,
+            GuiText::Alignment::Justified, mStylesheetManager->getStylesheet("newspaperText"));
+        topWidget->add(titleText);
+        topWidget->add(authorText);
+        topWidget->add(articleText);
+    }
 
     // Window
     add(topWidget);
-    add(bottomWidget);
     setOutsidePosition(sf::Vector2f(50.0f, 50.0f));
-    setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, 8.0f, 8.0f, 8.0f}));
+    setLayout(std::make_unique<GuiVBoxLayout>(8.0f, GuiLayout::Margins{8.0f, -32.0f, 8.0f, 8.0f}));
     applyStyle();
 }
 

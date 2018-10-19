@@ -1,5 +1,8 @@
 <fonts>
 	<font name="font" path="fonts/Cabin-Regular.ttf" />
     <font name="titleFont" path="fonts/BebasNeue-Regular.ttf" />
-    <font name="newspaperFont" path="fonts/LinLibertine_aDRS.ttf" />
+    <font name="newspaperFont" path="fonts/LinLibertine_R.ttf" />
+    <font name="newspaperHeadFont" path="fonts/Julia Black Extended.ttf" />
+    <font name="newspaperTitleFont" path="fonts/LinLibertine_aBS.ttf" />
+    <font name="newspaperAuthorFont" path="fonts/LinLibertine_RB.ttf" />
 </fonts>

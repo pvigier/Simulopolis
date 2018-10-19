@@ -18,6 +18,15 @@
     <stylesheet name="newspaperText">
         <text font="newspaperFont" color="0x00 0x00 0x00" />
     </stylesheet>
+    <stylesheet name="newspaperHeadText">
+        <text font="newspaperHeadFont" color="0x00 0x00 0x00" />
+    </stylesheet>
+    <stylesheet name="newspaperTitleText">
+        <text font="newspaperTitleFont" color="0x00 0x00 0x00" />
+    </stylesheet>
+    <stylesheet name="newspaperAuthorText">
+        <text font="newspaperAuthorFont" color="0x00 0x00 0x00" />
+    </stylesheet>
 	<stylesheet name="window">
 		<bar color="0x4d 0x4d 0x4d" height="16" />
 		<background color="0xc6 0xc6 0xc6" />
