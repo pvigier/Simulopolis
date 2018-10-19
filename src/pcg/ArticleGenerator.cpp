@@ -58,6 +58,14 @@ void ArticleGenerator::loadTemplate(ArticleType type, const std::string& path)
 {
     XmlDocument document = sXmlManager->loadDocument(path);
     std::string title = strip(document.getFirstChildByName("title").getText());
-    std::string text = strip(document.getFirstChildByName("body").getText());
-    mTemplates[static_cast<int>(type)] = ArticleTemplate{std::move(title), std::move(text)};
+    std::string body = strip(document.getFirstChildByName("body").getText());
+    // Add tabulation
+    std::vector<std::string> paragraphs = split(body, '\n');
+    for (std::string& paragraph : paragraphs)
+    {
+        if (!paragraph.empty())
+            paragraph = '\t' + paragraph;
+    }
+    body = join(paragraphs, '\n');
+    mTemplates[static_cast<int>(type)] = ArticleTemplate{std::move(title), std::move(body)};
 }
