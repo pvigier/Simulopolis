@@ -29,11 +29,6 @@ GoalGetBetterWork::GoalGetBetterWork(Person* owner, unsigned int nbMonthsBeforeF
     //ctor
 }
 
-GoalGetBetterWork::~GoalGetBetterWork()
-{
-    //dtor
-}
-
 void GoalGetBetterWork::activate()
 {
     mState = State::ACTIVE;

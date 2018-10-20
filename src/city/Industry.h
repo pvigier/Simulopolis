@@ -33,7 +33,6 @@ class Industry : public Building
 public:
     Industry(const std::string& name, Type type, unsigned int nbStairs, GoodType goodType, double employeeProductivity,
         std::size_t nbEmployees, WorkType employeeType);
-    virtual ~Industry();
 
     virtual std::unique_ptr<Tile> clone() const override;
     virtual void update() override;

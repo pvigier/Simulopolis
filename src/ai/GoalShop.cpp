@@ -30,11 +30,6 @@ GoalShop::GoalShop(Person* owner) : Goal(owner), mSelectedShop(nullptr), mGoodRe
     //ctor
 }
 
-GoalShop::~GoalShop()
-{
-    //dtor
-}
-
 void GoalShop::activate()
 {
     mState = State::ACTIVE;

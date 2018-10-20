@@ -28,7 +28,6 @@ public:
     static constexpr float ENERGY_GROWTH_RATE = 0.3f;
 
     Housing(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbInhabitants, float comfort);
-    virtual ~Housing();
 
     virtual std::unique_ptr<Tile> clone() const override;
     virtual void update() override;

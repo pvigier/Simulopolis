@@ -28,11 +28,6 @@ GoalGetBetterHome::GoalGetBetterHome(Person* owner, unsigned int nbMonthsBeforeF
     //ctor
 }
 
-GoalGetBetterHome::~GoalGetBetterHome()
-{
-    //dtor
-}
-
 void GoalGetBetterHome::activate()
 {
     mState = State::ACTIVE;

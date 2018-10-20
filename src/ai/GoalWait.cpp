@@ -25,11 +25,6 @@ GoalWait::GoalWait(Person* owner, float nbHours) :
     //ctor
 }
 
-GoalWait::~GoalWait()
-{
-    //dtor
-}
-
 void GoalWait::activate()
 {
     mState = State::ACTIVE;

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "SteeringBehaviors.h"
 #include "Kinematic.h"
 
@@ -22,11 +22,6 @@ SteeringBehaviors::SteeringBehaviors(Kinematic* owner) :
     mOwner(owner), mPanicDistance(FLOAT_INFINITY), mArriveDistance(EPSILON), mSeekDistance(EPSILON)
 {
     //ctor
-}
-
-SteeringBehaviors::~SteeringBehaviors()
-{
-    //dtor
 }
 
 Vector2f SteeringBehaviors::compute(float dt)

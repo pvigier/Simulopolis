@@ -29,11 +29,6 @@ Service::Service(const std::string& name, Type type, unsigned int nbStairs, std:
         mEmployees.emplace_back(std::make_unique<Work>(employeeType, this));
 }
 
-Service::~Service()
-{
-    //dtor
-}
-
 std::unique_ptr<Tile> Service::clone() const
 {
     return std::make_unique<Service>(mTextureName, mType, mNbStairs, mEmployees.size(), mEmployees.back()->getType());

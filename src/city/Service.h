@@ -28,7 +28,6 @@ class Service : public Building
 public:
     Service(const std::string& name, Type type, unsigned int nbStairs, std::size_t nbEmployees,
         WorkType employeeType);
-    virtual ~Service();
 
     virtual std::unique_ptr<Tile> clone() const override;
     virtual void update() override;

@@ -27,6 +27,7 @@
 #include "city/Service.h"
 #include "city/Company.h"
 #include "city/Work.h"
+#include "city/Lease.h"
 #include "city/Good.h"
 
 std::vector<std::unique_ptr<Tile>> Map::sTileAtlas;

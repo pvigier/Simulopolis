@@ -49,11 +49,6 @@ Business::Business(const std::string& name, Type type, unsigned int nbStairs, Go
         mEmployees.emplace_back(std::make_unique<Work>(employeeType, this));
 }
 
-Business::~Business()
-{
-    //dtor
-}
-
 std::unique_ptr<Tile> Business::clone() const
 {
     return std::make_unique<Business>(mTextureName, mType, mNbStairs, mGoodType, mMaxSizeStock, mEmployeeProductivity, mEmployees.size() - 1, mEmployees.back()->getType());

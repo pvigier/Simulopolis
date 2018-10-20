@@ -28,11 +28,6 @@ GoalEnterCity::GoalEnterCity(Person* owner) : Goal(owner), mMarket(nullptr), mHo
 
 }
 
-GoalEnterCity::~GoalEnterCity()
-{
-
-}
-
 void GoalEnterCity::activate()
 {
     mState = State::ACTIVE;

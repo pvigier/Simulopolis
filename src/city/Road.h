@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <boost/serialization/base_object.hpp>
@@ -24,7 +24,6 @@ class Road : public Tile
 {
 public:
     Road(const std::string& name, Type type);
-    virtual ~Road();
 
     virtual std::unique_ptr<Tile> clone() const override;
 

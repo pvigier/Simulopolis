@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "CallForBids.h"
 #include "resource/TextureManager.h"
 
@@ -22,11 +22,6 @@ CallForBids::CallForBids(const std::string& name, Type type, const sf::Color& si
     Tile(name, type, Category::CALL_FOR_BIDS), mSignColor(signColor)
 {
     setUpSign();
-}
-
-CallForBids::~CallForBids()
-{
-    //dtor
 }
 
 void CallForBids::draw(sf::RenderTarget& target, sf::RenderStates states) const

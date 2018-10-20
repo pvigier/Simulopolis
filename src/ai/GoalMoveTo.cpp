@@ -26,11 +26,6 @@ GoalMoveTo::GoalMoveTo(Person* owner, const Tile* target) : Goal(owner), mTarget
     //ctor
 }
 
-GoalMoveTo::~GoalMoveTo()
-{
-    //dtor
-}
-
 void GoalMoveTo::activate()
 {
     mState = State::ACTIVE;

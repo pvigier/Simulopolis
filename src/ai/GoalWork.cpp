@@ -28,11 +28,6 @@ GoalWork::GoalWork(Person* owner) : Goal(owner), mAtWork(false), mLastUpdate(0.0
     //ctor
 }
 
-GoalWork::~GoalWork()
-{
-    //dtor
-}
-
 void GoalWork::activate()
 {
     mState = State::ACTIVE;

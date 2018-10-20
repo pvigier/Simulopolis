@@ -27,7 +27,6 @@ class GoalMoveTo : public Goal
 {
 public:
     GoalMoveTo(Person* owner, const Tile* target);
-    virtual ~GoalMoveTo();
 
     virtual void activate() override;
     virtual State process() override;

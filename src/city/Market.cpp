@@ -27,11 +27,6 @@ MarketBase::EventBase::EventBase(MarketType marketType) : marketType(marketType)
 
 }
 
-MarketBase::EventBase::~EventBase()
-{
-
-}
-
 MarketBase::MarketBase(MarketType type) : mMessageBus(nullptr), mTime(0), mType(type)
 {
 

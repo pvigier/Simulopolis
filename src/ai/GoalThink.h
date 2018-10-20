@@ -26,7 +26,6 @@ class GoalThink : public Goal
 {
 public:
     GoalThink(Person* owner = nullptr);
-    virtual ~GoalThink();
 
     virtual void activate() override;
     virtual State process() override;

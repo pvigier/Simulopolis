@@ -28,11 +28,6 @@ GoalRest::GoalRest(Person* owner) : Goal(owner), mAtHome(false), mLastUpdate(0.0
     //ctor
 }
 
-GoalRest::~GoalRest()
-{
-    //dtor
-}
-
 void GoalRest::activate()
 {
     mState = State::ACTIVE;

@@ -28,11 +28,6 @@ Housing::Housing(const std::string& name, Type type, unsigned int nbStairs, std:
         mLeases.emplace_back(std::make_unique<Lease>(this));
 }
 
-Housing::~Housing()
-{
-    //dtor
-}
-
 std::unique_ptr<Tile> Housing::clone() const
 {
     return std::make_unique<Housing>(mTextureName, mType, mNbStairs, mLeases.size(), mComfort);

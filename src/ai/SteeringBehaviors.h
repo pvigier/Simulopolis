@@ -26,7 +26,6 @@ class SteeringBehaviors
 public:
     SteeringBehaviors() = default; // Only for serialization
     SteeringBehaviors(Kinematic* owner);
-    ~SteeringBehaviors();
 
     Vector2f compute(float dt);
 

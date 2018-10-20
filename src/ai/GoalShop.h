@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <boost/serialization/base_object.hpp>
@@ -28,7 +28,6 @@ public:
     static constexpr int RADIUS = 16;
 
     GoalShop(Person* owner);
-    virtual ~GoalShop();
 
     virtual void activate() override;
     virtual State process() override;

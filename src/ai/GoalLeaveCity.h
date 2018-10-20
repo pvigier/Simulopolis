@@ -24,7 +24,6 @@ class GoalLeaveCity : public Goal
 {
 public:
     GoalLeaveCity(Person* owner);
-    virtual ~GoalLeaveCity();
 
     virtual void activate() override;
     virtual State process() override;

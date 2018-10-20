@@ -45,7 +45,6 @@ public:
 
     Business(const std::string& name, Type type, unsigned int nbStairs, GoodType goodType, unsigned int maxSizeStock,
         double employeeProductivity, std::size_t nbEmployees, WorkType employeeType);
-    virtual ~Business();
 
     virtual std::unique_ptr<Tile> clone() const override;
     virtual void update() override;

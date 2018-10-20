@@ -25,11 +25,6 @@ GoalLeaveCity::GoalLeaveCity(Person* owner) : Goal(owner)
     //ctor
 }
 
-GoalLeaveCity::~GoalLeaveCity()
-{
-    //dtor
-}
-
 void GoalLeaveCity::activate()
 {
     mState = State::ACTIVE;

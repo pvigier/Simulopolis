@@ -49,7 +49,6 @@ public:
 
         EventBase();
         EventBase(MarketType marketType);
-        virtual ~EventBase();
 
     private:
         // Serialization

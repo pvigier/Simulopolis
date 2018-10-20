@@ -14,18 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "Road.h"
 
 Road::Road(const std::string& name, Type type) :
     Tile(name, type, Category::ROAD)
 {
 
-}
-
-Road::~Road()
-{
-    //dtor
 }
 
 std::unique_ptr<Tile> Road::clone() const

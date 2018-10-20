@@ -33,11 +33,6 @@ Industry::Industry(const std::string& name, Type type, unsigned int nbStairs, Go
         mEmployees.emplace_back(std::make_unique<Work>(employeeType, this));
 }
 
-Industry::~Industry()
-{
-    //dtor
-}
-
 std::unique_ptr<Tile> Industry::clone() const
 {
     return std::make_unique<Industry>(mTextureName, mType, mNbStairs, mGood->getType(), mEmployeeProductivity, mEmployees.size() - 1, mEmployees.back()->getType());

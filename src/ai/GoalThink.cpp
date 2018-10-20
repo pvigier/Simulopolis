@@ -23,11 +23,6 @@ GoalThink::GoalThink(Person* owner) : Goal(owner)
     //ctor
 }
 
-GoalThink::~GoalThink()
-{
-    //dtor
-}
-
 void GoalThink::activate()
 {
     mState = State::ACTIVE;

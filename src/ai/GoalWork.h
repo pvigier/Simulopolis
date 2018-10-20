@@ -24,7 +24,6 @@ class GoalWork : public Goal
 {
 public:
     GoalWork(Person* owner);
-    virtual ~GoalWork();
 
     virtual void activate() override;
     virtual State process() override;
