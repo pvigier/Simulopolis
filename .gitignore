@@ -57,3 +57,12 @@ preamble.txt
 
 # Dependencies
 lib
+
+# VSCode
+.vscode*
+
+# Geany
+*.geany
+
+# Vim
+compile_commands.json
