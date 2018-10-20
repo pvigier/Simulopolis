@@ -18,12 +18,14 @@
 #pragma once
 
 #include "util/IdManager.h"
+#include "util/NonCopyable.h"
+#include "util/NonMovable.h"
 #include "message/Mailbox.h"
 #include "city/Money.h"
 
 class MessageBus;
 
-class Bank
+class Bank : public NonCopyable, public NonMovable
 {
 public:
     struct Account

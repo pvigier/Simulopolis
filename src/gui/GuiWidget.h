@@ -19,6 +19,8 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include "util/NonCopyable.h"
+#include "util/NonMovable.h"
 #include "message/Subject.h"
 
 class Gui;
@@ -27,7 +29,7 @@ class GuiLayout;
 class XmlDocument;
 class PropertyList;
 
-class GuiWidget : public sf::Drawable, public Subject
+class GuiWidget : public NonCopyable, public NonMovable, public sf::Drawable, public Subject
 {
 public:
     GuiWidget(const XmlDocument* style = nullptr);

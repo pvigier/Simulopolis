@@ -30,7 +30,7 @@ enum class Qualification;
 class Business;
 enum class GoodType;
 
-class Person
+class Person : public NonCopyable, public NonMovable
 {
 public:
     enum class Gender{MALE = 0, FEMALE = 1};

@@ -19,6 +19,8 @@
 
 #include <vector>
 #include <memory>
+#include "util/NonCopyable.h"
+#include "util/NonMovable.h"
 #include "message/MessageBus.h"
 #include "message/Subject.h"
 #include "pcg/TerrainGenerator.h"
@@ -34,7 +36,7 @@ enum class MarketType : int;
 class Building;
 class Car;
 
-class City : public sf::Drawable, public Subject
+class City : public NonCopyable, public NonMovable, public sf::Drawable, public Subject
 {
 public:
     static constexpr float NB_HOURS_PER_MONTH = 30.0f * 24.0f;
@@ -81,7 +83,7 @@ public:
     };
 
     City();
-    ~City();
+    virtual ~City();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

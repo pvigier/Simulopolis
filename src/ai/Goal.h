@@ -15,15 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
- #pragma once
+#pragma once
 
- #include <deque>
- #include <boost/serialization/access.hpp>
- #include "message/Message.h"
+#include <deque>
+#include <boost/serialization/access.hpp>
+#include "util/NonCopyable.h"
+#include "util/NonMovable.h"
+#include "message/Message.h"
 
 class Person;
 
-class Goal
+class Goal : public NonCopyable, public NonMovable
 {
 public:
     enum class State{ACTIVE, INACTIVE, COMPLETED, FAILED};

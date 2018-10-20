@@ -30,7 +30,6 @@ class BuildingWindow : public GuiWindow
 {
 public:
     BuildingWindow(StylesheetManager* stylesheetManager, const Building& building);
-    ~BuildingWindow();
 
     virtual void setUp() override;
 

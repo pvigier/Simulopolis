@@ -31,7 +31,7 @@ class GoodsMarketWindow : public GuiWindow
 {
 public:
     GoodsMarketWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager, std::array<Market<Good>*, 3> markets);
-    ~GoodsMarketWindow();
+    virtual ~GoodsMarketWindow();
 
     virtual void setUp() override;
 

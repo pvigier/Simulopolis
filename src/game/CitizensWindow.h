@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include "message/Mailbox.h"
@@ -29,7 +29,7 @@ class CitizensWindow : public GuiWindow
 {
 public:
     CitizensWindow(Id listenerId, MessageBus* messageBus, StylesheetManager* stylesheetManager, City& city);
-    ~CitizensWindow();
+    virtual ~CitizensWindow();
 
     virtual void setUp() override;
 

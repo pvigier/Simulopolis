@@ -21,6 +21,7 @@
 #include <unordered_map>
 #include <memory>
 #include <SFML/Graphics.hpp>
+#include "util/NonCopyable.h"
 #include "message/Mailbox.h"
 #include "message/Subject.h"
 
@@ -28,7 +29,7 @@ class GuiWidget;
 class MessageBus;
 class InputEngine;
 
-class Gui : public sf::Drawable, public Subject
+class Gui : public NonCopyable, public sf::Drawable, public Subject
 {
 public:
     Gui();

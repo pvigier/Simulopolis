@@ -27,7 +27,7 @@ class NewspaperWindow : public GuiWindow
 {
 public:
     NewspaperWindow(StylesheetManager* stylesheetManager, const Newspaper& newspaper);
-    ~NewspaperWindow();
+    virtual ~NewspaperWindow();
 
     virtual void setUp() override;
 

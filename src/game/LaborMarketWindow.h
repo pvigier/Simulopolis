@@ -31,7 +31,7 @@ class LaborMarketWindow : public GuiWindow
 {
 public:
     LaborMarketWindow(MessageBus* messageBus, StylesheetManager* stylesheetManager, Market<Work>* market);
-    ~LaborMarketWindow();
+    virtual ~LaborMarketWindow();
 
     virtual void setUp() override;
 

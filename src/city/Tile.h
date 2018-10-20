@@ -20,12 +20,14 @@
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/split_member.hpp>
 #include <SFML/Graphics.hpp>
+#include "util/NonCopyable.h"
+#include "util/NonMovable.h"
 #include "util/enum.h"
 
 class TextureManager;
 class ImageManager;
 
-class Tile : public sf::Drawable
+class Tile : public NonCopyable, public NonMovable, public sf::Drawable
 {
 public:
     enum class Category : unsigned int {GROUND = 1, WATER = 2, BUILDING = 4, ROAD = 8, BRIDGE = 16,

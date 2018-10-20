@@ -15,13 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
- #pragma once
+#pragma once
 
- #include <vector>
- #include <string>
- #include "message/Mailbox.h"
- #include "city/Tile.h"
- #include "city/Money.h"
+#include <vector>
+#include <string>
+#include "util/NonCopyable.h"
+#include "util/NonMovable.h"
+#include "message/Mailbox.h"
+#include "city/Tile.h"
+#include "city/Money.h"
 
 class MessageBus;
 class Person;
@@ -32,7 +34,7 @@ enum class GoodType;
 class Work;
 enum class Qualification;
 
-class Company
+class Company : public NonCopyable, public NonMovable
 {
 public:
     static std::vector<std::unique_ptr<Work>>* getEmployees(Building* building);

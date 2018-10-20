@@ -41,11 +41,6 @@ BuildingWindow::BuildingWindow(StylesheetManager* stylesheetManager, const Build
 
 }
 
-BuildingWindow::~BuildingWindow()
-{
-    //dtor
-}
-
 void BuildingWindow::setUp()
 {
     // Zoom

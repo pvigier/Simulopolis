@@ -33,7 +33,7 @@ class ImmigrantsWindow : public GuiWindow
 {
 public:
     ImmigrantsWindow(Id listenerId, MessageBus* messageBus, StylesheetManager* stylesheetManager, City& city);
-    ~ImmigrantsWindow();
+    virtual ~ImmigrantsWindow();
 
     virtual void setUp() override;
 

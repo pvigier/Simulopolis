@@ -18,11 +18,13 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "util/NonCopyable.h"
+#include "util/NonMovable.h"
 
 class GuiWidget;
 class PropertyList;
 
-class GuiLayout
+class GuiLayout : public NonCopyable, public NonMovable
 {
 public:
     enum class HAlignment{Left, Center, Right};

@@ -21,6 +21,8 @@
 #include <algorithm>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/split_member.hpp>
+#include "util/NonCopyable.h"
+#include "util/NonMovable.h"
 #include "util/IdManager.h"
 #include "util/debug.h"
 #include "message/MessageBus.h"
@@ -40,7 +42,7 @@ enum class MarketType : int {
         COUNT
     };
 
-class MarketBase : public Subject
+class MarketBase : public NonCopyable, public NonMovable, public Subject
 {
 public:
     struct EventBase

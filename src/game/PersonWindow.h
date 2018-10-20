@@ -29,7 +29,7 @@ class PersonWindow : public GuiWindow
 {
 public:
     PersonWindow(StylesheetManager* stylesheetManager, const Person& person, int year);
-    ~PersonWindow();
+    virtual ~PersonWindow();
 
     virtual void setUp() override;
 
