@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "gui/GuiBoxLayout.h"
 #include "resource/PropertyList.h"
 
@@ -36,11 +36,6 @@ GuiBoxLayout::GuiBoxLayout(const PropertyList& properties) : GuiLayout(propertie
     mHAlignment = properties.get("hAlignment", HAlignment::Left);
     mVAlignment = properties.get("vAlignment", VAlignment::Top);
     mSpacing = properties.get("spacing", 0.0f);
-}
-
-GuiBoxLayout::~GuiBoxLayout()
-{
-    //dtor
 }
 
 void GuiBoxLayout::setSpacing(float spacing)

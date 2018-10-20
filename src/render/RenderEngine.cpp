@@ -23,11 +23,6 @@ RenderEngine::RenderEngine() : mWindow(sf::VideoMode(800, 600), "Simulopolis",
     mWindow.setFramerateLimit(60);
 }
 
-RenderEngine::~RenderEngine()
-{
-
-}
-
 sf::RenderWindow& RenderEngine::getWindow()
 {
     return mWindow;

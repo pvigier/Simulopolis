@@ -37,11 +37,6 @@ public:
     InputEngine();
 
     /**
-     * \brief Destructor
-     */
-    ~InputEngine();
-
-    /**
      * \brief Set the window
      *
      * \param window Window from which the events are polled

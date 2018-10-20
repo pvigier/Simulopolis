@@ -41,11 +41,6 @@ public:
     ResourceManager();
 
     /**
-     * \brief Destructor
-     */
-    ~ResourceManager();
-
-    /**
      * \brief Set up the specific resource managers
      */
     void setUp();

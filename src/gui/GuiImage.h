@@ -27,7 +27,6 @@ class GuiImage : public GuiWidget
 public:
     GuiImage(const sf::Sprite& sprite);
     GuiImage(const PropertyList& properties);
-    virtual ~GuiImage();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

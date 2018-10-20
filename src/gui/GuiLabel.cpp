@@ -31,11 +31,6 @@ GuiLabel::GuiLabel(const PropertyList& properties) : GuiWidget(properties)
     mText.setCharacterSize(properties.get<unsigned int>("characterSize", 0));
 }
 
-GuiLabel::~GuiLabel()
-{
-    //dtor
-}
-
 void GuiLabel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     GuiWidget::draw(target, states);

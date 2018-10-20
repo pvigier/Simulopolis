@@ -43,11 +43,6 @@ public:
     SaveManager();
 
     /**
-     * \brief Destructor
-     */
-    ~SaveManager();
-
-    /**
      * \brief Set xml manager
      *
      * \param xmlManager XmlManager to use

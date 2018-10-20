@@ -26,11 +26,6 @@ XmlManager::XmlManager()
     //ctor
 }
 
-XmlManager::~XmlManager()
-{
-    //dtor
-}
-
 void XmlManager::setUp()
 {
 

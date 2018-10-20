@@ -32,7 +32,6 @@ class PropertyList
 {
 public:
     PropertyList();
-    ~PropertyList();
 
     static void setTextureManager(TextureManager* textureManager);
     static void setFontManager(FontManager* fontManager);

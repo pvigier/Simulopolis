@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "resource/FontManager.h"
 #include "util/debug.h"
 #include "resource/XmlManager.h"
@@ -22,11 +22,6 @@
 FontManager::FontManager() : mXmlManager(nullptr), mPrefixPath("media/")
 {
     //ctor
-}
-
-FontManager::~FontManager()
-{
-    //dtor
 }
 
 void FontManager::setXmlManager(XmlManager* xmlManager)

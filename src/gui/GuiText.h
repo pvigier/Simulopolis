@@ -31,7 +31,6 @@ public:
     GuiText(float width, const sf::String& string, unsigned int characterSize, Alignment alignment,
         const XmlDocument* style);
     GuiText(const PropertyList& properties);
-    virtual ~GuiText();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

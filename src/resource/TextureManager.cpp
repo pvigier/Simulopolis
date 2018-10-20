@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "resource/TextureManager.h"
 #include "util/debug.h"
 #include "resource/XmlManager.h"
@@ -22,11 +22,6 @@
 TextureManager::TextureManager() : mXmlManager(nullptr), mPrefixPath("media/")
 {
     //ctor
-}
-
-TextureManager::~TextureManager()
-{
-    //dtor
 }
 
 void TextureManager::setXmlManager(XmlManager* xmlManager)

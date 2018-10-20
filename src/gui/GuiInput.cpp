@@ -38,11 +38,6 @@ GuiInput::GuiInput(const PropertyList& properties) :
     setRegex(properties.get<std::string>("regex", ".*"));
 }
 
-GuiInput::~GuiInput()
-{
-    //dtor
-}
-
 void GuiInput::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     GuiWidget::draw(target, states);

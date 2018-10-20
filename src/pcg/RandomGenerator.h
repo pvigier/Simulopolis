@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include <random>
@@ -36,7 +36,6 @@ public:
     }
 
     RandomGenerator(result_type seed = 0);
-    ~RandomGenerator();
 
     result_type getSeed();
     void setSeed(result_type seed);

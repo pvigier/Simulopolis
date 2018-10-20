@@ -23,11 +23,6 @@ ResourceManager::ResourceManager()
     //ctor
 }
 
-ResourceManager::~ResourceManager()
-{
-    //dtor
-}
-
 void ResourceManager::setUp()
 {
     mXmlManager.setUp();

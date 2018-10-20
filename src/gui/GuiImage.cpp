@@ -40,12 +40,6 @@ GuiImage::GuiImage(const PropertyList& properties) : GuiWidget(properties)
         setFixedInsideSize(sf::Vector2f(mSprite.getTextureRect().width, mSprite.getTextureRect().height));
 }
 
-GuiImage::~GuiImage()
-{
-    //dtor
-}
-
-
 void GuiImage::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     GuiWidget::draw(target, states);

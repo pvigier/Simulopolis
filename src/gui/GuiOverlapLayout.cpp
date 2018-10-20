@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "gui/GuiOverlapLayout.h"
 #include "gui/GuiWidget.h"
 
@@ -26,11 +26,6 @@ GuiOverlapLayout::GuiOverlapLayout()
 GuiOverlapLayout::GuiOverlapLayout(const PropertyList& properties) : GuiLayout(properties)
 {
 
-}
-
-GuiOverlapLayout::~GuiOverlapLayout()
-{
-    //dtor
 }
 
 void GuiOverlapLayout::align()

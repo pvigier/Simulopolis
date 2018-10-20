@@ -32,11 +32,6 @@ PropertyList::PropertyList()
     //ctor
 }
 
-PropertyList::~PropertyList()
-{
-    //dtor
-}
-
 void PropertyList::setTextureManager(TextureManager* textureManager)
 {
     sTextureManager = textureManager;

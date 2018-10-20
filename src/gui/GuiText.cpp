@@ -34,11 +34,6 @@ GuiText::GuiText(const PropertyList& properties) : GuiWidget(properties)
     mCharacterSize = properties.get<unsigned int>("characterSize", 0);
 }
 
-GuiText::~GuiText()
-{
-    //dtor
-}
-
 void GuiText::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     GuiWidget::draw(target, states);

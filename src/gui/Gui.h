@@ -32,7 +32,11 @@ class Gui : public sf::Drawable, public Subject
 {
 public:
     Gui();
-    ~Gui();
+    virtual ~Gui();
+
+    // Support moving
+    Gui(Gui&&) = default;
+    Gui& operator=(Gui&&) = default;
 
     static void setMessageBus(MessageBus* messageBus);
     static void setInputEngine(InputEngine* inputEngine);

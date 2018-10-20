@@ -22,11 +22,6 @@ InputEngine::InputEngine() : mWindow(nullptr)
     //ctor
 }
 
-InputEngine::~InputEngine()
-{
-    //dtor
-}
-
 void InputEngine::setWindow(sf::Window* window)
 {
     mWindow = window;

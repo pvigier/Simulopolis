@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "resource/StylesheetManager.h"
 #include "util/debug.h"
 #include "resource/XmlManager.h"
@@ -24,11 +24,6 @@ using namespace tinyxml2;
 StylesheetManager::StylesheetManager() : mXmlManager(nullptr), mPrefixPath("media/")
 {
     //ctor
-}
-
-StylesheetManager::~StylesheetManager()
-{
-    //dtor
 }
 
 void StylesheetManager::setXmlManager(XmlManager* xmlManager)

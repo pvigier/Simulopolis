@@ -28,7 +28,6 @@ class GuiLabel : public GuiWidget
 public:
     GuiLabel(const sf::String& string, unsigned int characterSize, const XmlDocument* style);
     GuiLabel(const PropertyList& properties);
-    virtual ~GuiLabel();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

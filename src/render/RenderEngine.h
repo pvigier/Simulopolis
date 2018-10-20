@@ -37,11 +37,6 @@ public:
     RenderEngine();
 
     /**
-     * \brief Destructor
-     */
-    ~RenderEngine();
-
-    /**
      * \brief Get the window
      *
      * \return Window, an instance of the SFML's class RenderWindow

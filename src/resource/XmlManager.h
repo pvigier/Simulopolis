@@ -38,11 +38,6 @@ public:
     XmlManager();
 
     /**
-     * \brief Destructor
-     */
-    ~XmlManager();
-
-    /**
      * \brief Set up the manager
      */
     void setUp();

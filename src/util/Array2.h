@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 // STL
@@ -52,14 +52,6 @@ public:
     Array2(std::size_t height, std::size_t width, const T& defaultValue)
     {
         reshape(height, width, defaultValue);
-    }
-
-    /**
-     * \brief Destructor
-     */
-    ~Array2()
-    {
-
     }
 
     /**

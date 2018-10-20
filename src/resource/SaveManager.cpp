@@ -26,11 +26,6 @@ SaveManager::SaveManager() : mXmlManager(nullptr), mPrefixPath("saves/")
     //ctor
 }
 
-SaveManager::~SaveManager()
-{
-    //dtor
-}
-
 void SaveManager::setXmlManager(XmlManager* xmlManager)
 {
     mXmlManager = xmlManager;

@@ -35,11 +35,6 @@ GuiManager::GuiManager() : mXmlManager(nullptr), mPrefixPath("media/")
     //ctor
 }
 
-GuiManager::~GuiManager()
-{
-    //dtor
-}
-
 void GuiManager::setXmlManager(XmlManager* xmlManager)
 {
     mXmlManager = xmlManager;

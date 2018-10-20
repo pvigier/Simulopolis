@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include "gui/GuiLayout.h"
@@ -28,7 +28,6 @@ public:
         float spacing = 0.0f, Margins margins = Margins{0.0f, 0.0f, 0.0f, 0.0f});
     GuiBoxLayout(float spacing, Margins margins = Margins{0.0f, 0.0f, 0.0f, 0.0f});
     GuiBoxLayout(const PropertyList& properties);
-    virtual ~GuiBoxLayout();
 
     virtual void setSpacing(float spacing);
     void setHAlignment(HAlignment alignment);

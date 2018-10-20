@@ -30,7 +30,6 @@ class GuiInput : public GuiWidget
 public:
     GuiInput(unsigned int characterSize, const XmlDocument* style);
     GuiInput(const PropertyList& properties);
-    virtual ~GuiInput();
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

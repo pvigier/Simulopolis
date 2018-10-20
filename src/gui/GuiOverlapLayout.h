@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #pragma once
 
 #include "gui/GuiLayout.h"
@@ -24,7 +24,6 @@ class GuiOverlapLayout : public GuiLayout
 public:
     GuiOverlapLayout();
     GuiOverlapLayout(const PropertyList& properties);
-    virtual ~GuiOverlapLayout();
 
     virtual void align() override;
     virtual sf::Vector2f computeSize() const override;
