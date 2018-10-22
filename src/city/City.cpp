@@ -627,6 +627,9 @@ void City::setUp(bool loading)
     for (std::unique_ptr<MarketBase>& market : mMarkets)
         market->setMessageBus(&mCityMessageBus, loading);
 
+    // Newspaper
+    mNewspaper.setMessageBus(&mCityMessageBus, loading);
+
     // Citizens
     for (Person* citizen : mCitizens)
         citizen->setCity(this, &mCityMessageBus, loading);
