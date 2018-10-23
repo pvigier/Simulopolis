@@ -1,0 +1,13 @@
+<article>
+    <title>Happy new year</title>
+    <body>
+The year {{ lastYear }} ended yesterday. It is the perfect time to recap what has been done during this year in {{ city }}:
+- the city accommodates {{ newInhabitants }} new inhabitants ;
+- {{ newCompanies }} were created by fellow citizens ;
+- the average happiness of the citizens is {{ happiness }} while it was {{ previousHappiness }} at the start of {{ lastYear }} ;
+
+Our mayor extended his greetings this morning from the city hall in front of dozens of citizens. He said that: "The year {{ year }} promises to be a year of many challenges and opportunities. And our city is ready to seize them successfully.".  
+
+The entire editorial board wish a happy new year to all the citizens of {{ city }}. May the year bring good health, happiness, and above all, success at whatever you choose to accomplish!
+    </body>
+</article>
