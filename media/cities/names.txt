@@ -1,5 +1,6 @@
 Agartha
 Alfheim
+Alexandria
 Akakor
 Annwn
 Arcadia
@@ -8,6 +9,7 @@ Atlantis
 Avalon
 Axis Mundi
 Aztlan
+Babel
 Babylon
 Baltia
 Biringan
@@ -36,6 +38,7 @@ Paititi
 Pandaemonium
 Persepolis
 Pompeii
+Rhodes
 Scholomance
 Shambhala
 Shangri-La
