@@ -22,6 +22,7 @@
 #include "game/GameStateNewCity.h"
 #include "game/GameStateLoadCity.h"
 #include "game/GameStateSettings.h"
+#include "pcg/CityGenerator.h"
 #include "city/Car.h"
 
 Game::Game()
@@ -54,6 +55,7 @@ Game::Game()
     // Load resources
     mResourceManager.setUp();
     Map::loadTiles();
+    CityGenerator::setUp();
 
     // Set icon
     mRenderEngine.setIcon(mResourceManager.getImageManager().getImage("icon"));

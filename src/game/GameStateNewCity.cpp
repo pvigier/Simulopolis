@@ -30,6 +30,7 @@
 #include "gui/GuiImage.h"
 #include "gui/GuiEvent.h"
 #include "pcg/noise.h"
+#include "pcg/CityGenerator.h"
 #include "util/format.h"
 #include "util/regex.h"
 
@@ -136,6 +137,7 @@ void GameStateNewCity::createGui()
 {
     // Seed
     uint64_t seed = integer_noise(std::chrono::system_clock::now().time_since_epoch().count());
+    mGui->get<GuiInput>("nameInput")->setString(CityGenerator::generate(seed));
     mGui->get<GuiInput>("seedInput")->setString(std::to_string(seed));
     mGui->get<GuiInput>("seedInput")->setRegex(regexNumbersUntil(std::numeric_limits<uint64_t>::max()));
 
