@@ -166,7 +166,7 @@ const std::string& Person::getLastName() const
 
 std::string Person::getFullName() const
 {
-    return mFirstName + " " + mLastName;
+    return mFirstName + ' ' + mLastName;
 }
 
 Person::Gender Person::getGender() const

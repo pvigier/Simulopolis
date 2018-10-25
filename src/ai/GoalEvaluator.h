@@ -18,10 +18,12 @@
 #pragma once
 
 #include <boost/serialization/access.hpp>
+#include "util/NonCopyable.h"
+#include "util/NonMovable.h"
 
 class Person;
 
-class GoalEvaluator
+class GoalEvaluator : public NonCopyable, public NonMovable
 {
 public:
     GoalEvaluator(float bias);
