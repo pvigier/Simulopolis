@@ -31,6 +31,7 @@ public:
     void setUp();
 
     std::unique_ptr<Person> generate(int year);
+    std::string generateName();
 
 private:
     RandomGenerator& mGenerator;

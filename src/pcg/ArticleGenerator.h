@@ -22,7 +22,7 @@
 
 class XmlManager;
 class RandomGenerator;
-class Article;
+struct Article;
 
 class ArticleGenerator
 {

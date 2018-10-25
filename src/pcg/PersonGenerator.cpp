@@ -114,3 +114,26 @@ std::unique_ptr<Person> PersonGenerator::generate(int year)
     Money funds(fundsPdf(mGenerator));
     return std::make_unique<Person>(firstName, lastName, gender, birth, car, decayRates, productivity, biases, funds);
 }
+
+std::string PersonGenerator::generateName()
+{
+    // Gender
+    std::uniform_int_distribution<int> genderPdf(0, 1);
+    Person::Gender gender = static_cast<Person::Gender>(genderPdf(mGenerator));
+    // First name
+    std::string firstName;
+    if (gender == Person::Gender::MALE)
+    {
+        std::uniform_int_distribution<std::size_t> firstNamePdf(0, mMaleFirstNames.size() - 1);
+        firstName = mMaleFirstNames[firstNamePdf(mGenerator)];
+    }
+    else
+    {
+        std::uniform_int_distribution<std::size_t> firstNamePdf(0, mFemaleFirstNames.size() - 1);
+        firstName = mFemaleFirstNames[firstNamePdf(mGenerator)];
+    }
+    // Last name
+    std::uniform_int_distribution<std::size_t> lastNamePdf(0, mLastNames.size() - 1);
+    std::string lastName = mLastNames[lastNamePdf(mGenerator)];
+    return firstName + ' ' + lastName;
+}

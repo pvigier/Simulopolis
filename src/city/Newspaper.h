@@ -9,6 +9,8 @@
 #include "pcg/ArticleGenerator.h"
 
 class MessageBus;
+class City;
+class PersonGenerator;
 
 // Outside of Newspaper only for forward declaration in ArticleGenerator
 struct Article
@@ -48,7 +50,7 @@ public:
     Newspaper();
     ~Newspaper();
 
-    void setMessageBus(MessageBus* messageBus, bool alreadyAdded = false);
+    void setCity(const City* city, MessageBus* messageBus, PersonGenerator* personGenerator, bool alreadyAdded = false);
 
     void update();
 
@@ -58,7 +60,9 @@ public:
     Id getMailboxId() const;
 
 private:
+    const City* mCity;
     MessageBus* mMessageBus;
+    PersonGenerator* mPersonGenerator;
     ArticleGenerator mArticleGenerator;
     std::string mName;
     std::vector<Edition> mEditions;

@@ -633,7 +633,7 @@ void City::setUp(bool loading)
         market->setMessageBus(&mCityMessageBus, loading);
 
     // Newspaper
-    mNewspaper.setMessageBus(&mCityMessageBus, loading);
+    mNewspaper.setCity(this, &mCityMessageBus, &mPersonGenerator, loading);
 
     // Citizens
     for (Person* citizen : mCitizens)
