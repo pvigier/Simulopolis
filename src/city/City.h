@@ -62,7 +62,8 @@ public:
 
     struct Event
     {
-        enum class Type{NEW_MONTH, NEW_YEAR, NEW_IMMIGRANT, IMMIGRANT_EJECTED, NEW_CITIZEN, CITIZEN_LEFT,
+        enum class Type{NEW_CITY, NEW_MONTH, NEW_YEAR, 
+            NEW_IMMIGRANT, IMMIGRANT_EJECTED, NEW_CITIZEN, CITIZEN_LEFT,
             NEW_MINIMUM_WAGE, BUILDING_DESTROYED, REMOVE_CITIZEN};
 
         Type type;
@@ -107,6 +108,7 @@ public:
     unsigned int getMonth() const;
     unsigned int getYear() const;
     std::string getFormattedMonth() const;
+    std::string getPrettyDate() const;
 
     // Economy
     const Bank& getBank() const;

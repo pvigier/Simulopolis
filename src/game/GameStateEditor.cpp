@@ -348,7 +348,7 @@ void GameStateEditor::update(float dt)
     mCity.update(dt);
 
     // Update the info bar at the bottom of the screen
-    mGui->get<GuiLabel>("dateText")->setString(format("%s %d", mCity.getFormattedMonth().c_str(), 2000 + mCity.getYear()));
+    mGui->get<GuiLabel>("dateText")->setString(mCity.getPrettyDate());
     mGui->get<GuiLabel>("fundsText")->setString(format("$%.2f", mCity.getFunds()));
     mGui->get<GuiLabel>("populationText")->setString(format("Population: %d", mCity.getPopulation()));
     mGui->get<GuiLabel>("happinessText")->setString(format("Happiness: %.0f", 100.0f * mCity.getAverageHappiness()));

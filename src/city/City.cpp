@@ -332,6 +332,11 @@ std::string City::getFormattedMonth() const
     }
 }
 
+std::string City::getPrettyDate() const
+{
+    return getFormattedMonth() + ' ' + std::to_string(2000 + mYear);
+}
+
 const Bank& City::getBank() const
 {
     return mBank;

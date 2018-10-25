@@ -57,6 +57,8 @@ void serialize(Archive& ar, City::Event& event, const unsigned int /*version*/)
     ar & event.type;
     switch (event.type)
     {
+        case City::Event::Type::NEW_CITY:
+            break;
         case City::Event::Type::NEW_MONTH:
             ar & event.month;
             break;
@@ -68,13 +70,13 @@ void serialize(Archive& ar, City::Event& event, const unsigned int /*version*/)
         case City::Event::Type::NEW_CITIZEN:
         case City::Event::Type::CITIZEN_LEFT:
         case City::Event::Type::REMOVE_CITIZEN:
-            //ar & event.person;
+            ar & event.person;
             break;
         case City::Event::Type::NEW_MINIMUM_WAGE:
             ar & event.minimumWage;
             break;
         case City::Event::Type::BUILDING_DESTROYED:
-            //ar & event.building;
+            ar & event.building;
             break;
     }
 }
@@ -86,10 +88,10 @@ void serialize(Archive& ar, Person::Event& event, const unsigned int /*version*/
     switch (event.type)
     {
         case Person::Event::Type::LEAVE_HOUSING:
-            //ar & event.lease;
+            ar & event.lease;
             break;
         case Person::Event::Type::QUIT_WORK:
-            //ar & event.work;
+            ar & event.work;
             break;
         case Person::Event::Type::FIRED:
         case Person::Event::Type::EXPELLED:
