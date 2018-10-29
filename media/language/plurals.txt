@@ -1,9 +1,14 @@
 // y
-[aeiouy]y -> ys
+ay -> ays
+ey -> eys
+iy -> iys
+oy -> oys
+uy -> uys
+yy -> yys
 y -> ies
 quy -> quies
 
-// +es
+// s, sh, ch, x, z 
 s -> ses
 sh -> shes
 ch -> ches
@@ -17,18 +22,26 @@ fe -> ves
 belief -> beliefs
 chef -> chefs
 chief -> chiefs
+cuff -> cuffs
 proof -> proofs
 roof -> roofs
+spoof -> spoofs
 staff -> staffs
-turf -> turves
 
 // o
+ao -> aos
+eo -> eos
+io -> ios
+oo -> oos
+uo -> uos
+yo -> yos
 o -> oes
 
 auto -> autos
+avocado -> avocados
 canto -> cantos
 hetero -> heteros
-kangaroo -> kangaroos
+homo -> homos
 kilo -> kilos
 kimono -> kimonos
 memo -> memos
@@ -41,9 +54,7 @@ quarto -> quartos
 scenario -> scenarios
 solo -> solos
 soprano -> sopranos
-tattoo -> tattoos
 video -> videos
-zoo -> zoos
 zero -> zeros
 
 //us -> i
@@ -61,6 +72,9 @@ ex -> ices
 // ics
 ics -> ics
 
+// ies
+ies -> ies
+
 // Irregular nouns 
 child -> children
 goose -> geese
@@ -72,12 +86,12 @@ mouse -> mice
 person -> people
 tooth -> teeth
 
-// Invariable
+// Invariant
 aircraft -> aircraft
 barracks -> barracks
+bison -> bison
 deer -> deer
-series -> series
-species -> species
+salmon -> salmon
 sheep -> sheep
 news -> news
 
