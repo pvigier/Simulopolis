@@ -1,0 +1,87 @@
+// y
+[aeiouy]y -> ys
+y -> ies
+quy -> quies
+
+// +es
+s -> ses
+sh -> shes
+ch -> ches
+x -> xes
+z -> zes
+
+// f and fe
+f -> ves
+fe -> ves
+
+belief -> beliefs
+chef -> chefs
+chief -> chiefs
+proof -> proofs
+roof -> roofs
+staff -> staffs
+turf -> turves
+
+// o
+o -> oes
+
+auto -> autos
+canto -> cantos
+hetero -> heteros
+kangaroo -> kangaroos
+kilo -> kilos
+kimono -> kimonos
+memo -> memos
+photo -> photos
+piano -> pianos
+pimento -> pimentos
+portico -> porticos
+pro -> pros
+quarto -> quartos
+scenario -> scenarios
+solo -> solos
+soprano -> sopranos
+tattoo -> tattoos
+video -> videos
+zoo -> zoos
+zero -> zeros
+
+//us -> i
+
+// is
+is -> es
+
+// on
+on -> a
+
+// ix or ex
+ix -> ices
+ex -> ices
+
+// ics
+ics -> ics
+
+// Irregular nouns 
+child -> children
+goose -> geese
+man -> men
+woman -> women
+tooth -> teeth
+foot -> feet
+mouse -> mice
+person -> people
+tooth -> teeth
+
+// Invariable
+aircraft -> aircraft
+barracks -> barracks
+deer -> deer
+series -> series
+species -> species
+sheep -> sheep
+news -> news
+
+// Foreign nouns
+alga -> algae
+larva -> larvae
+vertebra -> vertebrae
