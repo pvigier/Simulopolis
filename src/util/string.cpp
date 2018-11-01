@@ -24,3 +24,10 @@ std::string strip(const std::string& string)
         string.rbegin());
     return string.substr(iStart, iEnd - iStart);
 }
+
+std::string toUpper(std::string string)
+{
+    for (std::size_t i = 0; i < string.size(); ++i)
+        string[i] = std::toupper(string[i]);
+    return string;
+}

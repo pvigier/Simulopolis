@@ -51,7 +51,7 @@ Article ArticleGenerator::generate(ArticleType type, const Context& context, con
         title = std::regex_replace(title, re, kv.second);
         body = std::regex_replace(body, re, kv.second);
     }
-    return Article{title, body, author};
+    return Article{title, body, toUpper(author)};
 }
 
 void ArticleGenerator::loadTemplate(ArticleType type, const std::string& path)

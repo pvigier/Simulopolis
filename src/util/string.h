@@ -19,3 +19,5 @@ std::string join(const Container& tokens, Separator separator)
 }
 
 std::string strip(const std::string& string);
+
+std::string toUpper(std::string string);
