@@ -61,7 +61,7 @@ public:
     // Prefix
 
     template <typename String>
-    std::basic_string<Char> getLongestPrefix(String&& string)
+    std::basic_string<Char> getLongestPrefix(String&& string) const
     {
         std::basic_string<Char> prefix;
         Node* node = mRoot.get();

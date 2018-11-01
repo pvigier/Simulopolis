@@ -66,3 +66,4 @@ lib
 
 # Vim
 compile_commands.json
+*.swp

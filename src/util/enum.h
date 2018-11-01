@@ -17,6 +17,8 @@
  
 #pragma once
 
+#include <type_traits>
+
 template<typename E>
 struct EnableBitMaskOperators
 {
