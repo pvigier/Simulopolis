@@ -388,6 +388,9 @@ void GameStateEditor::newGame(std::string cityName, uint64_t seed)
     // Subscribe to the city
     mCity.setGameMessageBus(sMessageBus);
     mCity.subscribe(mMailbox.getId());
+
+    // Open the newspaper window
+    openNewspaperWindow();
 }
 
 void GameStateEditor::loadGame(const std::string& cityName)
