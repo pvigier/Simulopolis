@@ -13,6 +13,8 @@ public:
 
     }
 
+    // Insertion
+
     template <typename String>
     void insert(String&& string)
     {
@@ -32,6 +34,8 @@ public:
     {
         insert(std::basic_string<Char>(string));
     }
+
+    // Membership
 
     template <typename String>
     bool contains(String&& string) const    
@@ -54,6 +58,32 @@ public:
         return contains(std::basic_string<Char>(string));
     }
 
+    // Prefix
+
+    template <typename String>
+    std::basic_string<Char> getLongestPrefix(String&& string)
+    {
+        std::basic_string<Char> prefix;
+        Node* node = mRoot.get();
+        for (auto&& c : string)
+        {
+            if (node->children.find(c) == node->children.end())
+                return prefix;
+            prefix += c; // Maybe it could be optimized
+            node = node->children[c].get();
+        }
+        return prefix;
+    }
+
+    // Overload for C strings
+    template <typename T>
+    std::basic_string<Char> getLongestPrefix(T* string) const
+    {
+        return getLongestPrefix(std::basic_string<Char>(string));
+    }
+    
+    // Print
+
     std::ostream& print(std::ostream& os) const 
     {
         os << "root ";
@@ -68,6 +98,8 @@ private:
     };
     
     std::unique_ptr<Node> mRoot;
+
+    // Print
 
     std::ostream& print(std::ostream& os, const Node* node, std::string tabs) const
     {
