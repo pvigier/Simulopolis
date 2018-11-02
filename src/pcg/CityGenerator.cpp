@@ -30,7 +30,10 @@ void CityGenerator::setUp()
     if (file.is_open())
     {
         while (std::getline(file, line))
-            sNames.push_back(line);
+        {
+            if (!line.empty())
+                sNames.push_back(line);
+        }
         file.close();
     }
 }
