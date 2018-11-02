@@ -32,6 +32,7 @@ You can download the latest stable releases on the [itch.io page](https://pvigie
 
 ![Screenshot 1](https://github.com/pvigier/CityBuilder/raw/master/images/screenshot1.gif)
 ![Screenshot 2](https://github.com/pvigier/CityBuilder/raw/master/images/screenshot2.png)
+![Screenshot 3](https://github.com/pvigier/CityBuilder/raw/master/images/screenshot3.png)
 
 ## Credits
 
