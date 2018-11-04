@@ -40,8 +40,6 @@ public:
     static const TileAtlas& getTileAtlas();
 
     // IO
-    void load(const std::string& filename, unsigned int width, unsigned int height);
-    void save(const std::string& filename);
     void fromArray(const Array2<Tile::Type>& tiles);
 
     // Modifying the map

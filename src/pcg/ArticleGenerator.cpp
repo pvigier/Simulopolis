@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "ArticleGenerator.h"
+#include "pcg/ArticleGenerator.h"
 #include <regex>
 #include "util/string.h"
 #include "resource/XmlManager.h"

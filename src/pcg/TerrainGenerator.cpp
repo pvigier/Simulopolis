@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-#include "TerrainGenerator.h"
-#include "noise.h"
+#include "pcg/TerrainGenerator.h"
+#include "pcg/noise.h"
 
 TerrainGenerator::TerrainGenerator(RandomGenerator& generator) : mGenerator(generator)
 {

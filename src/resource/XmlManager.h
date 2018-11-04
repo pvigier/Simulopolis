@@ -25,7 +25,7 @@
 #include "resource/XmlDocument.h"
 
 /**
- * \brief Manager that manages the gui's
+ * \brief Manager that manages xml documents
  *
  * \author Pierre Vigier
  */

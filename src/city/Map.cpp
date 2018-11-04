@@ -16,7 +16,6 @@
  */
 
 #include "Map.h"
-#include <fstream>
 #include "util/IdManager.h"
 #include "resource/TextureManager.h"
 #include "city/Road.h"
@@ -70,58 +69,6 @@ void Map::loadTiles()
 const Map::TileAtlas& Map::getTileAtlas()
 {
     return sTileAtlas;
-}
-
-void Map::load(const std::string& filename, unsigned int width, unsigned int height)
-{
-    std::ifstream inputFile;
-    inputFile.open(filename, std::ios::in | std::ios::binary);
-    // Reshape map
-    mWidth = width;
-    mHeight = height;
-    mTiles.reshape(mHeight, mWidth);
-    mNetwork.reshape(mWidth, mHeight);
-    // Load tiles
-    for (unsigned int i = 0; i < mHeight; ++i)
-    {
-        for (unsigned int j = 0; j < mWidth; ++j)
-        {
-            Tile::Type type;
-            inputFile.read((char*)&type, sizeof(type));
-            mTiles.set(i, j, createTile(type));
-            mTiles.get(i, j)->setPosition(sf::Vector2i(j, i), computePosition(i, j));
-            char tmp[8];
-            inputFile.read(tmp, sizeof(unsigned int));
-            inputFile.read(tmp, sizeof(unsigned int));
-            inputFile.read(tmp, sizeof(double));
-            inputFile.read(tmp, sizeof(float));
-        }
-    }
-    inputFile.close();
-    // Update tiles
-    for (unsigned int i = 0; i < mHeight; ++i)
-    {
-        for (unsigned int j = 0; j < mWidth; ++j)
-            updateTile(i, j);
-    }
-}
-
-void Map::save(const std::string& filename)
-{
-    std::ofstream outputFile;
-    outputFile.open(filename, std::ios::out | std::ios::binary);
-
-    /*for (const std::unique_ptr<Tile>& tile : mTiles)
-    {
-        Tile::Type type = tile->getType();
-        outputFile.write((char*)&type, sizeof(Tile::Type));
-        outputFile.write((char*)&tile.getVariant(), sizeof(unsigned int));
-        outputFile.write((char*)tile.getRegions(), sizeof(unsigned int)*1);
-        outputFile.write((char*)&tile.getPopulation(), sizeof(double));
-        outputFile.write((char*)&tile.getStoredGoods(), sizeof(float));
-    }*/
-
-    outputFile.close();
 }
 
 void Map::fromArray(const Array2<Tile::Type>& tiles)

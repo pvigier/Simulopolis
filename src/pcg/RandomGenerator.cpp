@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "RandomGenerator.h"
+#include "pcg/RandomGenerator.h"
 
 RandomGenerator::RandomGenerator(result_type seed) : mSeed(seed), mGenerator(mSeed)
 {
