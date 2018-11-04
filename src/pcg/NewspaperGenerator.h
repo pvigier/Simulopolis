@@ -21,10 +21,13 @@
 #include <vector>
 
 class RandomGenerator;
+class TextFileManager;
 
 class NewspaperGenerator
 {
 public:
+    static void setTextFileManager(TextFileManager* textFileManager);
+
     NewspaperGenerator(RandomGenerator& generator);
 
     void setUp();
@@ -32,6 +35,7 @@ public:
     std::string generate(const std::string& cityName);
 
 private:
+    static TextFileManager* sTextFileManager;
     RandomGenerator& mGenerator;
     std::vector<std::string> mPatterns;
 };

@@ -15,11 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "NewspaperGenerator.h"
-#include <fstream>
+#include "pcg/NewspaperGenerator.h"
+#include "resource/TextFileManager.h"
 #include "pcg/RandomGenerator.h"
 #include "city/Company.h"
 #include "city/Person.h"
+
+TextFileManager* NewspaperGenerator::sTextFileManager = nullptr;
+    
+void NewspaperGenerator::setTextFileManager(TextFileManager* textFileManager)
+{
+    sTextFileManager = textFileManager;
+}
 
 NewspaperGenerator::NewspaperGenerator(RandomGenerator& generator) : mGenerator(generator)
 {
@@ -28,17 +35,7 @@ NewspaperGenerator::NewspaperGenerator(RandomGenerator& generator) : mGenerator(
 
 void NewspaperGenerator::setUp()
 {
-    std::string line;
-    std::ifstream file;
-
-    // List of patterns
-    file.open("media/newspapers/patterns.txt");
-    if (file.is_open())
-    {
-        while (std::getline(file, line))
-            mPatterns.push_back(line);
-        file.close();
-    }
+    mPatterns = sTextFileManager->loadValues("media/newspapers/patterns.txt");
 }
 
 std::string NewspaperGenerator::generate(const std::string& cityName)

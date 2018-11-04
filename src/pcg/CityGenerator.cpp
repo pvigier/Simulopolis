@@ -15,27 +15,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "CityGenerator.h"
-#include <fstream>
+#include "pcg/CityGenerator.h"
+#include "resource/TextFileManager.h"
 
 std::vector<std::string> CityGenerator::sNames;
 
-void CityGenerator::setUp()
+void CityGenerator::setUp(const TextFileManager& textFileManager)
 {
-    std::string line;
-    std::ifstream file;
-
-    // List of patterns
-    file.open("media/cities/names.txt");
-    if (file.is_open())
-    {
-        while (std::getline(file, line))
-        {
-            if (!line.empty())
-                sNames.push_back(line);
-        }
-        file.close();
-    }
+    sNames = textFileManager.loadValues("media/cities/names.txt");   
 }
 
 std::string CityGenerator::generate(uint64_t seed)

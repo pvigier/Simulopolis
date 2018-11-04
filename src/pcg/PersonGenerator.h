@@ -21,11 +21,14 @@
 #include <vector>
 
 class RandomGenerator;
+class TextFileManager;
 class Person;
 
 class PersonGenerator
 {
 public:
+    static void setTextFileManager(TextFileManager* textFileManager);
+
     PersonGenerator(RandomGenerator& generator);
 
     void setUp();
@@ -34,6 +37,7 @@ public:
     std::string generateName();
 
 private:
+    static TextFileManager* sTextFileManager;
     RandomGenerator& mGenerator;
     std::vector<std::string> mMaleFirstNames;
     std::vector<std::string> mFemaleFirstNames;

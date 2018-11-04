@@ -21,12 +21,15 @@
 #include <vector>
 
 class RandomGenerator;
+class TextFileManager;
 class Company;
 class Person;
 
 class CompanyGenerator
 {
 public:
+    static void setTextFileManager(TextFileManager* textFileManager);
+
     CompanyGenerator(RandomGenerator& generator);
 
     void setUp();
@@ -35,6 +38,7 @@ public:
 
 
 private:
+    static TextFileManager* sTextFileManager;
     RandomGenerator& mGenerator;
     std::vector<std::string> mFruits;
     std::vector<std::string> mPrefixes;

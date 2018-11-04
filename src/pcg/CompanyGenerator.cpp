@@ -15,11 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "CompanyGenerator.h"
-#include <fstream>
+#include "pcg/CompanyGenerator.h"
+#include "resource/TextFileManager.h"
 #include "pcg/RandomGenerator.h"
 #include "city/Company.h"
 #include "city/Person.h"
+
+TextFileManager* CompanyGenerator::sTextFileManager = nullptr;
+    
+void CompanyGenerator::setTextFileManager(TextFileManager* textFileManager)
+{
+    sTextFileManager = textFileManager;
+}
 
 CompanyGenerator::CompanyGenerator(RandomGenerator& generator) : mGenerator(generator)
 {
@@ -28,44 +35,10 @@ CompanyGenerator::CompanyGenerator(RandomGenerator& generator) : mGenerator(gene
 
 void CompanyGenerator::setUp()
 {
-    std::string line;
-    std::ifstream file;
-
-    // List of fruits
-    file.open("media/companies/fruits.txt");
-    if (file.is_open())
-    {
-        while (std::getline(file, line))
-            mFruits.push_back(line);
-        file.close();
-    }
-
-    // List of prefixes
-    file.open("media/companies/prefixes.txt");
-    if (file.is_open())
-    {
-        while (std::getline(file, line))
-            mPrefixes.push_back(line);
-        file.close();
-    }
-
-    // List of suffixes
-    file.open("media/companies/suffixes.txt");
-    if (file.is_open())
-    {
-        while (std::getline(file, line))
-            mSuffixes.push_back(line);
-        file.close();
-    }
-
-    // List of domains
-    file.open("media/companies/domains.txt");
-    if (file.is_open())
-    {
-        while (std::getline(file, line))
-            mDomains.push_back(line);
-        file.close();
-    }
+    mFruits = sTextFileManager->loadValues("media/companies/fruits.txt");
+    mPrefixes = sTextFileManager->loadValues("media/companies/prefixes.txt");
+    mPrefixes = sTextFileManager->loadValues("media/companies/suffixes.txt");
+    mDomains = sTextFileManager->loadValues("media/companies/domains.txt");
 }
 
 std::unique_ptr<Company> CompanyGenerator::generate(int year, Person* owner)

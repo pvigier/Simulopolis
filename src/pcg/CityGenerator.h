@@ -20,10 +20,12 @@
 #include <string>
 #include <vector>
 
+class TextFileManager;
+
 class CityGenerator
 {
 public:
-    static void setUp();
+    static void setUp(const TextFileManager& textFileManager);
 
     static std::string generate(uint64_t seed);
 

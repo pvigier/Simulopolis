@@ -51,11 +51,15 @@ Game::Game()
     Car::setImageManager(&mResourceManager.getImageManager());
     Tile::setTextureManager(&mResourceManager.getTextureManager());
     Tile::setImageManager(&mResourceManager.getImageManager());
+    ArticleGenerator::setXmlManager(&mResourceManager.getXmlManager());
+    CompanyGenerator::setTextFileManager(&mResourceManager.getTextFileManager());
+    NewspaperGenerator::setTextFileManager(&mResourceManager.getTextFileManager());
+    PersonGenerator::setTextFileManager(&mResourceManager.getTextFileManager());
 
     // Load resources
     mResourceManager.setUp();
     Map::loadTiles();
-    CityGenerator::setUp();
+    CityGenerator::setUp(mResourceManager.getTextFileManager());
 
     // Set icon
     mRenderEngine.setIcon(mResourceManager.getImageManager().getImage("icon"));

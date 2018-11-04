@@ -15,10 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "PersonGenerator.h"
-#include <fstream>
+#include "pcg/PersonGenerator.h"
+#include "resource/TextFileManager.h"
 #include "pcg/RandomGenerator.h"
 #include "city/Person.h"
+
+TextFileManager* PersonGenerator::sTextFileManager = nullptr;
+    
+void PersonGenerator::setTextFileManager(TextFileManager* textFileManager)
+{
+    sTextFileManager = textFileManager;
+}
 
 PersonGenerator::PersonGenerator(RandomGenerator& generator) : mGenerator(generator)
 {
@@ -27,44 +34,10 @@ PersonGenerator::PersonGenerator(RandomGenerator& generator) : mGenerator(genera
 
 void PersonGenerator::setUp()
 {
-    std::string line;
-    std::ifstream file;
-
-    // Male first names
-    file.open("media/persons/male_first_names.txt");
-    if (file.is_open())
-    {
-        while (std::getline(file, line))
-            mMaleFirstNames.push_back(line);
-        file.close();
-    }
-
-    // Female first names
-    file.open("media/persons/female_first_names.txt");
-    if (file.is_open())
-    {
-        while (std::getline(file, line))
-            mFemaleFirstNames.push_back(line);
-        file.close();
-    }
-
-    // Last names
-    file.open("media/persons/last_names.txt");
-    if (file.is_open())
-    {
-        while (std::getline(file, line))
-            mLastNames.push_back(line);
-        file.close();
-    }
-
-    // Cars
-    file.open("media/persons/cars.txt");
-    if (file.is_open())
-    {
-        while (std::getline(file, line))
-            mCars.push_back(line);
-        file.close();
-    }
+    mMaleFirstNames = sTextFileManager->loadValues("media/persons/male_first_names.txt");
+    mFemaleFirstNames = sTextFileManager->loadValues("media/persons/female_first_names.txt");
+    mLastNames = sTextFileManager->loadValues("media/persons/last_names.txt");
+    mCars = sTextFileManager->loadValues("media/persons/cars.txt");
 }
 
 std::unique_ptr<Person> PersonGenerator::generate(int year)
