@@ -61,6 +61,11 @@ XmlManager& ResourceManager::getXmlManager()
     return mXmlManager;
 }
 
+TextFileManager& ResourceManager::getTextFileManager()
+{
+    return mTextFileManager;
+}
+
 TextureManager& ResourceManager::getTextureManager()
 {
     return mTextureManager;

@@ -19,6 +19,7 @@
 
 // My includes
 #include "resource/XmlManager.h"
+#include "resource/TextFileManager.h"
 #include "resource/TextureManager.h"
 #include "resource/FontManager.h"
 #include "resource/StylesheetManager.h"
@@ -56,6 +57,13 @@ public:
      * \return The xml manager
      */
     XmlManager& getXmlManager();
+
+    /**
+     * \brief Get the text file manager
+     *
+     * \return The text file manager
+     */
+    TextFileManager& getTextFileManager();
 
     /**
      * \brief Get the texture manager
@@ -108,6 +116,7 @@ public:
 
 private:
     XmlManager mXmlManager; /**< Xml manager */
+    TextFileManager mTextFileManager; /**< Text file manager */
     TextureManager mTextureManager; /**< Texture manager */
     FontManager mFontManager; /**< Font manager */
     StylesheetManager mStylesheetManager; /**< Stylesheet manager */
