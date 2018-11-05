@@ -26,6 +26,7 @@ ResourceManager::ResourceManager()
 void ResourceManager::setUp()
 {
     mXmlManager.setUp();
+    mTextFileManager.setUp();
     mTextureManager.setXmlManager(&mXmlManager);
     mTextureManager.setUp();
     mFontManager.setXmlManager(&mXmlManager);
@@ -43,10 +44,13 @@ void ResourceManager::setUp()
     mSaveManager.setXmlManager(&mXmlManager);
     mSaveManager.setTextureManager(&mTextureManager);
     mSaveManager.setUp();
+    mSettingManager.setTextFileManager(&mTextFileManager);
+    mSettingManager.setUp();
 }
 
 void ResourceManager::tearDown()
 {
+    mSettingManager.tearDown();
     mSaveManager.tearDown();
     mImageManager.tearDown();
     mMusicManager.tearDown();
@@ -54,6 +58,8 @@ void ResourceManager::tearDown()
     mStylesheetManager.tearDown();
     mFontManager.tearDown();
     mTextureManager.tearDown();
+    mTextFileManager.tearDown();
+    mXmlManager.tearDown();
 }
 
 XmlManager& ResourceManager::getXmlManager()
@@ -99,4 +105,9 @@ ImageManager& ResourceManager::getImageManager()
 SaveManager& ResourceManager::getSaveManager()
 {
     return mSaveManager;
+}
+
+SettingManager& ResourceManager::getSettingManager()
+{
+    return mSettingManager;
 }

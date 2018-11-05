@@ -27,6 +27,7 @@
 #include "resource/MusicManager.h"
 #include "resource/ImageManager.h"
 #include "resource/SaveManager.h"
+#include "resource/SettingManager.h"
 
 /**
  * \brief Manager that manages the specific resource managers
@@ -114,6 +115,13 @@ public:
      */
     SaveManager& getSaveManager();
 
+    /**
+     * \brief Get the setting manager
+     *
+     * \return The setting manager
+     */
+    SettingManager& getSettingManager();
+
 private:
     XmlManager mXmlManager; /**< Xml manager */
     TextFileManager mTextFileManager; /**< Text file manager */
@@ -124,4 +132,5 @@ private:
     MusicManager mMusicManager; /**< Music manager */
     ImageManager mImageManager; /**< Image manager */
     SaveManager mSaveManager; /**< Save manager */
+    SettingManager  mSettingManager; /**< Setting manager */
 };
