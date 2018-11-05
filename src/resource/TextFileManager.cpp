@@ -57,7 +57,7 @@ std::vector<std::string> TextFileManager::loadValues(const std::string& path) co
     return values;
 }
 
-std::unordered_map<std::string, std::string> TextFileManager::loadDictionary(const std::string& path) const
+std::unordered_map<std::string, std::string> TextFileManager::loadDictionary(const std::string& path, const std::string& separator) const
 {
     std::ifstream file; 
     file.open(path);
@@ -67,7 +67,7 @@ std::unordered_map<std::string, std::string> TextFileManager::loadDictionary(con
         return {};
     }
 
-    std::regex regex(R"((\S*)\s->\s(\S*))");
+    std::regex regex(R"(\s*(\S+)\s*)" + separator + R"(\s*(\S+)\s*)");
     std::unordered_map<std::string, std::string> dictionary;
     std::string line;
     std::size_t i = 0;
@@ -93,3 +93,17 @@ std::unordered_map<std::string, std::string> TextFileManager::loadDictionary(con
     return dictionary;
 }
 
+void TextFileManager::saveDictionary(const std::string& path, const std::unordered_map<std::string, std::string> dictionary, const std::string& separator) const
+{
+    std::ofstream file; 
+    file.open(path);
+    if (!file.is_open())
+    {
+        DEBUG(path << " has not been saved correctly.\n");
+        return;
+    }
+
+    for (const auto& kv : dictionary)
+        file << kv.first << ' ' << separator << ' ' << kv.second << '\n';
+    file.close();
+}

@@ -54,11 +54,22 @@ public:
     std::vector<std::string> loadValues(const std::string& path) const;
 
     /**
-     * \brief Load values from a text file
+     * \brief Load dictionary from a text file
      *
      * \param path Path of the document
+     * \param separator Separator to use to separate keys and values
      *
-     * \return The loaded values
+     * \return The loaded dictionary
      */
-    std::unordered_map<std::string, std::string> loadDictionary(const std::string& path) const;
+    std::unordered_map<std::string, std::string> loadDictionary(const std::string& path, const std::string& separator) const;
+
+    /**
+     * \brief Save dictionary to a text file
+     *
+     * \param path Path of the document
+     * \param dictionary Dictionary to save
+     * \param separator Separator to use to separate keys and values
+     *
+     */
+    void saveDictionary(const std::string& path, const std::unordered_map<std::string, std::string> dictionary, const std::string& separator) const;
 };
