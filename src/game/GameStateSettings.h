@@ -38,9 +38,6 @@ public:
 
 private:
     std::unique_ptr<Gui> mGui;
-    // tmp
-    bool mFullscreen;
-    bool mMute;
-
+    
     void createGui();
 };

@@ -41,6 +41,8 @@ void SettingManager::tearDown()
     std::unordered_map<std::string, std::string> settings;
     settings["fullscreen"] = std::to_string(mFullscreen);
     settings["music"] = std::to_string(mMusic);
+    std::string path = mPrefixPath + "settings.txt";
+    mTextFileManager->saveDictionary(path, settings, "=");
 }
 
 bool SettingManager::isFullscreen() const

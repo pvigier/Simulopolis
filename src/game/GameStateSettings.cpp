@@ -21,6 +21,7 @@
 #include "input/InputEvent.h"
 #include "audio/AudioEngine.h"
 #include "resource/GuiManager.h"
+#include "resource/SettingManager.h"
 #include "gui/Gui.h"
 #include "gui/GuiButton.h"
 #include "gui/GuiLabel.h"
@@ -28,8 +29,7 @@
 #include "gui/GuiEvent.h"
 #include "util/format.h"
 
-GameStateSettings::GameStateSettings() : mGui(sGuiManager->getGui("settings")),
-    mFullscreen(false), mMute(false)
+GameStateSettings::GameStateSettings() : mGui(sGuiManager->getGui("settings"))
 {
     // Gui
     createGui();
@@ -85,21 +85,13 @@ void GameStateSettings::handleMessages()
                     const std::string& name = event.widget->getName();
                     if (name == "fullscreenButton")
                     {
-                        mFullscreen = !mFullscreen;
-                        if (mFullscreen)
-                            mGui->get<GuiLabel>("fullscreenText")->setString("Fullscreen: on");
-                        else
-                            mGui->get<GuiLabel>("fullscreenText")->setString("Fullscreen: off");
-                        sRenderEngine->setFullscreen(mFullscreen);
+                        sSettingManager->setFullscreen(!sSettingManager->isFullscreen());
+                        sRenderEngine->setFullscreen(sSettingManager->isFullscreen());
                     }
                     else if (name == "musicButton")
                     {
-                        mMute = !mMute;
-                        if (mMute)
-                            mGui->get<GuiLabel>("musicText")->setString("Music: off");
-                        else
-                            mGui->get<GuiLabel>("musicText")->setString("Music: on");
-                        sAudioEngine->setVolume(!mMute * 100.0f);
+                        sSettingManager->setMusic(!sSettingManager->isMusic());
+                        sAudioEngine->setVolume(sSettingManager->isMusic() * 100.0f);
                     }
                 }
                 default:
@@ -113,6 +105,17 @@ void GameStateSettings::update(float /*dt*/)
 {
     sAudioEngine->update();
     mGui->update();
+
+    // Update buttons
+    if (sSettingManager->isFullscreen())
+        mGui->get<GuiLabel>("fullscreenText")->setString("Fullscreen: on");
+    else
+        mGui->get<GuiLabel>("fullscreenText")->setString("Fullscreen: off");
+    if (sSettingManager->isMusic())
+        mGui->get<GuiLabel>("musicText")->setString("Music: on");
+    else
+        mGui->get<GuiLabel>("musicText")->setString("Music: off");
+
 }
 
 void GameStateSettings::draw()

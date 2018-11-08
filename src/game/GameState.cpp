@@ -28,6 +28,7 @@ StylesheetManager* GameState::sStylesheetManager = nullptr;
 GuiManager* GameState::sGuiManager = nullptr;
 MusicManager* GameState::sMusicManager = nullptr;
 SaveManager* GameState::sSaveManager = nullptr;
+SettingManager* GameState::sSettingManager = nullptr;
 
 GameState::Event::Event(Type type) : type(type)
 {
@@ -93,4 +94,9 @@ void GameState::setMusicManager(MusicManager* musicManager)
 void GameState::setSaveManager(SaveManager* saveManager)
 {
     sSaveManager = saveManager;
+}
+
+void GameState::setSettingManager(SettingManager* settingManager)
+{
+    sSettingManager = settingManager;
 }

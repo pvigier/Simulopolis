@@ -47,6 +47,7 @@ Game::Game()
     GameState::setGuiManager(&mResourceManager.getGuiManager());
     GameState::setMusicManager(&mResourceManager.getMusicManager());
     GameState::setSaveManager(&mResourceManager.getSaveManager());
+    GameState::setSettingManager(&mResourceManager.getSettingManager());
     Car::setTextureManager(&mResourceManager.getTextureManager());
     Car::setImageManager(&mResourceManager.getImageManager());
     Tile::setTextureManager(&mResourceManager.getTextureManager());
@@ -68,6 +69,10 @@ Game::Game()
     mAudioEngine.addMusic(mResourceManager.getMusicManager().getMusic("gymnopedie1"));
     mAudioEngine.addMusic(mResourceManager.getMusicManager().getMusic("gymnopedie2"));
     mAudioEngine.addMusic(mResourceManager.getMusicManager().getMusic("gymnopedie3"));
+
+    // Apply settings (maybe it should be managed by the settings manager)
+    mRenderEngine.setFullscreen(mResourceManager.getSettingManager().isFullscreen());
+    mAudioEngine.setVolume(mResourceManager.getSettingManager().isMusic() * 100.0f);
 
     // Add the start state
     pushState(std::make_unique<GameStateStart>());

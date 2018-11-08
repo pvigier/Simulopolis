@@ -30,6 +30,7 @@ class StylesheetManager;
 class GuiManager;
 class MusicManager;
 class SaveManager;
+class SettingManager;
 
 class GameState : public NonCopyable, public NonMovable
 {
@@ -57,6 +58,7 @@ public:
     static void setGuiManager(GuiManager* guiManager);
     static void setMusicManager(MusicManager* musicManager);
     static void setSaveManager(SaveManager* saveManager);
+    static void setSettingManager(SettingManager* settingManager);
 
     virtual void enter() = 0;
     virtual void handleMessages() = 0;
@@ -75,6 +77,7 @@ protected:
     static GuiManager* sGuiManager;
     static MusicManager* sMusicManager;
     static SaveManager* sSaveManager;
+    static SettingManager* sSettingManager;
 
     Mailbox mMailbox;
 };
