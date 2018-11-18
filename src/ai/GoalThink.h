@@ -31,7 +31,7 @@ public:
     virtual State process() override;
     virtual void terminate() override;
 
-    void addEvaluator(std::unique_ptr<GoalEvaluator> evaluator);
+    void addEvaluator(std::unique_ptr<GoalEvaluator>&& evaluator);
     std::vector<std::unique_ptr<GoalEvaluator>>& getEvaluators();
 
     virtual bool handle(Message message) override;

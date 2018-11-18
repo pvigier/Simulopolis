@@ -67,7 +67,7 @@ void Gui::draw(sf::RenderTarget& target, sf::RenderStates states) const
         widget->render(target, states, sf::FloatRect(sf::Vector2f(), mView.getSize()));
 }
 
-void Gui::add(const std::string& name, std::unique_ptr<GuiWidget> widget)
+void Gui::add(const std::string& name, std::unique_ptr<GuiWidget>&& widget)
 {
     if (widget->hasGuiEvents())
         widget->subscribe(mMailbox.getId());
@@ -79,7 +79,7 @@ void Gui::add(const std::string& name, std::unique_ptr<GuiWidget> widget)
     mWidgets[name]->setUp();
 }
 
-void Gui::addRoot(const std::string& name, std::unique_ptr<GuiWidget> widget)
+void Gui::addRoot(const std::string& name, std::unique_ptr<GuiWidget>&& widget)
 {
     if (widget->hasGuiEvents())
         widget->subscribe(mMailbox.getId());
@@ -92,12 +92,12 @@ void Gui::addRoot(const std::string& name, std::unique_ptr<GuiWidget> widget)
     mWidgets[name]->setUp();
 }
 
-void Gui::addWithDefaultName(std::unique_ptr<GuiWidget> widget)
+void Gui::addWithDefaultName(std::unique_ptr<GuiWidget>&& widget)
 {
     add(generateName(), std::move(widget));
 }
 
-void Gui::addRootWithDefaultName(std::unique_ptr<GuiWidget> widget)
+void Gui::addRootWithDefaultName(std::unique_ptr<GuiWidget>&& widget)
 {
     addRoot(generateName(), std::move(widget));
 }

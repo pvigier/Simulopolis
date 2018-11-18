@@ -180,7 +180,7 @@ void GuiWidget::setName(const std::string& name)
     mName = name;
 }
 
-void GuiWidget::setLayout(std::unique_ptr<GuiLayout> layout)
+void GuiWidget::setLayout(std::unique_ptr<GuiLayout>&& layout)
 {
     mLayout = std::move(layout);
     mLayout->setOwner(this);

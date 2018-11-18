@@ -87,7 +87,7 @@ Game::~Game()
     mMessageBus.removeMailbox(mMailbox);
 }
 
-void Game::pushState(std::unique_ptr<GameState> state)
+void Game::pushState(std::unique_ptr<GameState>&& state)
 {
     if (!mStates.empty())
         mStates.top()->exit();
@@ -103,7 +103,7 @@ void Game::popState()
         mStates.top()->enter();
 }
 
-void Game::changeState(std::unique_ptr<GameState> state)
+void Game::changeState(std::unique_ptr<GameState>&& state)
 {
     if (!mStates.empty())
     {

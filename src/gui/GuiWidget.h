@@ -60,7 +60,7 @@ public:
     void setGui(Gui* gui);
     const std::string& getName() const;
     void setName(const std::string& name);
-    void setLayout(std::unique_ptr<GuiLayout> layout);
+    void setLayout(std::unique_ptr<GuiLayout>&& layout);
     bool isDirty() const;
 
     // Positions and sizes

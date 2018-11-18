@@ -36,9 +36,9 @@ public:
     Game();
     ~Game();
 
-    void pushState(std::unique_ptr<GameState> state);
+    void pushState(std::unique_ptr<GameState>&& state);
     void popState();
-    void changeState(std::unique_ptr<GameState> state);
+    void changeState(std::unique_ptr<GameState>&& state);
     GameState* peekState();
     void clearStates();
 

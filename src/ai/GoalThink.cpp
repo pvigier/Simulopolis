@@ -48,7 +48,7 @@ void GoalThink::terminate()
 
 }
 
-void GoalThink::addEvaluator(std::unique_ptr<GoalEvaluator> evaluator)
+void GoalThink::addEvaluator(std::unique_ptr<GoalEvaluator>&& evaluator)
 {
     mEvaluators.emplace_back(std::move(evaluator));
 }

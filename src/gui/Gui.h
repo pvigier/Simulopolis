@@ -44,10 +44,10 @@ public:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    void add(const std::string& name, std::unique_ptr<GuiWidget> widget);
-    void addRoot(const std::string& name, std::unique_ptr<GuiWidget> widget);
-    void addWithDefaultName(std::unique_ptr<GuiWidget> widget);
-    void addRootWithDefaultName(std::unique_ptr<GuiWidget> widget);
+    void add(const std::string& name, std::unique_ptr<GuiWidget>&& widget);
+    void addRoot(const std::string& name, std::unique_ptr<GuiWidget>&& widget);
+    void addWithDefaultName(std::unique_ptr<GuiWidget>&& widget);
+    void addRootWithDefaultName(std::unique_ptr<GuiWidget>&& widget);
 
     template<typename T, typename... Args>
     T* create(const std::string& name, Args&&... args)
