@@ -20,6 +20,7 @@
 // STL
 #include <vector>
 #include <unordered_map>
+#include <string>
 
 /**
  * \brief Manager that manages text file documents 
